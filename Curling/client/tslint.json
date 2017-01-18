@@ -1,0 +1,137 @@
+{
+  "rulesDirectory":["node_modules/tslint-eslint-rules/dist/rules", "node_modules/codelyzer"],
+  "rules": {
+    "class-name": true,
+    "curly": true,
+    "eofline": true,
+    "forin": true,
+    "indent": [
+      true,
+      "spaces"
+    ],
+    "label-position": true,
+    "member-access": false,
+    "member-ordering": [
+      true,
+      "static-before-instance",
+      "variables-before-functions"
+    ],
+    "no-arg": true,
+    "no-bitwise": true,
+    "no-console": [
+      true,
+      "debug",
+      "info",
+      "time",
+      "timeEnd",
+      "trace"
+    ],
+    "no-construct": true,
+    "no-debugger": true,
+    "no-duplicate-variable": true,
+    "no-empty": true,
+    "no-eval": true,
+    "no-inferrable-types": [true],
+    "no-shadowed-variable": true,
+    "no-string-literal": false,
+    "no-switch-case-fall-through": true,
+    "no-trailing-whitespace": true,
+    "no-unused-expression": true,
+    "no-unused-variable": true,
+    "no-use-before-declare": true,
+    "no-var-keyword": true,
+    "object-literal-sort-keys": false,
+    
+    "cyclomatic-complexity": [ true, 20],
+    "max-classes-per-file": [true, 2],
+    "max-line-length": [true, 120],
+    "no-unsafe-finally": true,
+    
+    "one-line": [
+      false,
+      "check-open-brace",
+      "check-finally",
+      "check-catch",
+      "check-else"
+    ],
+      
+    "quotemark": [
+      false,
+      "single"
+    ],
+    "radix": true,
+    "semicolon": [
+      "always"
+    ],
+    "triple-equals": [
+      true,
+      "allow-null-check"
+    ],
+    "typedef-whitespace": [
+      false,
+      {
+        "call-signature": "nospace",
+        "index-signature": "nospace",
+        "parameter": "nospace",
+        "property-declaration": "nospace",
+        "variable-declaration": "nospace"
+      }
+    ],
+    "variable-name": [
+        true,
+        "ban-keywords",
+        "check-format",
+        "allow-leading-underscore",
+        "allow-trailing-underscore"
+    ],
+    "whitespace": [
+      true,
+      "check-branch",
+      "check-decl",
+      "check-module",
+      "check-separator",
+	"check-type",
+	"check-operator"
+    ],
+    
+    // ESLint added by Emilio
+    "no-inner-declarations": [true,"functions"],
+    "no-constant-condition": true,
+    "no-sparse-arrays": true,
+    "no-ex-assign": true,
+    "no-unexpected-multiline": true,
+    "no-extra-semi": true,
+    "no-extra-boolean-cast": true,
+    "no-duplicate-case": true,
+    "no-invalid-regexp": true,
+    "no-multi-spaces": true,
+    "no-irregular-whitespace": [true, {"skipComments":true}],
+
+    // Angular / Codelyzer recommendations taken from
+    // https://github.com/mgechev/codelyzer#recommended-configuration
+    // The rule have the following arguments:
+    // [ENABLED, "attribute" | "element", "selectorPrefix" | ["listOfPrefixes"], "camelCase" | "kebab-case"]
+    "directive-selector": [false, "attribute", ["dir-prefix1", "dir-prefix2"], "camelCase"],
+    "component-selector": [true, "element", "", "kebab-case"],
+
+    "use-input-property-decorator": true,
+    "use-output-property-decorator": true,
+    "use-host-property-decorator": true,
+    "no-attribute-parameter-decorator": true,
+    "no-input-rename": true,
+    "no-output-rename": true,
+    "no-forward-ref": true,
+    "use-life-cycle-interface": true,
+    "use-pipe-transform-interface": true,
+
+    // [ENABLED, "SUFFIX"]
+    // Where "SUFFIX" is your custom suffix, for instance "Page" for Ionic 2 components.
+    "component-class-suffix": true,
+    "directive-class-suffix": true,
+    "service-class-suffix": [true, "Service"],
+    "import-destructuring-spacing": true,
+    "templates-use-public": true,
+    "no-access-missing-member": true,
+    "invoke-injectable": true
+  }
+}
