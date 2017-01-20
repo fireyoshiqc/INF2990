@@ -10,6 +10,7 @@ import * as path from 'path';
 import * as logger from 'morgan';
 import * as cookieParser from 'cookie-parser';
 import * as bodyParser from 'body-parser';
+import * as cors from 'cors';
 
 import * as indexRoute from './routes';
 
@@ -60,6 +61,7 @@ export class Application {
     this.app.use(bodyParser.urlencoded({ extended: true }));
     this.app.use(cookieParser());
     this.app.use(express.static(path.join(__dirname, '../client')));
+    this.app.use(cors());
   }
 
   /**
