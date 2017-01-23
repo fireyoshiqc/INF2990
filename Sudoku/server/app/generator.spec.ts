@@ -5,11 +5,32 @@
  * @date 2017/01/20
  */
 
-import { Sudoku } from './generator';
+import { Sudoku, generateRandomValidIndexes, getRandomInt } from './generator';
 
-import { assert, expect} from 'chai'; 
+import { assert, expect } from 'chai'; 
 
 describe('Sudoku', () => {
+
+    describe('Default constructor ', () => {
+        it('should construct a Sudoku object with template grid', done => {
+
+            let testGrid : number[][] = [ [1, 2, 3, 4, 5, 6, 7, 8, 9], 
+                                          [4, 5, 6, 7, 8, 9, 1, 2, 3], 
+                                          [7, 8, 9, 1, 2, 3, 4, 5, 6], 
+                                          [2, 3, 4, 5, 6, 7, 8, 9, 1], 
+                                          [5, 6, 7, 8, 9, 1, 2, 3, 4], 
+                                          [8, 9, 1, 2, 3, 4, 5, 6, 7], 
+                                          [3, 4, 5, 6, 7, 8, 9, 1, 2], 
+                                          [6, 7, 8, 9, 1, 2, 3, 4, 5], 
+                                          [9, 1, 2, 3, 4, 5, 6, 7, 8] ];
+
+            let sudoku1 = new Sudoku();
+            let sudoku2 = new Sudoku(testGrid);
+
+            expect(sudoku1.equals(sudoku2)).to.equal(true);
+            done();
+        });
+    });
 
     describe('isEqual() ', () => {
         it('should return true if two grids are equal', done => {
@@ -163,6 +184,59 @@ describe('Sudoku', () => {
                                               [7, 4, 1] ];
 
             expect(sudoku.equals(new Sudoku(solutionGrid))).to.equal(true);
+            done();
+        });
+    });
+
+    describe('getRandomInt() ', () => {
+        it('should generate an integer between two values', done => {
+
+            let min = 4, max = 10;
+            let random : number = getRandomInt(min, max);
+
+            expect(random >= min && random <= max).to.equal(true);
+            
+            done();
+        });
+    });
+
+
+
+    describe('generateRandomValidIndexes() ', () => {
+        it('should generate two valid indexes for switching rows or columns', done => {
+
+            let indexes : number[] = generateRandomValidIndexes();
+
+            expect(Math.floor(indexes[0]/3) == Math.floor(indexes[1]/3)).to.equal(true);
+            
+            done();
+        });
+    });
+
+    describe('isValid() ', () => {
+        it('should return true when the grid is valid', done => {
+
+            let sudoku = new Sudoku();
+
+            expect(sudoku.isValid()).to.equal(true);
+            done();
+        });
+        
+        it('should return false when the grid is invalid', done => {
+
+            let testGrid : number[][] = [ [2, 2, 3, 4, 5, 6, 7, 8, 9], 
+                                          [4, 5, 6, 7, 8, 9, 1, 2, 3], 
+                                          [7, 8, 9, 1, 2, 3, 4, 5, 6], 
+                                          [2, 3, 4, 5, 6, 7, 8, 9, 1], 
+                                          [5, 6, 7, 8, 9, 1, 2, 3, 4], 
+                                          [8, 9, 1, 2, 3, 4, 5, 6, 7], 
+                                          [3, 4, 5, 6, 7, 8, 9, 1, 2], 
+                                          [6, 7, 8, 9, 1, 2, 3, 4, 5], 
+                                          [9, 1, 2, 3, 4, 5, 6, 7, 8] ];
+                                                      
+            let sudoku = new Sudoku(testGrid);
+
+            expect(sudoku.isValid()).to.equal(false);
             done();
         });
     });

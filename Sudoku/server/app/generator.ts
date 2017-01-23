@@ -16,11 +16,27 @@ var sudokuGrid : number[][] = [ [1, 2, 3, 4, 5, 6, 7, 8, 9],
                                 [6, 7, 8, 9, 1, 2, 3, 4, 5], 
                                 [9, 1, 2, 3, 4, 5, 6, 7, 8] ];
 
+export function generateRandomValidIndexes() : number[] {
+    let randomIndexes : number[] = [ 0, 0 ];
+
+    let squareIndex = getRandomInt(0,2);
+
+    randomIndexes[0] = 3 * squareIndex + getRandomInt(0,2);
+    randomIndexes[1] = 3 * squareIndex + (randomIndexes[0] + getRandomInt(1,2)) % 3;
+
+    return randomIndexes;
+
+}
+
+export function getRandomInt(min : number, max : number) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+ 
 export class Sudoku {
     size: number;
     grid: number[][];
 
-    constructor(aGrid: number[][]) { 
+    constructor(aGrid: number[][] = sudokuGrid) { 
         this.grid = aGrid; 
         this.size = aGrid.length;
     }
@@ -77,9 +93,9 @@ export class Sudoku {
     flipAroundBackwardDiagonal() : void {
         let temporary : number;
 
-        // TO DO - Ne pas flipper les éléments sur la diagonale
         for (let i = 0; i < this.size; i++) {
-            for (let j = i; j < this.size; j++) {
+            // start condition is j = i + 1 : Ignore the elements on diagonal
+            for (let j = i + 1; j < this.size; j++) {
                 temporary = this.grid[i][j];
                 this.grid[i][j] = this.grid[j][i];
                 this.grid[j][i] = temporary;
@@ -92,13 +108,19 @@ export class Sudoku {
 
         let offset = this.size - 1;
 
-        // TO DO - Ne pas flipper les éléments sur la diagonale
         for (let i = 0; i < this.size; i++) {
-            for (let j = 0; j < this.size - i; j++) {
+            // end condition is j < this.size - i - 1 : Ignore the elements on diagonal
+            for (let j = 0; j < this.size - i - 1; j++) {
                 temporary = this.grid[i][j];
                 this.grid[i][j] = this.grid[offset - j][offset - i];
                 this.grid[offset - j][offset - i] = temporary;
             }
         }
+    }
+
+    isValid() : boolean {
+        let valid = true;
+
+        return valid;
     }
 }
