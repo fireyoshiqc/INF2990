@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'my-app',
   template: `
     <h1>Sudoku</h1>
-    <sudokuGrid></sudokuGrid>
+    <sudoku-grid></sudoku-grid>
   `,
 })
 export class AppComponent { }
