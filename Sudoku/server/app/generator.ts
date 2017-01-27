@@ -8,10 +8,10 @@
 export function generateRandomValidIndexes() : number[] {
     let randomIndexes : number[] = [ 0, 0 ];
 
-    let squareIndex = getRandomInt(0,2);
+    let squareIndex = getRandomInt(0, 2);
 
-    randomIndexes[0] = 3 * squareIndex + getRandomInt(0,2);
-    randomIndexes[1] = 3 * squareIndex + (randomIndexes[0] + getRandomInt(1,2)) % 3;
+    randomIndexes[0] = 3 * squareIndex + getRandomInt(0, 2);
+    randomIndexes[1] = 3 * squareIndex + (randomIndexes[0] + getRandomInt(1, 2)) % 3;
 
     return randomIndexes;
 
@@ -22,42 +22,44 @@ export function getRandomInt(min : number, max : number) {
 }
 
 export function sudokuToString(a: number[][]) : string {
-    var str:string="\n";
-    for (var i:number = 0; i<a.length; i++) {
-        str+="\t"+a[i].toString()+"\n";
+    let str = "\n";
+
+    for (let i = 0; i < a.length; i++) {
+        str += "\t" + a[i].toString() + "\n";
     }
-    str=str.substr(0,str.length-1);
+
+    str = str.substr(0, str.length - 1);
     return str;
 }
- 
+
 export class Sudoku {
     size: number = 9;
-    grid: number[][] = [ [1, 2, 3, 4, 5, 6, 7, 8, 9], 
-                         [4, 5, 6, 7, 8, 9, 1, 2, 3], 
-                         [7, 8, 9, 1, 2, 3, 4, 5, 6], 
-                         [2, 3, 4, 5, 6, 7, 8, 9, 1], 
-                         [5, 6, 7, 8, 9, 1, 2, 3, 4], 
-                         [8, 9, 1, 2, 3, 4, 5, 6, 7], 
-                         [3, 4, 5, 6, 7, 8, 9, 1, 2], 
-                         [6, 7, 8, 9, 1, 2, 3, 4, 5], 
+    grid: number[][] = [ [1, 2, 3, 4, 5, 6, 7, 8, 9],
+                         [4, 5, 6, 7, 8, 9, 1, 2, 3],
+                         [7, 8, 9, 1, 2, 3, 4, 5, 6],
+                         [2, 3, 4, 5, 6, 7, 8, 9, 1],
+                         [5, 6, 7, 8, 9, 1, 2, 3, 4],
+                         [8, 9, 1, 2, 3, 4, 5, 6, 7],
+                         [3, 4, 5, 6, 7, 8, 9, 1, 2],
+                         [6, 7, 8, 9, 1, 2, 3, 4, 5],
                          [9, 1, 2, 3, 4, 5, 6, 7, 8] ];
 
     constructor(aGrid ?: number[][]) {
-        if(aGrid) {
-            this.grid = aGrid; 
+        if (aGrid) {
+            this.grid = aGrid;
             this.size = aGrid.length;
-        } 
+        }
     }
 
     equals(other : Sudoku) : boolean {
 
-        if (this.size != other.size) {
+        if (this.size !== other.size) {
             return false;
         }
 
         for (let i = 0; i < this.size; i++) {
             for (let j = 0; j < this.size; j++) {
-                if (this.grid[i][j] != other.grid[i][j]) {
+                if (this.grid[i][j] !== other.grid[i][j]) {
                     return false;
                 }
             }
@@ -93,7 +95,7 @@ export class Sudoku {
     }
 
     flipVertically() : void {
-        for (let i = 0; i < this.size/2; i++) {
+        for (let i = 0; i < this.size / 2; i++) {
             this.exchangeLines(i, this.size - i - 1);
         }
     }
@@ -133,25 +135,18 @@ export class Sudoku {
     areRowsColumnsValid() : boolean {
         let rowSet = new Set();
         let columnSet = new Set();
-        
+
         for (let i = 0; i < this.size; i++) {
             for (let j = 0; j < this.size; j++) {
                 let rowNumber = this.grid[i][j];
                 let columnNumber = this.grid[j][i];
 
-                // check if a number is already in the same row or column, if yes, then the row/column cannot be valid.
-               /* if(rowSet.has(rowNumber)){
-                    return false;
-                }*/
-                rowSet.add(this.grid[i][j]);
-
-                /*if(columnSet.has(columnNumber)){
-                    return false;
-                }*/
-                columnSet.add(this.grid[j][i]);
+                rowSet.add(rowNumber);
+                columnSet.add(columnNumber);
             }
-            // TODO : décider entre les deux manière de vérifier la validité (selon la complextité)
-            if(rowSet.size != this.size || columnSet.size != this.size) {
+
+            // check if a number is already in the same row or column, if yes, then the row/column cannot be valid.
+            if (rowSet.size !== this.size || columnSet.size !== this.size) {
                 return false;
             }
             rowSet.clear();
@@ -163,24 +158,24 @@ export class Sudoku {
     areSquaresValid() : boolean {
         let squareSet = new Set();
         let x : number, y : number;
-        
-        for(let square = 0; square < this.size; square++) {
+
+        for (let square = 0; square < this.size; square++) {
             // coordinates for upper left corner of each square
             x = 3 * Math.floor(square / 3);
             y = 3 * (square % 3);
 
             squareSet.add(this.grid[x][y]);
-            squareSet.add(this.grid[x][y+1]);
-            squareSet.add(this.grid[x][y+2]);
-            squareSet.add(this.grid[x+1][y]);
-            squareSet.add(this.grid[x+1][y+1]);
-            squareSet.add(this.grid[x+1][y+2]);
-            squareSet.add(this.grid[x+2][y]);
-            squareSet.add(this.grid[x+2][y+1]);
-            squareSet.add(this.grid[x+2][y+2]);
+            squareSet.add(this.grid[x][y + 1]);
+            squareSet.add(this.grid[x][y + 2]);
+            squareSet.add(this.grid[x + 1][y]);
+            squareSet.add(this.grid[x + 1][y + 1]);
+            squareSet.add(this.grid[x + 1][y + 2]);
+            squareSet.add(this.grid[x + 2][y]);
+            squareSet.add(this.grid[x + 2][y + 1]);
+            squareSet.add(this.grid[x + 2][y + 2]);
 
             // check if a number is already in the same square, if yes, then the square cannot be valid.
-            if(squareSet.size != this.size) {
+            if (squareSet.size !== this.size) {
                 return false;
             }
             squareSet.clear();
@@ -189,24 +184,25 @@ export class Sudoku {
     }
 
     randomize() : void {
-        let exchangeOperationsTable = [ (x : number, y : number) => {this.exchangeColumns(x, y);}, 
-                                        (x : number, y : number) => {this.exchangeLines(x, y);} ];
-        let flipOperationsTable = [ () => {this.flipAroundBackwardDiagonal();},
-                                    () => {this.flipAroundForwardDiagonal();}, 
-                                    () => {this.flipHorizontally();},
-                                    () => {this.flipVertically();} ];
+        let exchangeOperationsTable = [ (x : number, y : number) => {this.exchangeColumns(x, y); },
+                                        (x : number, y : number) => {this.exchangeLines(x, y); } ];
+        let flipOperationsTable = [ () => {this.flipAroundBackwardDiagonal(); },
+                                    () => {this.flipAroundForwardDiagonal(); },
+                                    () => {this.flipHorizontally(); },
+                                    () => {this.flipVertically(); } ];
         let randomOperationCount = 10000;
         let randomInt : number;
-        flipOperationsTable[1];
+
         let numberOfOperations = exchangeOperationsTable.length + flipOperationsTable.length;
 
-        for(let i = 0; i < randomOperationCount; i++) {
+        for (let i = 0; i < randomOperationCount; i++) {
             randomInt = getRandomInt(1, numberOfOperations);
-            if(randomInt < 3){
+
+            if (randomInt < 3){
                 let table = generateRandomValidIndexes();
-                exchangeOperationsTable[randomInt-1](table[0], table[1]);
+                exchangeOperationsTable[randomInt - 1](table[0], table[1]);
             } else {
-                flipOperationsTable[randomInt-3]();   
+                flipOperationsTable[randomInt - 3]();
             }
         }
     }
