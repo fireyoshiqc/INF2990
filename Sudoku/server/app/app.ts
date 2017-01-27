@@ -71,17 +71,36 @@ export class Application {
    * @method routes
    */
   public routes() {
-    let router: express.Router;
-    router = express.Router();
+    //let router: express.Router;
+    //router = express.Router();
 
     //create routes
-    const index: indexRoute.Index = new indexRoute.Index();
+    //const index: indexRoute.Index = new indexRoute.Index();
 
     //home page
-    router.get('/', index.index.bind(index.index));
+    //router.get('/', index.index.bind(index.index));
+    this.app.get('/', function(req, res){
+        res.send('Hello Erica');
+    });
+
+    this.app.get('/sudoku/hard', function(req, res){
+        // Get from mongo and remove it
+        // sudokuManager.getHardSudoku(); Call generation of new hard sudoku
+        res.send('Hard sudoku');
+    });
+
+    this.app.get('/sudoku/easy', function(req, res){
+        // Get from mongo and remove it
+        // sudokuManager.getEasySudoku();Call generation of new easy sudoku
+        res.send('Easy sudoku');
+    });
+
+    // How validate sudoku while obeying rest api? Need to send something to the server and get a result back?
+    // /sudoku/check (get the filled sudoku)
+    // 
 
     //use router middleware
-    this.app.use(router);
+    //this.app.use(router);
 
     // Gestion des erreurs
     this.app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
