@@ -1,6 +1,12 @@
-/*Our javascript*/
 
 export class CurlingStone extends THREE.Group {
+
+    private readonly RADIUS: number = 0.145; //Radius of stone.
+    private readonly HEIGHT: number = 0.290; //Height of stone (base).
+    private readonly SFACES: number = 25; //Amount of faces for stone rendering.
+    private readonly HANRAD: number = 0.025; //Radius of handle tube.
+    private readonly HFACES: number = 6; //Amount of faces for handle rendering.
+
 
     stoneColor: string;
 
@@ -31,16 +37,15 @@ export class CurlingStone extends THREE.Group {
     }
 
     init() {
-        /*-------------------- CURLING BASE------------------------------------------ */
-        //0.145 : Rayon en mètres d'une pierre
         //Stone base
-        let torusGeometry: THREE.TorusGeometry = new THREE.TorusGeometry(0.145, 0.145, 25, 25);
-        let cylinderGeometry: THREE.CylinderGeometry = new THREE.CylinderGeometry(0.145, 0.145, 0.290, 25);
+        let torusGeometry: THREE.TorusGeometry;
+        torusGeometry = new THREE.TorusGeometry(this.RADIUS, this.RADIUS, this.SFACES, this.SFACES);
+        let cylinderGeometry: THREE.CylinderGeometry;
+        cylinderGeometry = new THREE.CylinderGeometry(this.RADIUS, this.RADIUS, this.HEIGHT, this.SFACES);
 
         let torus: THREE.Mesh = new THREE.Mesh(torusGeometry);
         let cylinder: THREE.Mesh = new THREE.Mesh(cylinderGeometry);
         cylinder.rotation.x = Math.PI / 2;
-
 
         //Merge base geometry
         let curlingGeometry: THREE.Geometry = new THREE.Geometry();
@@ -54,6 +59,7 @@ export class CurlingStone extends THREE.Group {
         let material: THREE.MeshStandardMaterial = new THREE.MeshStandardMaterial({
             metalness: 0.0,
             roughness: 0.2,
+            //TODO: Replace THREE.ImageUTils.loadTexture by new loader (this is deprecated)
             map: THREE.ImageUtils.loadTexture("../assets/textures/granite.jpg"),
             // color : 0xffffff
 
@@ -72,10 +78,9 @@ export class CurlingStone extends THREE.Group {
         });
 
         //Cover
-        let coverGeometry: THREE.CylinderGeometry = new THREE.CylinderGeometry(0.145, 0.2, 0.01, 25);
+        let coverGeometry: THREE.CylinderGeometry = new THREE.CylinderGeometry(this.RADIUS, 0.2, 0.01, 25);
         let cover: THREE.Mesh = new THREE.Mesh(coverGeometry);
-        //cover.rotation.x = Math.PI/2;
-        cover.position.y = 0.145;
+        cover.position.y = this.RADIUS;
 
         //Curve for handle, 3D Spline curve
         let curve: THREE.CatmullRomCurve3 = new THREE.CatmullRomCurve3([
@@ -86,16 +91,16 @@ export class CurlingStone extends THREE.Group {
 
 
         //Tube
-        let tubeGeometry: THREE.TubeGeometry = new THREE.TubeGeometry(curve, 10, 0.025, 6, false);
+        let tubeGeometry: THREE.TubeGeometry = new THREE.TubeGeometry(curve, 10, this.HANRAD, this.HFACES, false);
         let tube: THREE.Mesh = new THREE.Mesh(tubeGeometry);
-        tube.position.y = 0.140;
-        tube.position.x = -0.145;
+        tube.position.y = this.RADIUS - 0.005;
+        tube.position.x = -this.RADIUS;
 
         //End of tube
-        let sphereGeometry: THREE.SphereGeometry = new THREE.SphereGeometry(0.025, 6, 6);
+        let sphereGeometry: THREE.SphereGeometry = new THREE.SphereGeometry(this.HANRAD, this.HFACES, this.HFACES);
         let sphere: THREE.Mesh = new THREE.Mesh(sphereGeometry);
-        sphere.position.y = 0.140 + 0.08;
-        sphere.position.x = -0.145 + 0.26;
+        sphere.position.y = this.RADIUS + 0.03;
+        sphere.position.x = -this.RADIUS + 0.26;
 
 
         //Merge handle geometry
