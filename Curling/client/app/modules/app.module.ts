@@ -12,13 +12,15 @@ import { DashboardComponent } from '../components/dashboard.component';
 import { ModifierDirective } from '../directives/modifier.directive'
 
 import { RenderService } from '../services/render.service';
+import { GameRenderer } from '../gameRenderer';
 
 import { MaterialModule } from '@angular/material'
 
 @NgModule({
   imports: [ BrowserModule, FormsModule, AppRoutingModule, MaterialModule.forRoot()],
   declarations: [ AppComponent, GlComponent, DashboardComponent, ModifierDirective],
-  providers: [ RenderService ],
+  //providers: [ RenderService ],
+  providers: [ GameRenderer ],
   bootstrap: [ AppComponent ]
 })
 

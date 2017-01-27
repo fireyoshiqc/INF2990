@@ -1,4 +1,7 @@
+import { Injectable } from '@angular/core';
+import { CurlingStone } from './curlingStone';
 
+@Injectable()
 export class GameRenderer {
 
     scene: THREE.Scene;
@@ -9,7 +12,7 @@ export class GameRenderer {
 
     constructor() {
     }
-    init() {
+    public init(container: HTMLElement) {
         this.scene = new THREE.Scene();
 
         /*Field of view, aspect ratio, near, far*/
@@ -19,7 +22,10 @@ export class GameRenderer {
         /*We have to set the size at which we want to render our app. We use the width and the height of the browser.*/
         this.renderer = new THREE.WebGLRenderer({ antialias: true });
         this.renderer.setSize(window.innerWidth, window.innerHeight);
-        document.body.appendChild(this.renderer.domElement);
+        //document.body.appendChild(this.renderer.domElement);
+        if (container.getElementsByTagName('canvas').length === 0) {
+            container.appendChild(this.renderer.domElement);
+        }
 
         /*--------------------LIGHT------------------------------------------ */
         this.directLight = new THREE.DirectionalLight(0xffffff, 1.0);
@@ -33,17 +39,20 @@ export class GameRenderer {
 
 
         this.camera.position.z = 5;
+        this.add(new CurlingStone());
+        this.render();
 
     }
 
     render() {
-        requestAnimationFrame(this.render);
+        window.requestAnimationFrame(() => this.render());
 
         this.renderer.render(this.scene, this.camera);
     }
 
-    add(obj: THREE.Group | THREE.Mesh){
-      this.scene.add(obj);
+    add(obj: THREE.Group | THREE.Mesh) {
+        this.scene.add(obj);
+        console.log("Curling Stone was added to scene.");
 
     }
 
