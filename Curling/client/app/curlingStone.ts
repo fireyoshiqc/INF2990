@@ -54,7 +54,7 @@ export class CurlingStone extends THREE.Group {
         let material: THREE.MeshStandardMaterial = new THREE.MeshStandardMaterial({
             metalness: 0.0,
             roughness: 0.2,
-            map: THREE.ImageUtils.loadTexture("granite.jpg"),
+            map: THREE.ImageUtils.loadTexture("../assets/textures/granite.jpg"),
             // color : 0xffffff
 
         });
