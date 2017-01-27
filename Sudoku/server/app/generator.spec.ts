@@ -5,7 +5,7 @@
  * @date 2017/01/20
  */
 
-import { Sudoku, generateRandomValidIndexes, getRandomInt } from './generator';
+import { Sudoku, generateRandomValidIndexes, getRandomInt, sudokuToString } from './generator';
 
 import { assert, expect } from 'chai'; 
 
@@ -217,12 +217,12 @@ describe('Sudoku', () => {
         it('should return true when the grid is valid', done => {
 
             let sudoku = new Sudoku();
-
+            
             expect(sudoku.isValid()).to.equal(true);
             done();
         });
         
-        it('should return false when the grid is invalid', done => {
+        it('should return false when everything is invalid', done => {
 
             let testGrid : number[][] = [ [2, 2, 3, 4, 5, 6, 7, 8, 9], 
                                           [4, 5, 6, 7, 8, 9, 1, 2, 3], 
@@ -233,11 +233,93 @@ describe('Sudoku', () => {
                                           [3, 4, 5, 6, 7, 8, 9, 1, 2], 
                                           [6, 7, 8, 9, 1, 2, 3, 4, 5], 
                                           [9, 1, 2, 3, 4, 5, 6, 7, 8] ];
-                                                      
+
             let sudoku = new Sudoku(testGrid);
 
             expect(sudoku.isValid()).to.equal(false);
             done();
         });
     });
+
+    describe('areRowsColumnsValid() ', () => {
+       it('should return false when the rows are invalid even when the columns are valid', done => {
+
+             let testGrid : number[][] =  [ [1, 1, 1, 1, 1, 1, 1, 1, 1], 
+                                            [2, 2, 2, 2, 2, 2, 2, 2, 2], 
+                                            [3, 3, 3, 3, 3, 3, 3, 3, 3], 
+                                            [4, 4, 4, 4, 4, 4, 4, 4, 4], 
+                                            [5, 5, 5, 5, 5, 5, 5, 5, 5], 
+                                            [6, 6, 6, 6, 6, 6, 6, 6, 6], 
+                                            [7, 7, 7, 7, 7, 7, 7, 7, 7], 
+                                            [8, 8, 8, 8, 8, 8, 8, 8, 8], 
+                                            [9, 9, 9, 9, 9, 9, 9, 9, 9] ];                              
+                                                      
+            let sudoku = new Sudoku(testGrid);
+
+            expect(sudoku.areRowsColumnsValid()).to.equal(false);
+            done();
+        });
+
+        it('should return false when the columns are invalid even when the rows are valid', done => {
+
+             let testGrid : number[][] =  [ [1, 2, 3, 4, 5, 6, 7, 8, 9], 
+                                            [1, 2, 3, 4, 5, 6, 7, 8, 9], 
+                                            [1, 2, 3, 4, 5, 6, 7, 8, 9], 
+                                            [1, 2, 3, 4, 5, 6, 7, 8, 9], 
+                                            [1, 2, 3, 4, 5, 6, 7, 8, 9], 
+                                            [1, 2, 3, 4, 5, 6, 7, 8, 9], 
+                                            [1, 2, 3, 4, 5, 6, 7, 8, 9], 
+                                            [1, 2, 3, 4, 5, 6, 7, 8, 9], 
+                                            [1, 2, 3, 4, 5, 6, 7, 8, 9] ];                              
+                                                      
+            let sudoku = new Sudoku(testGrid);
+
+            expect(sudoku.areRowsColumnsValid()).to.equal(false);
+            done();
+        });
+
+    });
+
+    describe('areSquaresValid() ', () => {
+       it('should return false when only squares are invalid', done => {
+
+             let testGrid : number[][] =  [ [1, 2, 3, 4, 5, 6, 7, 8, 9], 
+                                            [2, 3, 4, 5, 6, 7, 8, 9, 1], 
+                                            [3, 4, 5, 6, 7, 8, 9, 1, 2], 
+                                            [4, 5, 6, 7, 8, 9, 1, 2, 3], 
+                                            [5, 6, 7, 8, 9, 1, 2, 3, 4], 
+                                            [6, 7, 8, 9, 1, 2, 3, 4, 5], 
+                                            [7, 8, 9, 1, 2, 3, 4, 5, 6], 
+                                            [8, 9, 1, 2, 3, 4, 5, 6, 7], 
+                                            [9, 1, 2, 3, 4, 5, 6, 7, 8] ];                              
+                                                        
+            let sudoku = new Sudoku(testGrid);
+
+            expect(sudoku.areSquaresValid()).to.equal(false);
+            done();
+        });
+    });
+
+    describe('randomize() ', () => {
+        it('should alter the sudoku grid ', done => {
+            let sudoku1 = new Sudoku();
+
+            let sudoku2 = new Sudoku();
+            sudoku2.randomize();
+
+            console.log("\naffichage sudoku temporaire" + sudokuToString(sudoku2.grid));
+
+            expect(sudoku1.equals(sudoku2)).to.equal(false);
+            done();
+        });
+
+        it('the sudoku should stay valid after randomization ', done => {
+
+            let sudoku = new Sudoku();
+            sudoku.randomize();
+            expect(sudoku.isValid()).to.equal(true);
+            done();
+        });
+    });
 });
+
