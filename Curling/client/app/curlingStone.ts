@@ -7,11 +7,11 @@ export class CurlingStone extends THREE.Group {
     private readonly HANRAD: number = 0.025; //Radius of handle tube.
     private readonly HFACES: number = 6; //Amount of faces for handle rendering.
 
-
+    private texLoader: THREE.TextureLoader;
     stoneColor: string;
 
     constructor(aColor?: string) {
-      super();
+        super();
         if (aColor) {
             let regex = new RegExp('#[0-9a-fA-F]{6}');
             if (regex.test(aColor)) {
@@ -37,6 +37,9 @@ export class CurlingStone extends THREE.Group {
     }
 
     init() {
+        this.texLoader = new THREE.TextureLoader();
+        this.texLoader.setPath('../assets/textures/');
+        this.texLoader.setCrossOrigin("anonymous");
         //Stone base
         let torusGeometry: THREE.TorusGeometry;
         torusGeometry = new THREE.TorusGeometry(this.RADIUS, this.RADIUS, this.SFACES, this.SFACES);
@@ -51,19 +54,25 @@ export class CurlingStone extends THREE.Group {
         let curlingGeometry: THREE.Geometry = new THREE.Geometry();
 
         torus.updateMatrix();
-        curlingGeometry.merge(<THREE.Geometry> torus.geometry, torus.matrix);
+        curlingGeometry.merge(<THREE.Geometry>torus.geometry, torus.matrix);
         cylinder.updateMatrix();
-        curlingGeometry.merge(<THREE.Geometry> cylinder.geometry, cylinder.matrix);
+        curlingGeometry.merge(<THREE.Geometry>cylinder.geometry, cylinder.matrix);
+
 
         // Material for stone base
-        let material: THREE.MeshStandardMaterial = new THREE.MeshStandardMaterial({
-            metalness: 0.0,
-            roughness: 0.2,
-            //TODO: Replace THREE.ImageUTils.loadTexture by new loader (this is deprecated)
-            map: THREE.ImageUtils.loadTexture("../assets/textures/granite.jpg"),
-            // color : 0xffffff
+        let material: THREE.MeshStandardMaterial;
+        this.texLoader.load('granite.jpg', function(texture) {
+            material = new THREE.MeshStandardMaterial({
+                metalness: 0.0,
+                roughness: 0.2,
 
+                map: texture
+                // color : 0xffffff
+
+            });
         });
+
+
 
         let curlingMesh: THREE.Mesh = new THREE.Mesh(curlingGeometry, material);
         //scene.add(curlingMesh);
@@ -107,11 +116,11 @@ export class CurlingStone extends THREE.Group {
         let handleGeometry: THREE.Geometry = new THREE.Geometry();
 
         cover.updateMatrix();
-        handleGeometry.merge(<THREE.Geometry> cover.geometry, cover.matrix);
+        handleGeometry.merge(<THREE.Geometry>cover.geometry, cover.matrix);
         tube.updateMatrix();
-        handleGeometry.merge(<THREE.Geometry> tube.geometry, tube.matrix);
+        handleGeometry.merge(<THREE.Geometry>tube.geometry, tube.matrix);
         sphere.updateMatrix();
-        handleGeometry.merge(<THREE.Geometry> sphere.geometry, sphere.matrix);
+        handleGeometry.merge(<THREE.Geometry>sphere.geometry, sphere.matrix);
 
         let handleMesh: THREE.Mesh = new THREE.Mesh(handleGeometry, handleMaterial);
 
