@@ -25,10 +25,10 @@ module.exports = function(config) {
         require('karma-chrome-launcher'),
         require('karma-coverage')
     ],
-    
+
     client: {
       builtPaths: [appBase, testingBase], // add more spec base paths as needed
-      clearContext: false // leave Jasmine Spec Runner output visible in browser
+      clearContext: false, // leave Jasmine Spec Runner output visible in browser
     },
 
     customLaunchers: {
@@ -58,7 +58,7 @@ module.exports = function(config) {
       'node_modules/zone.js/dist/mocha-patch.js',
       'node_modules/zone.js/dist/async-test.js',
       'node_modules/zone.js/dist/fake-async-test.js',
-      
+
       'node_modules/three/build/three.js',
 
       // Everything that is in our local folder assets will be served by our server
@@ -68,7 +68,7 @@ module.exports = function(config) {
       {pattern: assetsBase + 'images/*.*',watched:false, included: false, served:true},
       {pattern: assetsBase + 'templates/*.html',watched:false, included: false, served:true},
 	  {pattern: assetsBase + 'stylesheets/*.css',watched:false, included: false, served:true},
-	  
+
 	  // RxJs
       { pattern: 'node_modules/rxjs/**/*.js', included: false, watched: false },
       { pattern: 'node_modules/rxjs/**/*.js.map', included: false, watched: false },
@@ -98,7 +98,7 @@ module.exports = function(config) {
       { pattern: testingSrcBase + '**/*.ts', included: false, watched: false },
       { pattern: testingBase + '**/*.js.map', included: false, watched: false}
     ],
-    
+
     // Change if appBase changes
     // Proxied base paths for loading assets
     proxies: {
@@ -106,7 +106,7 @@ module.exports = function(config) {
       "/app/": appAssets,
       // Any assets in Angular that gets a ressource from '/assets/' will
       // in fact be redirected to another ressource (/base/assets) that is the
-      // one that is used by karma when we included the files. (All files are 
+      // one that is used by karma when we included the files. (All files are
       // served by karma in 'base')
       '/assets/': '/base/assets/'
     },
@@ -116,20 +116,20 @@ module.exports = function(config) {
     preprocessors: {
         'app/**/!(*spec).js': ['coverage']
     },
-    
+
     reporters: ['mocha','coverage'],
 
     mochaReporter: {
       maxLogLines: -1
     },
-    
+
     coverageReporter: {
         includeAllSources: true,
         reporters:[
             {type: 'json', subdir: '.', file: 'coverage-final.json'}
         ]
     },
-    
+
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
