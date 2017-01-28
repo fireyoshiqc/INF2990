@@ -32,23 +32,28 @@ export function sudokuToString(a: number[][]) : string {
     return str;
 }
 
-export class Sudoku {
-    size: number = 9;
-    grid: number[][] = [ [1, 2, 3, 4, 5, 6, 7, 8, 9],
-                         [4, 5, 6, 7, 8, 9, 1, 2, 3],
-                         [7, 8, 9, 1, 2, 3, 4, 5, 6],
-                         [2, 3, 4, 5, 6, 7, 8, 9, 1],
-                         [5, 6, 7, 8, 9, 1, 2, 3, 4],
-                         [8, 9, 1, 2, 3, 4, 5, 6, 7],
-                         [3, 4, 5, 6, 7, 8, 9, 1, 2],
-                         [6, 7, 8, 9, 1, 2, 3, 4, 5],
-                         [9, 1, 2, 3, 4, 5, 6, 7, 8] ];
+export enum Difficulty {
+    Easy,
+    Hard
+}
 
-    constructor(aGrid ?: number[][]) {
-        if (aGrid) {
-            this.grid = aGrid;
-            this.size = aGrid.length;
-        }
+export class Sudoku {
+    size: number;
+    grid: number[][];
+    difficulty : Difficulty;
+
+    constructor(difficulty = Difficulty.Easy) {
+        this.difficulty = difficulty;
+        this.size = 9;
+        this.grid = [ [1, 2, 3, 4, 5, 6, 7, 8, 9],
+                      [4, 5, 6, 7, 8, 9, 1, 2, 3],
+                      [7, 8, 9, 1, 2, 3, 4, 5, 6],
+                      [2, 3, 4, 5, 6, 7, 8, 9, 1],
+                      [5, 6, 7, 8, 9, 1, 2, 3, 4],
+                      [8, 9, 1, 2, 3, 4, 5, 6, 7],
+                      [3, 4, 5, 6, 7, 8, 9, 1, 2],
+                      [6, 7, 8, 9, 1, 2, 3, 4, 5],
+                      [9, 1, 2, 3, 4, 5, 6, 7, 8] ];
     }
 
     equals(other : Sudoku) : boolean {
@@ -78,13 +83,13 @@ export class Sudoku {
         }
     }
 
-    exchangeLines(line1 : number, line2 : number) : void {
+    exchangeRows(row1 : number, row2 : number) : void {
         let temporary : number;
 
         for (let i = 0; i < this.size; i++) {
-            temporary = this.grid[line1][i];
-            this.grid[line1][i] = this.grid[line2][i];
-            this.grid[line2][i] = temporary;
+            temporary = this.grid[row1][i];
+            this.grid[row1][i] = this.grid[row2][i];
+            this.grid[row2][i] = temporary;
         }
     }
 
@@ -96,7 +101,7 @@ export class Sudoku {
 
     flipVertically() : void {
         for (let i = 0; i < this.size / 2; i++) {
-            this.exchangeLines(i, this.size - i - 1);
+            this.exchangeRows(i, this.size - i - 1);
         }
     }
 
@@ -185,12 +190,12 @@ export class Sudoku {
 
     randomize() : void {
         let exchangeOperationsTable = [ (x : number, y : number) => {this.exchangeColumns(x, y); },
-                                        (x : number, y : number) => {this.exchangeLines(x, y); } ];
+                                        (x : number, y : number) => {this.exchangeRows(x, y); } ];
         let flipOperationsTable = [ () => {this.flipAroundBackwardDiagonal(); },
                                     () => {this.flipAroundForwardDiagonal(); },
                                     () => {this.flipHorizontally(); },
                                     () => {this.flipVertically(); } ];
-        let randomOperationCount = 10000;
+        let randomOperationCount = 5000;
         let randomInt : number;
 
         let numberOfOperations = exchangeOperationsTable.length + flipOperationsTable.length;
