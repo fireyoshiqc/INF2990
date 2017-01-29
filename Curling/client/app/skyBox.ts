@@ -31,7 +31,7 @@ export class SkyBox extends THREE.Mesh {
 
     let skyBoxMaterials = [];
     for (let i = 0; i < 6; i++) {
-      skyBoxMaterials.push(this.createMaterial(imageName + directions[i] + imageSuffix));
+      skyBoxMaterials.push(this.createMaterial(this.imageName + this.directions[i] + this.imageSuffix));
     }
 
     //Add material for the sides of the cube

@@ -41,8 +41,8 @@ export class GameRenderer {
         this.scene.add(this.ambientLight);
         //------------------- END LIGHT------------------------------------------//
 
-        this.camera.position.z = 5;
-        this.camera.position.y += 2;
+        this.camera.position.z = 6;
+        this.camera.position.y = 2;
         this.camera.rotation.x -= 0.2;
         let stone: CurlingStone;
         stone = new CurlingStone();
@@ -52,8 +52,28 @@ export class GameRenderer {
         this.isStarted = true;
 
         let skybox: SkyBox;
-        skybox = new SkyBox("../assets/textures/sb_iceflow/iceflow_", ["lf", "rt", "up", "dn", "ft", "bk"], ".jpg");
+        skybox = new SkyBox();
         this.add(skybox);
+
+        //Reflective camera
+        // let reflectiveCamera = new THREE.CubeCamera(1, 10000, 512);
+        // this.add(reflectiveCamera);
+
+        //let skyBoxImages = []
+        //let relectiveTexture = skybox.skyBoxTexture;
+
+
+        let planeGeometry = new THREE.PlaneGeometry(4, 42, 32);
+        let planeMaterial = new THREE.MeshBasicMaterial( {color: 0xffff00,
+         side: THREE.DoubleSide/*, envMap:*/ });
+
+
+        let plane = new THREE.Mesh(planeGeometry, planeMaterial);
+        plane.rotation.x = Math.PI/2;
+        plane.position.y = -0.5;
+        plane.position.z = -20;
+
+        this.add(plane);
 
     }
 
