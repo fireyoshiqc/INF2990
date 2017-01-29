@@ -36,9 +36,8 @@ describe('CurlingStone', () => {
     });
 
     describe('init()', () => {
-        testStone.init();
         it('should add a Curling Stone base (mesh) and a cover (mesh) to the group object.', done => {
-
+            testStone.init();
             expect(testStone.children.length).to.equal(2);
 
             done();
