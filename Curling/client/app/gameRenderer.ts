@@ -84,7 +84,7 @@ export class GameRenderer {
         skybox = new SkyBox();
         this.add(skybox);
 
-        let rink : Rink = new Rink (skybox.skyBoxImages);
+        let rink: Rink = new Rink(skybox.skyBoxImages);
         rink.position.z = -20;
 
 
