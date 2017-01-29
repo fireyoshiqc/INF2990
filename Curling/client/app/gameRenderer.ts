@@ -38,18 +38,23 @@ export class GameRenderer {
 
 
         /*--------------------LIGHT------------------------------------------ */
-        this.directLight = new THREE.DirectionalLight(0xffffff, 1.0);
-        this.directLight.position.set(2, 50, 0);
-        this.scene.add(this.directLight);
+        // this.directLight = new THREE.DirectionalLight(0xffffff, 1.0);
+        // this.directLight.position.set(2, 50, 0);
+        // this.scene.add(this.directLight);
 
-        this.ambientLight = new THREE.HemisphereLight(0xffffff, 0x777777, 1.0);
+        this.ambientLight = new THREE.HemisphereLight(0xffffff, 0x772222, 1.0);
 
         this.scene.add(this.ambientLight);
+
+        let sunlight = new THREE.PointLight(0xffffff, 1, 0, 2);
+        sunlight.position.set(0, 5, 0);
+        this.scene.add(sunlight);
         //------------------- END LIGHT------------------------------------------//
 
-        this.camera.position.z = 6;
-        this.camera.position.y = 2;
-        this.camera.rotation.x -= 0.2;
+        this.camera.position.z = -20;
+        this.camera.position.y = 50;
+
+        this.camera.rotation.x -= Math.PI / 2;
         let stone: CurlingStone;
         stone = new CurlingStone();
         stone.init();
@@ -78,15 +83,28 @@ export class GameRenderer {
         let RINK_WIDTH = 4.4;
 
         //TODO: Change ice texture to make it tileable (power of 2 on each side).
-        let textureLoader = new THREE.TextureLoader().load("/assets/textures/ice.jpg");
-        textureLoader.mapping = THREE.EquirectangularReflectionMapping;
+        let textureLoader = new THREE.TextureLoader();
+        let whiteice = textureLoader.load("/assets/textures/white_ice.jpg");
+        let redice = textureLoader.load("/assets/textures/red_ice.jpg");
+        let blueice = textureLoader.load("/assets/textures/blue_ice.jpg");
+
+        whiteice.wrapS = whiteice.wrapT = THREE.RepeatWrapping;
+        redice.wrapS = redice.wrapT = THREE.RepeatWrapping;
+        blueice.wrapS = blueice.wrapT = THREE.RepeatWrapping;
+        whiteice.repeat.set(4, 40);
+        redice.repeat.set(2, 2);
+        blueice.repeat.set(4, 4);
+        //textureLoader.mapping = THREE.EquirectangularReflectionMapping;
 
         //TODO: Change ice material to make it reflective.
         let planeGeometry = new THREE.PlaneGeometry(RINK_WIDTH, RINK_LENGTH, 32);
-        let planeMaterial = new THREE.MeshBasicMaterial({
-            side: THREE.DoubleSide
+        let planeMaterial = new THREE.MeshStandardMaterial({
+            metalness: 0.2,
+            roughness: 0.2,
+            side: THREE.DoubleSide,
+            map: whiteice
         });
-        planeMaterial.envMap = textureLoader;
+        //planeMaterial.envMap = textureLoader;
 
         let plane = new THREE.Mesh(planeGeometry, planeMaterial);
         //plane.rotation.x = Math.PI/2;
@@ -96,10 +114,22 @@ export class GameRenderer {
 
         //TODO: Change ring materials to make them reflective.
         let blueRingGeometry = new THREE.RingGeometry(MIDDLE_RADIUS, OUTER_RADIUS, 40);
-        let blueRingMaterial = new THREE.MeshBasicMaterial({ color: 0x0000ff, side: THREE.DoubleSide });
+        let blueRingMaterial = new THREE.MeshStandardMaterial({
+            //color: 0x0000ff,
+            metalness: 0.2,
+            roughness: 0.2,
+            side: THREE.DoubleSide,
+            map: blueice
+        });
         let blueRing = new THREE.Mesh(blueRingGeometry, blueRingMaterial);
         let redRingGeometry = new THREE.RingGeometry(CENTER_RADIUS, INNER_RADIUS, 40);
-        let redRingMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, side: THREE.DoubleSide });
+        let redRingMaterial = new THREE.MeshStandardMaterial({
+            //color: 0xff0000,
+            metalness: 0.2,
+            roughness: 0.2,
+            side: THREE.DoubleSide,
+            map: redice
+        });
         let redRing = new THREE.Mesh(redRingGeometry, redRingMaterial);
 
 
