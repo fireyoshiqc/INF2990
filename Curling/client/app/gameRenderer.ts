@@ -37,9 +37,19 @@ export class GameRenderer {
         this.scene.add(this.ambientLight);
         //------------------- END LIGHT------------------------------------------//
 
+        // let cube: THREE.BoxGeometry;
+        // cube = new THREE.BoxGeometry(1, 1, 1);
+        // let material: THREE.MeshBasicMaterial;
+        // material = new THREE.MeshBasicMaterial({color: 0xff0000});
+        // let mesh: THREE.Mesh;
+        // mesh = new THREE.Mesh(cube, material);
+        // this.scene.add(mesh);
 
         this.camera.position.z = 5;
-        this.add(new CurlingStone());
+        let stone: CurlingStone;
+        stone = new CurlingStone();
+        stone.init();
+        this.add(stone);
         this.render();
 
     }
