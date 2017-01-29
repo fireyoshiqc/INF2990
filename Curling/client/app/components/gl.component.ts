@@ -15,3 +15,4 @@ export class GlComponent implements OnInit {
     ngOnInit(): void {}
     constructor(private gameRenderer: GameRenderer) {
     }
+}
