@@ -4,6 +4,7 @@ export class SkyBox extends THREE.Mesh {
   imageName : string;
   directions : Array<string>;
   imageSuffix : string;
+  skyBoxImages : Array<string>;
 
   //The list contains the textures.jpg for the skybox in the same order as the attribute
   constructor(imageName?: string, directions?: Array<string>, imageSuffix?: string) {
@@ -26,14 +27,16 @@ export class SkyBox extends THREE.Mesh {
       this.imageSuffix = imageSuffix;
     } else {
       this.imageSuffix = ".jpg";
-      console.log(this.imageSuffix);
     }
 
     let skyBoxMaterials = [];
+    let skyBoxImages = [];
     for (let i = 0; i < 6; i++) {
+      skyBoxImages.push(this.imageName + this.directions[i] + this.imageSuffix);
       skyBoxMaterials.push(this.createMaterial(this.imageName + this.directions[i] + this.imageSuffix));
     }
 
+    this.skyBoxImages = skyBoxImages;
     //Add material for the sides of the cube
     this.material = new THREE.MultiMaterial(skyBoxMaterials);
 
