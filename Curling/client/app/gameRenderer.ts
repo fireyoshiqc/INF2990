@@ -11,7 +11,7 @@ export class GameRenderer {
     renderer: THREE.WebGLRenderer;
     directLight: THREE.DirectionalLight;
     ambientLight: THREE.HemisphereLight;
-    isStarted: boolean = false;
+    isStarted = false;
 
     constructor() {
         console.log("GameRenderer created successfully");
@@ -115,7 +115,7 @@ export class GameRenderer {
          //this.add(rings2);
          //this.add(rings);
 
-        rings2.position.y = -(RINK_LENGTH/2 - 3.7);
+        rings2.position.y = -(RINK_LENGTH / 2 - 3.7);
         rings2.position.z = -0.1;
 
          let rink = new THREE.Group();
@@ -124,8 +124,8 @@ export class GameRenderer {
          rink.add(plane);
 
 
-         rink.rotation.x = Math.PI/2;
-         rink.position.z = -RINK_LENGTH/2;
+         rink.rotation.x = Math.PI / 2;
+         rink.position.z = -RINK_LENGTH / 2;
          rink.position.y = POS_RINK_Y;
 
          this.add(rink);

@@ -1,11 +1,11 @@
 
 export class CurlingStone extends THREE.Group {
 
-    private readonly RADIUS: number = 0.145; //Radius of stone.
-    private readonly HEIGHT: number = 0.290; //Height of stone (base).
-    private readonly SFACES: number = 25; //Amount of faces for stone rendering.
-    private readonly HANRAD: number = 0.025; //Radius of handle tube.
-    private readonly HFACES: number = 6; //Amount of faces for handle rendering.
+    private readonly RADIUS = 0.145; //Radius of stone.
+    private readonly HEIGHT = 0.290; //Height of stone (base).
+    private readonly SFACES = 25; //Amount of faces for stone rendering.
+    private readonly HANRAD = 0.025; //Radius of handle tube.
+    private readonly HFACES = 6; //Amount of faces for handle rendering.
 
     private texLoader: THREE.TextureLoader;
     stoneColor: string;
