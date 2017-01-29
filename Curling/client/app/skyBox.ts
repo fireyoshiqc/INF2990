@@ -12,7 +12,8 @@ export class SkyBox extends THREE.Mesh {
     if (imageName) {
       this.imageName = "../assets/textures/" + imageName;
     } else {
-      this.imageName = "../assets/textures/iceflow_";
+      this.imageName = "../assets/textures/sb_iceflow/iceflow_";
+      console.log(this.imageName);
     }
 
     if (directions) {
@@ -25,6 +26,7 @@ export class SkyBox extends THREE.Mesh {
       this.imageSuffix = imageSuffix;
     } else {
       this.imageSuffix = ".jpg";
+      console.log(this.imageSuffix);
     }
 
     let skyBoxMaterials = [];
@@ -38,6 +40,7 @@ export class SkyBox extends THREE.Mesh {
     //Set x scale to be -1 to turn the cube inside out
     this.scale.set(-1, 1, 1);
 
+    console.log("skybox created");
   }
 
   createMaterial(image: string) {

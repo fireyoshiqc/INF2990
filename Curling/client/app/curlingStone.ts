@@ -38,8 +38,8 @@ export class CurlingStone extends THREE.Group {
 
     init() {
         this.texLoader = new THREE.TextureLoader();
-        this.texLoader.setPath('../assets/textures/');
-        this.texLoader.setCrossOrigin("anonymous");
+        //this.texLoader.setPath('/assets/textures/');
+        //this.texLoader.setCrossOrigin("anonymous");
         //Stone base
         let torusGeometry: THREE.TorusGeometry;
         torusGeometry = new THREE.TorusGeometry(this.RADIUS, this.RADIUS, this.SFACES, this.SFACES);
@@ -61,16 +61,18 @@ export class CurlingStone extends THREE.Group {
 
         // Material for stone base
         let material: THREE.MeshStandardMaterial;
-        this.texLoader.load('granite.jpg', function(texture) {
-            material = new THREE.MeshStandardMaterial({
-                metalness: 0.0,
-                roughness: 0.2,
+        let texture: THREE.Texture;
+        texture = this.texLoader.load('/assets/textures/granite.jpg');
 
-                map: texture
-                // color : 0xffffff
-
-            });
+        if (texture === undefined) {
+            console.log("CurlingStone texture could not be loaded! Using random color instead...");
+        }
+        material = new THREE.MeshStandardMaterial({
+            metalness: 0.0,
+            roughness: 0.2,
+            map: texture
         });
+
 
 
 
@@ -108,7 +110,7 @@ export class CurlingStone extends THREE.Group {
         //End of tube
         let sphereGeometry: THREE.SphereGeometry = new THREE.SphereGeometry(this.HANRAD, this.HFACES, this.HFACES);
         let sphere: THREE.Mesh = new THREE.Mesh(sphereGeometry);
-        sphere.position.y = this.RADIUS + 0.03;
+        sphere.position.y = this.RADIUS + 0.075;
         sphere.position.x = -this.RADIUS + 0.26;
 
 
@@ -129,47 +131,3 @@ export class CurlingStone extends THREE.Group {
         this.add(handleMesh);
     }
 }
-
-//
-// let scene: THREE.Scene = new THREE.Scene();
-//
-// /*Field of view, aspect ratio, near, far*/
-// let camera: THREE.PerspectiveCamera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 500);
-// //var camera = new THREE.OrthographicCamera( 45, window.innerWidth / window.innerHeight, 1, 500);
-//
-// /*We have to set the size at which we want to render our app. We use the width and the height of the browser.*/
-// let renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer({ antialias: true });
-// renderer.setSize(window.innerWidth, window.innerHeight);
-// document.body.appendChild(renderer.domElement);
-//
-// /*--------------------LIGHT------------------------------------------ */
-// let directLight: THREE.DirectionalLight = new THREE.DirectionalLight(0xffffff, 1.0);
-// directLight.position.set(2, 50, 0);
-// scene.add(directLight);
-//
-// let ambientLight: THREE.HemisphereLight = new THREE.HemisphereLight(0xffffff, 0x777777, 1.0);
-//
-// scene.add(ambientLight);
-// //------------------- END LIGHT------------------------------------------//
-//
-//
-//
-// scene.add(group);
-//
-//
-// camera.position.z = 5;
-//
-// /*Render loop*/
-// function render() {
-//     requestAnimationFrame(render);
-//
-//     /*Animatin the cube*/
-//     group.rotation.x += 0.001;
-//     group.rotation.y += 0.01;
-//
-//     renderer.render(scene, camera);
-// }
-//
-// render();
-//
-// }
