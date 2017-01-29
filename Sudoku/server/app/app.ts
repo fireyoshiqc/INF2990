@@ -14,9 +14,12 @@ import * as cors from 'cors';
 
 import * as indexRoute from './routes';
 
+import { SudokuManager } from './services/sudokuManager';
+
 export class Application {
 
   public app: express.Application;
+  public sudokuManager: SudokuManager;
 
   /**
    * Bootstrap the application.
@@ -40,6 +43,9 @@ export class Application {
 
     // Application instantiation
     this.app = express();
+
+    // Instantiate sudoku manager
+    this.sudokuManager = new SudokuManager();
 
     //configure this.application
     this.config();
@@ -71,33 +77,40 @@ export class Application {
    * @method routes
    */
   public routes() {
+
+    let sampleSudoku = this.getEasySudoku();
+
     //let router: express.Router;
     //router = express.Router();
 
     //create routes
     //const index: indexRoute.Index = new indexRoute.Index();
-
+    
     //home page
     //router.get('/', index.index.bind(index.index));
     this.app.get('/', function(req, res){
         res.send('Hello Erica');
     });
 
-    this.app.get('/sudoku/hard', function(req, res){
+    this.app.get('/getSudoku/easy', function(req, res){
         // Get from mongo and remove it
         // sudokuManager.getHardSudoku(); Call generation of new hard sudoku
-        res.send('Hard sudoku');
+        res.send(sampleSudoku);
     });
 
-    this.app.get('/sudoku/easy', function(req, res){
+    this.app.get('/getSudoku/hard', function(req, res){
         // Get from mongo and remove it
         // sudokuManager.getEasySudoku();Call generation of new easy sudoku
-        res.send('Easy sudoku');
+        res.send('Hard sudoku');
     });
 
     // How validate sudoku while obeying rest api? Need to send something to the server and get a result back?
     // /sudoku/check (get the filled sudoku)
-    // 
+    this.app.get('/validateSudoku', function(req, res){
+        // Get from mongo and remove it
+        // sudokuManager.getEasySudoku();Call generation of new easy sudoku
+        res.send('Sudoku validated');
+    });
 
     //use router middleware
     //this.app.use(router);
@@ -129,5 +142,9 @@ export class Application {
             error: {}
         });
     });
+  }
+
+  public getEasySudoku() {
+      return this.sudokuManager.getEasySudoku();
   }
 }
