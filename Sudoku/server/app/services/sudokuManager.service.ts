@@ -1,11 +1,11 @@
 /**
- * sudokuManager.ts - Manages sudoku generation, randomization and request
+ * sudokuManager.ts - Manages sudoku requests for generation and verification
  *
  * @authors Vincent Chassé, Pierre To
  * @date 2017/01/27
  */
 
-import { Sudoku, Difficulty, getRandomInt } from './sudokuGenerator';
+import { Sudoku, Difficulty, getRandomInt } from './sudokuGenerator.service';
 
 export class SudokuManager {
     easySudokus : Array<Sudoku> = new Array<Sudoku>(3);

@@ -14,7 +14,7 @@ import * as cors from 'cors';
 
 //import * as indexRoute from './routes';
 
-import { SudokuManager } from './services/sudokuManager';
+import { SudokuManager } from './services/sudokuManager.service';
 
 export class Application {
 

@@ -4,7 +4,7 @@ import { SudokuService } from '../services/sudoku.service';
 @Component({
     selector: 'sudoku-grid',
     template: `
-    <p>Le sudoku est valide : {{valide}} </p>
+    <p>Le sudoku est valide : {{isValid}} </p>
     <table>
         <tr *ngFor="let row of grid; let i = index">      
             <td *ngFor="let element of row; let j = index">
@@ -29,8 +29,8 @@ export class SudokuGridComponent {
              [3, 4, 0, 6, 0, 8, 9, 1, 2],
              [0, 7, 8, 9, 1, 2, 3, 4, 5],
              [9, 1, 2, 3, 0, 5, 6, 0, 8] ];
-    valide = "";
-    
+    isValid = "";
+
     constructor(private sudokuService: SudokuService) {
 
     }
@@ -48,8 +48,8 @@ export class SudokuGridComponent {
     }
 
     validateSudoku() {
-        this.sudokuService.validateSudoku(this.grid).subscribe(reponse => {
-            this.valide = reponse.text();
+        this.sudokuService.validateSudoku(this.grid).subscribe(response => {
+            this.isValid = response.text();
         });
     }
 
@@ -57,6 +57,5 @@ export class SudokuGridComponent {
         this.grid.forEach(row => {
                 row.fill(0);
         });
-        console.log("reset sudoku");
     }
 }

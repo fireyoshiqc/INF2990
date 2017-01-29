@@ -5,6 +5,8 @@
  * @date 2017/01/20
  */
 
+//-------------------- HELPER FUNCTIONS --------------------------//
+
 export function generateRandomValidIndexes() : number[] {
     let randomIndexes : number[] = [ 0, 0 ];
 
@@ -31,6 +33,8 @@ export function sudokuToString(a: number[][]) : string {
     str = str.substr(0, str.length - 1);
     return str;
 }
+
+//-------------------- END HELPER FUNCTIONS -----------------------//
 
 export enum Difficulty {
     Easy,
@@ -189,12 +193,12 @@ export class Sudoku {
     }
 
     randomize() : void {
-        let exchangeOperationsTable = [ (x : number, y : number) => {this.exchangeColumns(x, y); },
-                                        (x : number, y : number) => {this.exchangeRows(x, y); } ];
-        let flipOperationsTable = [ () => {this.flipAroundBackwardDiagonal(); },
-                                    () => {this.flipAroundForwardDiagonal(); },
-                                    () => {this.flipHorizontally(); },
-                                    () => {this.flipVertically(); } ];
+        let exchangeOperationsTable = [ (x : number, y : number) => { this.exchangeColumns(x, y); },
+                                        (x : number, y : number) => { this.exchangeRows(x, y); } ];
+        let flipOperationsTable = [ () => { this.flipAroundBackwardDiagonal(); },
+                                    () => { this.flipAroundForwardDiagonal(); },
+                                    () => { this.flipHorizontally(); },
+                                    () => { this.flipVertically(); } ];
         let randomOperationCount = 5000;
         let randomInt : number;
 

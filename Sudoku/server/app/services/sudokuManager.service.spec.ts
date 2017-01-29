@@ -5,8 +5,8 @@
  * @date 2017/01/27
  */
 
-import { SudokuManager } from './sudokuManager';
-import { Difficulty } from './sudokuGenerator';
+import { SudokuManager } from './sudokuManager.service';
+import { Difficulty } from './sudokuGenerator.service';
 
 import { expect } from 'chai';
 
