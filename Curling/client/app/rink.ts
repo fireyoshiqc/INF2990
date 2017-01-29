@@ -13,20 +13,22 @@ private readonly INNER_RADIUS: number = 0.6;
 private readonly MIDDLE_RADIUS: number = 1.2;
 private readonly OUTER_RADIUS: number = 1.8;
 
-private REFLECT_TEXTURE: THREE.Texture;
+private REFLECT_TEXTURE: THREE.CubeTexture;
 
   constructor(loaderImages: Array<string>) {
     super();
     console.log("constructor called");
 
     //-------------REFLECTIVE TEXTURE-------------------------------------//
-    let loader: THREE.CubeTextureLoader;
-    loader = new THREE.CubeTextureLoader();
-
-    this.REFLECT_TEXTURE = loader.load(loaderImages);
-
-    this.REFLECT_TEXTURE.format = THREE.RGBFormat;
-    this.REFLECT_TEXTURE.mapping = THREE.CubeReflectionMapping;
+    // let loader: THREE.CubeTextureLoader;
+    // loader = new THREE.CubeTextureLoader();
+    //
+    // this.REFLECT_TEXTURE = new THREE.CubeTexture();
+    //
+    // this.REFLECT_TEXTURE = loader.load(loaderImages);
+    //
+    // this.REFLECT_TEXTURE.format = THREE.RGBFormat;
+    // this.REFLECT_TEXTURE.mapping = THREE.CubeReflectionMapping;
     //-----------END REFLECTIVE TEXTURE-----------------------------------//
 
     //--------------RINGS-------------------------------------------------//
@@ -47,14 +49,14 @@ private REFLECT_TEXTURE: THREE.Texture;
     let blueRingMaterial: THREE.Material = new THREE.MeshPhongMaterial({
       side: THREE.DoubleSide,
       reflectivity: 0.5,
-      envMap: this.REFLECT_TEXTURE,
+      //envMap: this.REFLECT_TEXTURE,
       map: blueice});
     let blueRing: THREE.Mesh = new THREE.Mesh(blueRingGeometry, blueRingMaterial);
     let redRingGeometry: THREE.Geometry = new THREE.RingGeometry( this.CENTER_RADIUS, this.INNER_RADIUS, 40);
     let redRingMaterial: THREE.Material = new THREE.MeshPhongMaterial({
       side: THREE.DoubleSide,
       reflectivity: 0.5,
-      envMap: this.REFLECT_TEXTURE,
+      //envMap: this.REFLECT_TEXTURE,
       map: redice});
     let redRing: THREE.Mesh = new THREE.Mesh(redRingGeometry, redRingMaterial);
 
@@ -76,7 +78,7 @@ private REFLECT_TEXTURE: THREE.Texture;
       //metalness: 0.5,
       //roughness: 0.2,
       reflectivity: 0.7,
-      envMap: this.REFLECT_TEXTURE,
+      //envMap: this.REFLECT_TEXTURE,
       map: whiteice
     } );
 
