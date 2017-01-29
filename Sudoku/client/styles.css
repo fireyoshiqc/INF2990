@@ -35,3 +35,11 @@ tr:first-child {
 tr:nth-child(3n) td {
   border-bottom: solid ;
 }
+
+/*****************/
+/* control panel */
+/*****************/
+
+#controlPanel {
+  text-align: center;
+}
