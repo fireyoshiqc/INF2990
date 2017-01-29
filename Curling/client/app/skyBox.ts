@@ -14,7 +14,6 @@ export class SkyBox extends THREE.Mesh {
       this.imageName = "/assets/textures/" + imageName;
     } else {
       this.imageName = "/assets/textures/sb_iceflow/iceflow_";
-      console.log(this.imageName);
     }
 
     if (directions) {
