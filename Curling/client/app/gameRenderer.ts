@@ -75,7 +75,7 @@ export class GameRenderer {
 
 
         let plane = new THREE.Mesh(planeGeometry, planeMaterial);
-        plane.rotation.x = Math.PI/2;
+        plane.rotation.x = Math.PI / 2;
         plane.position.y = -0.5;
         plane.position.z = -20;
 
