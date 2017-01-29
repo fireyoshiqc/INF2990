@@ -17,32 +17,24 @@ describe('GameRenderer', () => {
             done();
         });
     });
-
-    //testRenderer.init(new HTMLElement());
-
-
+//testRenderer.init();
     // describe('init()', () => {
-    //     it('should start the game renderer in the provided HTMLElement.', done => {
-    //         let container: HTMLElement;
-    //         testRenderer.init(container);
-    //
-    //
+    //     testRenderer.init();
+    //     it('should start the game renderer without a provided HTMLElement (that cannot be tested).', done => {
+    //         expect(testRenderer.isStarted).to.be.true;
     //         done();
-    //
-    //
-    //
     //     });
     //
     // });
     // describe('add()', () => {
-    //   it('should add a Group object (like a Curling Stone) to its contained Scene.', done => {
-    //     let testStone: CurlingStone = new CurlingStone();
-    //     testRenderer.add(testStone);
-    //     expect(testRenderer.scene.children).to.be.ok;
-    //     done();
+    //     it('should add a Group object (like a Curling Stone) to its contained Scene.', done => {
+    //         let testStone: CurlingStone = new CurlingStone();
+    //         testRenderer.add(testStone);
+    //         expect(testRenderer.scene.children).to.be.ok;
+    //         done();
     //
     //
-    //   });
+    //     });
     // });
 
 

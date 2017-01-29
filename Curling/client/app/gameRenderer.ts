@@ -14,9 +14,9 @@ export class GameRenderer {
     isStarted: boolean = false;
 
     constructor() {
-      console.log("GameRenderer created successfully");
+        console.log("GameRenderer created successfully");
     }
-    public init(container: HTMLElement) {
+    public init(container?: HTMLElement) {
         this.scene = new THREE.Scene();
 
         /*Field of view, aspect ratio, near, far*/
@@ -27,9 +27,15 @@ export class GameRenderer {
         this.renderer = new THREE.WebGLRenderer({ antialias: true });
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         //document.body.appendChild(this.renderer.domElement);
-        if (container.getElementsByTagName('canvas').length === 0) {
-            container.appendChild(this.renderer.domElement);
+        if (container !== undefined) {
+            if (container.getElementsByTagName('canvas').length === 0) {
+                container.appendChild(this.renderer.domElement);
+            }
         }
+        else {
+            document.body.appendChild(this.renderer.domElement);
+        }
+
 
         /*--------------------LIGHT------------------------------------------ */
         this.directLight = new THREE.DirectionalLight(0xffffff, 1.0);

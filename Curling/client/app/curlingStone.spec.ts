@@ -12,6 +12,7 @@ describe('CurlingStone', () => {
     describe('Default constructor ', () => {
         it('should construct an empty (non-rendered) CurlingStone object.', done => {
             testStone = new CurlingStone();
+            expect(testStone).to.not.be.undefined;
             expect(testStone).to.be.an.instanceof(CurlingStone);
             expect(testStone).to.be.an.instanceof(THREE.Group);
             done();
@@ -35,9 +36,11 @@ describe('CurlingStone', () => {
     });
 
     describe('init()', () => {
-        it('should add a Curling Stone base (mesh) and a cover (mesh) to the group object', done => {
-            testStone.init();
+        testStone.init();
+        it('should add a Curling Stone base (mesh) and a cover (mesh) to the group object.', done => {
+
             expect(testStone.children.length).to.equal(2);
+
             done();
         });
 
