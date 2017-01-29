@@ -4,7 +4,7 @@ export class Rink extends THREE.Group {
 //Rink
 readonly POS_RINK_Y: number = -0.5;
 readonly RINK_LENGTH: number = 42;
-private readonly RINK_WIDTH: number = 4.4;
+readonly RINK_WIDTH: number = 4.4;
 private readonly RINK_HEIGHT: number = 0.1;
 
 //Rings
@@ -53,7 +53,7 @@ private REFLECT_TEXTURE: THREE.Texture;
     let redRingGeometry: THREE.Geometry = new THREE.RingGeometry( this.CENTER_RADIUS, this.INNER_RADIUS, 40);
     let redRingMaterial: THREE.Material = new THREE.MeshPhongMaterial({
       side: THREE.DoubleSide,
-      reflectivity: 0.5;
+      reflectivity: 0.5,
       envMap: this.REFLECT_TEXTURE,
       map: redice});
     let redRing: THREE.Mesh = new THREE.Mesh(redRingGeometry, redRingMaterial);

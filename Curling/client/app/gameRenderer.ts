@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { CurlingStone } from './curlingStone';
 import { SkyBox } from './skyBox';
 import { Rink } from './rink';
+import { SpotlightArray } from './lightManager';
 
 @Injectable()
 export class GameRenderer {
@@ -49,28 +50,29 @@ export class GameRenderer {
         this.scene.add(this.ambientLight);
 
 
-        for (let i = 0; i < 6; i++) {
-            for (let j = 0; j < 2; j++) {
-                let sunlight = new THREE.SpotLight(0xffffff, 0.6);
-                sunlight.position.set(-2.2 + 4.4 * j, 5, -i * 8);
-                sunlight.penumbra = 0.4;
-                this.scene.add(sunlight);
-                let lightTarget = new THREE.Object3D();
-                lightTarget.position.set(-2.2 + 4.4 * j, 0, -i * 8);
-                this.scene.add(lightTarget);
-                sunlight.target = lightTarget;
 
-            }
-        }
+        // for (let i = 0; i < 6; i++) {
+        //     for (let j = 0; j < 2; j++) {
+        //         let sunlight = new THREE.SpotLight(0xffffff, 0.6);
+        //         sunlight.position.set(-2.2 + 4.4 * j, 5, -i * 8);
+        //         sunlight.penumbra = 0.4;
+        //         this.scene.add(sunlight);
+        //         let lightTarget = new THREE.Object3D();
+        //         lightTarget.position.set(-2.2 + 4.4 * j, 0, -i * 8);
+        //         this.scene.add(lightTarget);
+        //         sunlight.target = lightTarget;
+        //
+        //     }
+        // }
 
 
         //------------------- END LIGHT------------------------------------------//
 
-        this.camera.position.z = 6;
-        this.camera.position.y = 2;
+        this.camera.position.z = -20;
+        this.camera.position.y = 20;
 
-        this.camera.rotation.x -= Math.PI / 8;
-        //this.camera.rotation.z += Math.PI / 2;
+        this.camera.rotation.x -= Math.PI / 2;
+        this.camera.rotation.z += Math.PI / 2;
 
         this.stone = new CurlingStone();
         this.stone.init();
@@ -92,15 +94,19 @@ export class GameRenderer {
 
         this.add(rink);
 
+        let spotlights = new SpotlightArray(rink.RINK_WIDTH, rink.RINK_LENGTH, 2, 6);
+        spotlights.position.x = -2.2;
+        this.add(spotlights);
+
     }
 
     render() {
         window.requestAnimationFrame(() => this.render());
 
-        this.camera.position.z -= 0.04;
-        this.stone.position.z -= 0.04;
-        this.stone.position.x -= 0.0005;
-        this.stone.rotation.y += 0.01;
+        // this.camera.position.z -= 0.04;
+        // this.stone.position.z -= 0.04;
+        // this.stone.position.x -= 0.0005;
+        // this.stone.rotation.y += 0.01;
 
         this.renderer.render(this.scene, this.camera);
     }
