@@ -12,6 +12,7 @@ export class GameRenderer {
     directLight: THREE.DirectionalLight;
     ambientLight: THREE.HemisphereLight;
     isStarted = false;
+    stone: CurlingStone;
 
     constructor() {
         console.log("GameRenderer created successfully");
@@ -42,23 +43,37 @@ export class GameRenderer {
         // this.directLight.position.set(2, 50, 0);
         // this.scene.add(this.directLight);
 
-        this.ambientLight = new THREE.HemisphereLight(0xffffff, 0x772222, 1.0);
+        this.ambientLight = new THREE.HemisphereLight(0xffffff, 0x222277, 1.0);
 
         this.scene.add(this.ambientLight);
 
-        let sunlight = new THREE.PointLight(0xffffff, 1, 0, 2);
-        sunlight.position.set(0, 5, 0);
-        this.scene.add(sunlight);
+
+        for (let i = 0; i < 6; i++) {
+            for (let j = 0; j < 2; j++) {
+                let sunlight = new THREE.SpotLight(0xffffff, 0.6);
+                sunlight.position.set(-2.2 + 4.4 * j, 5, -i * 8);
+                sunlight.penumbra = 0.4;
+                this.scene.add(sunlight);
+                let lightTarget = new THREE.Object3D();
+                lightTarget.position.set(-2.2 + 4.4 * j, 0, -i * 8);
+                this.scene.add(lightTarget);
+                sunlight.target = lightTarget;
+
+            }
+        }
+
+
         //------------------- END LIGHT------------------------------------------//
 
-        this.camera.position.z = -20;
-        this.camera.position.y = 50;
+        this.camera.position.z = 6;
+        this.camera.position.y = 2;
 
-        this.camera.rotation.x -= Math.PI / 2;
-        let stone: CurlingStone;
-        stone = new CurlingStone();
-        stone.init();
-        this.add(stone);
+        this.camera.rotation.x -= Math.PI / 8;
+        //this.camera.rotation.z += Math.PI / 2;
+
+        this.stone = new CurlingStone();
+        this.stone.init();
+        this.add(this.stone);
         this.render();
         this.isStarted = true;
 
@@ -74,7 +89,7 @@ export class GameRenderer {
         // reflectiveTexture.format = THREE.RGBFormat;
         //reflectiveTexture.mapping = THREE.CubeReflectionMapping;
 
-        let POS_RINK_Y = -0.5;
+        let POS_RINK_Y = -0.145;
         let CENTER_RADIUS = 0.15;
         let INNER_RADIUS = 0.6;
         let MIDDLE_RADIUS = 1.2;
@@ -99,8 +114,8 @@ export class GameRenderer {
         //TODO: Change ice material to make it reflective.
         let planeGeometry = new THREE.PlaneGeometry(RINK_WIDTH, RINK_LENGTH, 32);
         let planeMaterial = new THREE.MeshStandardMaterial({
-            metalness: 0.2,
-            roughness: 0.2,
+            metalness: 0.5,
+            roughness: 0.0,
             side: THREE.DoubleSide,
             map: whiteice
         });
@@ -116,8 +131,8 @@ export class GameRenderer {
         let blueRingGeometry = new THREE.RingGeometry(MIDDLE_RADIUS, OUTER_RADIUS, 40);
         let blueRingMaterial = new THREE.MeshStandardMaterial({
             //color: 0x0000ff,
-            metalness: 0.2,
-            roughness: 0.2,
+            metalness: 0.5,
+            roughness: 0.0,
             side: THREE.DoubleSide,
             map: blueice
         });
@@ -125,8 +140,8 @@ export class GameRenderer {
         let redRingGeometry = new THREE.RingGeometry(CENTER_RADIUS, INNER_RADIUS, 40);
         let redRingMaterial = new THREE.MeshStandardMaterial({
             //color: 0xff0000,
-            metalness: 0.2,
-            roughness: 0.2,
+            metalness: 0.5,
+            roughness: 0.0,
             side: THREE.DoubleSide,
             map: redice
         });
@@ -149,7 +164,7 @@ export class GameRenderer {
         //this.add(rings);
 
         rings2.position.y = -(RINK_LENGTH / 2 - 3.7);
-        rings2.position.z = -0.1;
+        rings2.position.z = -0.001;
 
         let rink = new THREE.Group();
         rink.add(rings);
@@ -167,6 +182,11 @@ export class GameRenderer {
 
     render() {
         window.requestAnimationFrame(() => this.render());
+
+        this.camera.position.z -= 0.04;
+        this.stone.position.z -= 0.04;
+        this.stone.position.x -= 0.0005;
+        this.stone.rotation.y += 0.01;
 
         this.renderer.render(this.scene, this.camera);
     }
