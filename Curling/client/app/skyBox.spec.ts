@@ -17,15 +17,14 @@ describe('SkyBox', () => {
       done();
     });
 
-    it ('should constrcut a SkyBox object with imageName passed as parameter.', done => {
+    it ('should construct a SkyBox object with imageName passed as parameter.', done => {
       let testSkyBox: SkyBox;
       testSkyBox = new SkyBox("icyhell/icyhell_");
-      console.log(testSkyBox);
       expect(testSkyBox.imageName).to.equal("../assets/textures/icyhell/icyhell_");
       done();
     });
 
-    it ('should constrcut a SkyBox object with imageName and directions passed as parameters.', done => {
+    it ('should construct a SkyBox object with imageName and directions passed as parameters.', done => {
       let testSkyBox: SkyBox;
       testSkyBox = new SkyBox("icyhell/icyhell_", ["lf", "rt", "up", "dn", "ft", "bk"]);
       expect(testSkyBox.imageName = "../assets/textures/icyhell/icyhell_");
@@ -33,7 +32,7 @@ describe('SkyBox', () => {
       done();
     });
 
-    it ('should constrcut a SkyBox object with imageName, directions and imageSuffix passed as parameters.', done => {
+    it ('should construct a SkyBox object with imageName, directions and imageSuffix passed as parameters.', done => {
       let testSkyBox: SkyBox;
       testSkyBox = new SkyBox("dawnmountain-", ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"], ".png");
       expect(testSkyBox.imageName = "../assets/textures/dawnmountain-");

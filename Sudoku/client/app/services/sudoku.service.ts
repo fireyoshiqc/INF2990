@@ -17,8 +17,8 @@ export class SudokuService {
             .map(res => res);
     }
 
-   validateSudoku() {
-        return this.http.get('http://localhost:3002/validateSudoku')
+   validateSudoku(grid : number[][]) {
+        return this.http.post('http://localhost:3002/validateSudoku', grid)
             .map(res => res);
     }
 }

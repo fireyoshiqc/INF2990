@@ -12,7 +12,7 @@ import * as cookieParser from 'cookie-parser';
 import * as bodyParser from 'body-parser';
 import * as cors from 'cors';
 
-import * as indexRoute from './routes';
+//import * as indexRoute from './routes';
 
 import { SudokuManager } from './services/sudokuManager';
 
@@ -78,14 +78,14 @@ export class Application {
    */
   public routes() {
 
-    let sampleSudoku = this.getEasySudoku();
+    let sudokuManager = this.getMananager();
 
     //let router: express.Router;
     //router = express.Router();
 
     //create routes
     //const index: indexRoute.Index = new indexRoute.Index();
-    
+
     //home page
     //router.get('/', index.index.bind(index.index));
     this.app.get('/', function(req, res){
@@ -94,22 +94,21 @@ export class Application {
 
     this.app.get('/getSudoku/easy', function(req, res){
         // Get from mongo and remove it
-        // sudokuManager.getHardSudoku(); Call generation of new hard sudoku
-        res.send(sampleSudoku);
+        let easySudoku = sudokuManager.getEasySudoku();
+        res.send(easySudoku);
     });
 
     this.app.get('/getSudoku/hard', function(req, res){
         // Get from mongo and remove it
-        // sudokuManager.getEasySudoku();Call generation of new easy sudoku
-        res.send('Hard sudoku');
+        let hardSudoku = sudokuManager.getHardSudoku();
+        res.send(hardSudoku);
     });
 
     // How validate sudoku while obeying rest api? Need to send something to the server and get a result back?
     // /sudoku/check (get the filled sudoku)
-    this.app.get('/validateSudoku', function(req, res){
-        // Get from mongo and remove it
-        // sudokuManager.getEasySudoku();Call generation of new easy sudoku
-        res.send('Sudoku validated');
+    this.app.post('/validateSudoku', function(req, res){
+        let result = sudokuManager.verifySudoku(req.body);
+        res.send(result);
     });
 
     //use router middleware
@@ -144,7 +143,7 @@ export class Application {
     });
   }
 
-  public getEasySudoku() {
-      return this.sudokuManager.getEasySudoku();
+  getMananager() : SudokuManager {
+      return this.sudokuManager;
   }
 }
