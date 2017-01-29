@@ -38,8 +38,6 @@ export class CurlingStone extends THREE.Group {
 
     init() {
         this.texLoader = new THREE.TextureLoader();
-        //this.texLoader.setPath('/assets/textures/');
-        //this.texLoader.setCrossOrigin("anonymous");
         //Stone base
         let torusGeometry: THREE.TorusGeometry;
         torusGeometry = new THREE.TorusGeometry(this.RADIUS, this.RADIUS, this.SFACES, this.SFACES);
@@ -73,11 +71,7 @@ export class CurlingStone extends THREE.Group {
             map: texture
         });
 
-
-
-
         let curlingMesh: THREE.Mesh = new THREE.Mesh(curlingGeometry, material);
-        //scene.add(curlingMesh);
         //-------------------- END CURLING BASE------------------------------------------ //
 
         /*-------------------- CURLING HANDLE------------------------------------------ */

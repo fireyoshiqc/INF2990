@@ -11,9 +11,9 @@ export class SkyBox extends THREE.Mesh {
     //Create cube
     super(new THREE.BoxGeometry(10000, 10000, 10000, 1, 1, 1));
     if (imageName) {
-      this.imageName = "../assets/textures/" + imageName;
+      this.imageName = "/assets/textures/" + imageName;
     } else {
-      this.imageName = "../assets/textures/sb_iceflow/iceflow_";
+      this.imageName = "/assets/textures/sb_iceflow/iceflow_";
       console.log(this.imageName);
     }
 
