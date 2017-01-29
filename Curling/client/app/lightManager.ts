@@ -1,16 +1,23 @@
-
+import { Rink } from './rink';
 export class LightManager {
 
-    lights: Array<THREE.Light>;
+    lights: Array<THREE.Group>;
     constructor() {
         console.log("LightManager created successfully.");
 
+    }
+    spawnSpotlights(posX: number, posY: number, posZ: number, rink: Rink): SpotlightArray {
+        let spotlights = new SpotlightArray(rink.RINK_WIDTH, rink.RINK_LENGTH, 2, 6);
+        spotlights.position.x = posX;
+        spotlights.position.y = posY;
+        spotlights.position.z = posZ;
+        return spotlights;
     }
 
 
 
 }
-export class SpotlightArray extends THREE.Group {
+class SpotlightArray extends THREE.Group {
 
     constructor(width: number, length: number, wLights: number, lLights: number, target?: THREE.Object3D) {
         super();

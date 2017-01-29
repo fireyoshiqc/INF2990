@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { CurlingStone } from './curlingStone';
 import { SkyBox } from './skyBox';
 import { Rink } from './rink';
-import { SpotlightArray } from './lightManager';
+import { LightManager } from './lightManager';
 
 @Injectable()
 export class GameRenderer {
@@ -11,10 +11,10 @@ export class GameRenderer {
     scene: THREE.Scene;
     camera: THREE.PerspectiveCamera;
     renderer: THREE.WebGLRenderer;
-    directLight: THREE.DirectionalLight;
     ambientLight: THREE.HemisphereLight;
     isStarted = false;
     stone: CurlingStone;
+    lightManager: LightManager;
 
     constructor() {
         console.log("GameRenderer created successfully");
@@ -41,30 +41,13 @@ export class GameRenderer {
 
 
         /*--------------------LIGHT------------------------------------------ */
-        // this.directLight = new THREE.DirectionalLight(0xffffff, 1.0);
-        // this.directLight.position.set(2, 50, 0);
-        // this.scene.add(this.directLight);
+
+
+        this.lightManager = new LightManager();
 
         this.ambientLight = new THREE.HemisphereLight(0xffffff, 0x222277, 1.0);
 
         this.scene.add(this.ambientLight);
-
-
-
-        // for (let i = 0; i < 6; i++) {
-        //     for (let j = 0; j < 2; j++) {
-        //         let sunlight = new THREE.SpotLight(0xffffff, 0.6);
-        //         sunlight.position.set(-2.2 + 4.4 * j, 5, -i * 8);
-        //         sunlight.penumbra = 0.4;
-        //         this.scene.add(sunlight);
-        //         let lightTarget = new THREE.Object3D();
-        //         lightTarget.position.set(-2.2 + 4.4 * j, 0, -i * 8);
-        //         this.scene.add(lightTarget);
-        //         sunlight.target = lightTarget;
-        //
-        //     }
-        // }
-
 
         //------------------- END LIGHT------------------------------------------//
 
@@ -94,9 +77,8 @@ export class GameRenderer {
 
         this.add(rink);
 
-        let spotlights = new SpotlightArray(rink.RINK_WIDTH, rink.RINK_LENGTH, 2, 6);
-        spotlights.position.x = -2.2;
-        this.add(spotlights);
+
+        this.add(this.lightManager.spawnSpotlights(-2.2, 0, 0, rink));
 
     }
 
