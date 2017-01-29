@@ -1,3 +1,4 @@
+
 import { CurlingStone } from './curlingStone';
 
 import { assert, expect } from 'chai';

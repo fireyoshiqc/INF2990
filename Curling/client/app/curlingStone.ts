@@ -1,4 +1,5 @@
 
+
 export class CurlingStone extends THREE.Group {
 
     private readonly RADIUS: number = 0.145; //Radius of stone.
