@@ -26,7 +26,6 @@ export class SudokuManager {
 
         let sudoku = this.easySudokus[randomNumber];
 
-        this.easySudokus[randomNumber] = null;
         this.easySudokus[randomNumber] = new Sudoku(Difficulty.Easy);
         this.easySudokus[randomNumber].randomize();
 
@@ -38,7 +37,6 @@ export class SudokuManager {
 
         let sudoku = this.hardSudokus[randomNumber];
 
-        this.hardSudokus[randomNumber] = null;
         this.hardSudokus[randomNumber] = new Sudoku(Difficulty.Hard);
         this.hardSudokus[randomNumber].randomize();
 

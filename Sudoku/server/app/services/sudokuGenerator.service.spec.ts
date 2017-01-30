@@ -53,9 +53,7 @@ describe('Sudoku', () => {
             expect(sudoku1.equals(sudoku2)).to.equal(true);
             done();
         });
-    });
 
-    describe('!isEqual() ', () => {
         it('should return false if two grids are different', done => {
             let grid1 : number[][] = [ [1, 2, 3],
                                        [4, 5, 6],
