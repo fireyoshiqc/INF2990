@@ -8,6 +8,7 @@ module.exports = function(config) {
   var modelAssets  = '/base/assets/models/'; // Where our models will be located (karma proxy)
   var fontAssets  = '/base/assets/fonts/'; // Where our fonts will be located (karma proxy)
   var htmlAssets  = '/base/assets/html/'; // Where our fonts will be located (karma proxy)
+  var textureAssets  = '/base/assets/textures/'; // Where our fonts will be located (karma proxy)
 
   // Testing helpers (optional) are conventionally in a folder called `testing`
   var testingBase    = 'testing/'; // transpiled test JS and map files
@@ -67,6 +68,8 @@ module.exports = function(config) {
       {pattern: assetsBase + 'fonts/*.json',watched:false, included: false, served:true},
       {pattern: assetsBase + 'images/*.*',watched:false, included: false, served:true},
       {pattern: assetsBase + 'templates/*.html',watched:false, included: false, served:true},
+      {pattern: assetsBase + 'textures/*.*',watched:false, included: false, served:true},
+      {pattern: assetsBase + 'textures/**/*.*',watched:false, included: false, served:true},
 	  {pattern: assetsBase + 'stylesheets/*.css',watched:false, included: false, served:true},
 
 	  // RxJs
@@ -114,7 +117,7 @@ module.exports = function(config) {
     exclude: [],
     // Change if appBase changes
     preprocessors: {
-        'app/**/!(*spec).js': ['coverage']
+        'out/**/!(*spec).js': ['coverage']
     },
 
     reporters: ['mocha','coverage'],

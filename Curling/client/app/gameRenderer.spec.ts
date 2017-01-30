@@ -3,7 +3,7 @@
 import { GameRenderer } from './gameRenderer';
 import { CurlingStone } from './curlingStone';
 
-import { assert, expect } from 'chai';
+import { expect } from 'chai';
 
 
 describe('GameRenderer', () => {

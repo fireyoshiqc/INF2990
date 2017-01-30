@@ -1,27 +1,25 @@
-import { NgModule  }      from '@angular/core';
-import { BrowserModule  } from '@angular/platform-browser';
-import { FormsModule  }   from '@angular/forms';
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 
-import { AppRoutingModule } from './app-routing.module'
+import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from '../components/app.component';
 import { GlComponent } from '../components/gl.component';
 import { DashboardComponent } from '../components/dashboard.component';
 
 
-import { ModifierDirective } from '../directives/modifier.directive'
+import { ModifierDirective } from '../directives/modifier.directive';
 
-import { RenderService } from '../services/render.service';
 import { GameRenderer } from '../gameRenderer';
 
-import { MaterialModule } from '@angular/material'
+import { MaterialModule } from '@angular/material';
 
 @NgModule({
-  imports: [ BrowserModule, FormsModule, AppRoutingModule, MaterialModule.forRoot()],
-  declarations: [ AppComponent, GlComponent, DashboardComponent, ModifierDirective],
-  //providers: [ RenderService ],
-  providers: [ GameRenderer ],
-  bootstrap: [ AppComponent ]
+    imports: [BrowserModule, FormsModule, AppRoutingModule, MaterialModule.forRoot()],
+    declarations: [AppComponent, GlComponent, DashboardComponent, ModifierDirective],
+    providers: [GameRenderer],
+    bootstrap: [AppComponent]
 })
 
 export class AppModule { }

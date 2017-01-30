@@ -1,10 +1,8 @@
 import { Rink } from './rink';
 export class LightManager {
 
-    lights: Array<THREE.Group>;
     constructor() {
         console.log("LightManager created successfully.");
-
     }
     spawnSpotlights(posX: number, posY: number, posZ: number, rink: Rink): SpotlightArray {
         let spotlights = new SpotlightArray(rink.RINK_WIDTH, rink.RINK_LENGTH, 2, 6);
@@ -13,8 +11,10 @@ export class LightManager {
         spotlights.position.z = posZ;
         return spotlights;
     }
-
-
+    spawnAmbientLight(sunColor: number, shadowColor: number): THREE.HemisphereLight {
+        let ambilight = new THREE.HemisphereLight(sunColor, shadowColor, 1.0);
+        return ambilight;
+    }
 
 }
 class SpotlightArray extends THREE.Group {

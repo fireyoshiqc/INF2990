@@ -29,7 +29,7 @@ export class GameRenderer {
         /*We have to set the size at which we want to render our app. We use the width and the height of the browser.*/
         this.renderer = new THREE.WebGLRenderer({ antialias: true });
         this.renderer.setSize(window.innerWidth, window.innerHeight);
-        //document.body.appendChild(this.renderer.domElement);
+
         if (container !== undefined) {
             if (container.getElementsByTagName('canvas').length === 0) {
                 container.appendChild(this.renderer.domElement);
@@ -39,23 +39,11 @@ export class GameRenderer {
             document.body.appendChild(this.renderer.domElement);
         }
 
+        this.camera.position.z = 6;
+        this.camera.position.y = 2;
 
-        /*--------------------LIGHT------------------------------------------ */
-
-
-        this.lightManager = new LightManager();
-
-        this.ambientLight = new THREE.HemisphereLight(0xffffff, 0x222277, 1.0);
-
-        this.scene.add(this.ambientLight);
-
-        //------------------- END LIGHT------------------------------------------//
-
-        this.camera.position.z = -20;
-        this.camera.position.y = 20;
-
-        this.camera.rotation.x -= Math.PI / 2;
-        this.camera.rotation.z += Math.PI / 2;
+        this.camera.rotation.x -= Math.PI / 8;
+        //this.camera.rotation.z += Math.PI / 2;
 
         this.stone = new CurlingStone();
         this.stone.init();
@@ -77,18 +65,25 @@ export class GameRenderer {
 
         this.add(rink);
 
+        /*--------------------LIGHT------------------------------------------ */
 
+
+        this.lightManager = new LightManager();
+        this.scene.add(this.lightManager.spawnAmbientLight(0xffffff, 0x222277));
         this.add(this.lightManager.spawnSpotlights(-2.2, 0, 0, rink));
+
+        //------------------- END LIGHT------------------------------------------//
+
 
     }
 
     render() {
         window.requestAnimationFrame(() => this.render());
 
-        // this.camera.position.z -= 0.04;
-        // this.stone.position.z -= 0.04;
-        // this.stone.position.x -= 0.0005;
-        // this.stone.rotation.y += 0.01;
+        this.camera.position.z -= 0.04;
+        this.stone.position.z -= 0.04;
+        this.stone.position.x -= 0.0005;
+        this.stone.rotation.y += 0.01;
 
         this.renderer.render(this.scene, this.camera);
     }

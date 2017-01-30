@@ -86,17 +86,17 @@ module.exports = function(config) {
       // required for component assets fetched by Angular's compiler
       "/app/": appAssets
     },
-    
+
     preprocessors: {
-        'app/**/!(*spec).js': ['coverage']
+        'out/**/!(*spec).js': ['coverage']
     },
-    
+
     reporters: ['mocha','coverage'],
 
     mochaReporter: {
       maxLogLines: -1
     },
-    
+
     coverageReporter: {
         includeAllSources: true,
         reporters:[

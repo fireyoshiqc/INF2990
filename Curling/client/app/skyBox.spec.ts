@@ -1,6 +1,6 @@
 import { SkyBox } from './skyBox';
 
-import { assert, expect } from 'chai';
+import { expect } from 'chai';
 
 describe('SkyBox', () => {
 

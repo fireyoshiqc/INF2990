@@ -1,7 +1,7 @@
 
 import { CurlingStone } from './curlingStone';
 
-import { assert, expect } from 'chai';
+import { expect } from 'chai';
 
 
 describe('CurlingStone', () => {
