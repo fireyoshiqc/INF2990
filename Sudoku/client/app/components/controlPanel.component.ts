@@ -12,6 +12,4 @@ import { Component } from '@angular/core';
         <sudoku-grid #sudokuGrid></sudoku-grid>
     `
 })
-export class ControlPanelComponent {
-
-}
+export class ControlPanelComponent { }
