@@ -1,3 +1,10 @@
+/**
+ * skyBox.spec.ts - Tests for the skybox
+ *
+ * @authors Félix Boulet et Yawen Hou
+ * @date 2017/01/20
+ */
+
 import { SkyBox } from './skyBox';
 
 import { expect } from 'chai';
@@ -6,7 +13,7 @@ describe('SkyBox', () => {
 
   describe ('Default constructor ', () => {
     it ('should construct a SkyBox object with default textures (no parameters passed).', done => {
-      let testSkyBox: SkyBox;
+      let testSkyBox : SkyBox;
       testSkyBox = new SkyBox();
 
       expect(testSkyBox instanceof SkyBox).to.equal(true);
@@ -33,7 +40,7 @@ describe('SkyBox', () => {
     });
 
     it ('should construct a SkyBox object with imageName, directions and imageSuffix passed as parameters.', done => {
-      let testSkyBox: SkyBox;
+      let testSkyBox : SkyBox;
       testSkyBox = new SkyBox("dawnmountain-", ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"], ".png");
       expect(testSkyBox.imageName = "../assets/textures/dawnmountain-");
       expect(testSkyBox.directions = ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"]);

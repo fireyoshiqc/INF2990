@@ -1,3 +1,9 @@
+/**
+ * gameRenderer.ts - Renders the scene
+ *
+ * @authors Félix Boulet et Yawen Hou
+ * @date 2017/01/27
+ */
 
 import { Injectable } from '@angular/core';
 import { CurlingStone } from '../entities/curlingStone';
@@ -8,23 +14,23 @@ import { LightManager } from './lightManager';
 @Injectable()
 export class GameRenderer {
 
-    scene: THREE.Scene;
-    camera: THREE.PerspectiveCamera;
-    renderer: THREE.WebGLRenderer;
-    ambientLight: THREE.HemisphereLight;
+    scene : THREE.Scene;
+    camera : THREE.PerspectiveCamera;
+    renderer : THREE.WebGLRenderer;
+    ambientLight : THREE.HemisphereLight;
     isStarted = false;
-    stone: CurlingStone;
-    lightManager: LightManager;
+    stone : CurlingStone;
+    lightManager : LightManager;
 
     constructor() {
         console.log("GameRenderer created successfully");
     }
-    public init(container?: HTMLElement) {
+
+    public init(container ?: HTMLElement) : void {
         this.scene = new THREE.Scene();
 
         /*Field of view, aspect ratio, near, far*/
         this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
-        //var camera = new THREE.OrthographicCamera( 45, window.innerWidth / window.innerHeight, 1, 500);
 
         /*We have to set the size at which we want to render our app. We use the width and the height of the browser.*/
         this.renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -43,7 +49,6 @@ export class GameRenderer {
         this.camera.position.y = 2;
 
         this.camera.rotation.x -= Math.PI / 8;
-        //this.camera.rotation.z += Math.PI / 2;
 
         this.stone = new CurlingStone();
         this.stone.init();
@@ -51,15 +56,13 @@ export class GameRenderer {
         this.render();
         this.isStarted = true;
 
-        let skybox: SkyBox;
+        let skybox : SkyBox;
         skybox = new SkyBox();
         this.add(skybox);
 
-        let rink: Rink = new Rink(skybox.skyBoxImages);
+        let rink : Rink = new Rink(skybox.skyBoxImages);
         rink.position.z = -20;
 
-
-        //rink.rotation.x = Math.PI / 2;
         rink.position.z = -rink.RINK_LENGTH / 2;
         rink.position.y = rink.POS_RINK_Y;
 
@@ -67,17 +70,14 @@ export class GameRenderer {
 
         /*--------------------LIGHT------------------------------------------ */
 
-
         this.lightManager = new LightManager();
         this.scene.add(this.lightManager.spawnAmbientLight(0xffffff, 0x222277));
         this.add(this.lightManager.spawnSpotlights(-2.2, 0, 0, rink));
 
         //------------------- END LIGHT------------------------------------------//
-
-
     }
 
-    render() {
+    render() : void {
         window.requestAnimationFrame(() => this.render());
 
         this.camera.position.z -= 0.04;
@@ -88,8 +88,7 @@ export class GameRenderer {
         this.renderer.render(this.scene, this.camera);
     }
 
-    add(obj: THREE.Group | THREE.Mesh) {
+    add(obj : THREE.Group | THREE.Mesh) : void {
         this.scene.add(obj);
     }
-
 }

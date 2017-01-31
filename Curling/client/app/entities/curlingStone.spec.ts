@@ -1,12 +1,17 @@
+/**
+ * curlingStone.spec.ts - Tests for the curling stone
+ *
+ * @authors Félix Boulet et Yawen Hou
+ * @date 2017/01/20
+ */
 
 import { CurlingStone } from './curlingStone';
 
 import { expect } from 'chai';
 
-
 describe('CurlingStone', () => {
 
-    let testStone: CurlingStone;
+    let testStone : CurlingStone;
     testStone = new CurlingStone();
 
     describe('Default constructor ', () => {
@@ -39,11 +44,7 @@ describe('CurlingStone', () => {
         it('should add a Curling Stone base (mesh) and a cover (mesh) to the group object.', done => {
             testStone.init();
             expect(testStone.children.length).to.equal(2);
-
             done();
         });
-
     });
-
-
 });
