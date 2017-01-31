@@ -16,19 +16,18 @@ export function generateRandomValidIndexes() : number[] {
     randomIndexes[1] = 3 * squareIndex + (randomIndexes[0] + getRandomInt(1, 2)) % 3;
 
     return randomIndexes;
-
 }
 
 export function getRandomInt(min : number, max : number) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-export function sudokuToString(a: number[][]) : string {
+export function sudokuToString(sudokuGrid: number[][]) : string {
     let str = "\n";
 
-    for (let i = 0; i < a.length; i++) {
-        str += "\t" + a[i].toString() + "\n";
-    }
+    sudokuGrid.forEach(row => {
+        str += "\t" + row.toString() + "\n";
+    });
 
     str = str.substr(0, str.length - 1);
     return str;

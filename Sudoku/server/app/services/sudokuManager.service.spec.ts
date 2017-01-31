@@ -15,12 +15,12 @@ describe('SudokuManager', () => {
     let manager = new SudokuManager();
 
     describe('Default constructor ', () => {
-        it('should construct a SudokuManager object with two arrays of Sudoku', done => {
+        it('should construct a SudokuManager object with two arrays (easy/hard) of Sudoku', done => {
 
             let sudokusGenerated = true;
-            let numberSudoku = 3;
+            let numberOfSudokus = 3;
 
-            for (let i = 0; i < numberSudoku; i++) {
+            for (let i = 0; i < numberOfSudokus; i++) {
                 if (!manager.easySudokus[i].isValid() || manager.easySudokus[i].difficulty !== Difficulty.Easy) {
                     sudokusGenerated = false;
                     break;
@@ -77,32 +77,32 @@ describe('SudokuManager', () => {
 
     describe('verifySudoku() ', () => {
         it('should return true when the grid is valid', done => {
-            let testGrid : number[][] = [ [1, 2, 3, 4, 5, 6, 7, 8, 9],
-                                          [4, 5, 6, 7, 8, 9, 1, 2, 3],
-                                          [7, 8, 9, 1, 2, 3, 4, 5, 6],
-                                          [2, 3, 4, 5, 6, 7, 8, 9, 1],
-                                          [5, 6, 7, 8, 9, 1, 2, 3, 4],
-                                          [8, 9, 1, 2, 3, 4, 5, 6, 7],
-                                          [3, 4, 5, 6, 7, 8, 9, 1, 2],
-                                          [6, 7, 8, 9, 1, 2, 3, 4, 5],
-                                          [9, 1, 2, 3, 4, 5, 6, 7, 8] ];
-            expect(manager.verifySudoku(testGrid)).to.equal(true);
+            let validTestGrid : number[][] = [ [1, 2, 3, 4, 5, 6, 7, 8, 9],
+                                               [4, 5, 6, 7, 8, 9, 1, 2, 3],
+                                               [7, 8, 9, 1, 2, 3, 4, 5, 6],
+                                               [2, 3, 4, 5, 6, 7, 8, 9, 1],
+                                               [5, 6, 7, 8, 9, 1, 2, 3, 4],
+                                               [8, 9, 1, 2, 3, 4, 5, 6, 7],
+                                               [3, 4, 5, 6, 7, 8, 9, 1, 2],
+                                               [6, 7, 8, 9, 1, 2, 3, 4, 5],
+                                               [9, 1, 2, 3, 4, 5, 6, 7, 8] ];
+            expect(manager.verifySudoku(validTestGrid)).to.equal(true);
             done();
         });
     });
 
     describe('verifySudoku() ', () => {
         it('should return false when the grid is invalid', done => {
-            let testGrid : number[][] = [ [2, 2, 3, 4, 5, 6, 7, 8, 9],
-                                          [4, 5, 6, 7, 8, 9, 1, 2, 3],
-                                          [7, 8, 9, 1, 2, 3, 4, 5, 6],
-                                          [2, 3, 4, 5, 6, 7, 8, 9, 1],
-                                          [5, 6, 7, 8, 9, 1, 2, 3, 4],
-                                          [8, 9, 1, 2, 3, 4, 5, 6, 7],
-                                          [3, 4, 5, 6, 7, 8, 9, 1, 2],
-                                          [6, 7, 8, 9, 1, 2, 3, 4, 5],
-                                          [9, 1, 2, 3, 4, 5, 6, 7, 8] ];
-            expect(manager.verifySudoku(testGrid)).to.equal(false);
+            let invalidTestGrid : number[][] = [ [2, 2, 3, 4, 5, 6, 7, 8, 9],
+                                                 [4, 5, 6, 7, 8, 9, 1, 2, 3],
+                                                 [7, 8, 9, 1, 2, 3, 4, 5, 6],
+                                                 [2, 3, 4, 5, 6, 7, 8, 9, 1],
+                                                 [5, 6, 7, 8, 9, 1, 2, 3, 4],
+                                                 [8, 9, 1, 2, 3, 4, 5, 6, 7],
+                                                 [3, 4, 5, 6, 7, 8, 9, 1, 2],
+                                                 [6, 7, 8, 9, 1, 2, 3, 4, 5],
+                                                 [9, 1, 2, 3, 4, 5, 6, 7, 8] ];
+            expect(manager.verifySudoku(invalidTestGrid)).to.equal(false);
             done();
         });
     });
