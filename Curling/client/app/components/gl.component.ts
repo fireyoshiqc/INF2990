@@ -1,6 +1,6 @@
 
 import { Component, OnInit } from '@angular/core';
-import { GameRenderer } from '../gameRenderer';
+import { GameRenderer } from '../services/gameRenderer';
 @Component({
     selector: 'my-gl',
     template: `

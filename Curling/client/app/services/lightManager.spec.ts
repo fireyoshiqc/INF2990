@@ -1,7 +1,7 @@
 
 import { LightManager } from './lightManager';
-import { Rink } from './rink';
-import { SkyBox } from './skyBox';
+import { Rink } from '../entities/rink';
+import { SkyBox } from '../entities/skyBox';
 
 import { expect } from 'chai';
 
@@ -46,11 +46,11 @@ describe('LightManager', () => {
             done();
         });
         it('should give the specified colors to the ambient light.', done => {
-          let ambilight: THREE.HemisphereLight;
-          ambilight = testManager.spawnAmbientLight(0xffffff, 0x000000);
-          expect(ambilight.color.equals(new THREE.Color(0xffffff))).to.be.true;
-          expect(ambilight.groundColor.equals(new THREE.Color(0x000000))).to.be.true;
-          done();
+            let ambilight: THREE.HemisphereLight;
+            ambilight = testManager.spawnAmbientLight(0xffffff, 0x000000);
+            expect(ambilight.color.equals(new THREE.Color(0xffffff))).to.be.true;
+            expect(ambilight.groundColor.equals(new THREE.Color(0x000000))).to.be.true;
+            done();
         });
 
     });

@@ -1,4 +1,4 @@
-import { Rink } from './rink';
+import { Rink } from '../entities/rink';
 export class LightManager {
 
     constructor() {

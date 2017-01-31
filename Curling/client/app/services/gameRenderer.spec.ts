@@ -1,7 +1,7 @@
 
 
 import { GameRenderer } from './gameRenderer';
-import { CurlingStone } from './curlingStone';
+import { CurlingStone } from '../entities/curlingStone';
 
 import { expect } from 'chai';
 
