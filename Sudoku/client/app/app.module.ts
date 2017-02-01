@@ -7,8 +7,8 @@ import { SudokuGridComponent } from './components/sudokuGrid.component';
 import { ControlPanelComponent } from './components/controlPanel.component';
 
 @NgModule({
-  imports: [ BrowserModule, HttpModule ],
-  declarations: [ AppComponent, SudokuGridComponent, ControlPanelComponent ],
-  bootstrap: [ AppComponent ]
+    imports: [BrowserModule, HttpModule],
+    declarations: [AppComponent, SudokuGridComponent, ControlPanelComponent],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }

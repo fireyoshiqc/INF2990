@@ -17,26 +17,15 @@ describe('SudokuGridComponent', () => {
         comp = new SudokuGridComponent(serv);
     }));
 
-    it('should create component', () => expect(comp).to.not.be.undefined );
+    it('should create component', () => expect(comp).to.not.be.undefined);
 
     describe('A sudoku grid', () => {
         it('should only contain zeroes when reseted', done => {
             comp.resetSudoku();
-
-            let containsOnlyZeros: boolean;
-            containsOnlyZeros = true;
-            for (let i = 0; i < comp.grid.length; i++) {
-                for (let j = 0; j < comp.grid[0].length; j++) {
-                    if (comp.grid[i][j] !== 0) {
-                        containsOnlyZeros = false;
-                        break;
-                    }
-                }
-            }
-
-            expect(containsOnlyZeros).to.equal(true);
+            let containsOnlyZeros = true;
+            containsOnlyZeros = comp.grid.every((x) => x.every((y) => y === 0));
+            expect(containsOnlyZeros).to.be.true;
             done();
         });
     });
-
 });
