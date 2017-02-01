@@ -8,8 +8,8 @@
 import { Sudoku, Difficulty, getRandomInt } from './sudokuGenerator.service';
 
 export class SudokuManager {
-    easySudokus : Array<Sudoku> = new Array<Sudoku>(3);
-    hardSudokus : Array<Sudoku> = new Array<Sudoku>(3);
+    easySudokus: Array<Sudoku> = new Array<Sudoku>(3);
+    hardSudokus: Array<Sudoku> = new Array<Sudoku>(3);
 
     constructor() {
         for (let i = 0; i < this.easySudokus.length; i++) {
@@ -21,9 +21,8 @@ export class SudokuManager {
         }
     }
 
-    getEasySudoku() : number[][] {
+    getEasySudoku(): number[][] {
         let randomNumber = getRandomInt(0, 2);
-
         let sudoku = this.easySudokus[randomNumber];
 
         this.easySudokus[randomNumber] = new Sudoku(Difficulty.Easy);
@@ -32,9 +31,8 @@ export class SudokuManager {
         return sudoku.grid;
     }
 
-    getHardSudoku() : number[][] {
+    getHardSudoku(): number[][] {
         let randomNumber = getRandomInt(0, 2);
-
         let sudoku = this.hardSudokus[randomNumber];
 
         this.hardSudokus[randomNumber] = new Sudoku(Difficulty.Hard);
@@ -43,9 +41,11 @@ export class SudokuManager {
         return sudoku.grid;
     }
 
-    verifySudoku(sudokuGrid : number[][]) : boolean {
+    verifySudoku(sudokuGrid: number[][]): boolean {
         let sudoku = new Sudoku();
+
         sudoku.grid = sudokuGrid;
+
         return sudoku.isValid();
     }
 }

@@ -11,12 +11,10 @@ import { Difficulty } from './sudokuGenerator.service';
 import { expect } from 'chai';
 
 describe('SudokuManager', () => {
-
     let manager = new SudokuManager();
 
     describe('Default constructor ', () => {
         it('should construct a SudokuManager object with two arrays (easy/hard) of Sudoku', done => {
-
             let sudokusGenerated = true;
             let numberOfSudokus = 3;
 
@@ -25,14 +23,13 @@ describe('SudokuManager', () => {
                     sudokusGenerated = false;
                     break;
                 }
-
                 if (!manager.hardSudokus[i].isValid() || manager.hardSudokus[i].difficulty !== Difficulty.Hard) {
                     sudokusGenerated = false;
                     break;
                 }
             }
 
-            expect(sudokusGenerated).to.equal(true);
+            expect(sudokusGenerated).to.be.true;
             done();
         });
     });
@@ -77,32 +74,38 @@ describe('SudokuManager', () => {
 
     describe('verifySudoku() ', () => {
         it('should return true when the grid is valid', done => {
-            let validTestGrid : number[][] = [ [1, 2, 3, 4, 5, 6, 7, 8, 9],
-                                               [4, 5, 6, 7, 8, 9, 1, 2, 3],
-                                               [7, 8, 9, 1, 2, 3, 4, 5, 6],
-                                               [2, 3, 4, 5, 6, 7, 8, 9, 1],
-                                               [5, 6, 7, 8, 9, 1, 2, 3, 4],
-                                               [8, 9, 1, 2, 3, 4, 5, 6, 7],
-                                               [3, 4, 5, 6, 7, 8, 9, 1, 2],
-                                               [6, 7, 8, 9, 1, 2, 3, 4, 5],
-                                               [9, 1, 2, 3, 4, 5, 6, 7, 8] ];
-            expect(manager.verifySudoku(validTestGrid)).to.equal(true);
+            let validTestGrid: number[][] = [
+                [1, 2, 3, 4, 5, 6, 7, 8, 9],
+                [4, 5, 6, 7, 8, 9, 1, 2, 3],
+                [7, 8, 9, 1, 2, 3, 4, 5, 6],
+                [2, 3, 4, 5, 6, 7, 8, 9, 1],
+                [5, 6, 7, 8, 9, 1, 2, 3, 4],
+                [8, 9, 1, 2, 3, 4, 5, 6, 7],
+                [3, 4, 5, 6, 7, 8, 9, 1, 2],
+                [6, 7, 8, 9, 1, 2, 3, 4, 5],
+                [9, 1, 2, 3, 4, 5, 6, 7, 8]
+            ];
+
+            expect(manager.verifySudoku(validTestGrid)).to.be.true;
             done();
         });
     });
 
     describe('verifySudoku() ', () => {
         it('should return false when the grid is invalid', done => {
-            let invalidTestGrid : number[][] = [ [2, 2, 3, 4, 5, 6, 7, 8, 9],
-                                                 [4, 5, 6, 7, 8, 9, 1, 2, 3],
-                                                 [7, 8, 9, 1, 2, 3, 4, 5, 6],
-                                                 [2, 3, 4, 5, 6, 7, 8, 9, 1],
-                                                 [5, 6, 7, 8, 9, 1, 2, 3, 4],
-                                                 [8, 9, 1, 2, 3, 4, 5, 6, 7],
-                                                 [3, 4, 5, 6, 7, 8, 9, 1, 2],
-                                                 [6, 7, 8, 9, 1, 2, 3, 4, 5],
-                                                 [9, 1, 2, 3, 4, 5, 6, 7, 8] ];
-            expect(manager.verifySudoku(invalidTestGrid)).to.equal(false);
+            let invalidTestGrid: number[][] = [
+                [2, 2, 3, 4, 5, 6, 7, 8, 9],
+                [4, 5, 6, 7, 8, 9, 1, 2, 3],
+                [7, 8, 9, 1, 2, 3, 4, 5, 6],
+                [2, 3, 4, 5, 6, 7, 8, 9, 1],
+                [5, 6, 7, 8, 9, 1, 2, 3, 4],
+                [8, 9, 1, 2, 3, 4, 5, 6, 7],
+                [3, 4, 5, 6, 7, 8, 9, 1, 2],
+                [6, 7, 8, 9, 1, 2, 3, 4, 5],
+                [9, 1, 2, 3, 4, 5, 6, 7, 8]
+            ];
+
+            expect(manager.verifySudoku(invalidTestGrid)).to.be.false;
             done();
         });
     });
