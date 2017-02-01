@@ -4,9 +4,40 @@ h1 {
   font-size: 250%;
 }
 
-/***************/
-/* sudoku grid */
-/***************/
+/***************************/
+/* control panel component */
+/***************************/
+
+#controlPanel {
+  height: 375px;
+  background-color: #fafafa;
+  border: 2px solid black;
+}
+
+#buttonPanel {
+  text-align: center;
+  margin-top: 15px;
+}
+
+#sudokuGrid {
+  width: 100%;
+}
+
+#grid {
+  float: left;
+  margin-left: 480px;
+  background-color: white;
+}
+
+#infoPanel {
+  float: right;
+  width: 300px;
+  margin-right: 315px;
+}
+
+/*************************/
+/* sudoku grid component */
+/*************************/
 
 table {
   margin: 1em auto;
@@ -34,12 +65,4 @@ tr:first-child {
 
 tr:nth-child(3n) td {
   border-bottom: solid ;
-}
-
-/*****************/
-/* control panel */
-/*****************/
-
-#controlPanel {
-  text-align: center;
 }
