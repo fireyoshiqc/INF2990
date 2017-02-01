@@ -27,7 +27,8 @@ import { SudokuService } from '../services/sudoku.service';
     providers: [SudokuService]
 })
 export class SudokuGridComponent {
-    grid = [[0, 2, 3, 4, 5, 0, 7, 8, 9],
+    grid = [
+        [0, 2, 3, 4, 5, 0, 7, 8, 9],
         [4, 0, 6, 7, 8, 9, 0, 0, 0],
         [0, 8, 0, 1, 0, 3, 0, 5, 6],
         [2, 0, 4, 5, 6, 7, 8, 9, 0],
@@ -35,7 +36,8 @@ export class SudokuGridComponent {
         [8, 0, 1, 2, 3, 4, 0, 6, 0],
         [3, 4, 0, 6, 0, 8, 9, 1, 2],
         [0, 7, 8, 9, 1, 2, 3, 4, 5],
-        [9, 1, 2, 3, 0, 5, 6, 0, 8]];
+        [9, 1, 2, 3, 0, 5, 6, 0, 8]
+    ];
     isValid = "";
     difficulty = "";
 
