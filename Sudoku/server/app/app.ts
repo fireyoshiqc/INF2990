@@ -12,6 +12,7 @@ import * as cookieParser from 'cookie-parser';
 import * as bodyParser from 'body-parser';
 import * as cors from 'cors';
 
+// TODO : Remove comment below when routers will be required
 //import * as indexRoute from './routes';
 
 import { SudokuManager } from './services/sudokuManager.service';
@@ -80,6 +81,7 @@ export class Application {
 
     let sudokuManager = this.getMananager();
 
+    // TODO : Remove comments below when routers will be required
     //let router: express.Router;
     //router = express.Router();
 
@@ -88,30 +90,27 @@ export class Application {
 
     //home page
     //router.get('/', index.index.bind(index.index));
+
     this.app.get('/', function(req, res){
         res.send('Hello Erica');
     });
 
     this.app.get('/getSudoku/easy', function(req, res){
-        // Get from mongo and remove it
         let easySudoku = sudokuManager.getEasySudoku();
         res.send(easySudoku);
     });
 
     this.app.get('/getSudoku/hard', function(req, res){
-        // Get from mongo and remove it
         let hardSudoku = sudokuManager.getHardSudoku();
         res.send(hardSudoku);
     });
 
-    // How validate sudoku while obeying rest api? Need to send something to the server and get a result back?
-    // /sudoku/check (get the filled sudoku)
     this.app.post('/validateSudoku', function(req, res){
         let result = sudokuManager.verifySudoku(req.body);
         res.send(result);
     });
 
-    //use router middleware
+    // TODO : Remove comment below when routers will be required
     //this.app.use(router);
 
     // Gestion des erreurs
