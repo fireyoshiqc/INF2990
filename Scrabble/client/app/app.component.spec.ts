@@ -5,7 +5,7 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
-import { expect, assert } from 'chai';
+import { expect } from 'chai';
 
 describe('AppComponent', function() {
     let de: DebugElement;
