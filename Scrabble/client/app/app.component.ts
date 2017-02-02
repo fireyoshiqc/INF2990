@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'my-app',
-  template: `<chat-comp></chat-comp>`,
+  template: `
+        <h1>Chat area for Scrabble</h1>
+        <chat-comp></chat-comp>
+  `,
 })
 export class AppComponent { name = 'Angular'; }
