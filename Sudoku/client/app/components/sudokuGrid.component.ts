@@ -3,27 +3,7 @@ import { SudokuService } from '../services/sudoku.service';
 
 @Component({
     selector: 'sudoku-grid',
-    template: `
-    <div id="sudokuGrid">
-        <div id="grid">
-            <table>
-                <tr *ngFor="let row of grid; let i = index">
-                    <td *ngFor="let element of row; let j = index">
-                        <div *ngIf="element!=0">
-                            {{element}}
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <div id="infoPanel">
-            <p><b>Pierre To</b></p>
-            <p>Le sudoku est valide : {{isValid}} </p>
-            <p>Niveau de difficulté : {{difficulty}} </p>
-            <p>Timer : 0:00 </p>
-        </div>
-    </div>
-    `,
+    templateUrl: '/assets/templates/sudokuGrid.component.html',
     providers: [SudokuService]
 })
 export class SudokuGridComponent {
