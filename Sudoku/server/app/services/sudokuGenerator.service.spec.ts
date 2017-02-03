@@ -5,7 +5,7 @@
  * @date 2017/01/20
  */
 
-import { Sudoku, generateRandomValidIndexes, getRandomInt, sudokuToString } from './sudokuGenerator.service';
+import { Sudoku, generateRandomValidIndexes, getRandomInt } from './sudokuGenerator.service';
 
 import { expect } from 'chai';
 
@@ -379,8 +379,6 @@ describe('Sudoku', () => {
             let sudoku2 = new Sudoku();
 
             sudoku2.randomize();
-
-            console.log("\naffichage sudoku temporaire" + sudokuToString(sudoku2.grid));
 
             expect(sudoku1.equals(sudoku2)).to.be.false;
             done();
