@@ -6,8 +6,6 @@ export class InputService {
     readonly GRID_SIZE = 9;
     readonly SQUARE_SIZE = 3;
 
-    constructor() { }
-
     validate(grid: number[][], row: number, column: number): boolean {
         return this.validateRow(grid, row) &&
                this.validateColumn(grid, column) && 
