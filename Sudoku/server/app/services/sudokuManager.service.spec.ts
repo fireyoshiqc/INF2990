@@ -36,10 +36,10 @@ describe('SudokuManager', () => {
 
     describe('getEasySudoku() ', () => {
         it('should get an easy sudoku object from SudokuManager', done => {
-            let sudokuGrid = manager.getEasySudoku();
+            let sudoku = manager.getEasySudoku();
             let countZeros = 0;
 
-            sudokuGrid.forEach(row => {
+            sudoku.grid.forEach(row => {
                 row.forEach(element => {
                     if (element === 0) {
                         countZeros++;
@@ -55,10 +55,10 @@ describe('SudokuManager', () => {
 
     describe('getHardSudoku() ', () => {
         it('should get a hard sudoku object from SudokuManager', done => {
-            let sudokuGrid = manager.getHardSudoku();
+            let sudoku = manager.getHardSudoku();
             let countZeros = 0;
 
-            sudokuGrid.forEach(row => {
+            sudoku.grid.forEach(row => {
                 row.forEach(element => {
                     if (element === 0) {
                         countZeros++;
