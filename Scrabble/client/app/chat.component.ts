@@ -2,29 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import * as io from 'socket.io-client';
 
 @Component({
+    moduleId: module.id,
     selector: 'chat-comp',
-    template: `
-        <body>
-            <table>
-                <tr *ngFor="let msg of msgList; let i = index">
-                    <td>
-                        <div>
-                            <strong>{{msg.username}} : </strong>{{msg.submessage}}
-                        </div>
-                    </td>
-                </tr>
-            </table>
-
-            <form #messageForm="ngForm">
-            <div class="message-box">
-                <input type="text" autocomplete="off" class="form-control" id="message"
-                [(ngModel)]="msg.message" name="message">
-                <button type="submit" class="btn btn-default" (click)="onSubmit(); messageForm.reset()">
-                Submit</button>
-            </div>
-            </form>
-        </body>
-    `,
+    templateUrl: '/assets/templates/chat.component.html'
 })
 export class ChatComponent implements OnInit {
     socket: any;
