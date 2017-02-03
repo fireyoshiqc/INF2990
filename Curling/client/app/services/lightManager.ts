@@ -1,3 +1,4 @@
+
 /**
  * lightManager.ts - Controls the light on the scene
  *
@@ -8,9 +9,6 @@
 import { Rink } from '../entities/rink';
 
 export class LightManager {
-    constructor() {
-        console.log("LightManager created successfully.");
-    }
 
     spawnSpotlights(posX : number, posY : number, posZ : number, rink : Rink) : SpotlightArray {
         let spotlights = new SpotlightArray(rink.RINK_WIDTH, rink.RINK_LENGTH, 2, 6);

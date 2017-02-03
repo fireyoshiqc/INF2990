@@ -21,7 +21,6 @@ export class Rink extends THREE.Group {
 
     constructor(loaderImages : Array<string>) {
         super();
-        console.log("constructor called");
 
         //-------------REFLECTIVE TEXTURE-------------------------------------//
         let loader : THREE.CubeTextureLoader;
@@ -70,7 +69,6 @@ export class Rink extends THREE.Group {
 
             rings.position.z = -(this.RINK_LENGTH / 2 - this.OUTER_RADIUS * 2);
 
-            console.log("rings created");
             //-----------FIN RINGS------------------------------------------------//
 
             //--------------ICE---------------------------------------------------//
@@ -86,13 +84,10 @@ export class Rink extends THREE.Group {
             let rink : THREE.Mesh = new THREE.Mesh(rinkGeometry, rinkMaterial);
             //--------------FIN ICE---------------------------------------------------//
 
-            console.log("ice created");
-
             //Assemble
             this.add(rings);
             this.add(rink);
 
-            console.log("assembled");
         });
         //-----------END REFLECTIVE TEXTURE-----------------------------------//
     }

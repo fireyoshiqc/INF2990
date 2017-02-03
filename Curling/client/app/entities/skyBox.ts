@@ -50,7 +50,6 @@ export class SkyBox extends THREE.Mesh {
     //Set x scale to be -1 to turn the cube inside out
     this.scale.set(-1, 1, 1);
 
-    console.log("skybox created");
   }
 
   createMaterial(image : string) : THREE.MeshBasicMaterial {

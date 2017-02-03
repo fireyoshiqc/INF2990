@@ -14,19 +14,16 @@ import { LightManager } from './lightManager';
 @Injectable()
 export class GameRenderer {
 
-    scene : THREE.Scene;
-    camera : THREE.PerspectiveCamera;
-    renderer : THREE.WebGLRenderer;
-    ambientLight : THREE.HemisphereLight;
+
+    scene: THREE.Scene;
+    camera: THREE.PerspectiveCamera;
+    renderer: THREE.WebGLRenderer;
+    ambientLight: THREE.HemisphereLight;
     isStarted = false;
-    stone : CurlingStone;
-    lightManager : LightManager;
+    stone: CurlingStone;
+    lightManager: LightManager;
 
-    constructor() {
-        console.log("GameRenderer created successfully");
-    }
-
-    public init(container ?: HTMLElement) : void {
+    public init(container?: HTMLElement): void {
         this.scene = new THREE.Scene();
 
         /*Field of view, aspect ratio, near, far*/
@@ -56,11 +53,11 @@ export class GameRenderer {
         this.render();
         this.isStarted = true;
 
-        let skybox : SkyBox;
+        let skybox: SkyBox;
         skybox = new SkyBox();
         this.add(skybox);
 
-        let rink : Rink = new Rink(skybox.skyBoxImages);
+        let rink: Rink = new Rink(skybox.skyBoxImages);
         rink.position.z = -20;
 
         rink.position.z = -rink.RINK_LENGTH / 2;
@@ -77,7 +74,7 @@ export class GameRenderer {
         //------------------- END LIGHT------------------------------------------//
     }
 
-    render() : void {
+    render(): void {
         window.requestAnimationFrame(() => this.render());
 
         this.camera.position.z -= 0.04;
@@ -88,7 +85,7 @@ export class GameRenderer {
         this.renderer.render(this.scene, this.camera);
     }
 
-    add(obj : THREE.Group | THREE.Mesh) : void {
+    add(obj: THREE.Group | THREE.Mesh): void {
         this.scene.add(obj);
     }
 }
