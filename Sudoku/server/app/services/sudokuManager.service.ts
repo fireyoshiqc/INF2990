@@ -21,24 +21,24 @@ export class SudokuManager {
         }
     }
 
-    getEasySudoku(): number[][] {
+    getEasySudoku(): Sudoku {
         let randomNumber = getRandomInt(0, 2);
         let sudoku = this.easySudokus[randomNumber];
 
         this.easySudokus[randomNumber] = new Sudoku(Difficulty.Easy);
         this.easySudokus[randomNumber].randomize();
 
-        return sudoku.grid;
+        return sudoku;
     }
 
-    getHardSudoku(): number[][] {
+    getHardSudoku(): Sudoku {
         let randomNumber = getRandomInt(0, 2);
         let sudoku = this.hardSudokus[randomNumber];
 
         this.hardSudokus[randomNumber] = new Sudoku(Difficulty.Hard);
         this.hardSudokus[randomNumber].randomize();
 
-        return sudoku.grid;
+        return sudoku;
     }
 
     verifySudoku(sudokuGrid: number[][]): boolean {

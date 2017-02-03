@@ -7,35 +7,25 @@ import { SudokuService } from '../services/sudoku.service';
     providers: [SudokuService]
 })
 export class SudokuGridComponent {
-    grid = [
-        [0, 2, 3, 4, 5, 0, 7, 8, 9],
-        [4, 0, 6, 7, 8, 9, 0, 0, 0],
-        [0, 8, 0, 1, 0, 3, 0, 5, 6],
-        [2, 0, 4, 5, 6, 7, 8, 9, 0],
-        [5, 6, 7, 8, 0, 1, 2, 3, 4],
-        [8, 0, 1, 2, 3, 4, 0, 6, 0],
-        [3, 4, 0, 6, 0, 8, 9, 1, 2],
-        [0, 7, 8, 9, 1, 2, 3, 4, 5],
-        [9, 1, 2, 3, 0, 5, 6, 0, 8]
-    ];
-    isValid = "";
-    difficulty = "";
+    grid : number[][];
+    isValid : string;
+    difficulty : string;
 
     constructor(private sudokuService: SudokuService) {
-
+        this.grid = sudokuService.grid;
     }
 
     getEasySudoku() {
         this.sudokuService.getEasySudoku().subscribe(sudoku => {
-            this.grid = sudoku.json();
-            this.difficulty = "facile";
+            this.grid = sudoku.json().grid;
+            this.difficulty = sudoku.json().difficulty ? "difficile" : "facile";
         });
     }
 
     getHardSudoku() {
         this.sudokuService.getHardSudoku().subscribe(sudoku => {
-            this.grid = sudoku.json();
-            this.difficulty = "difficile";
+            this.grid = sudoku.json().grid;
+            this.difficulty = sudoku.json().difficulty ? "difficile" : "facile";
         });
     }
 
@@ -47,8 +37,6 @@ export class SudokuGridComponent {
 
     // TODO: Reset to the last grid obtained from the server (next sprint)
     resetSudoku() {
-        this.grid.forEach(row => {
-            row.fill(0);
-        });
+        this.grid = this.sudokuService.resetSudoku();
     }
 }

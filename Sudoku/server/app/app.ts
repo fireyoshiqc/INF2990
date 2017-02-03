@@ -97,12 +97,12 @@ export class Application {
 
     this.app.get('/getSudoku/easy', function(req, res){
         let easySudoku = sudokuManager.getEasySudoku();
-        res.send(easySudoku);
+        res.send( { grid : easySudoku.grid, difficulty : easySudoku.difficulty } );
     });
 
     this.app.get('/getSudoku/hard', function(req, res){
         let hardSudoku = sudokuManager.getHardSudoku();
-        res.send(hardSudoku);
+        res.send( { grid : hardSudoku.grid, difficulty : hardSudoku.difficulty } );
     });
 
     this.app.post('/validateSudoku', function(req, res){
