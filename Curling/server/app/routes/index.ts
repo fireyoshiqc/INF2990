@@ -7,10 +7,10 @@ module Route {
     public index(req: express.Request, res: express.Response, next: express.NextFunction) {
       res.send('Hello world');
     }
-	public glComponent(req: express.Request, res: express.Response, next: express.NextFunction) {
-	  res.redirect('/glcomp');
-	}
-	
+    public glComponent(req: express.Request, res: express.Response, next: express.NextFunction) {
+      res.redirect('/glcomp');
+    }
+
   }
 }
 

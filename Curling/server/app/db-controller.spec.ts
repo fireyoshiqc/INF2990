@@ -9,4 +9,4 @@ describe('A Database Controller ', () => {
         expect(dbC.getId()).to.equal(expectedId);
         done();
     });
-})
+});

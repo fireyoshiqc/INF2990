@@ -1,5 +1,7 @@
 
-class DbController  {
+class DbController {
+
+    private id : number;
 
     constructor(id: number){
         this.id = id;
@@ -14,7 +16,6 @@ class DbController  {
     public getId(){
         return this.id;
     }
-    private id : number;
-};
+}
 
 export {DbController}
