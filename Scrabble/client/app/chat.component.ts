@@ -14,6 +14,11 @@ export class ChatComponent implements OnInit {
     ngOnInit() {
         this.socket = io.connect('http://localhost:3000');
 
+        this.socket.on("connect_error", () => {
+          this.msgList.push(new Message("SERVER OFFLINE~Attempting to connect..."));
+
+        });
+
         this.socket.on('message sent', (msg: string) => {
             this.msgList.push(new Message(msg));
         });
