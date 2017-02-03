@@ -1,0 +1,4 @@
+# Exclusion des dépendances et des logs en cas de npm start ou install à la mauvaise place...
+node_modules/
+false/
+npm-debug.log
