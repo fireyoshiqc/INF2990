@@ -8,7 +8,7 @@ export class InputService {
 
     validate(grid: number[][], row: number, column: number): boolean {
         return this.validateRow(grid, row) &&
-               this.validateColumn(grid, column) && 
+               this.validateColumn(grid, column) &&
                this.validateSquare(grid, row, column);
     }
 
