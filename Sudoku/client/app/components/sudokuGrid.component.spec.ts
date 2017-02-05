@@ -1,5 +1,6 @@
 import { SudokuGridComponent } from './sudokuGrid.component';
 import { SudokuService } from '../services/sudoku.service';
+import { StopwatchService } from '../services/stopwatch.service';
 import { Http } from '@angular/http';
 
 import { async } from '@angular/core/testing';
@@ -9,12 +10,14 @@ import { expect } from 'chai';
 describe('SudokuGridComponent', () => {
 
     let comp: SudokuGridComponent;
-    let serv: SudokuService;
+    let sudokuServ: SudokuService;
+    let stopwatchServ: StopwatchService;
     let http: Http;
 
     beforeEach(async(() => {
-        serv = new SudokuService(http);
-        comp = new SudokuGridComponent(serv);
+        sudokuServ = new SudokuService(http);
+        stopwatchServ = new StopwatchService();
+        comp = new SudokuGridComponent(sudokuServ, stopwatchServ);
     }));
 
     it('should create component', () => expect(comp).to.not.be.undefined);

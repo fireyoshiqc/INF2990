@@ -17,7 +17,7 @@
             <p><b>Pierre To</b></p>
             <p>Le sudoku est valide : {{isValid}} </p>
             <p>Niveau de difficulté : {{difficulty}} </p>
-            <p>Timer : 0:00 </p>
+            <p *ngIf="stopwatchService.isVisible()">Timer : <span>{{stopwatchService.getMinutes()}}</span> min <span>{{stopwatchService.getSeconds()}}</span> sec</p>
         </div>
 
     </div>
