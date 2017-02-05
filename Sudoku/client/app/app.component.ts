@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
     selector: 'my-app',
     template: `
       <h1>Sudoku</h1>
-      <control-panel></control-panel>
+      <game-area></game-area>
     `
 })
 export class AppComponent { }

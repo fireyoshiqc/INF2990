@@ -4,11 +4,11 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { SudokuGridComponent } from './components/sudokuGrid.component';
-import { ControlPanelComponent } from './components/controlPanel.component';
+import { GameAreaComponent } from './components/gameArea.component';
 
 @NgModule({
     imports: [BrowserModule, HttpModule],
-    declarations: [AppComponent, SudokuGridComponent, ControlPanelComponent],
+    declarations: [AppComponent, SudokuGridComponent, GameAreaComponent],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

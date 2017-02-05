@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 
 @Component({
-    selector: 'control-panel',
+    selector: 'game-area',
     template: `
-    <div id="controlPanel">
+    <div id="gameArea">
         <div id="buttonPanel">
             <button (click)="sudokuGrid.getEasySudoku()">EASY sudoku</button>
             <button (click)="sudokuGrid.getHardSudoku()">HARD sudoku</button>
@@ -17,4 +17,4 @@ import { Component } from '@angular/core';
     </div>
     `
 })
-export class ControlPanelComponent { }
+export class GameAreaComponent { }
