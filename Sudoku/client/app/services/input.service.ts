@@ -1,3 +1,10 @@
+/**
+ * input.service.ts - Checks validity of sudoku grid entries
+ *
+ * @authors Félix Boulet, Mikaël Ferland
+ * @date 2017/02/05
+ */
+
 import { Injectable } from '@angular/core';
 
 @Injectable()
@@ -6,52 +13,30 @@ export class InputService {
     readonly GRID_SIZE = 9;
     readonly SQUARE_SIZE = 3;
 
-    validate(grid: number[][], row: number, column: number): boolean {
-        return this.validateRow(grid, row) &&
-               this.validateColumn(grid, column) &&
-               this.validateSquare(grid, row, column);
+    validate(entry: number, grid: number[][], row: number, column: number): boolean {
+        return this.validateRow(entry, grid, row) &&
+            this.validateColumn(entry, grid, column) &&
+            this.validateSquare(entry, grid, row, column);
     }
 
-    private validateRow(grid: number[][], row: number): boolean {
-        let rowSet = new Set();
-
-        grid[row].forEach(element => {
-            rowSet.add(element);
-        });
-
-        return rowSet.size === this.GRID_SIZE;
+    private validateRow(entry: number, grid: number[][], row: number): boolean {
+        return grid[row].every(element => element !== entry);
     }
 
-    private validateColumn(grid: number[][], column: number) {
-        let columnSet = new Set();
-
-        grid.forEach(row => {
-            columnSet.add(row[column]);
-        });
-
-        return columnSet.size === this.GRID_SIZE;
+    private validateColumn(entry: number, grid: number[][], column: number) {
+        return grid.every(row => row[column] !== entry);
     }
 
-    private validateSquare(grid: number[][], row: number, column: number) {
-
-        let squareSet = new Set();
+    private validateSquare(entry: number,
+        grid: number[][], row: number, column: number) {
         let x: number, y: number;
 
         // coordinates for upper left corner of each square
         x = this.SQUARE_SIZE * Math.floor(row / this.SQUARE_SIZE);
         y = this.SQUARE_SIZE * Math.floor(column / this.SQUARE_SIZE);
 
-        squareSet.add(grid[x][y]);
-        squareSet.add(grid[x][y + 1]);
-        squareSet.add(grid[x][y + 2]);
-        squareSet.add(grid[x + 1][y]);
-        squareSet.add(grid[x + 1][y + 1]);
-        squareSet.add(grid[x + 1][y + 2]);
-        squareSet.add(grid[x + 2][y]);
-        squareSet.add(grid[x + 2][y + 1]);
-        squareSet.add(grid[x + 2][y + 2]);
-
-        // check if a number is already in the same square, if yes, then the square cannot be valid.
-        return squareSet.size === this.GRID_SIZE;
+        return grid.slice(x, x + this.SQUARE_SIZE).every(slicedRows =>
+            slicedRows.slice(y, y + this.SQUARE_SIZE).every(element =>
+                element !== entry));
     }
 }
