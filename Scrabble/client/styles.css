@@ -8,7 +8,7 @@ h1 {
   color: #369;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 250%;
-  margin-bottom: 50px;
+  margin-bottom: 10px;
 }
 
 body { 
@@ -20,41 +20,60 @@ body {
 /***************/
 
 .message-box { 
-  background: #000; 
+  background: lightgray; 
   padding: 3px; 
   position: fixed; 
-  bottom: 0; 
-  width: 80%; 
+  bottom: 50px; 
+  width: 30%;
 }
 
 .message-box input { 
   border: 0; 
-  padding: 10px; 
-  width: 90%; 
+  padding: 10px;
+  width: 85%;
   margin-right: .5%; 
 }
 
 .message-box button { 
-  width: 9%; 
-  background: rgb(130, 224, 255); 
+  background: darkblue; 
+  color: white;
   border: none; 
-  padding: 10px; 
+  padding: 10px;
 }
 
 /**********************/
 /* message formatting */
 /**********************/
 
-#messages { 
-  list-style-type: none; 
-  margin: 0; 
-  padding: 0; 
-}
-
-#messages li { 
+#messagePanel tr { 
   padding: 5px 10px; 
 }
 
-#messages li:nth-child(odd) { 
-  background: #eee; 
+#messagePanel {
+  float: left;
+  margin-left: 30px;
+  margin-top: 10px;
+  width: 500px;
+}
+
+/****************************/
+/* scrabble board component */
+/****************************/
+
+#board {
+  float: left;
+  margin-left: 30px;
+}
+
+#board table {
+  margin: 1em auto;
+  border-collapse: collapse;
+}
+
+#board td {
+  width : 40px;
+  height: 40px;
+  display : inline-block;
+  padding : 0px 0px 0px 0px;
+  border: 0px solid;
 }

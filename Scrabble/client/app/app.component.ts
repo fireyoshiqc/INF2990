@@ -3,7 +3,8 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'my-app',
   template: `
-        <h1>Chat area for Scrabble</h1>
+        <h1>Scrabble</h1>
+        <board-comp></board-comp>
         <chat-comp></chat-comp>
   `,
 })
