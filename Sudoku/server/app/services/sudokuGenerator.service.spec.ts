@@ -393,4 +393,48 @@ describe('Sudoku', () => {
             done();
         });
     });
+
+    describe('isSolvable() ', () => {
+        it('should return true when the grid is solvable ', done => {
+            let testGrid: number[][] = [
+                [1, 2, 3, 4, 5, 6, 7, 8, 9],
+                [4, 5, 6, 7, 8, 9, 1, 2, 3],
+                [7, 8, 9, 1, 2, 3, 4, 5, 6],
+                [2, 3, 4, 5, 6, 7, 8, 9, 1],
+                [5, 6, 7, 8, 9, 1, 2, 3, 4],
+                [8, 9, 1, 2, 3, 4, 5, 6, 7],
+                [3, 4, 5, 6, 7, 8, 9, 1, 2],
+                [6, 7, 8, 9, 1, 2, 3, 4, 5],
+                [9, 1, 2, 3, 4, 5, 6, 7, 8]
+            ];
+            let sudoku = new Sudoku();
+
+            sudoku.grid = testGrid;
+
+            expect(sudoku.isSolvable()).to.be.true;
+            done();
+        });
+
+        it('should return false when the grid is not solvable ', done => {
+            let testGrid: number[][] = [
+                [1, 2, 3, 4, 5, 6, 7, 8, 9],
+                [4, 5, 6, 7, 8, 9, 1, 2, 3],
+                [7, 8, 9, 1, 2, 3, 4, 5, 6],
+                [2, 3, 4, 5, 6, 7, 8, 9, 1],
+                [5, 6, 7, 8, 9, 1, 2, 3, 4],
+                [8, 9, 1, 2, 3, 4, 5, 6, 7],
+                [3, 4, 5, 6, 7, 8, 9, 1, 2],
+                [6, 7, 8, 9, 1, 2, 3, 4, 5],
+                [9, 1, 2, 3, 4, 5, 6, 7, 8]
+            ];
+            let sudoku = new Sudoku();
+
+            sudoku.grid = testGrid;
+
+            expect(sudoku.isSolvable()).to.be.false;
+            done();
+        });
+    });
+
+
 });

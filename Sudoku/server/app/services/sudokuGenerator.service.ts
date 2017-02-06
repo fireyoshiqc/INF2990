@@ -221,4 +221,63 @@ export class Sudoku {
             }
         }
     }
+
+    isSolvable() : boolean {
+        let zerosIndexes : Array<number>;
+        for (let index = 0; index < this.size * this.size; index++) {
+            let x = index % 9;
+            let y = Math.floor(index / 9);
+            if (this.grid[x][y] === 0) {
+                zerosIndexes.push(index);
+            }
+        }
+
+        return this.solveSudoku(zerosIndexes);
+    }
+
+    solveSudoku(zerosIndexes : Array<number>) : boolean {
+        if (zerosIndexes.length === 0) {
+            return true;
+        }
+        let index = zerosIndexes.pop();
+        let x = index % 9;
+        let y = Math.floor(index / 9);
+
+        for (let value = 1; value <= this.size; value++) {
+            if (this.valueIsLegal(value, x, y)) {
+                this.grid[x][y] = value;
+                if (this.solveSudoku(zerosIndexes)) {
+                    return true;
+                }
+            }
+        }
+        this.grid[x][y] = 0;
+        return false;
+    }
+
+    valueIsLegal(entry: number, row: number, column: number): boolean {
+        return this.validateRow(entry, row) &&
+            this.validateColumn(entry, column) &&
+            this.validateSquare(entry, row, column);
+    }
+
+    validateRow(entry: number, row: number): boolean {
+        return this.grid[row].every(element => element !== entry);
+    }
+
+    validateColumn(entry: number, column: number) {
+        return this.grid.every(row => row[column] !== entry);
+    }
+
+    validateSquare(entry: number, row: number, column: number) {
+        let x: number, y: number;
+
+        // coordinates for upper left corner of each square
+        x = this.size * Math.floor(row / this.size);
+        y = this.size * Math.floor(column / this.size);
+
+        return this.grid.slice(x, x + this.size).every(slicedRows =>
+            slicedRows.slice(y, y + this.size).every(element =>
+                element !== entry));
+    }
 }
