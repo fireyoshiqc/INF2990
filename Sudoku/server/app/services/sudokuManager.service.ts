@@ -6,6 +6,7 @@
  */
 
 import { Sudoku, Difficulty, getRandomInt } from './sudokuGenerator.service';
+import { SudokuRandomizer } from './sudokuRandomizer.service';
 
 export class SudokuManager {
     easySudokus: Array<Sudoku> = new Array<Sudoku>(3);
@@ -13,11 +14,11 @@ export class SudokuManager {
 
     constructor() {
         for (let i = 0; i < this.easySudokus.length; i++) {
-            this.easySudokus[i] = new Sudoku(Difficulty.Easy);
-            this.easySudokus[i].randomize();
+            let sudokuRandomizer = new SudokuRandomizer(new Sudoku(Difficulty.Easy));
+            this.easySudokus[i] = sudokuRandomizer.getRandomizedSudoku();
 
-            this.hardSudokus[i] = new Sudoku(Difficulty.Hard);
-            this.hardSudokus[i].randomize();
+            let sudokuRandomizer2 = new SudokuRandomizer(new Sudoku(Difficulty.Hard));
+            this.hardSudokus[i] = sudokuRandomizer2.getRandomizedSudoku();
         }
     }
 
@@ -25,8 +26,8 @@ export class SudokuManager {
         let randomNumber = getRandomInt(0, 2);
         let sudoku = this.easySudokus[randomNumber];
 
-        this.easySudokus[randomNumber] = new Sudoku(Difficulty.Easy);
-        this.easySudokus[randomNumber].randomize();
+        let sudokuRandomizer = new SudokuRandomizer(new Sudoku(Difficulty.Easy));
+        this.easySudokus[randomNumber] = sudokuRandomizer.getRandomizedSudoku();
 
         return sudoku;
     }
@@ -35,8 +36,8 @@ export class SudokuManager {
         let randomNumber = getRandomInt(0, 2);
         let sudoku = this.hardSudokus[randomNumber];
 
-        this.hardSudokus[randomNumber] = new Sudoku(Difficulty.Hard);
-        this.hardSudokus[randomNumber].randomize();
+        let sudokuRandomizer = new SudokuRandomizer(new Sudoku(Difficulty.Hard));
+        this.hardSudokus[randomNumber] = sudokuRandomizer.getRandomizedSudoku();
 
         return sudoku;
     }

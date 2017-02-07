@@ -5,7 +5,7 @@
  * @date 2017/01/20
  */
 
-import { Sudoku, generateRandomValidIndexes, getRandomInt } from './sudokuGenerator.service';
+import { Sudoku, getRandomInt } from './sudokuGenerator.service';
 
 import { expect } from 'chai';
 
@@ -85,200 +85,12 @@ describe('Sudoku', () => {
         });
     });
 
-    describe('exchangeColumns() ', () => {
-        it('should exchange two columns', done => {
-            let testGrid: number[][] = [
-                [1, 2, 3],
-                [4, 5, 6],
-                [7, 8, 9]
-            ];
-
-            let sudoku1 = new Sudoku();
-            sudoku1.grid = testGrid;
-            sudoku1.size = 3;
-
-            sudoku1.exchangeColumns(0, 2);
-
-            let solutionGrid: number[][] = [
-                [3, 2, 1],
-                [6, 5, 4],
-                [9, 8, 7]
-            ];
-
-            let sudoku2 = new Sudoku();
-            sudoku2.grid = solutionGrid;
-            sudoku2.size = 3;
-
-            expect(sudoku1.equals(sudoku2)).to.be.true;
-            done();
-        });
-    });
-
-    describe('exchangeRows() ', () => {
-        it('should exchange two rows', done => {
-            let testGrid: number[][] = [
-                [1, 2, 3],
-                [4, 5, 6],
-                [7, 8, 9]
-            ];
-
-            let sudoku1 = new Sudoku();
-            sudoku1.grid = testGrid;
-            sudoku1.size = 3;
-
-            sudoku1.exchangeRows(1, 2);
-
-            let solutionGrid: number[][] = [
-                [1, 2, 3],
-                [7, 8, 9],
-                [4, 5, 6]
-            ];
-            let sudoku2 = new Sudoku();
-            sudoku2.grid = solutionGrid;
-            sudoku2.size = 3;
-
-            expect(sudoku1.equals(sudoku2)).to.be.true;
-            done();
-        });
-    });
-
-    describe('flipHorizontally() ', () => {
-        it('should flip the grid horizontally', done => {
-            let testGrid: number[][] = [
-                [1, 2, 3, 4],
-                [4, 3, 2, 1],
-                [5, 6, 7, 8],
-                [8, 7, 6, 5]
-            ];
-
-            let sudoku1 = new Sudoku();
-            sudoku1.grid = testGrid;
-            sudoku1.size = 4;
-
-            sudoku1.flipHorizontally();
-
-            let solutionGrid: number[][] = [
-                [4, 3, 2, 1],
-                [1, 2, 3, 4],
-                [8, 7, 6, 5],
-                [5, 6, 7, 8]
-            ];
-
-            let sudoku2 = new Sudoku();
-            sudoku2.grid = solutionGrid;
-            sudoku2.size = 4;
-
-            expect(sudoku1.equals(sudoku2)).to.be.true;
-            done();
-        });
-    });
-
-    describe('flipVertically() ', () => {
-        it('should flip the grid vertically', done => {
-            let testGrid: number[][] = [
-                [1, 2, 3, 4, 0],
-                [4, 3, 2, 1, 0],
-                [5, 6, 7, 8, 0],
-                [8, 7, 6, 5, 0],
-                [0, 0, 0, 0, 0]
-            ];
-
-            let sudoku1 = new Sudoku();
-            sudoku1.grid = testGrid;
-            sudoku1.size = 5;
-
-            sudoku1.flipVertically();
-
-            let solutionGrid: number[][] = [
-                [0, 0, 0, 0, 0],
-                [8, 7, 6, 5, 0],
-                [5, 6, 7, 8, 0],
-                [4, 3, 2, 1, 0],
-                [1, 2, 3, 4, 0]
-            ];
-
-            let sudoku2 = new Sudoku();
-            sudoku2.grid = solutionGrid;
-            sudoku2.size = 5;
-
-            expect(sudoku1.equals(sudoku2)).to.be.true;
-            done();
-        });
-    });
-
-    describe('flipAroundBackwardDiagonal() ', () => {
-        it('should flip the grid around its backward diagonal', done => {
-            let testGrid: number[][] = [
-                [1, 2, 3],
-                [4, 5, 6],
-                [7, 8, 9]
-            ];
-
-            let sudoku1 = new Sudoku();
-            sudoku1.grid = testGrid;
-            sudoku1.size = 3;
-
-            sudoku1.flipAroundBackwardDiagonal();
-
-            let solutionGrid: number[][] = [
-                [1, 4, 7],
-                [2, 5, 8],
-                [3, 6, 9]
-            ];
-
-            let sudoku2 = new Sudoku();
-            sudoku2.grid = solutionGrid;
-            sudoku2.size = 3;
-
-            expect(sudoku1.equals(sudoku2)).to.be.true;
-            done();
-        });
-    });
-
-    describe('flipAroundForwardDiagonal() ', () => {
-        it('should flip the grid around its forward diagonal', done => {
-            let testGrid: number[][] = [
-                [1, 2, 3],
-                [4, 5, 6],
-                [7, 8, 9]
-            ];
-
-            let sudoku1 = new Sudoku();
-            sudoku1.grid = testGrid;
-            sudoku1.size = 3;
-
-            sudoku1.flipAroundForwardDiagonal();
-
-            let solutionGrid: number[][] = [
-                [9, 6, 3],
-                [8, 5, 2],
-                [7, 4, 1]
-            ];
-
-            let sudoku2 = new Sudoku();
-            sudoku2.grid = solutionGrid;
-            sudoku2.size = 3;
-
-            expect(sudoku1.equals(sudoku2)).to.be.true;
-            done();
-        });
-    });
-
     describe('getRandomInt() ', () => {
         it('should generate an integer between two values', done => {
             let min = 4, max = 10;
             let random: number = getRandomInt(min, max);
 
             expect(random).to.be.at.least(min).and.at.most(max);
-            done();
-        });
-    });
-
-    describe('generateRandomValidIndexes() ', () => {
-        it('should generate two valid indexes for switching rows or columns', done => {
-            let indexes: number[] = generateRandomValidIndexes();
-
-            expect(Math.floor(indexes[0] / 3)).to.equal(Math.floor(indexes[1] / 3));
             done();
         });
     });
@@ -369,69 +181,6 @@ describe('Sudoku', () => {
             sudoku.grid = testGrid;
 
             expect(sudoku.areSquaresValid()).to.be.false;
-            done();
-        });
-    });
-
-    describe('randomize() ', () => {
-        it('should alter the sudoku grid ', done => {
-            let sudoku1 = new Sudoku();
-            let sudoku2 = new Sudoku();
-
-            sudoku2.randomize();
-
-            expect(sudoku1.equals(sudoku2)).to.be.false;
-            done();
-        });
-
-        it('the sudoku should stay valid after randomization ', done => {
-            let sudoku = new Sudoku();
-
-            sudoku.randomize();
-
-            expect(sudoku.isValid()).to.be.true;
-            done();
-        });
-    });
-
-    describe('isSolvable() ', () => {
-        it('should return true when the grid is solvable ', done => {
-            let testGrid: number[][] = [
-                [1, 2, 3, 4, 5, 6, 7, 8, 9],
-                [4, 5, 6, 7, 8, 9, 1, 2, 3],
-                [7, 8, 9, 1, 2, 3, 4, 5, 6],
-                [2, 3, 4, 5, 6, 7, 8, 9, 1],
-                [5, 6, 7, 8, 9, 1, 2, 3, 4],
-                [8, 9, 1, 2, 3, 4, 5, 6, 7],
-                [3, 4, 5, 6, 7, 8, 9, 1, 2],
-                [6, 7, 8, 9, 1, 2, 3, 4, 5],
-                [9, 1, 2, 3, 4, 5, 6, 7, 8]
-            ];
-            let sudoku = new Sudoku();
-
-            sudoku.grid = testGrid;
-
-            expect(sudoku.isSolvable()).to.be.true;
-            done();
-        });
-
-        it('should return false when the grid is not solvable ', done => {
-            let testGrid: number[][] = [
-                [1, 2, 3, 4, 5, 6, 7, 8, 9],
-                [4, 5, 6, 7, 8, 9, 1, 2, 3],
-                [7, 8, 9, 1, 2, 3, 4, 5, 6],
-                [2, 3, 4, 5, 6, 7, 8, 9, 1],
-                [5, 6, 7, 8, 9, 1, 2, 3, 4],
-                [8, 9, 1, 2, 3, 4, 5, 6, 7],
-                [3, 4, 5, 6, 7, 8, 9, 1, 2],
-                [6, 7, 8, 9, 1, 2, 3, 4, 5],
-                [9, 1, 2, 3, 4, 5, 6, 7, 8]
-            ];
-            let sudoku = new Sudoku();
-
-            sudoku.grid = testGrid;
-
-            expect(sudoku.isSolvable()).to.be.false;
             done();
         });
     });

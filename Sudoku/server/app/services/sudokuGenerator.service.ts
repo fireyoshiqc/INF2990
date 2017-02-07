@@ -9,30 +9,8 @@
 
 //-------------------- HELPER FUNCTIONS --------------------------//
 
-export function generateRandomValidIndexes(): number[] {
-    const SQUARE_SIZE = 3;
-    let randomIndexes: number[] = [0, 0];
-    let squareIndex = getRandomInt(0, 2);
-
-    randomIndexes[0] = SQUARE_SIZE * squareIndex + getRandomInt(0, 2);
-    randomIndexes[1] = SQUARE_SIZE * squareIndex + (randomIndexes[0] + getRandomInt(1, 2)) % SQUARE_SIZE;
-
-    return randomIndexes;
-}
-
 export function getRandomInt(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-export function sudokuToString(sudokuGrid: number[][]): string {
-    let str = "\n";
-
-    sudokuGrid.forEach(row => {
-        str += "\t" + row.toString() + "\n";
-    });
-
-    str = str.substr(0, str.length - 1);
-    return str;
 }
 
 //-------------------- END HELPER FUNCTIONS -----------------------//
@@ -78,65 +56,6 @@ export class Sudoku {
         }
 
         return true;
-    }
-
-    exchangeColumns(column1: number, column2: number): void {
-        let temporary: number;
-
-        for (let i = 0; i < this.size; i++) {
-            temporary = this.grid[i][column1];
-            this.grid[i][column1] = this.grid[i][column2];
-            this.grid[i][column2] = temporary;
-        }
-    }
-
-    exchangeRows(row1: number, row2: number): void {
-        let temporary: number;
-
-        for (let i = 0; i < this.size; i++) {
-            temporary = this.grid[row1][i];
-            this.grid[row1][i] = this.grid[row2][i];
-            this.grid[row2][i] = temporary;
-        }
-    }
-
-    flipHorizontally(): void {
-        for (let i = 0; i < this.size; i++) {
-            this.grid[i].reverse();
-        }
-    }
-
-    flipVertically(): void {
-        for (let i = 0; i < this.size / 2; i++) {
-            this.exchangeRows(i, this.size - i - 1);
-        }
-    }
-
-    flipAroundBackwardDiagonal(): void {
-        let temporary: number;
-
-        for (let i = 0; i < this.size; i++) {
-            // start condition is j = i + 1 : Ignore the elements on diagonal
-            for (let j = i + 1; j < this.size; j++) {
-                temporary = this.grid[i][j];
-                this.grid[i][j] = this.grid[j][i];
-                this.grid[j][i] = temporary;
-            }
-        }
-    }
-
-    flipAroundForwardDiagonal(): void {
-        let temporary: number;
-        let offset = this.size - 1;
-
-        for (let i = 0; i < this.size; i++) {
-            // end condition is j < this.size - i - 1 : Ignore the elements on diagonal
-            for (let j = 0; j < this.size - i - 1; j++) {
-                temporary = this.grid[i][j];
-                this.grid[i][j] = this.grid[offset - j][offset - i];
-                this.grid[offset - j][offset - i] = temporary;
-            }
-        }
     }
 
     isValid(): boolean {
@@ -195,92 +114,6 @@ export class Sudoku {
         return true;
     }
 
-    randomize(): void {
-        const RANDOM_OP_COUNT = 5000;
-        let exchangeOperationsTable = [
-            (x: number, y: number) => { this.exchangeColumns(x, y); },
-            (x: number, y: number) => { this.exchangeRows(x, y); }
-        ];
-        let flipOperationsTable = [
-            () => { this.flipAroundBackwardDiagonal(); },
-            () => { this.flipAroundForwardDiagonal(); },
-            () => { this.flipHorizontally(); },
-            () => { this.flipVertically(); }
-        ];
-        let randomInt: number;
-        let numberOfOperations = exchangeOperationsTable.length + flipOperationsTable.length;
-
-        for (let i = 0; i < RANDOM_OP_COUNT; i++) {
-            randomInt = getRandomInt(1, numberOfOperations);
-
-            if (randomInt < 3) {
-                let table = generateRandomValidIndexes();
-                exchangeOperationsTable[randomInt - 1](table[0], table[1]);
-            } else {
-                flipOperationsTable[randomInt - 3]();
-            }
-        }
-    }
-
-    isSolvable() : boolean {
-        let zerosIndexes : Array<number>;
-        for (let index = 0; index < this.size * this.size; index++) {
-            let x = index % 9;
-            let y = Math.floor(index / 9);
-            if (this.grid[x][y] === 0) {
-                zerosIndexes.push(index);
-            }
-        }
-
-        return this.solveSudoku(zerosIndexes);
-    }
-
-    solveSudoku(zerosIndexes : Array<number>) : boolean {
-        if (zerosIndexes.length === 0) {
-            return true;
-        }
-        let index = zerosIndexes.pop();
-        let x = index % 9;
-        let y = Math.floor(index / 9);
-
-        for (let value = 1; value <= this.size; value++) {
-            if (this.valueIsLegal(value, x, y)) {
-                this.grid[x][y] = value;
-                if (this.solveSudoku(zerosIndexes)) {
-                    return true;
-                }
-            }
-        }
-        this.grid[x][y] = 0;
-        return false;
-    }
-
-    valueIsLegal(entry: number, row: number, column: number): boolean {
-        return this.validateRow(entry, row) &&
-            this.validateColumn(entry, column) &&
-            this.validateSquare(entry, row, column);
-    }
-
-    validateRow(entry: number, row: number): boolean {
-        return this.grid[row].every(element => element !== entry);
-    }
-
-    validateColumn(entry: number, column: number) {
-        return this.grid.every(row => row[column] !== entry);
-    }
-
-    validateSquare(entry: number, row: number, column: number) {
-        let x: number, y: number;
-
-        // coordinates for upper left corner of each square
-        x = this.size * Math.floor(row / this.size);
-        y = this.size * Math.floor(column / this.size);
-
-        return this.grid.slice(x, x + this.size).every(slicedRows =>
-            slicedRows.slice(y, y + this.size).every(element =>
-                element !== entry));
-    }
-    
     countZeros(): number {
         let countZeros = 0;
 
@@ -293,5 +126,16 @@ export class Sudoku {
         });
 
         return countZeros;
+    }
+
+    toString(): string {
+        let str = "\n";
+
+        this.grid.forEach(row => {
+            str += "\t" + row.toString() + "\n";
+        });
+
+        str = str.substr(0, str.length - 1);
+        return str;
     }
 }
