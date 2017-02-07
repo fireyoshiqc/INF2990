@@ -23,6 +23,7 @@ export class GameRenderer {
     isStarted = false;
     lightManager: LightManager = new LightManager();
     curlingStonesManager: CurlingStonesManager = new CurlingStonesManager();
+    clock: THREE.Clock;
 
     public init(container?: HTMLElement): void {
         this.scene = new THREE.Scene();
@@ -33,6 +34,10 @@ export class GameRenderer {
         /*We have to set the size at which we want to render our app. We use the width and the height of the browser.*/
         this.renderer = new THREE.WebGLRenderer({ antialias: true });
         this.renderer.setSize(window.innerWidth, window.innerHeight);
+
+        this.clock = new THREE.Clock();
+
+
 
         if (container !== undefined) {
             if (container.getElementsByTagName('canvas').length === 0) {
@@ -54,12 +59,12 @@ export class GameRenderer {
         this.add(rink);
 
         let stone1 = new CurlingStone(new THREE.Vector3(0, 0, -1),
-                                      new THREE.Vector3(0.5, 0, -rink.RINK_LENGTH / 2 + 1));
+            new THREE.Vector3(0.5, 0, -rink.RINK_LENGTH / 2 + 1));
         stone1.init();
         this.curlingStonesManager.add(stone1);
 
         let stone2 = new CurlingStone(new THREE.Vector3(0, 0, 0),
-                                      new THREE.Vector3(0, 0, -rink.RINK_LENGTH / 2));
+            new THREE.Vector3(0, 0, -rink.RINK_LENGTH / 2));
         stone2.init();
         this.curlingStonesManager.add(stone2);
 
@@ -70,8 +75,8 @@ export class GameRenderer {
         this.camera.position.y = 5;
         this.camera.rotation.x = -Math.PI / 2;
 
-        this.curlingStonesManager.get().forEach( stone => {
-                this.add(stone);
+        this.curlingStonesManager.get().forEach(stone => {
+            this.add(stone);
         });
 
         /*--------------------LIGHT------------------------------------------ */
@@ -83,21 +88,25 @@ export class GameRenderer {
     }
 
     render(): void {
+        let delta = this.clock.getDelta();
         window.requestAnimationFrame(() => this.render());
+
 
         // Calculate vector linking both curling stones
         let curlingStones = this.curlingStonesManager.get();
         let vec = new THREE.Vector3(curlingStones[0].position.x - curlingStones[1].position.x,
-                                    curlingStones[0].position.y - curlingStones[1].position.y,
-                                    curlingStones[0].position.z - curlingStones[1].position.z);
+            curlingStones[0].position.y - curlingStones[1].position.y,
+            curlingStones[0].position.z - curlingStones[1].position.z);
 
         if (vec.length() !== 0 && vec.length() < curlingStones[0].getDiameter() * 2) {
             curlingStones[0].direction = vec.normalize();
             curlingStones[1].direction = vec.normalize().clone().negate();
         }
 
-        curlingStones[0].position.add(curlingStones[0].direction.clone().multiplyScalar(0.005));
-        curlingStones[1].position.add(curlingStones[1].direction.clone().multiplyScalar(0.005));
+        // Scalars are calculated using delta time compared to an expected 60 frames per second (16.67 ms frametime).
+        console.log(delta);
+        curlingStones[0].position.add(curlingStones[0].direction.clone().multiplyScalar(0.3 * delta));
+        curlingStones[1].position.add(curlingStones[1].direction.clone().multiplyScalar(0.3 * delta));
 
         this.renderer.render(this.scene, this.camera);
     }
