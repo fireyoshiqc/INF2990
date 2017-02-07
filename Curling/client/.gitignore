@@ -1,10 +1,16 @@
-# Exclusion des dépendences du projet. Elles peuvent être regénérées 
+# Exclusion des dépendences du projet. Elles peuvent être regénérées
 # automatiquement.
 node_modules/
 false/
 
 # Exclusion des fichiers Javascripts
 out/
+
+# Exclusion des fichiers dans le dossier .vscode
+.vscode/
+
+# Exclusion des fichiers d'explorateur Dolphin KDE
+.directory
 
 # NPM Debug Log
 npm-debug.log
