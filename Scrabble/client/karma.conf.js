@@ -3,10 +3,14 @@ module.exports = function(config) {
   var appBase    = 'out/';      // transpiled app JS and map files
   var appSrcBase = 'app/';      // app source TS files
   var appAssets  = 'base/app/'; // component assets fetched by Angular's compiler
+  var assetsBase = 'assets/';
 
   // Testing helpers (optional) are conventionally in a folder called `testing`
   var testingBase    = 'testing/'; // transpiled test JS and map files
   var testingSrcBase = 'testing/'; // test source TS files
+  var textureAssets  = '/base/assets/textures/'; // Where our fonts will be located (karma proxy)
+  var htmlAssets  = '/base/assets/html/'; // Where our fonts will be located (karma proxy)
+  var templateAssets  = '/base/assets/templates/'; // Where our fonts will be located (karma proxy)
 
   config.set({
     basePath: '',
@@ -51,6 +55,11 @@ module.exports = function(config) {
       'node_modules/zone.js/dist/async-test.js',
       'node_modules/zone.js/dist/fake-async-test.js',
 
+      {pattern: assetsBase + 'templates/*.html',watched:false, included: false, served:true},
+      {pattern: assetsBase + 'templates/*.*.html',watched:false, included: false, served:true},
+      {pattern: assetsBase + 'textures/*.*',watched:false, included: false, served:true},
+      {pattern: assetsBase + 'textures/**/*.*',watched:false, included: false, served:true},
+
       // RxJs
       { pattern: 'node_modules/rxjs/**/*.js', included: false, watched: false },
       { pattern: 'node_modules/rxjs/**/*.js.map', included: false, watched: false },
@@ -84,7 +93,8 @@ module.exports = function(config) {
     // Proxied base paths for loading assets
     proxies: {
       // required for component assets fetched by Angular's compiler
-      "/app/": appAssets
+      "/app/": appAssets,
+      '/assets/': '/base/assets/'
     },
 
     preprocessors: {

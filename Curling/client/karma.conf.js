@@ -70,7 +70,7 @@ module.exports = function(config) {
       {pattern: assetsBase + 'templates/*.html',watched:false, included: false, served:true},
       {pattern: assetsBase + 'textures/*.*',watched:false, included: false, served:true},
       {pattern: assetsBase + 'textures/**/*.*',watched:false, included: false, served:true},
-	  {pattern: assetsBase + 'stylesheets/*.css',watched:false, included: false, served:true},
+	    {pattern: assetsBase + 'stylesheets/*.css',watched:false, included: false, served:true},
 
 	  // RxJs
       { pattern: 'node_modules/rxjs/**/*.js', included: false, watched: false },

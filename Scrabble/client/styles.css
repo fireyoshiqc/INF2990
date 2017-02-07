@@ -1,79 +1,169 @@
-* { 
-  margin: 0; 
-  padding: 0; 
-  box-sizing: border-box;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 h1 {
-  color: #369;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 250%;
-  margin-bottom: 10px;
+    color: #369;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 250%;
+    margin-bottom: 10px;
+    text-align: center;
 }
 
-body { 
-  font: 13px Helvetica, Arial; 
+body {
+    font: 13px Helvetica, Arial;
+    width: auto !important;
+    min-width: 620px;
 }
+
 
 /***************/
+
+
 /* message box */
+
+
 /***************/
 
-.message-box { 
-  background: lightgray; 
-  padding: 3px; 
-  position: fixed; 
-  bottom: 50px; 
-  width: 30%;
+.message-box {
+    background: lightgray;
+    padding: 3px;
+    /*position: fixed;*/
+    width: 100%;
 }
 
-.message-box input { 
-  border: 0; 
-  padding: 10px;
-  width: 85%;
-  margin-right: .5%; 
+.message-box input {
+    border: 0;
+    /*padding: 10px;*/
+    width: 100%;
+    /*margin-right: .5%;*/
 }
 
-.message-box button { 
-  background: darkblue; 
-  color: white;
-  border: none; 
-  padding: 10px;
+.message-box button {
+    background: darkblue;
+    color: white;
+    border: none;
+    width: 100%;
 }
+
 
 /**********************/
+
+
 /* message formatting */
+
+
 /**********************/
 
-#messagePanel tr { 
-  padding: 5px 10px; 
+
+/*
+#messagePanel tr {
+  padding: 5px 10px;
+}
+*/
+
+#messageList {
+    height: calc(100vh - 50vh) !important;
+    /*overflow: scroll;*/
+}
+
+#messageList table {
+    table-layout: fixed;
+    width: 100%;
+    /*overflow: scroll;*/
+}
+
+#messageList td {
+    word-wrap: break-word;
+    /*overflow: scroll;*/
 }
 
 #messagePanel {
-  float: left;
-  margin-left: 30px;
+    /*float: left;*/
+    /*margin-left: 30px;
   margin-top: 10px;
-  width: 500px;
+  */
+    width: 100%;
+    height: 100%;
+    border: 2px black solid;
 }
 
-/****************************/
-/* scrabble board component */
+
 /****************************/
 
+
+/* scrabble board component */
+
+
+/****************************/
+
+#gamePanel {
+    background-color: #111111;
+}
+
+#sidePanel {
+    height: calc(100vh - 200px);
+}
+
+#infoPanel {
+    height: 50%;
+    border: 2px black solid;
+}
+
 #board {
-  float: left;
-  margin-left: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: 60%;
+    padding-top: 3.4%;
+    padding-bottom: 5%;
+    background-image: url("/assets/textures/board/Board.png");
+    background-repeat: no-repeat;
+    background-size: 100%;
 }
 
 #board table {
-  margin: 1em auto;
-  border-collapse: collapse;
+    width: 88.5%;
+    position: relative;
+    left: 5.882%;
+    top: 5.882%;
 }
 
 #board td {
-  width : 40px;
-  height: 40px;
-  display : inline-block;
-  padding : 0px 0px 0px 0px;
-  border: 0px solid;
+    width: 6.66%;
+    height: 6.66%;
+    display: inline-block;
+    padding: 0px 0px 0px 0px;
+    border: 0px solid;
+}
+
+#rack {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: 100%;
+    padding-top: 2%;
+    padding-bottom: 5%;
+    background-image: url("/assets/textures/rack/Rack.png");
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+
+#rack table {
+    width: 95.9%;
+    position: relative;
+    left: 2.05%;
+    top: 11.23%;
+}
+
+#rack td {
+    width: 13.68%;
+    height: 100%;
+    display: inline-block;
+    margin-left: 0.53%;
+    margin-top:0.53%;
+
+    border: 0px solid;
 }

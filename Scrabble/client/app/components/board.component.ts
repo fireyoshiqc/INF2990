@@ -6,8 +6,7 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-
-import { BoardTile } from './classes/boardTile';
+import { BoardTile } from '../classes/boardTile';
 
 @Component({
     selector: 'board-comp',
@@ -16,18 +15,18 @@ import { BoardTile } from './classes/boardTile';
             <table>
                 <tr *ngFor="let row of board; let i = index">
                     <td *ngFor="let tile of row; let j = index">
-                        <img src = {{tile.texture}} height = 40px width = 40 px>
+                        <img src = {{tile.texture}} height = 100% width = 100%>
                     </td>
                 </tr>
             </table>
         </div>
     `
 })
+
 export class BoardComponent implements OnInit {
-    board : BoardTile[][];
+    board: BoardTile[][];
 
     ngOnInit() {
-
         let boardLength = 15;
 
         this.board = [];

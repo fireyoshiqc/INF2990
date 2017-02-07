@@ -1,18 +1,24 @@
 <div id="messagePanel">
-    <table>
-        <tr *ngFor="let msg of msgList; let i = index">
-            <td>
-                <div>
+    <div class="pre-scrollable" id="messageList">
+        <table>
+            <tr *ngFor="let msg of msgList; let i = index">
+                <td>
                     <strong>{{msg.username}} : </strong>{{msg.submessage}}
-                </div>
-            </td>
-        </tr>
-    </table>
-
+                </td>
+            </tr>
+        </table>
+    </div>
+    
     <form #messageForm="ngForm">
         <div class="message-box">
-            <input type="text" autocomplete="off" class="form-control" id="message" [(ngModel)]="msg.message" name="message">
-            <button type="submit" class="btn btn-default" (click)="onSubmit(); messageForm.reset()">Submit</button>
+            <div class="row">
+                <div class="col-md-10">
+                    <input type="text" autocomplete="off" class="form-control" id="message" [(ngModel)]="msg.message" name="message">
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-default" (click)="onSubmit(); messageForm.reset()">Submit</button>
+                </div>
+            </div>
         </div>
     </form>
 </div>
