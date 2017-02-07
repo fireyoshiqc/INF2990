@@ -37,18 +37,9 @@ describe('SudokuManager', () => {
     describe('getEasySudoku() ', () => {
         it('should get an easy sudoku object from SudokuManager', done => {
             let sudoku = manager.getEasySudoku();
-            let countZeros = 0;
-
-            sudoku.grid.forEach(row => {
-                row.forEach(element => {
-                    if (element === 0) {
-                        countZeros++;
-                    }
-                });
-            });
 
             // TODO : change countZeros to actual value for easy sudoku
-            expect(countZeros).to.equal(0);
+            expect(sudoku.countZeros()).to.equal(0);
             done();
         });
     });
@@ -56,18 +47,9 @@ describe('SudokuManager', () => {
     describe('getHardSudoku() ', () => {
         it('should get a hard sudoku object from SudokuManager', done => {
             let sudoku = manager.getHardSudoku();
-            let countZeros = 0;
-
-            sudoku.grid.forEach(row => {
-                row.forEach(element => {
-                    if (element === 0) {
-                        countZeros++;
-                    }
-                });
-            });
 
             // TODO : change countZeros to actual value for hard sudoku
-            expect(countZeros).to.equal(0);
+            expect(sudoku.countZeros()).to.equal(0);
             done();
         });
     });

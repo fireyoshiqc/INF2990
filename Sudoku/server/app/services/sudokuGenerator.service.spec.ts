@@ -437,4 +437,24 @@ describe('Sudoku', () => {
     });
 
 
+    describe('countZeros() ', () => {
+        it('should return 10 when there are 10 zeros in the grid', done => {
+            let testGrid: number[][] = [
+                [0, 2, 0, 4, 5, 6, 7, 8, 9],
+                [2, 3, 4, 5, 6, 7, 8, 9, 0],
+                [3, 4, 5, 6, 7, 8, 9, 1, 2],
+                [4, 5, 0, 7, 8, 9, 1, 2, 3],
+                [5, 6, 7, 8, 9, 1, 2, 3, 4],
+                [6, 7, 8, 9, 1, 2, 3, 4, 5],
+                [7, 8, 0, 1, 2, 3, 4, 5, 6],
+                [8, 0, 1, 2, 3, 4, 0, 0, 7],
+                [9, 1, 2, 0, 4, 0, 6, 7, 8]
+            ];
+            let sudoku = new Sudoku();
+            sudoku.grid = testGrid;
+
+            expect(sudoku.countZeros()).to.equal(10);
+            done();
+        });
+    });
 });

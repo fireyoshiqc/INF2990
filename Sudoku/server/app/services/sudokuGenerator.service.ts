@@ -280,4 +280,18 @@ export class Sudoku {
             slicedRows.slice(y, y + this.size).every(element =>
                 element !== entry));
     }
+    
+    countZeros(): number {
+        let countZeros = 0;
+
+        this.grid.forEach(row => {
+            row.forEach(element => {
+                if (element === 0) {
+                    countZeros++;
+                }
+            });
+        });
+
+        return countZeros;
+    }
 }
