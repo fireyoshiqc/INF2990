@@ -28,12 +28,12 @@ describe('CurlingStone', () => {
             done();
         });
         it('should make a colored CurlingStone object if a valid color format is entered.', done => {
-            testStone = new CurlingStone("#FF0000");
+            testStone = new CurlingStone(null, null, "#FF0000");
             expect(testStone.stoneColor).to.equal("#FF0000");
             done();
         });
         it('should make a white CurlingStone object if an incorrect string is entered.', done => {
-            testStone = new CurlingStone("DEADBEEF");
+            testStone = new CurlingStone(null, null, "DEADBEEF");
             expect(testStone.stoneColor).to.not.equal("DEADBEEF");
             expect(testStone.stoneColor).to.equal("#FFFFFF");
             done();

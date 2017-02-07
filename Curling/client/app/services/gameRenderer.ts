@@ -10,6 +10,7 @@ import { CurlingStone } from '../entities/curlingStone';
 import { SkyBox } from '../entities/skyBox';
 import { Rink } from '../entities/rink';
 import { LightManager } from './lightManager';
+import { CurlingStonesManager } from './curlingStonesManager';
 
 @Injectable()
 export class GameRenderer {
@@ -20,8 +21,8 @@ export class GameRenderer {
     renderer: THREE.WebGLRenderer;
     ambientLight: THREE.HemisphereLight;
     isStarted = false;
-    stone: CurlingStone;
-    lightManager: LightManager;
+    lightManager: LightManager = new LightManager();
+    curlingStonesManager: CurlingStonesManager = new CurlingStonesManager();
 
     public init(container?: HTMLElement): void {
         this.scene = new THREE.Scene();
@@ -42,32 +43,39 @@ export class GameRenderer {
             document.body.appendChild(this.renderer.domElement);
         }
 
-        this.camera.position.z = 6;
-        this.camera.position.y = 2;
-
-        this.camera.rotation.x -= Math.PI / 8;
-
-        this.stone = new CurlingStone();
-        this.stone.init();
-        this.add(this.stone);
-        this.render();
-        this.isStarted = true;
-
         let skybox: SkyBox;
         skybox = new SkyBox();
         this.add(skybox);
 
         let rink: Rink = new Rink(skybox.skyBoxImages);
         rink.position.z = -20;
-
         rink.position.z = -rink.RINK_LENGTH / 2;
         rink.position.y = rink.POS_RINK_Y;
-
         this.add(rink);
+
+        let stone1 = new CurlingStone(new THREE.Vector3(0, 0, -1),
+                                      new THREE.Vector3(0.5, 0, -rink.RINK_LENGTH / 2 + 1));
+        stone1.init();
+        this.curlingStonesManager.add(stone1);
+
+        let stone2 = new CurlingStone(new THREE.Vector3(0, 0, 0),
+                                      new THREE.Vector3(0, 0, -rink.RINK_LENGTH / 2));
+        stone2.init();
+        this.curlingStonesManager.add(stone2);
+
+        this.render();
+        this.isStarted = true;
+
+        this.camera.position.z = -rink.RINK_LENGTH / 2;
+        this.camera.position.y = 5;
+        this.camera.rotation.x = -Math.PI / 2;
+
+        this.curlingStonesManager.get().forEach( stone => {
+                this.add(stone);
+        });
 
         /*--------------------LIGHT------------------------------------------ */
 
-        this.lightManager = new LightManager();
         this.scene.add(this.lightManager.spawnAmbientLight(0xffffff, 0x222277));
         this.add(this.lightManager.spawnSpotlights(-2.2, 0, 0, rink));
 
@@ -77,10 +85,19 @@ export class GameRenderer {
     render(): void {
         window.requestAnimationFrame(() => this.render());
 
-        this.camera.position.z -= 0.04;
-        this.stone.position.z -= 0.04;
-        this.stone.position.x -= 0.0005;
-        this.stone.rotation.y += 0.01;
+        // Calculate vector linking both curling stones
+        let curlingStones = this.curlingStonesManager.get();
+        let vec = new THREE.Vector3(curlingStones[0].position.x - curlingStones[1].position.x,
+                                    curlingStones[0].position.y - curlingStones[1].position.y,
+                                    curlingStones[0].position.z - curlingStones[1].position.z);
+
+        if (vec.length() !== 0 && vec.length() < curlingStones[0].getDiameter() * 2) {
+            curlingStones[0].direction = vec.normalize();
+            curlingStones[1].direction = vec.normalize().clone().negate();
+        }
+
+        curlingStones[0].position.add(curlingStones[0].direction.clone().multiplyScalar(0.005));
+        curlingStones[1].position.add(curlingStones[1].direction.clone().multiplyScalar(0.005));
 
         this.renderer.render(this.scene, this.camera);
     }

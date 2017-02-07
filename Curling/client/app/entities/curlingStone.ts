@@ -15,8 +15,9 @@ export class CurlingStone extends THREE.Group {
 
     private texLoader: THREE.TextureLoader;
     stoneColor: string;
+    direction: THREE.Vector3;
 
-    constructor(aColor?: string) {
+    constructor(direction?: THREE.Vector3, position?: THREE.Vector3, aColor?: string) {
         super();
         if (aColor) {
             let regex = new RegExp('#[0-9a-fA-F]{6}');
@@ -30,6 +31,13 @@ export class CurlingStone extends THREE.Group {
         else {
             this.stoneColor = "#FFFFFF";
         }
+
+        if (direction) {
+            this.direction = direction.normalize();
+        }
+        if (position) {
+            this.position.set(position.x, position.y, position.z);
+        }
     }
 
     //Function for random stone color
@@ -40,6 +48,10 @@ export class CurlingStone extends THREE.Group {
             color += letters[Math.floor(Math.random() * 16)];
         }
         return color;
+    }
+
+    getDiameter() : number {
+        return this.RADIUS + this.RADIUS;
     }
 
     init() : void {
