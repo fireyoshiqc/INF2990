@@ -11,6 +11,7 @@ import { SkyBox } from '../entities/skyBox';
 import { Rink } from '../entities/rink';
 import { LightManager } from './lightManager';
 import { CurlingStonesManager } from './curlingStonesManager';
+import { PhysicsManager } from './physicsManager';
 
 @Injectable()
 export class GameRenderer {
@@ -21,8 +22,9 @@ export class GameRenderer {
     renderer: THREE.WebGLRenderer;
     ambientLight: THREE.HemisphereLight;
     isStarted = false;
-    lightManager: LightManager = new LightManager();
-    curlingStonesManager: CurlingStonesManager = new CurlingStonesManager();
+    lightManager: LightManager;
+    curlingStonesManager: CurlingStonesManager;
+    physicsManager: PhysicsManager;
     clock: THREE.Clock;
 
     public init(container?: HTMLElement): void {
@@ -30,14 +32,15 @@ export class GameRenderer {
 
         /*Field of view, aspect ratio, near, far*/
         this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
+        this.lightManager = new LightManager();
+        this.physicsManager = new PhysicsManager();
+        this.curlingStonesManager = new CurlingStonesManager();
 
         /*We have to set the size at which we want to render our app. We use the width and the height of the browser.*/
         this.renderer = new THREE.WebGLRenderer({ antialias: true });
         this.renderer.setSize(window.innerWidth, window.innerHeight);
 
         this.clock = new THREE.Clock();
-
-
 
         if (container !== undefined) {
             if (container.getElementsByTagName('canvas').length === 0) {
@@ -68,9 +71,6 @@ export class GameRenderer {
         stone2.init();
         this.curlingStonesManager.add(stone2);
 
-        this.render();
-        this.isStarted = true;
-
         this.camera.position.z = -rink.RINK_LENGTH / 2;
         this.camera.position.y = 5;
         this.camera.rotation.x = -Math.PI / 2;
@@ -85,13 +85,20 @@ export class GameRenderer {
         this.add(this.lightManager.spawnSpotlights(-2.2, 0, 0, rink));
 
         //------------------- END LIGHT------------------------------------------//
+
+        this.render();
+        this.isStarted = true;
     }
 
     render(): void {
         let delta = this.clock.getDelta();
         window.requestAnimationFrame(() => this.render());
 
+        //TODO: Implement this.physicsManager.update() correctly
+        this.physicsManager.update();
 
+
+        //TODO: Move collision logic to physicsManager
         // Calculate vector linking both curling stones
         let curlingStones = this.curlingStonesManager.get();
         let vec = new THREE.Vector3(curlingStones[0].position.x - curlingStones[1].position.x,
