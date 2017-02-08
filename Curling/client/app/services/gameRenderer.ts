@@ -30,12 +30,6 @@ export class GameRenderer {
     public init(container?: HTMLElement): void {
         this.scene = new THREE.Scene();
 
-        /*Field of view, aspect ratio, near, far*/
-        this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
-        this.lightManager = new LightManager();
-        this.physicsManager = new PhysicsManager();
-        this.curlingStonesManager = new CurlingStonesManager();
-
         /*We have to set the size at which we want to render our app. We use the width and the height of the browser.*/
         this.renderer = new THREE.WebGLRenderer({ antialias: true });
         this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -50,6 +44,16 @@ export class GameRenderer {
         else {
             document.body.appendChild(this.renderer.domElement);
         }
+
+        let containerRect = container.getBoundingClientRect();
+        //Adjust width and height to real container size
+        this.renderer.setSize(containerRect.width, containerRect.height);
+
+        /*Field of view, aspect ratio, near, far*/
+        this.camera = new THREE.PerspectiveCamera(45, containerRect.width / containerRect.height, 1, 10000);
+        this.lightManager = new LightManager();
+        this.physicsManager = new PhysicsManager();
+        this.curlingStonesManager = new CurlingStonesManager();
 
         let skybox: SkyBox;
         skybox = new SkyBox();
@@ -111,7 +115,6 @@ export class GameRenderer {
         }
 
         // Scalars are calculated using delta time compared to an expected 60 frames per second (16.67 ms frametime).
-        console.log(delta);
         curlingStones[0].position.add(curlingStones[0].direction.clone().multiplyScalar(0.3 * delta));
         curlingStones[1].position.add(curlingStones[1].direction.clone().multiplyScalar(0.3 * delta));
 
