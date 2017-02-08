@@ -1,6 +1,7 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { GameRenderer } from '../services/gameRenderer';
+
 @Component({
     selector: 'my-gl',
     template: `
@@ -10,6 +11,11 @@ import { GameRenderer } from '../services/gameRenderer';
 })
 export class GlComponent implements OnInit {
     ngOnInit(): void { console.log("ngOnInit called"); }
-    constructor(private gameRenderer: GameRenderer) {
+    constructor(private gameRenderer: GameRenderer, private ngZone: NgZone) {
+        window.onresize = (e) => {
+            this.ngZone.run(() => {
+                gameRenderer.onResize();
+            });
+        };
     }
 }

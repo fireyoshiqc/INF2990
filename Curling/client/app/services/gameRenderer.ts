@@ -16,7 +16,7 @@ import { PhysicsManager } from './physicsManager';
 @Injectable()
 export class GameRenderer {
 
-
+    container: HTMLElement;
     scene: THREE.Scene;
     camera: THREE.PerspectiveCamera;
     renderer: THREE.WebGLRenderer;
@@ -28,6 +28,7 @@ export class GameRenderer {
     clock: THREE.Clock;
 
     public init(container?: HTMLElement): void {
+        this.container = container;
         this.scene = new THREE.Scene();
 
         /*We have to set the size at which we want to render our app. We use the width and the height of the browser.*/
@@ -36,21 +37,22 @@ export class GameRenderer {
 
         this.clock = new THREE.Clock();
 
-        if (container !== undefined) {
-            if (container.getElementsByTagName('canvas').length === 0) {
-                container.appendChild(this.renderer.domElement);
+        if (this.container !== undefined) {
+            if (this.container.getElementsByTagName('canvas').length === 0) {
+                this.container.appendChild(this.renderer.domElement);
             }
         }
         else {
             document.body.appendChild(this.renderer.domElement);
         }
 
-        let containerRect = container.getBoundingClientRect();
+        let containerRect = this.container.getBoundingClientRect();
         //Adjust width and height to real container size
         this.renderer.setSize(containerRect.width, containerRect.height);
 
         /*Field of view, aspect ratio, near, far*/
-        this.camera = new THREE.PerspectiveCamera(45, containerRect.width / containerRect.height, 1, 10000);
+        this.camera = new THREE.PerspectiveCamera(45,
+            containerRect.width / containerRect.height, 1, 10000);
         this.lightManager = new LightManager();
         this.physicsManager = new PhysicsManager();
         this.curlingStonesManager = new CurlingStonesManager();
@@ -92,6 +94,17 @@ export class GameRenderer {
 
         this.render();
         this.isStarted = true;
+    }
+
+    onResize() {
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        let containerRect = this.container.getBoundingClientRect();
+        //Adjust width and height to real container size
+        this.renderer.setSize(containerRect.width, containerRect.height);
+
+        //TODO: Adjust camera FOV following aspect ratio
+        this.camera.aspect = (containerRect.width / containerRect.height);
+        this.camera.updateProjectionMatrix();
     }
 
     render(): void {
