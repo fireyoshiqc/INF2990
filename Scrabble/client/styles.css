@@ -1,3 +1,7 @@
+/**********************/
+/* general formatting */
+/**********************/
+
 * {
     margin: 0;
     padding: 0;
@@ -18,99 +22,17 @@ body {
     min-width: 620px;
 }
 
-
-/***************/
-
-
-/* message box */
-
-
-/***************/
-
-.message-box {
-    background: lightgray;
-    padding: 3px;
-    /*position: fixed;*/
-    width: 100%;
-}
-
-.message-box input {
-    border: 0;
-    /*padding: 10px;*/
-    width: 100%;
-    /*margin-right: .5%;*/
-}
-
-.message-box button {
-    background: darkblue;
-    color: white;
-    border: none;
-    width: 100%;
-}
-
-
-/**********************/
-
-
-/* message formatting */
-
-
-/**********************/
-
-
-/*
-#messagePanel tr {
-  padding: 5px 10px;
-}
-*/
-
-#messageList {
-    height: calc(100vh - 50vh) !important;
-    /*overflow: scroll;*/
-}
-
-#messageList table {
-    table-layout: fixed;
-    width: 100%;
-    /*overflow: scroll;*/
-}
-
-#messageList td {
-    word-wrap: break-word;
-    /*overflow: scroll;*/
-}
-
-#messagePanel {
-    /*float: left;*/
-    /*margin-left: 30px;
-  margin-top: 10px;
-  */
-    width: 100%;
-    height: 100%;
-    border: 2px black solid;
-}
-
-
 /****************************/
-
-
-/* scrabble board component */
-
-
+/* game panel (board, rack) */
 /****************************/
 
 #gamePanel {
     background-color: #111111;
 }
 
-#sidePanel {
-    height: calc(100vh - 200px);
-}
-
-#infoPanel {
-    height: 50%;
-    border: 2px black solid;
-}
+/****************************/
+/* scrabble board component */
+/****************************/
 
 #board {
     margin-left: auto;
@@ -139,6 +61,10 @@ body {
     border: 0px solid;
 }
 
+/***************************/
+/* scrabble rack component */
+/***************************/
+
 #rack {
     margin-left: auto;
     margin-right: auto;
@@ -164,6 +90,63 @@ body {
     display: inline-block;
     margin-left: 0.53%;
     margin-top:0.53%;
-
     border: 0px solid;
+}
+
+/***************************/
+/* side panel (chat, info) */
+/***************************/
+
+#sidePanel {
+    height: calc(100vh - 200px);
+}
+
+#infoPanel {
+    height: 50%;
+    border: 2px black solid;
+}
+
+/***************/
+/* message box */
+/***************/
+
+#messagePanel {
+    width: 100%;
+    height: 100%;
+    border: 2px black solid;
+}
+
+.message-box {
+    background: lightgray;
+    padding: 3px;
+    width: 100%;
+}
+
+.message-box input {
+    border: 0;
+    width: 100%;
+}
+
+.message-box button {
+    background: darkblue;
+    color: white;
+    border: none;
+    width: 100%;
+}
+
+/**********************/
+/* message formatting */
+/**********************/
+
+#messageList {
+    height: calc(100vh - 50vh) !important;
+}
+
+#messageList table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+#messageList td {
+    word-wrap: break-word;
 }

@@ -11,6 +11,17 @@ export class SudokuRandomizer {
 
     sudoku: Sudoku;
 
+    static generateRandomValidIndexes(): number[] {
+        const SQUARE_SIZE = 3;
+        let randomIndexes: number[] = [0, 0];
+        let squareIndex = getRandomInt(0, 2);
+
+        randomIndexes[0] = SQUARE_SIZE * squareIndex + getRandomInt(0, 2);
+        randomIndexes[1] = SQUARE_SIZE * squareIndex + (randomIndexes[0] + getRandomInt(1, 2)) % SQUARE_SIZE;
+
+        return randomIndexes;
+    }
+
     constructor(sudoku: Sudoku) {
         this.sudoku = sudoku;
     }
@@ -100,16 +111,5 @@ export class SudokuRandomizer {
                 this.sudoku.grid[offset - j][offset - i] = temporary;
             }
         }
-    }
-
-    static generateRandomValidIndexes(): number[] {
-        const SQUARE_SIZE = 3;
-        let randomIndexes: number[] = [0, 0];
-        let squareIndex = getRandomInt(0, 2);
-
-        randomIndexes[0] = SQUARE_SIZE * squareIndex + getRandomInt(0, 2);
-        randomIndexes[1] = SQUARE_SIZE * squareIndex + (randomIndexes[0] + getRandomInt(1, 2)) % SQUARE_SIZE;
-
-        return randomIndexes;
     }
 }
