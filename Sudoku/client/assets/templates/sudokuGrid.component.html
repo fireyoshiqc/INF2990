@@ -1,16 +1,21 @@
 <body>
     <div id="sudokuGrid">
-
         <div id="grid">
-            <table>
-                <tr *ngFor="let row of grid; let i = index">
-                    <td *ngFor="let element of row; let j = index">
-                        <div *ngIf="element!=0">
-                            {{element}}
-                        </div>
-                    </td>
-                </tr>
-            </table>
+            <form>
+                <input type="reset" value="Reset Sudoku" (click)="resetSudoku()">
+                <table>
+                    <tr *ngFor="let row of initialGrid; let i = index">
+                        <td *ngFor="let element of row; let j = index">
+                            <div *ngIf="element==0">   
+                                <input #inputField size="1" maxlength="1" (keydown)="putEntry($event, i, j, inputField)">
+                            </div>
+                            <div *ngIf="element!=0">
+                                {{element}}
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </form>
         </div>
 
         <!-- TODO : Place div below in InformationPanelComponent -->

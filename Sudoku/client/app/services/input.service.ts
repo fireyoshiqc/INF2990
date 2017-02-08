@@ -13,6 +13,26 @@ export class InputService {
     readonly GRID_SIZE = 9;
     readonly SQUARE_SIZE = 3;
 
+    verifyEntry(event: any, grid: number[][], row: number, column: number): boolean {
+        const pattern = /[1-9]/;
+
+        // TODO: Implement moving through cases with arrow keys
+        // Left / Up / Right / Down Arrow, Backspace, Delete keys
+        if (event.keyCode === 37 || event.keyCode === 38 || event.keyCode === 39 ||
+            event.keyCode === 40 || event.keyCode === 8 || event.keyCode === 46) {
+            return true;
+        }
+
+        if (!pattern.test(event.key)) {
+            // prevent input
+            event.preventDefault();
+            return true;
+        }
+        else {
+            return this.validate(Number.parseInt(event.key), grid, row, column);
+        }
+    }
+
     validate(entry: number, grid: number[][], row: number, column: number): boolean {
         return this.validateRow(entry, grid, row) &&
             this.validateColumn(entry, grid, column) &&

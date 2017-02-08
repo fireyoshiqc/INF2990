@@ -9,12 +9,12 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class StopwatchService {
-    minutes: number = 0;
-    seconds: number = 0;
-    totalSeconds: number = 0;
+    minutes = 0;
+    seconds = 0;
+    totalSeconds = 0;
     stopwatch: any;
     // Question : where to declare stopwatchIsVisible, sudokuGrid.component or stopwatch.service?
-    stopwatchIsVisible : boolean = true;
+    stopwatchIsVisible = true;
 
     getMinutes(): number { return this.minutes; }
     getSeconds(): number { return this.seconds; }

@@ -66,3 +66,7 @@ tr:first-child {
 tr:nth-child(3n) td {
   border-bottom: solid ;
 }
+
+.invalid {
+  border: 5px red solid;
+}
