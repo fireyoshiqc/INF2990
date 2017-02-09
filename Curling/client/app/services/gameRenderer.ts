@@ -10,7 +10,6 @@ import { CurlingStone } from '../entities/curlingStone';
 import { SkyBox } from '../entities/skyBox';
 import { Rink } from '../entities/rink';
 import { LightManager } from './lightManager';
-import { CurlingStonesManager } from './curlingStonesManager';
 import { PhysicsManager } from './physicsManager';
 
 @Injectable()
@@ -23,9 +22,7 @@ export class GameRenderer {
     ambientLight: THREE.HemisphereLight;
     isStarted = false;
     lightManager: LightManager;
-    curlingStonesManager: CurlingStonesManager;
     physicsManager: PhysicsManager;
-    clock: THREE.Clock;
 
     public init(container?: HTMLElement): void {
         this.container = container;
@@ -34,8 +31,6 @@ export class GameRenderer {
         /*We have to set the size at which we want to render our app. We use the width and the height of the browser.*/
         this.renderer = new THREE.WebGLRenderer({ antialias: true });
         this.renderer.setSize(window.innerWidth, window.innerHeight);
-
-        this.clock = new THREE.Clock();
 
         if (this.container !== undefined) {
             if (this.container.getElementsByTagName('canvas').length === 0) {
@@ -55,7 +50,6 @@ export class GameRenderer {
             containerRect.width / containerRect.height, 1, 10000);
         this.lightManager = new LightManager();
         this.physicsManager = new PhysicsManager();
-        this.curlingStonesManager = new CurlingStonesManager();
 
         let skybox: SkyBox;
         skybox = new SkyBox();
@@ -67,21 +61,59 @@ export class GameRenderer {
         rink.position.y = rink.POS_RINK_Y;
         this.add(rink);
 
+        // ----- Experimental : Adding 7 stones to test the collision ------- //
         let stone1 = new CurlingStone(new THREE.Vector3(0, 0, -1),
-            new THREE.Vector3(0.5, 0, -rink.RINK_LENGTH / 2 + 1));
+        new THREE.Vector3(0.577, 0, -rink.RINK_LENGTH / 2 + 2));
         stone1.init();
-        this.curlingStonesManager.add(stone1);
+        this.physicsManager.add(stone1);
 
         let stone2 = new CurlingStone(new THREE.Vector3(0, 0, 0),
             new THREE.Vector3(0, 0, -rink.RINK_LENGTH / 2));
         stone2.init();
-        this.curlingStonesManager.add(stone2);
+        this.physicsManager.add(stone2);
+
+        let stone3 = new CurlingStone(new THREE.Vector3(0, 0, 0),
+            new THREE.Vector3(0.6, 0, -rink.RINK_LENGTH / 2 - 0.5));
+        stone3.init();
+        this.physicsManager.add(stone3);
+
+        let stone4 = new CurlingStone(new THREE.Vector3(0, 0, 0),
+            new THREE.Vector3(0.6, 0, -rink.RINK_LENGTH / 2 - 1.2));
+        stone4.init();
+        this.physicsManager.add(stone4);
+
+        let stone5 = new CurlingStone(new THREE.Vector3(0, 0, 0),
+            new THREE.Vector3(-0.5, 0, -rink.RINK_LENGTH / 2 - 0.5));
+        stone5.init();
+        this.physicsManager.add(stone5);
+
+        let stone6 = new CurlingStone(new THREE.Vector3(0, 0, 0),
+            new THREE.Vector3(0, 0, -rink.RINK_LENGTH / 2 - 0.9));
+        stone6.init();
+        this.physicsManager.add(stone6);
+
+        let stone7 = new CurlingStone(new THREE.Vector3(0, 0, 1),
+            new THREE.Vector3(0.1, 0, -rink.RINK_LENGTH / 2 - 3));
+        stone7.init();
+        this.physicsManager.add(stone7);
+
+        let stone8 = new CurlingStone(new THREE.Vector3(1, 0, 0),
+            new THREE.Vector3(-2, 0, -rink.RINK_LENGTH / 2));
+        stone8.init();
+        this.physicsManager.add(stone8);
+
+        let stone9 = new CurlingStone(new THREE.Vector3(-1, 0, 0),
+            new THREE.Vector3(2, 0, -rink.RINK_LENGTH / 2 - 1));
+        stone9.init();
+        this.physicsManager.add(stone9);
+
+    // -------------------END Experiment -------------------------------- //
 
         this.camera.position.z = -rink.RINK_LENGTH / 2;
-        this.camera.position.y = 5;
+        this.camera.position.y = 8;
         this.camera.rotation.x = -Math.PI / 2;
 
-        this.curlingStonesManager.get().forEach(stone => {
+        this.physicsManager.get().forEach(stone => {
             this.add(stone);
         });
 
@@ -108,28 +140,12 @@ export class GameRenderer {
     }
 
     render(): void {
-        let delta = this.clock.getDelta();
         window.requestAnimationFrame(() => this.render());
 
         //TODO: Implement this.physicsManager.update() correctly
         this.physicsManager.update();
 
-
-        //TODO: Move collision logic to physicsManager
-        // Calculate vector linking both curling stones
-        let curlingStones = this.curlingStonesManager.get();
-        let vec = new THREE.Vector3(curlingStones[0].position.x - curlingStones[1].position.x,
-            curlingStones[0].position.y - curlingStones[1].position.y,
-            curlingStones[0].position.z - curlingStones[1].position.z);
-
-        if (vec.length() !== 0 && vec.length() < curlingStones[0].getDiameter() * 2) {
-            curlingStones[0].direction = vec.normalize();
-            curlingStones[1].direction = vec.normalize().clone().negate();
-        }
-
-        // Scalars are calculated using delta time compared to an expected 60 frames per second (16.67 ms frametime).
-        curlingStones[0].position.add(curlingStones[0].direction.clone().multiplyScalar(0.3 * delta));
-        curlingStones[1].position.add(curlingStones[1].direction.clone().multiplyScalar(0.3 * delta));
+        this.physicsManager.detectCollision();
 
         this.renderer.render(this.scene, this.camera);
     }
