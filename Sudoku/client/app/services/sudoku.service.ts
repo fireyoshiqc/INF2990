@@ -27,29 +27,43 @@ export class SudokuService {
         [9, 1, 2, 3, 0, 5, 6, 0, 8]
     ];
 
+    difficulty: string;
+    isValid = "false";
+
     constructor(private http: Http) { }
 
     getEasySudoku() {
-        return this.http.get('http://localhost:3002/getSudoku/easy')
-            .map(res => res);
+        this.http.get('http://localhost:3002/getSudoku/easy').subscribe(res => {
+            this.initialGrid = res.json().grid;
+            this.inputGrid = res.json().grid;
+            this.difficulty = res.json().difficulty ? "difficile" : "facile";
+        });
     }
 
     getHardSudoku() {
-        return this.http.get('http://localhost:3002/getSudoku/hard')
-            .map(res => res);
+        this.http.get('http://localhost:3002/getSudoku/hard').subscribe(res => {
+            this.initialGrid = res.json().grid;
+            this.inputGrid = res.json().grid;
+            this.difficulty = res.json().difficulty ? "difficile" : "facile";
+        });
     }
 
-    validateSudoku(grid: number[][]) {
-        return this.http.post('http://localhost:3002/validateSudoku', grid)
-            .map(res => res);
+    validateSudoku() {
+        this.http.post('http://localhost:3002/validateSudoku', this.inputGrid).subscribe(res => {
+            this.isValid = res.text();
+        });
     }
 
-    resetSudoku() : number[][] {
-        return this.initialGrid;
+    resetSudoku() {
+        // Loop required for deep copy 
+        for (let i = 0; i < this.inputGrid.length; i++) {
+            for (let j = 0; j < this.inputGrid[i].length; j++) {
+                this.inputGrid[i][j] = this.initialGrid[i][j];
+            }
+        }
     }
 
-    putEntry(entry: number, row: number, column: number): number[][] {
+    putEntry(entry: number, row: number, column: number) {
         this.inputGrid[row][column] = entry;
-        return this.inputGrid;
     }
 }

@@ -4,7 +4,7 @@
             <form>
                 <input type="reset" value="Reset Sudoku" (click)="resetSudoku()">
                 <table>
-                    <tr *ngFor="let row of initialGrid; let i = index">
+                    <tr *ngFor="let row of sudokuService.initialGrid; let i = index">
                         <td *ngFor="let element of row; let j = index">
                             <div *ngIf="element==0">   
                                 <input #inputField size="1" maxlength="1" (keydown)="putEntry($event, i, j, inputField)">
@@ -21,8 +21,8 @@
         <!-- TODO : Place div below in InformationPanelComponent -->
         <div id="infoPanel">
             <p><b>Pierre To</b></p>
-            <p>Le sudoku est valide : {{isValid}} </p>
-            <p>Niveau de difficulté : {{difficulty}} </p>
+            <p>Le sudoku est valide : {{sudokuService.isValid}} </p>
+            <p>Niveau de difficulté : {{sudokuService.difficulty}} </p>
             <p *ngIf="stopwatchService.isVisible()">Timer : <span>{{stopwatchService.getMinutes()}}</span> min <span>{{stopwatchService.getSeconds()}}</span> sec</p>
         </div>
 

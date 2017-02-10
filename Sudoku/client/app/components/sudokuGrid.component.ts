@@ -9,51 +9,38 @@ import { InputService } from '../services/input.service';
     providers: [SudokuService, StopwatchService, InputService]
 })
 export class SudokuGridComponent {
-    initialGrid : number[][];
-    inputGrid : number[][];
-    isValid : string;
-    difficulty : string;
+    isValid: string;
+    difficulty: string;
 
     constructor(private sudokuService: SudokuService,
-                private stopwatchService: StopwatchService,
-                private inputService: InputService) {
-        this.initialGrid = sudokuService.initialGrid;
-        this.inputGrid = sudokuService.initialGrid;
+        private stopwatchService: StopwatchService,
+        private inputService: InputService) {
+        this.sudokuService = sudokuService;
+    }
+
+    getSudokuService() {
+        return this.sudokuService;
     }
 
     getEasySudoku() {
-        this.sudokuService.getEasySudoku().subscribe(sudoku => {
-            this.initialGrid = sudoku.json().grid;
-            this.inputGrid = sudoku.json().grid;
-            this.difficulty = sudoku.json().difficulty ? "difficile" : "facile";
-            this.stopwatchService.restart();
-        });
-        this.sudokuService.initialGrid = this.initialGrid;
-        this.sudokuService.inputGrid = this.inputGrid;
+        this.stopwatchService.restart();
+        this.sudokuService.getEasySudoku();
     }
 
     getHardSudoku() {
-        this.sudokuService.getHardSudoku().subscribe(sudoku => {
-            this.initialGrid = sudoku.json().grid;
-            this.inputGrid = sudoku.json().grid;
-            this.difficulty = sudoku.json().difficulty ? "difficile" : "facile";
-            this.stopwatchService.restart();
-        });
-        this.sudokuService.initialGrid = this.initialGrid;
-        this.sudokuService.inputGrid = this.inputGrid;
+        this.stopwatchService.restart();
+        this.sudokuService.getHardSudoku();
     }
 
     validateSudoku() {
-        this.sudokuService.validateSudoku(this.inputGrid).subscribe(response => {
-            this.isValid = response.text();
-            if (this.isValid === "true") {
-                this.stopwatchService.stop();
-            }
-        });
+        this.sudokuService.validateSudoku();
+        if (this.sudokuService.isValid === "true") {
+            this.stopwatchService.stop();
+        }
     }
 
     resetSudoku() {
-        this.inputGrid = this.sudokuService.resetSudoku();
+        this.sudokuService.resetSudoku();
         this.stopwatchService.restart();
     }
 
@@ -68,9 +55,8 @@ export class SudokuGridComponent {
     putEntry(event: KeyboardEvent, row: number, column: number, inputField: HTMLInputElement) {
 
         // Left / Up / Right / Down Arrow
-        if (event.keyCode === 37 || event.keyCode === 38 || event.keyCode === 39 ||
-            event.keyCode === 40) {
-                // TODO: Implement moving through cases with arrow keys
+        if ([37, 38, 39, 40].indexOf(event.keyCode) > -1) {
+            // TODO: Implement moving through cases with arrow keys
         }
 
         // TODO: When a number is erased, verify the validity of other cases
@@ -78,17 +64,17 @@ export class SudokuGridComponent {
         if (event.key === "Backspace" || event.key === "Delete") {
             inputField.value = null;
             inputField.classList.remove("invalid");
-            this.inputGrid = this.sudokuService.putEntry(0, row, column);
+            this.sudokuService.putEntry(0, row, column);
         }
         // To add a number in the case
         else {
-            if (this.inputService.verifyEntry(event, this.inputGrid, row, column)) {
+            if (this.inputService.verifyEntry(event, this.sudokuService.inputGrid, row, column)) {
                 inputField.classList.remove("invalid");
             }
             else if (inputField.value.length === 0) {
                 inputField.classList.add("invalid");
             }
-            this.inputGrid = this.sudokuService.putEntry(Number.parseInt(event.key), row, column);
+            this.sudokuService.putEntry(Number.parseInt(event.key), row, column);
         }
     }
 }

@@ -29,7 +29,7 @@ describe('SudokuGridComponent', () => {
             //TODO: Change the test to reflect the changes we made for inputServ
             comp.resetSudoku();
             let containsOnlyZeros = true;
-            containsOnlyZeros = comp.initialGrid.every((x) => x.every((y) => y === 0));
+            containsOnlyZeros = comp.getSudokuService().initialGrid.every((x) => x.every((y) => y === 0));
             expect(containsOnlyZeros).to.be.true;
             done();
         });
