@@ -55,8 +55,8 @@ export class InputService {
         x = this.SQUARE_SIZE * Math.floor(row / this.SQUARE_SIZE);
         y = this.SQUARE_SIZE * Math.floor(column / this.SQUARE_SIZE);
 
-        return grid.slice(x, x + this.SQUARE_SIZE).every(slicedRows =>
-            slicedRows.slice(y, y + this.SQUARE_SIZE).every(element =>
-                element !== entry));
+        return grid.slice(x, x + this.SQUARE_SIZE)
+            .every(slicedRows => slicedRows.slice(y, y + this.SQUARE_SIZE)
+            .every(element => element !== entry));
     }
 }
