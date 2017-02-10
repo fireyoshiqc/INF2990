@@ -67,7 +67,7 @@ export class GameRenderer {
 
         // ----- Experimental : Adding 7 stones to test the collision ------- //
         let stone1 = new CurlingStone(new THREE.Vector3(0, 0, -1),
-            new THREE.Vector3(0.577, 0, -rink.RINK_LENGTH / 2 + 2));
+            new THREE.Vector3(0, 0, -rink.RINK_LENGTH / 2 + 2));
         stone1.init();
         this.physicsManager.add(stone1);
 
@@ -118,7 +118,7 @@ export class GameRenderer {
         this.camera.position.y = 8;
         this.camera.rotation.x = -Math.PI / 2;
 
-        this.physicsManager.get().forEach(stone => {
+        this.physicsManager.getStones().forEach(stone => {
             this.add(stone);
         });
 
@@ -152,7 +152,7 @@ export class GameRenderer {
         //TODO: Implement this.physicsManager.update() correctly
         let delta = this.clock.getDelta();
         this.physicsManager.update(delta);
-        this.physicsManager.detectCollision(delta);
+        this.physicsManager.detectCollision();
         this.renderer.render(this.scene, this.camera);
     }
 
