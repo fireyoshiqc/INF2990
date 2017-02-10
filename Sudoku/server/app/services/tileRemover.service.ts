@@ -20,7 +20,7 @@ export class TileRemover {
     getUniqueSolutionSudoku(sudoku: Sudoku): Sudoku {
         this.sudoku = sudoku;
         // TODO : mettre les valeurs ailleurs
-        let tilesToRemove = (this.sudoku.difficulty === Difficulty.Easy) ? 20 : 30;
+        let tilesToRemove = (this.sudoku.difficulty === Difficulty.Easy) ? 30 : 50;
         let possibleIndexes: Array<number> = Array.apply(null, Array(81)).map(
             function (value: number, index: number) { return index; });
         let removedIndexes = new Array();
@@ -28,23 +28,23 @@ export class TileRemover {
 
         //à la place, essayer de faire un copy de la solution de la solution pour pouvoir remettre valeur si nécessaire
 
-        const MAX_TRIES = 20;
+        const MAX_TRIES = 30;
         let tries = 0;
         while (tilesToRemove > 0) {
-            let tile = getRandomInt(0, 80);
-            let row = Math.floor(tile / 9);
-            let column = tile % 9;
+            let tileToRemove = possibleIndexes[getRandomInt(0, possibleIndexes.length - 1)];
+            let row = Math.floor(tileToRemove / 9);
+            let column = tileToRemove % 9;
             if (this.sudoku.grid[row][column] !== 0 && this.tileCanBeRemoved(row, column)) {
                 removedValues.push(this.sudoku.grid[row][column]);
                 this.sudoku.grid[row][column] = 0;
-                removedIndexes.push(possibleIndexes.splice(tile, 0));
+                removedIndexes.push(possibleIndexes.splice(tileToRemove, 1));
                 tries = 0;
                 tilesToRemove--;
             } else {
                 tries++;
                 if (tries > MAX_TRIES) {
                     tries = 0;
-                    this.sudoku.grid[row][column] = removedValues.shift();
+                    this.sudoku.grid[row][column] = removedValues.pop();
                     possibleIndexes.push(removedIndexes.pop());
                     tilesToRemove++;
                 }
@@ -91,6 +91,7 @@ export class TileRemover {
             if (this.valueIsLegal(value, row, column)) {
                 this.sudoku.grid[row][column] = value;
                 if (this.solveSudoku(zerosIndexes.slice())) {
+                    this.sudoku.grid[row][column] = 0;
                     return true;
                 }
             }
