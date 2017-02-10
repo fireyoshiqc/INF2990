@@ -70,7 +70,7 @@ describe('TileRemover', () => {
             let sudoku = new Sudoku();
 
             sudoku.grid = testGrid;
-            let tileRemover = new TileRemover(sudoku);
+            //let tileRemover = new TileRemover(sudoku);
             //trouver un test qui ne timeout pas
             //expect(tileRemover.isSolvable()).to.be.false;
             done();

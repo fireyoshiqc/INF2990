@@ -37,7 +37,7 @@ describe('SudokuManager', () => {
     describe('getEasySudoku() ', () => {
         it('should get an easy sudoku object from SudokuManager', done => {
             let sudoku = manager.getEasySudoku();
-            
+
             // TODO : change countZeros to actual value for easy sudoku
             expect(sudoku.countZeros()).to.equal(20);
             done();
