@@ -63,7 +63,7 @@ export class GameRenderer {
 
         // ----- Experimental : Adding 7 stones to test the collision ------- //
         let stone1 = new CurlingStone(new THREE.Vector3(0, 0, -1),
-        new THREE.Vector3(0.577, 0, -rink.RINK_LENGTH / 2 + 2));
+            new THREE.Vector3(0.577, 0, -rink.RINK_LENGTH / 2 + 2));
         stone1.init();
         this.physicsManager.add(stone1);
 
@@ -107,7 +107,7 @@ export class GameRenderer {
         stone9.init();
         this.physicsManager.add(stone9);
 
-    // -------------------END Experiment -------------------------------- //
+        // -------------------END Experiment -------------------------------- //
 
         this.camera.position.z = -rink.RINK_LENGTH / 2;
         this.camera.position.y = 8;
@@ -128,8 +128,8 @@ export class GameRenderer {
         this.isStarted = true;
     }
 
-    onResize() {
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
+    onResize(event: any) {
+        this.renderer.setSize(event.target.innerWidth, event.target.innerHeight);
         let containerRect = this.container.getBoundingClientRect();
         //Adjust width and height to real container size
         this.renderer.setSize(containerRect.width, containerRect.height);
