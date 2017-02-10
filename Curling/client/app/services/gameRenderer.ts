@@ -23,6 +23,7 @@ export class GameRenderer {
     isStarted = false;
     lightManager: LightManager;
     physicsManager: PhysicsManager;
+    clock: THREE.Clock;
 
     public init(container?: HTMLElement): void {
         this.container = container;
@@ -46,6 +47,7 @@ export class GameRenderer {
         this.renderer.setSize(containerRect.width, containerRect.height);
 
         /*Field of view, aspect ratio, near, far*/
+        //TODO: Implement proper camera handler with FOV modifier relative to container size.
         this.camera = new THREE.PerspectiveCamera(45,
             containerRect.width / containerRect.height, 1, 10000);
         this.lightManager = new LightManager();
@@ -55,6 +57,8 @@ export class GameRenderer {
         skybox = new SkyBox();
         this.add(skybox);
 
+        //TODO: Adjust rink to add play lines (home, throw line, etc.)
+        //TODO: Adjust ring positions on the rink (they're wrong right now)
         let rink: Rink = new Rink(skybox.skyBoxImages);
         rink.position.z = -20;
         rink.position.z = -rink.RINK_LENGTH / 2;
@@ -109,6 +113,7 @@ export class GameRenderer {
 
         // -------------------END Experiment -------------------------------- //
 
+        //TODO: Implement this in a camera handler.
         this.camera.position.z = -rink.RINK_LENGTH / 2;
         this.camera.position.y = 8;
         this.camera.rotation.x = -Math.PI / 2;
@@ -124,6 +129,8 @@ export class GameRenderer {
 
         //------------------- END LIGHT------------------------------------------//
 
+        //Start asynchronous render loop.
+        this.clock = new THREE.Clock();
         this.render();
         this.isStarted = true;
     }
@@ -143,10 +150,9 @@ export class GameRenderer {
         window.requestAnimationFrame(() => this.render());
 
         //TODO: Implement this.physicsManager.update() correctly
-        this.physicsManager.update();
-
-        this.physicsManager.detectCollision();
-
+        let delta = this.clock.getDelta();
+        this.physicsManager.update(delta);
+        this.physicsManager.detectCollision(delta);
         this.renderer.render(this.scene, this.camera);
     }
 

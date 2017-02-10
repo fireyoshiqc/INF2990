@@ -24,17 +24,18 @@ export class PhysicsManager {
         return this.curlingStones;
     }
 
-    update(): void {
+    update(delta: number): void {
         //TODO: Add physics logic to calculate stone position, friction, etc.
         //TODO: Call update() in renderer game loop
+        //TODO: Collision detection should be called here instead of GameRenderer
     }
 
-    detectCollision(): void {
-      this.updateDirection();
-      this.updatePosition();
+    detectCollision(delta: number): void {
+        this.updateDirection();
+        this.updatePosition(delta);
     }
 
-     updateDirection(): void {
+    private updateDirection(): void {
         for (let i = 0; i < this.curlingStones.length; i++) {
             for (let j = i + 1; j < this.curlingStones.length; j++) {
                 // Calculate vector linking both curling stones
@@ -50,10 +51,9 @@ export class PhysicsManager {
         }
     }
 
-    updatePosition(): void {
-        let delta = this.clock.getDelta();
+    private updatePosition(delta: number): void {
         this.curlingStones.forEach(stone => {
-             stone.position.add(stone.direction.clone().multiplyScalar(0.5 * delta));
+            stone.position.add(stone.direction.clone().multiplyScalar(0.5 * delta));
         });
     }
 
