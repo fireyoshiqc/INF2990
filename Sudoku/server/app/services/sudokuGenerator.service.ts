@@ -5,7 +5,7 @@
  * @date 2017/01/20
  */
 
-
+//À déplacer dans une classe utility?
 
 //-------------------- HELPER FUNCTIONS --------------------------//
 

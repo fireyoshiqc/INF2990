@@ -22,11 +22,13 @@ export class SudokuRandomizer {
         return randomIndexes;
     }
 
-    constructor(sudoku: Sudoku) {
+    //faire un setter à la place?
+    constructor(sudoku?: Sudoku) {
         this.sudoku = sudoku;
     }
 
-    getRandomizedSudoku(): Sudoku {
+    getRandomizedSudoku(sudoku: Sudoku): Sudoku {
+        this.sudoku = sudoku;
         const RANDOM_OP_COUNT = 5000;
         let exchangeOperationsTable = [
             (x: number, y: number) => { this.exchangeColumns(x, y); },

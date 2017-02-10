@@ -19,11 +19,11 @@ describe('SudokuManager', () => {
             let numberOfSudokus = 3;
 
             for (let i = 0; i < numberOfSudokus; i++) {
-                if (!manager.easySudokus[i].isValid() || manager.easySudokus[i].difficulty !== Difficulty.Easy) {
+                if (manager.easySudokus[i].difficulty !== Difficulty.Easy) {
                     sudokusGenerated = false;
                     break;
                 }
-                if (!manager.hardSudokus[i].isValid() || manager.hardSudokus[i].difficulty !== Difficulty.Hard) {
+                if (manager.hardSudokus[i].difficulty !== Difficulty.Hard) {
                     sudokusGenerated = false;
                     break;
                 }
@@ -37,9 +37,9 @@ describe('SudokuManager', () => {
     describe('getEasySudoku() ', () => {
         it('should get an easy sudoku object from SudokuManager', done => {
             let sudoku = manager.getEasySudoku();
-
+            
             // TODO : change countZeros to actual value for easy sudoku
-            expect(sudoku.countZeros()).to.equal(0);
+            expect(sudoku.countZeros()).to.equal(20);
             done();
         });
     });
@@ -49,7 +49,7 @@ describe('SudokuManager', () => {
             let sudoku = manager.getHardSudoku();
 
             // TODO : change countZeros to actual value for hard sudoku
-            expect(sudoku.countZeros()).to.equal(0);
+            expect(sudoku.countZeros()).to.equal(30);
             done();
         });
     });

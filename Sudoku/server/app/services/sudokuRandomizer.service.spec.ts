@@ -1,5 +1,5 @@
 /**
- * sudokuRandomizer.ts - Test the randomizer of sudoku
+ * sudokuRandomizer.ts - Test the sudoku randomizer
  *
  * @authors Vincent Chassé, Erica Bugden
  * @date 2017/02/06
@@ -211,8 +211,8 @@ describe('SudokuRandomizer', () => {
             let sudoku1 = new Sudoku();
             let sudoku2 = new Sudoku();
 
-            let sudokuRandomizer = new SudokuRandomizer(sudoku1);
-            sudokuRandomizer.getRandomizedSudoku();
+            let sudokuRandomizer = new SudokuRandomizer();
+            sudokuRandomizer.getRandomizedSudoku(sudoku1);
 
             expect(sudokuRandomizer.sudoku.equals(sudoku2)).to.be.false;
             done();
@@ -221,8 +221,8 @@ describe('SudokuRandomizer', () => {
         it('the sudoku should stay valid after randomization ', done => {
             let sudoku = new Sudoku();
 
-            let sudokuRandomizer = new SudokuRandomizer(sudoku);
-            sudokuRandomizer.getRandomizedSudoku();
+            let sudokuRandomizer = new SudokuRandomizer();
+            sudokuRandomizer.getRandomizedSudoku(sudoku);
 
             expect(sudokuRandomizer.sudoku.isValid()).to.be.true;
             done();

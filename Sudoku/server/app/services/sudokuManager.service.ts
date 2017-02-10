@@ -7,27 +7,30 @@
 
 import { Sudoku, Difficulty, getRandomInt } from './sudokuGenerator.service';
 import { SudokuRandomizer } from './sudokuRandomizer.service';
+import { TileRemover } from './tileRemover.service';
 
 export class SudokuManager {
     easySudokus: Array<Sudoku> = new Array<Sudoku>(3);
     hardSudokus: Array<Sudoku> = new Array<Sudoku>(3);
+    sudokuRandomizer: SudokuRandomizer;
+    tileRemover: TileRemover;
 
     constructor() {
+        this.sudokuRandomizer = new SudokuRandomizer();
+        this.tileRemover = new TileRemover();
         for (let i = 0; i < this.easySudokus.length; i++) {
-            let sudokuRandomizer = new SudokuRandomizer(new Sudoku(Difficulty.Easy));
-            this.easySudokus[i] = sudokuRandomizer.getRandomizedSudoku();
-
-            let sudokuRandomizer2 = new SudokuRandomizer(new Sudoku(Difficulty.Hard));
-            this.hardSudokus[i] = sudokuRandomizer2.getRandomizedSudoku();
+            this.easySudokus[i] = this.tileRemover.getUniqueSolutionSudoku(
+                this.sudokuRandomizer.getRandomizedSudoku(new Sudoku(Difficulty.Easy)));
+            this.hardSudokus[i] = this.tileRemover.getUniqueSolutionSudoku(
+                this.sudokuRandomizer.getRandomizedSudoku(new Sudoku(Difficulty.Hard)));
         }
     }
 
     getEasySudoku(): Sudoku {
         let randomNumber = getRandomInt(0, 2);
         let sudoku = this.easySudokus[randomNumber];
-
-        let sudokuRandomizer = new SudokuRandomizer(new Sudoku(Difficulty.Easy));
-        this.easySudokus[randomNumber] = sudokuRandomizer.getRandomizedSudoku();
+        this.easySudokus[randomNumber] = this.tileRemover.getUniqueSolutionSudoku(
+            this.sudokuRandomizer.getRandomizedSudoku(new Sudoku(Difficulty.Easy)));
 
         return sudoku;
     }
@@ -35,9 +38,8 @@ export class SudokuManager {
     getHardSudoku(): Sudoku {
         let randomNumber = getRandomInt(0, 2);
         let sudoku = this.hardSudokus[randomNumber];
-
-        let sudokuRandomizer = new SudokuRandomizer(new Sudoku(Difficulty.Hard));
-        this.hardSudokus[randomNumber] = sudokuRandomizer.getRandomizedSudoku();
+        this.hardSudokus[randomNumber] = this.tileRemover.getUniqueSolutionSudoku(
+            this.sudokuRandomizer.getRandomizedSudoku(new Sudoku(Difficulty.Hard)));
 
         return sudoku;
     }
