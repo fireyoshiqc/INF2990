@@ -5,6 +5,8 @@
  * @date 2017/01/20
  */
 
+import { TextureCacher } from "../services/textureCacher";
+
 export class Rink extends THREE.Group {
 
     //Rink
@@ -31,10 +33,9 @@ export class Rink extends THREE.Group {
             reflectTexture.mapping = THREE.CubeReflectionMapping;
             //--------------RINGS-------------------------------------------------//
 
-            let textureLoader: THREE.TextureLoader = new THREE.TextureLoader();
-            let whiteIce : THREE.Texture = textureLoader.load("/assets/textures/white_ice.jpg");
-            let redIce : THREE.Texture = textureLoader.load("/assets/textures/red_ice.jpg");
-            let blueIce : THREE.Texture = textureLoader.load("/assets/textures/blue_ice.jpg");
+            let whiteIce : THREE.Texture = TextureCacher.load("/assets/textures/white_ice.jpg");
+            let redIce : THREE.Texture = TextureCacher.load("/assets/textures/red_ice.jpg");
+            let blueIce : THREE.Texture = TextureCacher.load("/assets/textures/blue_ice.jpg");
 
             whiteIce.wrapS = whiteIce.wrapT = THREE.RepeatWrapping;
             redIce.wrapS = redIce.wrapT = THREE.RepeatWrapping;
