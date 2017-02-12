@@ -22,7 +22,8 @@
       '@angular/http': 'npm:@angular/http/bundles/http.umd.js',
       '@angular/router': 'npm:@angular/router/bundles/router.umd.js',
       '@angular/forms': 'npm:@angular/forms/bundles/forms.umd.js',
-      '@angular/material': 'npm:@angular/material/material.umd.js',
+      '@angular/material': 'npm:@angular/material/bundles/material.umd.js',
+      '@angular/flex-layout': 'npm:@angular/flex-layout/bundles/flex-layout.umd.js',
 
       // other libraries
       'rxjs':                      'npm:rxjs',

@@ -12,7 +12,6 @@
     "removeComments": false,
     "noImplicitAny": true,
 	  "noImplicitThis": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "types": [ "hammerjs" ]
+    "suppressImplicitAnyIndexErrors": true
   }
 }
