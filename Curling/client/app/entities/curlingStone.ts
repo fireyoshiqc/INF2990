@@ -5,6 +5,8 @@
  * @date 2017/01/20
  */
 
+import { TextureCacher } from "../services/textureCacher";
+
 export class CurlingStone extends THREE.Group {
 
     static readonly MAX_RADIUS = 0.145 * 2; //External radius of the stone
@@ -81,7 +83,7 @@ export class CurlingStone extends THREE.Group {
         // Material for stone base
         let material : THREE.MeshStandardMaterial;
         let texture : THREE.Texture;
-        texture = this.texLoader.load('/assets/textures/granite.jpg');
+        texture = TextureCacher.load('/assets/textures/granite.jpg');
 
         material = new THREE.MeshStandardMaterial({
             metalness : 0.0,
