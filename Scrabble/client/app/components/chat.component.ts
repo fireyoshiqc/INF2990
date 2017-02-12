@@ -4,7 +4,7 @@ import * as io from 'socket.io-client';
 @Component({
     moduleId: module.id,
     selector: 'chat-comp',
-        templateUrl: '/assets/templates/chat.component.html'
+    templateUrl: '/assets/templates/chat.component.html'
 })
 export class ChatComponent implements OnInit {
     socket: any;

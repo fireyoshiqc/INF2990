@@ -98,11 +98,7 @@ body {
 /***************************/
 
 #sidePanel {
-    height: calc(100vh - 200px);
-}
-
-#infoPanel {
-    height: 50%;
+    height: 100%;
     border: 2px black solid;
 }
 
@@ -142,11 +138,6 @@ body {
     height: calc(100vh - 50vh) !important;
 }
 
-#messageList table {
-    table-layout: fixed;
-    width: 100%;
-}
-
-#messageList td {
+#messageList span {
     word-wrap: break-word;
 }
