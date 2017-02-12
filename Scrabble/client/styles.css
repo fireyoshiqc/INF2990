@@ -1,11 +1,20 @@
 /**********************/
+
+
 /* general formatting */
+
+
 /**********************/
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
 }
 
 h1 {
@@ -18,27 +27,39 @@ h1 {
 
 body {
     font: 13px Helvetica, Arial;
-    width: auto !important;
-    min-width: 620px;
+    min-width:720px;
 }
 
+
 /****************************/
+
+
 /* game panel (board, rack) */
+
+
 /****************************/
 
 #gamePanel {
     background-color: #111111;
+    height: 100%;
+    width: 100%;
 }
 
+
 /****************************/
+
+
 /* scrabble board component */
+
+
 /****************************/
 
 #board {
     margin-left: auto;
     margin-right: auto;
     display: block;
-    width: 60%;
+    max-width:50%;
+    max-width:50%;
     padding-top: 3.4%;
     padding-bottom: 5%;
     background-image: url("/assets/textures/board/Board.png");
@@ -46,14 +67,21 @@ body {
     background-size: 100%;
 }
 
-#board table {
+#scrabbleTile {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+#board md-grid-list {
     width: 88.5%;
     position: relative;
     left: 5.882%;
     top: 5.882%;
+    max-width: 100%;
+    max-height: 100%;
 }
 
-#board td {
+#board md-grid-tile {
     width: 6.66%;
     height: 6.66%;
     display: inline-block;
@@ -61,15 +89,21 @@ body {
     border: 0px solid;
 }
 
+
 /***************************/
+
+
 /* scrabble rack component */
+
+
 /***************************/
 
 #rack {
     margin-left: auto;
     margin-right: auto;
-    display: block;
-    width: 100%;
+    display: inline-block;
+    max-width:50%;
+    max-width:50%;
     padding-top: 2%;
     padding-bottom: 5%;
     background-image: url("/assets/textures/rack/Rack.png");
@@ -77,33 +111,44 @@ body {
     background-size: 100%;
 }
 
-#rack table {
+#rack md-grid-list {
     width: 95.9%;
     position: relative;
     left: 2.05%;
     top: 11.23%;
 }
 
-#rack td {
+#rack md-grid-tile {
     width: 13.68%;
     height: 100%;
     display: inline-block;
     margin-left: 0.53%;
-    margin-top:0.53%;
+    margin-top: 0.53%;
     border: 0px solid;
 }
 
+
 /***************************/
+
+
 /* side panel (chat, info) */
+
+
 /***************************/
 
 #sidePanel {
     height: 100%;
+    width: 100%;
     border: 2px black solid;
 }
 
+
 /***************/
+
+
 /* message box */
+
+
 /***************/
 
 #messagePanel {
@@ -130,14 +175,22 @@ body {
     width: 100%;
 }
 
-/**********************/
-/* message formatting */
+
 /**********************/
 
-#messageList {
-    height: calc(100vh - 50vh) !important;
+
+/* message formatting */
+
+
+/**********************/
+
+md-card {
+    max-width: 100%;
+    word-wrap: word-break;
 }
 
-#messageList span {
-    word-wrap: break-word;
+md-card-content {
+    max-width: 100%;
+    word-wrap: word-break;
+    word-break: break-all;
 }

@@ -1,35 +1,43 @@
-<div id="header">
-    <h1>Scrabble</h1>
-</div>
-
-<div class="flex-container" fxLayout="row" fxLayout.sm="column" fxLayoutAlign="center center" fxLayoutAlign.sm="start">
-
-    <div class="flex-item" fxFlex="50%" fxFlex.sm="50%" id="gamePanel">
-        <div class="flex-container" fxLayout="column" fxLayout.sm="column" fxLayoutAlign="center center" fxLayoutAlign.sm="start">
-        
-            <div class="flex-item" fxFlex="80%" fxFlex.sm="80%">
-                <board-comp></board-comp>
-            </div>
-
-            <div class="flex-item" fxFlex="20%" fxFlex.sm="20%">
-                <rack-comp></rack-comp>
-            </div>
-
+<div class="flex-container" fxLayout="column" fxLayout.xs="column" fxLayoutAlign="center center" fxLayoutAlign.xs="center center" fxFlexFill>
+    <div class="flex-item" fxFlex="10%" fxFlex.xs="10%" fxFlexFill>
+        <div id="header">
+            <h1>Scrabble</h1>
         </div>
     </div>
 
-    <div class="flex-item" fxFlex="50%" fxFlex.sm="50%" id="sidePanel">
-        <div class="flex-container" fxLayout="column" fxLayout.sm="column" fxLayoutAlign="center center" fxLayoutAlign.sm="start">
-        
-            <div class="flex-item" fxFlex="40%" fxFlex.sm="40%">
-                <info-comp></info-comp>
+    <div class="flex-item" fxFlex="90%" fxFlex.xs="90%" fxFlexFill>
+        <div class="flex-container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center center" fxLayoutAlign.xs="start" fxFlexFill>
+
+            <div class="flex-item" fxFlex="50%" fxFlex.xs="70%" id="gamePanel" fxFlexFill>
+                <div class="flex-container" fxLayout="column" fxLayout.xs="column" fxLayoutAlign="center center" fxLayoutAlign.xs="center center" fxFlexFill>
+
+                    <div class="flex-item" fxFlex="80%" fxFlex.xs="80%" fxFlexFill>
+                        <board-comp></board-comp>
+                    </div>
+
+                    <div class="flex-item" fxFlex="20%" fxFlex.xs="20%" fxFlexFill>
+                        <rack-comp></rack-comp>
+                    </div>
+
+                </div>
             </div>
 
-            <div class="flex-item" fxFlex="60%" fxFlex.sm="60%">
-                <chat-comp></chat-comp>
+            <div class="flex-item" fxFlex="50%" fxFlex.xs="30%" id="sidePanel" fxFlexFill>
+                <div class="flex-container" fxLayout="column" fxLayout.xs="column" fxLayoutAlign="center center" fxLayoutAlign.xs="start" fxFlexFill>
+
+                    <div class="flex-item" fxFlex="20%" fxFlex.xs="20%" fxFlexFill>
+                        <info-comp></info-comp>
+                    </div>
+
+                    <div class="flex-item" fxFlex="80%" fxFlex.xs="80%" fxFlexFill>
+                        <chat-comp></chat-comp>
+                    </div>
+
+                </div>
             </div>
 
         </div>
+
     </div>
 
 </div>
