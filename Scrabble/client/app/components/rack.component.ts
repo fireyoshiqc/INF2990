@@ -10,19 +10,9 @@ import { Component, OnInit } from '@angular/core';
 import { Letter } from '../classes/letter';
 
 @Component({
+    moduleId: module.id,
     selector: 'rack-comp',
-    template: `
-    <div id="rack" class="flex-container" fxLayout="row" fxLayout.xs="column"
-     fxLayoutAlign="center center" fxLayoutAlign.xs="start">
-      <div class="flex-item" fxFlex="100%" fxFlex.xs="100%" fxFlexFill>
-        <md-grid-list cols="7" rows="1">
-          <md-grid-tile *ngFor="let letter of rack; let i = index" [colspan]="1" [rowspan]="1">
-            <img src = {{letter.texture}} height = 100% width = 100%>
-          </md-grid-tile>
-        </md-grid-list>
-      </div>
-    </div>
-    `
+    templateUrl: '/assets/templates/rack.component.html'
 })
 
 export class RackComponent implements OnInit {

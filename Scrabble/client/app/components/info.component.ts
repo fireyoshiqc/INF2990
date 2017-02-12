@@ -1,3 +1,10 @@
+/**
+ * info.component.ts
+ *
+ * @authors Félix Boulet, Pierre To
+ * @date 2017/02/12
+ */
+
 import { Component } from '@angular/core';
 
 @Component({

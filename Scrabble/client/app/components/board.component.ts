@@ -9,33 +9,9 @@ import { Component, OnInit } from '@angular/core';
 import { BoardTile } from '../classes/boardTile';
 
 @Component({
+    moduleId: module.id,
     selector: 'board-comp',
-    template: `
-        <div id="board" class="flex-container" fxLayout="row" fxLayout.xs="column"
-         fxLayoutAlign="center center" fxLayoutAlign.xs="start">
-         <div class="flex-item" fxFlex="100%" fxFlex.xs="100%" fxFlexFill>
-          <md-grid-list cols="15" rows="15">
-            <div *ngFor="let row of board; let i = index">
-              <md-grid-tile *ngFor="let tile of row; let j = index"
-              [colspan]="1"
-              [rowspan]="1">
-                <img src = {{tile.texture}} height = 100% width = 100% id = "scrabbleTile">
-
-              </md-grid-tile>
-            </div>
-          </md-grid-list>
-        </div>
-        <!--
-            <table>
-                <tr *ngFor="let row of board; let i = index">
-                    <td *ngFor="let tile of row; let j = index">
-                        <img src = {{tile.texture}} height = 100% width = 100%>
-                    </td>
-                </tr>
-            </table>
-            -->
-        </div>
-    `
+    templateUrl: '/assets/templates/board.component.html'
 })
 
 export class BoardComponent implements OnInit {
