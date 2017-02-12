@@ -69,47 +69,47 @@ export class GameRenderer {
         let stone1 = new CurlingStone(new THREE.Vector3(0, 0, -1),
             new THREE.Vector3(0, 0, -rink.RINK_LENGTH / 2 + 2));
         stone1.init();
-        this.physicsManager.add(stone1);
+        this.physicsManager.addStone(stone1);
 
         let stone2 = new CurlingStone(new THREE.Vector3(0, 0, 0),
             new THREE.Vector3(0, 0, -rink.RINK_LENGTH / 2));
         stone2.init();
-        this.physicsManager.add(stone2);
+        this.physicsManager.addStone(stone2);
 
         let stone3 = new CurlingStone(new THREE.Vector3(0, 0, 0),
             new THREE.Vector3(0.6, 0, -rink.RINK_LENGTH / 2 - 0.5));
         stone3.init();
-        this.physicsManager.add(stone3);
+        this.physicsManager.addStone(stone3);
 
         let stone4 = new CurlingStone(new THREE.Vector3(0, 0, 0),
             new THREE.Vector3(0.6, 0, -rink.RINK_LENGTH / 2 - 1.2));
         stone4.init();
-        this.physicsManager.add(stone4);
+        this.physicsManager.addStone(stone4);
 
         let stone5 = new CurlingStone(new THREE.Vector3(0, 0, 0),
             new THREE.Vector3(-0.5, 0, -rink.RINK_LENGTH / 2 - 0.5));
         stone5.init();
-        this.physicsManager.add(stone5);
+        this.physicsManager.addStone(stone5);
 
         let stone6 = new CurlingStone(new THREE.Vector3(0, 0, 0),
             new THREE.Vector3(0, 0, -rink.RINK_LENGTH / 2 - 0.9));
         stone6.init();
-        this.physicsManager.add(stone6);
+        this.physicsManager.addStone(stone6);
 
         let stone7 = new CurlingStone(new THREE.Vector3(0, 0, 1),
             new THREE.Vector3(0.1, 0, -rink.RINK_LENGTH / 2 - 3));
         stone7.init();
-        this.physicsManager.add(stone7);
+        this.physicsManager.addStone(stone7);
 
         let stone8 = new CurlingStone(new THREE.Vector3(1, 0, 0),
             new THREE.Vector3(-2, 0, -rink.RINK_LENGTH / 2));
         stone8.init();
-        this.physicsManager.add(stone8);
+        this.physicsManager.addStone(stone8);
 
         let stone9 = new CurlingStone(new THREE.Vector3(-1, 0, 0),
             new THREE.Vector3(2, 0, -rink.RINK_LENGTH / 2 - 1));
         stone9.init();
-        this.physicsManager.add(stone9);
+        this.physicsManager.addStone(stone9);
 
         // -------------------END Experiment -------------------------------- //
 
@@ -152,7 +152,6 @@ export class GameRenderer {
         //TODO: Implement this.physicsManager.update() correctly
         let delta = this.clock.getDelta();
         this.physicsManager.update(delta);
-        this.physicsManager.detectCollision();
         this.renderer.render(this.scene, this.camera);
     }
 

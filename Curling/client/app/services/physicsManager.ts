@@ -15,7 +15,7 @@ export class PhysicsManager {
         this.curlingStones = new Array() as Array<CurlingStone>;
     }
 
-    add(curlingStone: CurlingStone) {
+    addStone(curlingStone: CurlingStone) {
         this.curlingStones.push(curlingStone);
     }
 
@@ -25,36 +25,37 @@ export class PhysicsManager {
 
     update(delta: number): void {
         this.delta = delta;
+        // Collision
+        this.updateCollidingStonesDirection();
+        this.updateAllStonesPosition(0.5);
         //TODO: Add physics logic to calculate stone position, friction, etc.
         //TODO: Call update() in renderer game loop
         //TODO: Collision detection should be called here instead of GameRenderer
     }
 
-    detectCollision(): void {
-        this.updateDirection();
-        this.updateAllStonesPosition(0.5);
-    }
-
-    private updateDirection(): void {
+    private updateCollidingStonesDirection(): void {
         for (let i = 0; i < this.curlingStones.length; i++) {
             for (let j = i + 1; j < this.curlingStones.length; j++) {
                 let vec = this.calculateVectorLinkingBothStones(i, j);
 
                 if (vec.length() !== 0 && vec.length() < CurlingStone.MAX_RADIUS * 2) {
-                    let speedStonei = this.curlingStones[i].direction.clone();
-                    let speedStonej = this.curlingStones[j].direction.clone();
-
-                    let curlingStoneWeight = this.curlingStones[i].getCurlingStoneWeight();
-                    let momentum = (speedStonei.clone().dot(vec) - speedStonej.clone().dot(vec)) / curlingStoneWeight;
-                    let nij = (vec.clone().multiplyScalar(momentum * curlingStoneWeight)).normalize();
-
-                    this.curlingStones[i].direction = (speedStonei.clone().sub(nij)).normalize();
-                    this.curlingStones[j].direction = (speedStonej.clone().add(nij)).normalize();
-
+                    this.calculateStonesDirectionAfterCollision(i, j, vec);
                     this.separateStones(i, j);
                 }
             }
         }
+    }
+
+    private calculateStonesDirectionAfterCollision(idStone1: number, idStone2: number, vec: THREE.Vector3) {
+        let speedStonei = this.curlingStones[idStone1].direction.clone();
+        let speedStonej = this.curlingStones[idStone2].direction.clone();
+
+        let curlingStoneWeight = this.curlingStones[idStone1].getCurlingStoneWeight();
+        let momentum = (speedStonei.clone().dot(vec) - speedStonej.clone().dot(vec)) / curlingStoneWeight;
+        let nij = (vec.clone().multiplyScalar(momentum * curlingStoneWeight)).normalize();
+
+        this.curlingStones[idStone1].direction = (speedStonei.clone().sub(nij)).normalize();
+        this.curlingStones[idStone2].direction = (speedStonej.clone().add(nij)).normalize();
     }
 
     private separateStones(idStone1: number, idStone2: number) {

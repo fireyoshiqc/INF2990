@@ -12,7 +12,7 @@ import { expect } from 'chai';
 describe('CurlingStone', () => {
 
     let testStone : CurlingStone;
-    testStone = new CurlingStone();
+
 
     describe('Default constructor ', () => {
         it('should construct an empty (non-rendered) CurlingStone object.', done => {
@@ -42,6 +42,7 @@ describe('CurlingStone', () => {
 
     describe('init()', () => {
         it('should add a Curling Stone base (mesh) and a cover (mesh) to the group object.', done => {
+            testStone = new CurlingStone();
             testStone.init();
             expect(testStone.children.length).to.equal(2);
             done();
