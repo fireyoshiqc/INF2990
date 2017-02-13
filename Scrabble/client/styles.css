@@ -27,11 +27,16 @@ h1 {
 
 body {
     font: 13px Helvetica, Arial;
-    min-width:720px;
+    min-width: 720px;
 }
 
-.material-icons{ color: rgba(255, 255, 255, 1); }
-.material-icons.md-inactive { color: rgba(255, 255, 255, 0.3); }
+.material-icons {
+    color: rgba(255, 255, 255, 1);
+}
+
+.material-icons.md-inactive {
+    color: rgba(255, 255, 255, 0.3);
+}
 
 
 /****************************/
@@ -61,8 +66,8 @@ body {
     margin-left: auto;
     margin-right: auto;
     display: block;
-    max-width:60%;
-    max-height:60%;
+    max-width: 60%;
+    max-height: 60%;
     padding-top: 3.4%;
     padding-bottom: 5%;
     background-image: url("/assets/textures/board/Board.png");
@@ -71,8 +76,8 @@ body {
 }
 
 #scrabbleTile {
-  max-width: 100%;
-  max-height: 100%;
+    max-width: 100%;
+    max-height: 100%;
 }
 
 #board md-grid-list {
@@ -85,8 +90,8 @@ body {
 }
 
 #board md-grid-tile {
-    width: 6.66%;
-    height: 6.66%;
+    max-width: 6.66%;
+    max-height: 6.66%;
     display: inline-block;
     padding: 0px 0px 0px 0px;
     border: 0px solid;
@@ -105,29 +110,30 @@ body {
     margin-left: auto;
     margin-right: auto;
     display: inline-block;
-    max-width:50%;
-    max-width:50%;
-    padding-top: 2%;
-    padding-bottom: 5%;
+    max-width: 60%;
+    max-width: 60%;
+    padding-top: 1.5%;
+    padding-bottom: 10%;
     background-image: url("/assets/textures/rack/Rack.png");
     background-repeat: no-repeat;
     background-size: 100%;
 }
 
 #rack md-grid-list {
-    width: 95.9%;
-    position: relative;
-    left: 2.05%;
-    top: 11.23%;
+    margin-left: 2.5%;
+    width: 95.5%;
+    align-content: "center center";
 }
 
 #rack md-grid-tile {
-    width: 13.68%;
-    height: 100%;
-    display: inline-block;
-    margin-left: 0.53%;
-    margin-top: 0.53%;
+    margin: 0 auto;
+}
+
+#rack img {
     border: 0px solid;
+    width: 100%;
+    height: 100%;
+    margin: 5%;
 }
 
 
@@ -174,7 +180,7 @@ body {
 }
 
 md-input-container {
-  width:100%;
+    width: 100%;
 }
 
 .message-box button {
@@ -182,9 +188,9 @@ md-input-container {
 }
 
 .ConnectText {
-  font-family: 'Roboto', sans-serif;
-  font-weight:bolder;
-  font-size:large;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bolder;
+    font-size: large;
 }
 
 
