@@ -5,28 +5,28 @@
  * @date 2017/02/06
  */
 
-import { Sudoku, Difficulty, getRandomInt } from './sudokuGenerator.service';
+import { Sudoku, Difficulty, getRandomInt } from './sudoku.service';
 
 export class TileRemover {
 
     readonly SQUARE_SIZE = 3;
-    sudoku: Sudoku;
+    readonly NUM_EMPTY_TILES_EASY = 30;
+    readonly NUM_EMPTY_TILES_HARD = 30;
+    private sudoku: Sudoku;
 
-    //faire un setter à la place?
-    constructor(sudoku?: Sudoku) {
+    // Pour les tests
+    setSudoku(sudoku: Sudoku): void {
         this.sudoku = sudoku;
     }
 
     getUniqueSolutionSudoku(sudoku: Sudoku): Sudoku {
         this.sudoku = sudoku;
-        // TODO : mettre les valeurs ailleurs
-        let tilesToRemove = (this.sudoku.difficulty === Difficulty.Easy) ? 30 : 50;
+        let tilesToRemove = (this.sudoku.difficulty === Difficulty.Easy) ?
+            this.NUM_EMPTY_TILES_EASY : this.NUM_EMPTY_TILES_HARD;
         let possibleIndexes: Array<number> = Array.apply(null, Array(81)).map(
             function (value: number, index: number) { return index; });
         let removedIndexes = new Array();
         let removedValues = new Array();
-
-        //à la place, essayer de faire un copy de la solution de la solution pour pouvoir remettre valeur si nécessaire
 
         const MAX_TRIES = 30;
         let tries = 0;
@@ -79,7 +79,7 @@ export class TileRemover {
         return this.solveSudoku(zerosIndexes);
     }
 
-    solveSudoku(zerosIndexes: Array<number>): boolean {
+    private solveSudoku(zerosIndexes: Array<number>): boolean {
         if (zerosIndexes.length === 0) {
             return this.sudoku.isValid();
         }
@@ -106,15 +106,15 @@ export class TileRemover {
             this.validateSquare(entry, row, column);
     }
 
-    validateRow(entry: number, row: number): boolean {
+    private validateRow(entry: number, row: number): boolean {
         return this.sudoku.grid[row].every(element => element !== entry);
     }
 
-    validateColumn(entry: number, column: number) {
+    private validateColumn(entry: number, column: number) {
         return this.sudoku.grid.every(row => row[column] !== entry);
     }
 
-    validateSquare(entry: number, row: number, column: number) {
+    private validateSquare(entry: number, row: number, column: number) {
         let x: number, y: number;
         // coordinates for upper left corner of each square
         x = this.SQUARE_SIZE * Math.floor(row / this.SQUARE_SIZE);

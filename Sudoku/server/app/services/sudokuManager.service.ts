@@ -5,15 +5,15 @@
  * @date 2017/01/27
  */
 
-import { Sudoku, Difficulty, getRandomInt } from './sudokuGenerator.service';
+import { Sudoku, Difficulty, getRandomInt } from './sudoku.service';
 import { SudokuRandomizer } from './sudokuRandomizer.service';
 import { TileRemover } from './tileRemover.service';
 
 export class SudokuManager {
     easySudokus: Array<Sudoku> = new Array<Sudoku>(3);
     hardSudokus: Array<Sudoku> = new Array<Sudoku>(3);
-    sudokuRandomizer: SudokuRandomizer;
-    tileRemover: TileRemover;
+    private sudokuRandomizer: SudokuRandomizer;
+    private tileRemover: TileRemover;
 
     constructor() {
         this.sudokuRandomizer = new SudokuRandomizer();

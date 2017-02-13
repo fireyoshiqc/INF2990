@@ -5,7 +5,7 @@
  * @date 2017/01/20
  */
 
-import { Sudoku, getRandomInt } from './sudokuGenerator.service';
+import { Sudoku, getRandomInt } from './sudoku.service';
 
 import { expect } from 'chai';
 

@@ -5,7 +5,7 @@
  * @date 2017/02/06
  */
 
-import { Sudoku } from './sudokuGenerator.service';
+import { Sudoku } from './sudoku.service';
 import { SudokuRandomizer } from './sudokuRandomizer.service';
 
 import { expect } from 'chai';
@@ -24,7 +24,8 @@ describe('SudokuRandomizer', () => {
             sudoku1.grid = testGrid;
             sudoku1.size = 3;
 
-            let sudokuRandomizer = new SudokuRandomizer(sudoku1);
+            let sudokuRandomizer = new SudokuRandomizer();
+            sudokuRandomizer.setSudoku(sudoku1);
             sudokuRandomizer.exchangeColumns(0, 2);
 
             let solutionGrid: number[][] = [
@@ -37,7 +38,7 @@ describe('SudokuRandomizer', () => {
             sudoku2.grid = solutionGrid;
             sudoku2.size = 3;
 
-            expect(sudokuRandomizer.sudoku.equals(sudoku2)).to.be.true;
+            expect(sudokuRandomizer.getSudoku().equals(sudoku2)).to.be.true;
             done();
         });
     });
@@ -54,7 +55,8 @@ describe('SudokuRandomizer', () => {
             sudoku1.grid = testGrid;
             sudoku1.size = 3;
 
-            let sudokuRandomizer = new SudokuRandomizer(sudoku1);
+            let sudokuRandomizer = new SudokuRandomizer();
+            sudokuRandomizer.setSudoku(sudoku1);
             sudokuRandomizer.exchangeRows(1, 2);
 
             let solutionGrid: number[][] = [
@@ -66,7 +68,7 @@ describe('SudokuRandomizer', () => {
             sudoku2.grid = solutionGrid;
             sudoku2.size = 3;
 
-            expect(sudokuRandomizer.sudoku.equals(sudoku2)).to.be.true;
+            expect(sudokuRandomizer.getSudoku().equals(sudoku2)).to.be.true;
             done();
         });
     });
@@ -84,7 +86,8 @@ describe('SudokuRandomizer', () => {
             sudoku1.grid = testGrid;
             sudoku1.size = 4;
 
-            let sudokuRandomizer = new SudokuRandomizer(sudoku1);
+            let sudokuRandomizer = new SudokuRandomizer();
+            sudokuRandomizer.setSudoku(sudoku1);
             sudokuRandomizer.flipHorizontally();
 
             let solutionGrid: number[][] = [
@@ -98,7 +101,7 @@ describe('SudokuRandomizer', () => {
             sudoku2.grid = solutionGrid;
             sudoku2.size = 4;
 
-            expect(sudokuRandomizer.sudoku.equals(sudoku2)).to.be.true;
+            expect(sudokuRandomizer.getSudoku().equals(sudoku2)).to.be.true;
             done();
         });
     });
@@ -117,7 +120,8 @@ describe('SudokuRandomizer', () => {
             sudoku1.grid = testGrid;
             sudoku1.size = 5;
 
-            let sudokuRandomizer = new SudokuRandomizer(sudoku1);
+            let sudokuRandomizer = new SudokuRandomizer();
+            sudokuRandomizer.setSudoku(sudoku1);
             sudokuRandomizer.flipVertically();
 
             let solutionGrid: number[][] = [
@@ -132,7 +136,7 @@ describe('SudokuRandomizer', () => {
             sudoku2.grid = solutionGrid;
             sudoku2.size = 5;
 
-            expect(sudokuRandomizer.sudoku.equals(sudoku2)).to.be.true;
+            expect(sudokuRandomizer.getSudoku().equals(sudoku2)).to.be.true;
             done();
         });
     });
@@ -149,7 +153,8 @@ describe('SudokuRandomizer', () => {
             sudoku1.grid = testGrid;
             sudoku1.size = 3;
 
-            let sudokuRandomizer = new SudokuRandomizer(sudoku1);
+            let sudokuRandomizer = new SudokuRandomizer();
+            sudokuRandomizer.setSudoku(sudoku1);
             sudokuRandomizer.flipAroundBackwardDiagonal();
 
             let solutionGrid: number[][] = [
@@ -162,7 +167,7 @@ describe('SudokuRandomizer', () => {
             sudoku2.grid = solutionGrid;
             sudoku2.size = 3;
 
-            expect(sudokuRandomizer.sudoku.equals(sudoku2)).to.be.true;
+            expect(sudokuRandomizer.getSudoku().equals(sudoku2)).to.be.true;
             done();
         });
     });
@@ -179,7 +184,8 @@ describe('SudokuRandomizer', () => {
             sudoku1.grid = testGrid;
             sudoku1.size = 3;
 
-            let sudokuRandomizer = new SudokuRandomizer(sudoku1);
+            let sudokuRandomizer = new SudokuRandomizer();
+            sudokuRandomizer.setSudoku(sudoku1);
             sudokuRandomizer.flipAroundForwardDiagonal();
 
             let solutionGrid: number[][] = [
@@ -192,7 +198,7 @@ describe('SudokuRandomizer', () => {
             sudoku2.grid = solutionGrid;
             sudoku2.size = 3;
 
-            expect(sudokuRandomizer.sudoku.equals(sudoku2)).to.be.true;
+            expect(sudokuRandomizer.getSudoku().equals(sudoku2)).to.be.true;
             done();
         });
     });
@@ -214,7 +220,7 @@ describe('SudokuRandomizer', () => {
             let sudokuRandomizer = new SudokuRandomizer();
             sudokuRandomizer.getRandomizedSudoku(sudoku1);
 
-            expect(sudokuRandomizer.sudoku.equals(sudoku2)).to.be.false;
+            expect(sudokuRandomizer.getSudoku().equals(sudoku2)).to.be.false;
             done();
         });
 
@@ -224,7 +230,7 @@ describe('SudokuRandomizer', () => {
             let sudokuRandomizer = new SudokuRandomizer();
             sudokuRandomizer.getRandomizedSudoku(sudoku);
 
-            expect(sudokuRandomizer.sudoku.isValid()).to.be.true;
+            expect(sudokuRandomizer.getSudoku().isValid()).to.be.true;
             done();
         });
     });

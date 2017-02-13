@@ -5,11 +5,11 @@
  * @date 2017/02/06
  */
 
-import { Sudoku, getRandomInt } from './sudokuGenerator.service';
+import { Sudoku, getRandomInt } from './sudoku.service';
 
 export class SudokuRandomizer {
 
-    sudoku: Sudoku;
+    private sudoku: Sudoku;
 
     static generateRandomValidIndexes(): number[] {
         const SQUARE_SIZE = 3;
@@ -22,8 +22,13 @@ export class SudokuRandomizer {
         return randomIndexes;
     }
 
-    //faire un setter à la place?
-    constructor(sudoku?: Sudoku) {
+    // Pour les tests
+    getSudoku(): Sudoku {
+        return this.sudoku;
+    }
+
+    // Pour les tests
+    setSudoku(sudoku: Sudoku): void {
         this.sudoku = sudoku;
     }
 

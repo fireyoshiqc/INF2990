@@ -6,12 +6,14 @@
  */
 
 import { SudokuManager } from './sudokuManager.service';
-import { Difficulty } from './sudokuGenerator.service';
+import { Difficulty } from './sudoku.service';
+import { TileRemover } from './tileRemover.service';
 
 import { expect } from 'chai';
 
 describe('SudokuManager', () => {
     let manager = new SudokuManager();
+    let tileRemover = new TileRemover();
 
     describe('Default constructor ', () => {
         it('should construct a SudokuManager object with two arrays (easy/hard) of Sudoku', done => {
@@ -38,8 +40,7 @@ describe('SudokuManager', () => {
         it('should get an easy sudoku object from SudokuManager', done => {
             let sudoku = manager.getEasySudoku();
 
-            // TODO : change countZeros to actual value for easy sudoku
-            expect(sudoku.countZeros()).to.equal(20);
+            expect(sudoku.countZeros()).to.equal(tileRemover.NUM_EMPTY_TILES_EASY);
             done();
         });
     });
@@ -48,8 +49,7 @@ describe('SudokuManager', () => {
         it('should get a hard sudoku object from SudokuManager', done => {
             let sudoku = manager.getHardSudoku();
 
-            // TODO : change countZeros to actual value for hard sudoku
-            expect(sudoku.countZeros()).to.equal(30);
+            expect(sudoku.countZeros()).to.equal(tileRemover.NUM_EMPTY_TILES_HARD);
             done();
         });
     });
