@@ -15,7 +15,7 @@ export class ChatComponent implements OnInit {
         this.socket = io.connect('http://localhost:3000');
 
         this.socket.on("connect_error", () => {
-          this.msgList.push(new Message("SERVER OFFLINE~Attempting to connect..."));
+            this.msgList.push(new Message("SERVER OFFLINE~Attempting to connect..."));
 
         });
 
@@ -33,13 +33,18 @@ export class ChatComponent implements OnInit {
     }
 
     onSubmit() {
-        this.socket.emit('chat message', this.msg.message);
+        if (this.msg.message !== undefined && this.msg.message !== null) {
+            if (this.msg.message.replace(/\s+/g, "") !== "") {
+                //Remove all spaces as a test to prevent sending huge empty messages
+                this.socket.emit('chat message', this.msg.message);
+            }
+        }
     }
 }
 
 export class Message {
-    username: string;
-    submessage: string;
+    username = "";
+    submessage = "";
 
     constructor(public message: string) {
         let split = message.split("~", 2);
