@@ -1,32 +1,42 @@
 <div class="flex-container" fxLayout="column" fxLayout.xs="column" fxLayoutAlign="center center" fxLayoutAlign.xs="center center" fxFlexFill>
 
-    <div class="flex-item pre-scrollable" fxFlex="90%" fxFlex.xs="90%" fxFlexFill>
-        <ul id="chatList">
-            <li *ngFor="let msg of msgList; let i = index">
-                <md-card>
-                    <md-card-subtitle>
-                        {{msg.username}}
-                    </md-card-subtitle>
-                    <md-card-content>
-                        {{msg.submessage}}
-                    </md-card-content>
-                </md-card>
-            </li>
-        </ul>
+    <div class="flex-item pre-scrollable" fxFlex="89.5%" fxFlex.xs="89.5%" fxFlexFill fxFlexWrap="wrap">
+
+
+        <md-list dense id="chatList">
+            <md-list-item md-multi-line md-list-item-text *ngFor="let msg of msgList; let i = index">
+                <h3 md-line><strong>{{msg.username}}</strong></h3>
+                <p md-line>{{msg.submessage}}</p>
+            </md-list-item>
+        </md-list>
+
+
     </div>
 
-    <div class="flex-item" fxFlex="10%" fxFlex.xs="10%" fxFlexFill>
+    <div class="flex-item" fxFlex="10.5%" fxFlex.xs="10.5%" fxFlexFill>
         <form #messageForm="ngForm">
             <div class="message-box">
 
                 <div class="flex-container" fxLayout="row" fxLayout.xs="row" fxLayoutAlign="center center" fxLayoutAlign.xs="center center" fxFlexFill>
 
-                    <div class="flex-item" fxFlex="90%" fxFlex.xs="90%" fxFlexFill>
-                        <input type="text" autocomplete="off" class="form-control" id="message" [(ngModel)]="msg.message" name="message">
+                    <div class="flex-item" fxFlex="90%" fxFlex.xs="90%" fxLayoutAlign="center center" fxFlexFill>
+                        <md-input-container>
+                            <input md-input placeholder="Écrivez un message ou une commande..." type="text" autocomplete="off" class="form-control" id="message" [(ngModel)]="msg.message" name="message">
+                        </md-input-container>
                     </div>
 
-                    <div class="flex-item" fxFlex="10%" fxFlex.xs="10%" fxFlexFill>
-                        <button type="submit" class="btn btn-default" (click)="onSubmit(); messageForm.reset()">Submit</button>
+                    <div class="flex-item" fxFlex="10%" fxFlex.xs="10%" fxLayoutAlign="center center" fxFlexFill (window:resize)="onResize($event)">
+                        <div [hidden]="openWindow.innerWidth < 1280">
+                            <button md-fab type="submit" class="btn btn-default" (click)="onSubmit(); messageForm.reset()">
+                          <i class="material-icons">send</i>
+                        </button>
+                        </div>
+                        <div [hidden]="openWindow.innerWidth >= 1280">
+                            <button md-mini-fab type="submit" class="btn btn-default" (click)="onSubmit(); messageForm.reset()">
+                          <i class="material-icons">send</i>
+                        </button>
+                        </div>
+
                     </div>
 
                 </div>

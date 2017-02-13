@@ -10,6 +10,7 @@ export class ChatComponent implements OnInit {
     socket: any;
     msg = new Message("");
     msgList = new Array<Message>();
+    openWindow = window;
 
     ngOnInit() {
         this.socket = io.connect('http://localhost:3000');
@@ -39,6 +40,10 @@ export class ChatComponent implements OnInit {
                 this.socket.emit('chat message', this.msg.message);
             }
         }
+    }
+    onResize(event: any){
+      this.openWindow = window;
+
     }
 }
 
