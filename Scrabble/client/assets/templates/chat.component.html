@@ -1,14 +1,27 @@
 <div class="flex-container" fxLayout="column" fxLayout.xs="column" fxLayoutAlign="center center" fxLayoutAlign.xs="center center" fxFlexFill>
 
     <div class="flex-item pre-scrollable" fxFlex="89.5%" fxFlex.xs="89.5%" fxFlexFill fxFlexWrap="wrap">
+        <div [hidden]="attemptingToConnect">
+            <div class="flex-container" fxLayout="row" fxLayout.xs="row" fxLayoutAlign="start" fxLayoutAlign.xs="start" fxFlexFill>
+
+                <md-list dense id="chatList">
+                    <md-list-item md-multi-line md-list-item-text *ngFor="let msg of msgList; let i = index">
+                        <h3 md-line><strong>{{msg.username}}</strong></h3>
+                        <p md-line>{{msg.submessage}}</p>
+                    </md-list-item>
+                </md-list>
+            </div>
+        </div>
+        <div [hidden]="!attemptingToConnect">
+            <div class="flex-container" fxLayout="column" fxLayout.xs="column" fxLayoutAlign="center center" fxLayoutAlign.xs="center center" fxFlexFill>
 
 
-        <md-list dense id="chatList">
-            <md-list-item md-multi-line md-list-item-text *ngFor="let msg of msgList; let i = index">
-                <h3 md-line><strong>{{msg.username}}</strong></h3>
-                <p md-line>{{msg.submessage}}</p>
-            </md-list-item>
-        </md-list>
+                    <p class="ConnectText">SERVER OFFLINE</p>
+                    <md-spinner></md-spinner>
+                    <p class="ConnectText">Attempting to connect...</p>
+
+            </div>
+        </div>
 
 
     </div>

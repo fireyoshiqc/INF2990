@@ -61,8 +61,8 @@ body {
     margin-left: auto;
     margin-right: auto;
     display: block;
-    max-width:50%;
-    max-width:50%;
+    max-width:60%;
+    max-height:60%;
     padding-top: 3.4%;
     padding-bottom: 5%;
     background-image: url("/assets/textures/board/Board.png");
@@ -179,6 +179,12 @@ md-input-container {
 
 .message-box button {
     border: none;
+}
+
+.ConnectText {
+  font-family: 'Roboto', sans-serif;
+  font-weight:bolder;
+  font-size:large;
 }
 
 
