@@ -6,8 +6,8 @@
                 <table>
                     <tr *ngFor="let row of sudokuService.initialGrid; let i = index">
                         <td *ngFor="let element of row; let j = index">
-                            <div *ngIf="element==0">   
-                                <input #inputField size="1" maxlength="1" (keydown)="putEntry($event, i, j, inputField)">
+                            <div *ngIf="element==0">
+                                <input id="inputField" #inputField size="1" maxlength="1" (keydown)="putEntry($event, i, j, inputField)">
                             </div>
                             <div *ngIf="element!=0">
                                 {{element}}

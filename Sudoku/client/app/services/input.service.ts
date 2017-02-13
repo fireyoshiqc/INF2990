@@ -14,22 +14,23 @@ export class InputService {
     readonly SQUARE_SIZE = 3;
 
     verifyEntry(event: any, grid: number[][], row: number, column: number): boolean {
-        const pattern = /[1-9]/;
 
         // TODO: Implement moving through cases with arrow keys
         // Left / Up / Right / Down Arrow, Backspace, Delete keys
-        if (event.keyCode === 37 || event.keyCode === 38 || event.keyCode === 39 ||
-            event.keyCode === 40 || event.keyCode === 8 || event.keyCode === 46) {
+        if (["ArrowLeft", "ArrowUp", "ArrowRight", "ArrowDown", "Backspace", "Delete"].indexOf(event.key) > -1) {
             return true;
         }
 
-        if (!pattern.test(event.key)) {
+        const pattern = /[1-9]/;
+
+        // Checks if the key pressed is inside the pattern (1 to 9)
+        if (pattern.test(event.key)) {
+            return this.validate(Number.parseInt(event.key), grid, row, column);
+        }
+        else {
             // prevent input
             event.preventDefault();
             return true;
-        }
-        else {
-            return this.validate(Number.parseInt(event.key), grid, row, column);
         }
     }
 

@@ -41,6 +41,7 @@ export class SudokuGridComponent {
 
     resetSudoku() {
         this.sudokuService.resetSudoku();
+        this.sudokuService.resetInvalidField();
         this.stopwatchService.restart();
     }
 
@@ -55,11 +56,10 @@ export class SudokuGridComponent {
     putEntry(event: KeyboardEvent, row: number, column: number, inputField: HTMLInputElement) {
 
         // Left / Up / Right / Down Arrow
-        if ([37, 38, 39, 40].indexOf(event.keyCode) > -1) {
-            // TODO: Implement moving through cases with arrow keys
+        if (["ArrowLeft", "ArrowUp", "ArrowRight", "ArrowDown"].indexOf(event.key) > -1) {
+            // TODO: Implement moving through cases with arrow keys (next sprint)
         }
 
-        // TODO: When a number is erased, verify the validity of other cases
         // Delete the number in the input case
         if (event.key === "Backspace" || event.key === "Delete") {
             inputField.value = null;
@@ -72,7 +72,8 @@ export class SudokuGridComponent {
                 inputField.classList.remove("invalid");
             }
             else if (inputField.value.length === 0) {
-                inputField.classList.add("invalid");
+                // Adds invalid class to inputField (for blinking effect)
+                this.sudokuService.putInvalidField(inputField);
             }
             this.sudokuService.putEntry(Number.parseInt(event.key), row, column);
         }

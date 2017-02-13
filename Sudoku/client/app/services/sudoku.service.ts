@@ -30,6 +30,8 @@ export class SudokuService {
     difficulty: string;
     isValid = "false";
 
+    invalidField: HTMLInputElement[] = new Array<HTMLInputElement>();
+
     constructor(private http: Http) { }
 
     getEasySudoku() {
@@ -65,5 +67,17 @@ export class SudokuService {
 
     putEntry(entry: number, row: number, column: number) {
         this.inputGrid[row][column] = entry;
+    }
+
+    putInvalidField(invalidField : HTMLInputElement) {
+        invalidField.classList.add("invalid");
+        this.invalidField.push(invalidField);
+    }
+
+    resetInvalidField() {
+        this.invalidField.forEach(element => {
+            element.classList.remove("invalid");
+        });
+        this.invalidField = new Array<HTMLInputElement>();
     }
 }
