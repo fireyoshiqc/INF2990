@@ -127,6 +127,13 @@ body {
 
 #rack md-grid-tile {
     margin: 0 auto;
+    min-width: 14.28%;
+    min-height: 14.28%;
+    max-width: 14.28%;
+    max-height: 14.28%;
+    display: inline-block;
+    padding: 0px 0px 0px 0px;
+    border: 0px solid;
 }
 
 #rack img {
