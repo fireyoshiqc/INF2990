@@ -15,7 +15,7 @@ import { InfoComponent } from '../components/info.component';
 import { WaitingRoomComponent } from '../components/waitingRoom.component'; 
 
 @NgModule({
-    imports: [BrowserModule, FormsModule, MaterialModule.forRoot(), FlexLayoutModule.forRoot()],
+    imports: [BrowserModule, FormsModule, AppRoutingModule, MaterialModule.forRoot(), FlexLayoutModule.forRoot()],
     declarations: [AppComponent, ChatComponent, BoardComponent, RackComponent, InfoComponent, WaitingRoomComponent],
     bootstrap: [AppComponent]
 })
