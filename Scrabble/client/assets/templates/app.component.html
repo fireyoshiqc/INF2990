@@ -1,28 +1,28 @@
-<div class="flex-container" fxLayout="column" fxLayout.xs="column" fxLayoutAlign="center center" fxLayoutAlign.xs="center center" fxFlexFill>
-    <div class="flex-item" fxFlex="10%" fxFlex.xs="10%" fxFlexFill>
+<div class="flex-container" fxLayout="column" fxLayoutAlign="center center" fxFlexFill>
+    <div class="flex-item" fxFlex="10%" fxFlexFill>
         <div id="header">
             <h1>Scrabble</h1>
         </div>
     </div>
 
     <div class="flex-item" fxFlex="90%" fxFlex.xs="90%" fxFlexFill>
-        <div class="flex-container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center center" fxLayoutAlign.xs="start" fxFlexFill>
+        <div class="flex-container" fxLayout="row" fxLayoutAlign="center center" fxFlexFill>
 
-            <div class="flex-item" fxFlex="50%" fxFlex.xs="70%" id="gamePanel" fxFlexFill>
+            <div class="flex-item" fxFlex.lg=50% fxFlex.md="60%" fxFlex.sm="70%" id="gamePanel" fxFlexFill>
                 <div class="flex-container" fxLayout="column" fxLayout.xs="column" fxLayoutAlign="center center" fxLayoutAlign.xs="center center" fxFlexFill>
 
-                    <div class="flex-item" fxFlex="80%" fxFlex.xs="80%" fxFlexFill>
+                    <div class="flex-item" fxFlex="auto" fxFlexFill>
                         <board-comp></board-comp>
                     </div>
 
-                    <div class="flex-item" fxFlex="20%" fxFlex.xs="20%" fxFlexFill>
+                    <div class="flex-item" fxFlex="auto" fxFlexFill>
                         <rack-comp></rack-comp>
                     </div>
 
                 </div>
             </div>
 
-            <div class="flex-item" fxFlex="50%" fxFlex.xs="30%" id="sidePanel" fxFlexFill>
+            <div class="flex-item" fxFlex.lg="50%" fxFlex.md="40%" fxFlex.sm="30%" id="sidePanel" fxFlexFill>
                 <div class="flex-container" fxLayout="column" fxLayout.xs="column" fxLayoutAlign="center center" fxLayoutAlign.xs="start" fxFlexFill>
 
                     <div class="flex-item" fxFlex="20%" fxFlex.xs="20%" fxFlexFill>
