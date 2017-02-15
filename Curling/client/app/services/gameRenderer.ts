@@ -66,9 +66,10 @@ export class GameRenderer {
         this.add(rink);
 
         // ----- Experimental : Adding 7 stones to test the collision ------- //
-        let stone1 = new CurlingStone(new THREE.Vector3(0, 0, -1),
-            new THREE.Vector3(0, 0, -rink.RINK_LENGTH / 2 + 2));
+        let stone1 = new CurlingStone(new THREE.Vector3(0.2, 0, -5),
+            new THREE.Vector3(0, 0, 0));
         stone1.init();
+        stone1.isBeingPlayed = true;
         this.physicsManager.addStone(stone1);
 
         let stone2 = new CurlingStone(new THREE.Vector3(0, 0, 0),
@@ -96,17 +97,17 @@ export class GameRenderer {
         stone6.init();
         this.physicsManager.addStone(stone6);
 
-        let stone7 = new CurlingStone(new THREE.Vector3(0, 0, 1),
+        let stone7 = new CurlingStone(new THREE.Vector3(0, 0, 0),
             new THREE.Vector3(0.1, 0, -rink.RINK_LENGTH / 2 - 3));
         stone7.init();
         this.physicsManager.addStone(stone7);
 
-        let stone8 = new CurlingStone(new THREE.Vector3(1, 0, 0),
+        let stone8 = new CurlingStone(new THREE.Vector3(0, 0, 0),
             new THREE.Vector3(-2, 0, -rink.RINK_LENGTH / 2));
         stone8.init();
         this.physicsManager.addStone(stone8);
 
-        let stone9 = new CurlingStone(new THREE.Vector3(-1, 0, 0),
+        let stone9 = new CurlingStone(new THREE.Vector3(0, 0, 0),
             new THREE.Vector3(2, 0, -rink.RINK_LENGTH / 2 - 1));
         stone9.init();
         this.physicsManager.addStone(stone9);
@@ -114,9 +115,9 @@ export class GameRenderer {
         // -------------------END Experiment -------------------------------- //
 
         //TODO: Implement this in a camera handler.
-        this.camera.position.z = -rink.RINK_LENGTH / 2;
-        this.camera.position.y = 8;
-        this.camera.rotation.x = -Math.PI / 2;
+        this.camera.position.z = -10;
+        this.camera.position.y = 2;
+        this.camera.rotation.x = -Math.PI / 18;
 
         this.physicsManager.getStones().forEach(stone => {
             this.add(stone);

@@ -15,13 +15,13 @@ export class CurlingStone extends THREE.Group {
     private readonly SFACES = 25; //Amount of faces for stone rendering.
     private readonly HRADIUS = 0.025; //Radius of handle tube.
     private readonly HFACES = 6; //Amount of faces for handle rendering.
-    private readonly WEIGHT = 19.96; //Weight of a single curling stone.
 
     private texLoader: THREE.TextureLoader;
     stoneColor: string;
-    direction: THREE.Vector3;
+    velocity: THREE.Vector3;
+    isBeingPlayed = false;
 
-    constructor(direction?: THREE.Vector3, position?: THREE.Vector3, aColor?: string) {
+    constructor(velocity?: THREE.Vector3, position?: THREE.Vector3, aColor?: string) {
         super();
         if (aColor) {
             let regex = new RegExp('#[0-9a-fA-F]{6}');
@@ -36,8 +36,8 @@ export class CurlingStone extends THREE.Group {
             this.stoneColor = "#FFFFFF";
         }
 
-        if (direction) {
-            this.direction = direction.normalize();
+        if (velocity) {
+            this.velocity = velocity;
         }
         if (position) {
             this.position.set(position.x, position.y, position.z);
@@ -52,10 +52,6 @@ export class CurlingStone extends THREE.Group {
             color += letters[Math.floor(Math.random() * 16)];
         }
         return color;
-    }
-
-    getCurlingStoneWeight() : number {
-        return this.WEIGHT;
     }
 
     init() : void {
