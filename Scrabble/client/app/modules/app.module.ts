@@ -8,15 +8,17 @@ import { MaterialModule } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { AppComponent } from '../components/app.component';
+import { GameComponent } from '../components/game.component';
 import { ChatComponent } from '../components/chat.component';
 import { BoardComponent } from '../components/board.component';
 import { RackComponent } from '../components/rack.component';
 import { InfoComponent } from '../components/info.component';
-import { WaitingRoomComponent } from '../components/waitingRoom.component'; 
+import { WaitingRoomComponent } from '../components/waitingRoom.component';
 
 @NgModule({
     imports: [BrowserModule, FormsModule, AppRoutingModule, MaterialModule.forRoot(), FlexLayoutModule.forRoot()],
-    declarations: [AppComponent, ChatComponent, BoardComponent, RackComponent, InfoComponent, WaitingRoomComponent],
+    declarations: [AppComponent, GameComponent, ChatComponent, BoardComponent, RackComponent, InfoComponent,
+      WaitingRoomComponent],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

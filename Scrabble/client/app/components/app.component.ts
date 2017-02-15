@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-    moduleId: module.id,
     selector: 'my-app',
-    templateUrl: '/assets/templates/app.component.html'
+    template: '<main><router-outlet></router-outlet></main>'
 })
 export class AppComponent { name = 'Angular'; }
