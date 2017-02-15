@@ -17,6 +17,11 @@ html, body {
     width: 100%;
 }
 
+#wrapper {
+  width: calc(100vw);
+  height: calc(100vh);
+}
+
 h1 {
     color: #369;
     font-family: Arial, Helvetica, sans-serif;
