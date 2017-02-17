@@ -16,16 +16,16 @@ import { BoardTile } from '../classes/boardTile';
 
 export class BoardComponent implements OnInit {
     board: BoardTile[][];
+    readonly BOARD_LENGTH = 15;
 
     ngOnInit() {
-        let boardLength = 15;
 
         this.board = [];
 
-        for (let i = 0; i < boardLength; i++) {
+        for (let i = 0; i < this.BOARD_LENGTH; i++) {
             this.board[i] = [];
 
-            for (let j = 0; j < boardLength; j++) {
+            for (let j = 0; j < this.BOARD_LENGTH; j++) {
                 this.board[i][j] = new BoardTile("Basic");
             }
         }

@@ -6,12 +6,25 @@
  */
 
 export class Letter {
-    letter: string;
-    texture: string;
-    value: number;
+    private readonly letter: string;
+    private texture: string;
+    private readonly value: number;
+
     constructor(letter: string, value: number) {
         this.letter = letter.charAt(0).toUpperCase();
         this.texture = "../../assets/textures/letters/" + this.letter + ".png";
         this.value = value;
+    }
+
+    getValue(): number {
+        return this.value;
+    }
+
+    getTexture(): string {
+        return this.texture;
+    }
+
+    setTexture(texture: string) {
+        this.texture = texture;
     }
 }

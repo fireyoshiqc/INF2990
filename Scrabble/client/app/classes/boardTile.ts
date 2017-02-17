@@ -16,20 +16,29 @@ export type TileType =
     | "Center";
 
 export class BoardTile {
-    tileType: TileType;
-    letter: Letter;
-    isEmpty = true;
-    texture: string;
+    private readonly tileType: TileType;
+    private letter: Letter;
+    private isEmpty: Boolean;
+    private texture: string;
 
     constructor(tileType: TileType = "Basic") {
         this.tileType = tileType;
+        this.isEmpty = true;
         this.texture = "../../assets/textures/board/" + this.tileType + ".png";
+    }
+
+    getTexture(): string {
+        return this.texture;
+    }
+
+    setTexture(texture: string) {
+        this.texture = texture;
     }
 
     putLetter(letter: Letter): void {
         this.letter = letter;
         this.isEmpty = false;
-        this.texture = letter.texture;
+        this.texture = letter.getTexture();
     }
 
     // TODO : Add method to count point form a single tile
