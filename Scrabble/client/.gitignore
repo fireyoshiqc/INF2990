@@ -32,3 +32,4 @@ coverage/
 !tslint.json
 !tsconfig.json
 !wipe-dependencies.js
+!gulpfile.js

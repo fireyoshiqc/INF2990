@@ -45,6 +45,8 @@ module.exports = function(config) {
 
       // Polyfills
       'node_modules/core-js/client/shim.js',
+      'node_modules/reflect-metadata/Reflect.js',
+      //'node_modules/phantomjs-polyfill/bind-polyfill.js',
 
       // zone.js
       'node_modules/zone.js/dist/zone.js',
@@ -54,7 +56,15 @@ module.exports = function(config) {
       'node_modules/zone.js/dist/mocha-patch.js',
       'node_modules/zone.js/dist/async-test.js',
       'node_modules/zone.js/dist/fake-async-test.js',
-
+      
+      { pattern: 'node_modules/sinon/**/*.js', included: false, watched: false },
+      { pattern: 'node_modules/sinon-chai/**/*.js', included: false, watched: false },
+      
+      // Everything that is in our local folder assets will be served by our server
+      // see proxy section that will rewrite.
+      {pattern: assetsBase + 'models/**/*.json',watched:false, included: false, served:true},
+      {pattern: assetsBase + 'fonts/*.json',watched:false, included: false, served:true},
+      {pattern: assetsBase + 'images/*.*',watched:false, included: false, served:true},
       {pattern: assetsBase + 'templates/*.html',watched:false, included: false, served:true},
       {pattern: assetsBase + 'templates/*.*.html',watched:false, included: false, served:true},
       {pattern: assetsBase + 'textures/*.*',watched:false, included: false, served:true},
@@ -82,6 +92,10 @@ module.exports = function(config) {
       // (these paths need to be rewritten, see proxies section)
       { pattern: appBase + '**/*.html', included: false, watched: true },
       { pattern: appBase + '**/*.css', included: false, watched: true },
+      { pattern: appSrcBase + '**/*.html', included: false, watched: true },
+      { pattern: appBase + '**/*.css', included: false, watched: true },		      { pattern: appSrcBase + '**/*.css', included: false, watched: true },
+      // The CSS files that will be copied by gulp are in the output folder
+      { pattern: appBase + '**/*.css', included: false, watched: true },      
 
       // Paths for debugging with source maps in dev tools
       { pattern: appSrcBase + '**/*.ts', included: false, watched: false },
