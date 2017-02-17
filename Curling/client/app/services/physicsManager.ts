@@ -22,6 +22,10 @@ export class PhysicsManager {
         this.curlingStones.push(curlingStone);
     }
 
+    clearStones() {
+        this.curlingStones.splice(0, this.curlingStones.length);
+    }
+
     getStones(): Array<CurlingStone> {
         return this.curlingStones;
     }
@@ -31,9 +35,6 @@ export class PhysicsManager {
         // Collision
         this.updateCollidingStonesDirection();
         this.updateAllStonesPosition();
-        //TODO: Add physics logic to calculate stone position, friction, etc.
-        //TODO: Call update() in renderer game loop
-        //TODO: Collision detection should be called here instead of GameRenderer
     }
 
     private updateCollidingStonesDirection(): void {
