@@ -57,7 +57,7 @@ export class SudokuService {
     }
 
     resetSudoku() {
-        // Loop required for deep copy 
+        // Loop required for deep copy
         for (let i = 0; i < this.inputGrid.length; i++) {
             for (let j = 0; j < this.inputGrid[i].length; j++) {
                 this.inputGrid[i][j] = this.initialGrid[i][j];
@@ -65,11 +65,11 @@ export class SudokuService {
         }
     }
 
-    putEntry(entry: number, row: number, column: number) {
-        this.inputGrid[row][column] = entry;
+    putEntry(entry: EntryNumber) {
+        this.inputGrid[entry.row][entry.column] = entry.value;
     }
 
-    putInvalidField(invalidField : HTMLInputElement) {
+    putInvalidField(invalidField: HTMLInputElement) {
         invalidField.classList.add("invalid");
         this.invalidField.push(invalidField);
     }
@@ -80,4 +80,10 @@ export class SudokuService {
         });
         this.invalidField = new Array<HTMLInputElement>();
     }
+}
+
+interface EntryNumber {
+    value: number;
+    row: number;
+    column: number;
 }

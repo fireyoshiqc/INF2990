@@ -25,8 +25,13 @@ export class Sudoku {
     grid: number[][];
     difficulty: Difficulty;
 
-    constructor(difficulty = Difficulty.Easy) {
-        this.difficulty = difficulty;
+    constructor(difficulty?: Difficulty) {
+        if (difficulty) {
+            this.difficulty = difficulty;
+        }
+        else {
+            this.difficulty = Difficulty.Easy;
+        }
         this.size = 9;
         this.grid = [
             [1, 2, 3, 4, 5, 6, 7, 8, 9],

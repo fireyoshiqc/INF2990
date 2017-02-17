@@ -53,29 +53,45 @@ export class SudokuGridComponent {
         this.stopwatchService.toggleVisibility();
     }
 
-    putEntry(event: KeyboardEvent, row: number, column: number, inputField: HTMLInputElement) {
-
-        // Left / Up / Right / Down Arrow
-        if (["ArrowLeft", "ArrowUp", "ArrowRight", "ArrowDown"].indexOf(event.key) > -1) {
-            // TODO: Implement moving through cases with arrow keys (next sprint)
-        }
-
+    putEntry(entry: EntryEvent) {
         // Delete the number in the input case
-        if (event.key === "Backspace" || event.key === "Delete") {
-            inputField.value = null;
-            inputField.classList.remove("invalid");
-            this.sudokuService.putEntry(0, row, column);
+        if (entry.keyEvent.key === "Backspace" || entry.keyEvent.key === "Delete") {
+            entry.inputField.value = null;
+            entry.inputField.classList.remove("invalid");
+            this.sudokuService.putEntry({
+                value: 0, row: entry.row, column: entry.column
+            });
         }
         // To add a number in the case
         else {
-            if (this.inputService.verifyEntry(event, this.sudokuService.inputGrid, row, column)) {
-                inputField.classList.remove("invalid");
+            if (this.inputService.regexCheck(entry.keyEvent.key)) {
+                if (this.inputService.validate({
+                    value: Number.parseInt(entry.keyEvent.key),
+                    grid: this.sudokuService.inputGrid,
+                    row: entry.row,
+                    column: entry.column
+                })) {
+                    entry.inputField.classList.remove("invalid");
+                }
+                else if (entry.inputField.value.length === 0) {
+                    // Adds invalid class to inputField (for blinking effect)
+                    this.sudokuService.putInvalidField(entry.inputField);
+                }
+                this.sudokuService.putEntry({
+                    value: Number.parseInt(entry.keyEvent.key),
+                    row: entry.row, column: entry.column
+                });
             }
-            else if (inputField.value.length === 0) {
-                // Adds invalid class to inputField (for blinking effect)
-                this.sudokuService.putInvalidField(inputField);
+            else {
+                entry.keyEvent.preventDefault();
             }
-            this.sudokuService.putEntry(Number.parseInt(event.key), row, column);
         }
     }
+}
+
+interface EntryEvent {
+    keyEvent: KeyboardEvent;
+    inputField: HTMLInputElement;
+    row: number;
+    column: number;
 }

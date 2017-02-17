@@ -1,10 +1,12 @@
-# Exclusion des dépendences du projet. Elles peuvent être regénérées 
+# Exclusion des dépendences du projet. Elles peuvent être regénérées
 # automatiquement.
 node_modules/
 false/
 
 # Exclusion des fichiers Javascripts
 out/
+.nyc_output/
+.directory
 
 # NPM Debug Log
 npm-debug.log
