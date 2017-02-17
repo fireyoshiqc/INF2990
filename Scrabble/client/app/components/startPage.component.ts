@@ -16,7 +16,6 @@ export class StartPageComponent {
     onJoin() {
         console.log(this.nbPlayers, this.playerName);
 
-        this.router.navigate(['/waitingRoom']); 
+        this.router.navigate(['/waitingRoom']);
     }
-
 }

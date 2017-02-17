@@ -1,5 +1,4 @@
 import { StopwatchService } from './stopwatch.service';
-
 import { expect } from 'chai';
 
 describe('StopwatchService', () => {

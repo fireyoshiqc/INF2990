@@ -1,0 +1,19 @@
+{
+    "array": [
+        ["TripleWord", "Basic", "Basic", "DoubleLetter", "Basic", "Basic", "Basic", "TripleWord", "Basic", "Basic", "Basic", "DoubleLetter", "Basic", "Basic", "TripleWord"],
+        ["Basic", "DoubleWord", "Basic", "Basic", "Basic", "TripleLetter", "Basic", "Basic", "Basic", "TripleLetter", "Basic", "Basic", "Basic", "DoubleWord", "Basic"],
+        ["Basic", "Basic", "DoubleWord", "Basic", "Basic", "Basic", "DoubleLetter", "Basic", "DoubleLetter", "Basic", "Basic", "Basic", "DoubleWord", "Basic", "Basic"],
+        ["DoubleLetter", "Basic", "Basic", "DoubleWord", "Basic", "Basic", "Basic", "DoubleLetter", "Basic", "Basic", "Basic", "DoubleWord", "Basic", "Basic", "DoubleLetter"],
+        ["Basic", "Basic", "Basic", "Basic", "DoubleWord", "Basic", "Basic", "Basic", "Basic", "Basic", "DoubleWord", "Basic", "Basic", "Basic", "Basic"],
+        ["Basic", "TripleLetter", "Basic", "Basic", "Basic", "TripleLetter", "Basic", "Basic", "Basic", "TripleLetter", "Basic", "Basic", "Basic", "TripleLetter", "Basic"],
+        ["Basic", "Basic", "DoubleLetter", "Basic", "Basic", "Basic", "DoubleLetter", "Basic", "DoubleLetter", "Basic", "Basic", "Basic", "DoubleLetter", "Basic", "Basic"],
+        ["TripleWord", "Basic", "Basic", "DoubleLetter", "Basic", "Basic", "Basic", "Center", "Basic", "Basic", "Basic", "DoubleLetter", "Basic", "Basic", "TripleWord"],
+        ["Basic", "Basic", "DoubleLetter", "Basic", "Basic", "Basic", "DoubleLetter", "Basic", "DoubleLetter", "Basic", "Basic", "Basic", "DoubleLetter", "Basic", "Basic"],
+        ["Basic", "TripleLetter", "Basic", "Basic", "Basic", "TripleLetter", "Basic", "Basic", "Basic", "TripleLetter", "Basic", "Basic", "Basic", "TripleLetter", "Basic"],
+        ["Basic", "Basic", "Basic", "Basic", "DoubleWord", "Basic", "Basic", "Basic", "Basic", "Basic", "DoubleWord", "Basic", "Basic", "Basic", "Basic"],
+        ["DoubleLetter", "Basic", "Basic", "DoubleWord", "Basic", "Basic", "Basic", "DoubleLetter", "Basic", "Basic", "Basic", "DoubleWord", "Basic", "Basic", "DoubleLetter"],
+        ["Basic", "Basic", "DoubleWord", "Basic", "Basic", "Basic", "DoubleLetter", "Basic", "DoubleLetter", "Basic", "Basic", "Basic", "DoubleWord", "Basic", "Basic"],
+        ["Basic", "DoubleWord", "Basic", "Basic", "Basic", "TripleLetter", "Basic", "Basic", "Basic", "TripleLetter", "Basic", "Basic", "Basic", "DoubleWord", "Basic"],
+        ["TripleWord", "Basic", "Basic", "DoubleLetter", "Basic", "Basic", "Basic", "TripleWord", "Basic", "Basic", "Basic", "DoubleLetter", "Basic", "Basic", "TripleWord"]
+    ]
+}
