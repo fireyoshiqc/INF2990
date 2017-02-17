@@ -28,7 +28,6 @@ function isBuiltFile(path) {
            return keep || (path.substr(0, bp.length) === bp);
          }, false);
 }
-
 var allSpecFiles = Object.keys(window.__karma__.files)
   .filter(isSpecFile)
   .filter(isBuiltFile);
@@ -52,6 +51,9 @@ System.config({
     '@angular/http/testing': 'npm:@angular/http/bundles/http-testing.umd.js',
     '@angular/router/testing': 'npm:@angular/router/bundles/router-testing.umd.js',
     '@angular/forms/testing': 'npm:@angular/forms/bundles/forms-testing.umd.js',
+    
+    'sinon': 'npm:sinon/pkg/sinon.js',
+    'sinon-chai': 'npm:sinon-chai/lib/sinon-chai.js',
   },
 });
 
