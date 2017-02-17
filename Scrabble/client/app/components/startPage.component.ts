@@ -1,18 +1,16 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { PlayerManagerService } from '../services/playerManager.service';
 
 @Component({
     selector: 'startPage-comp',
-    templateUrl: '/assets/templates/startPage.component.html',
-    providers:[PlayerManagerService]
+    templateUrl: '/assets/templates/startPage.component.html'
 })
 export class StartPageComponent {
     nbPlayers: number;
     playerName: string;
 
-    constructor(public router: Router, private playerManagerService: PlayerManagerService) {
-        this.playerManagerService = playerManagerService;
+    constructor(public router: Router) {
+
     }
 
     onJoin() {
