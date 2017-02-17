@@ -11,14 +11,11 @@ export class WaitingRoomComponent {
 
     // TODO: get the right capacity once the start page is created
     capacity : number;
-    nbPlayer : number;
     players : any;
     //socket : any;
-    //  invalidField: Player[] = new Array<Player>();
 
     constructor(public router: Router) {
     }
-
 
     // Display the number of connected players once per second
     update() { //empty for the moment
