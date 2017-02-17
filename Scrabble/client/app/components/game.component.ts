@@ -5,4 +5,4 @@ import { Component } from '@angular/core';
     selector: 'game-comp',
     templateUrl: '/assets/templates/game.component.html'
 })
-export class GameComponent { name = 'Angular'; }
+export class GameComponent { }

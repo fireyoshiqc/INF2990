@@ -1,0 +1,53 @@
+<div id="wrapper" class="flex-container" fxLayout="column" fxLayoutAlign="center center">
+    <div class="flex-item" fxFlex="10%" fxLayoutAlign="center center" fxFlexFill>
+         <h1>Welcome to Neon Scrabble!</h1>
+    </div>
+
+    <!--Body-->
+    <div class="flex-item" fxFlex="90%" fxFlex.xs="90%" fxFlexFill>
+            <div class="flex-container" fxLayout="column" fxFlexFill>
+
+                <!--Espace pour ne que le boutton join ne soit pas colle a input-->
+                <div class="flex-item" fxFlex="20%" fxLayoutAlign="center center" fxFlexFill></div>
+
+                <!--Name and Join button-->
+                <div class="flex-item" fxFlex="20%" fxFlexFill>
+                    <!--Name input (col)-->
+                    <div class="flex-container" fxLayout="row" fxLayoutAlign="center center" fxFlexFill>
+                        <div class="flex-item" fxFlex="50%" fxLayoutAlign="center center" fxFlexFill>
+                            <md-input-container>
+                                <input id="nameInput" md-input placeholder="Entrez votre nom..." type="text" [(ngModel)]="playerName">
+                            </md-input-container>
+                        </div>
+
+                        <!--Espace pour ne que le boutton join ne soit pas colle a input-->
+                        <div class="flex-item" fxFlex="5%" fxLayoutAlign="center center" fxFlexFill></div>
+
+                        <div class="flex-item" fxFlex="10%" fxLayoutAlign="center center" fxFlexFill>
+                            <button type="button" (click)="onJoin()" class="btn btn-success btn-block">Join</button>
+                        </div>
+                    </div>
+                    <!--End name and join button-->
+
+                <div class="flex-item"  fxFlex="60%" fxFlexFill>
+                    <!--Radio buttons-->
+                    <div class="flex-container" fxLayout="row" fxLayoutAlign="center center" fxFlexFill>
+                        <!--Espace pour ne que le boutton join ne soit pas colle a input-->
+                        <div class="flex-item" fxFlex="20%" fxLayoutAlign="center center" fxFlexFill>
+                            Choisissez la taille de la partie: 
+                        </div>
+                        <div class="flex-item" fxFlex="30%" fxLayoutAlign="center center" fxFlexFill>
+                            <md-radio-group [(ngModel)]="nbPlayers">
+                                <md-radio-button value="2">2 joueurs</md-radio-button>
+                                <md-radio-button value="3">3 joueurs</md-radio-button>
+                                <md-radio-button value="4">4 joueurs</md-radio-button>
+                            </md-radio-group>
+                        </div>
+                    </div>
+                    <!--End radio buttons -->
+                </div>
+
+            </div>
+     </div>
+     <!--End body-->
+</div>

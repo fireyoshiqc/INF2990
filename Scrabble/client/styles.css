@@ -220,10 +220,10 @@ md-list {
 
 #waitingMessage {
     text-align: center;
-     border: 2px black solid;
+     border: 2px cornflowerblue solid;
      border-radius: 25px 25px 0px 0px;
 }
 
 #chatBox {
-    border: 2px black solid;
+    border: 2px cornflowerblue solid;
 }

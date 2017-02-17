@@ -1,26 +1,25 @@
-
-    <div id="wrapper" class="flex-container" fxLayout="column" fxLayoutAlign="center center">
-        <div class="flex-item" fxFlex="10%" fxFlexFill>
-            <div class="flex-container" fxLayout="row" fxLayoutAlign="center center" fxFlexFill>
-                <div class="flex-item" fxFlex="80%" fxFlexFill>
-
-                </div>
-
-                <div class="flex-item" fxFlex="10%" fxLayoutAlign="center center" fxFlexFill>
-                    <button #quit routerLink="/testGame" type="button" class="btn btn-danger btn-block">Quit</button>
-                </div>
+<div id="wrapper" class="flex-container" fxLayout="column" fxLayoutAlign="center center">
+    <div class="flex-item" fxFlex="10%" fxFlexFill>
+        <div class="flex-container" fxLayout="row" fxLayoutAlign="center center" fxFlexFill>
+            <div class="flex-item" fxFlex="80%" fxFlexFill>
+                <h2>Welcome {{playerName}}!</h2>
             </div>
-        </div>
 
-        <div class="flex-item" fxFlex="90%" fxFlex.xs="90%" fxFlexFill>
-            <div class="flex-container" fxLayout="column" fxLayoutAlign="center center" fxFlexFill>
-                <div id="waitingMessage" class="flex-item" fxFlex.xl=40% fxFlex.lg="50%" fxFlex.md="40%" fxFlex.sm="30%" fxLayoutAlign="center center" fxFlexFill>
-                        <h2 >Waiting for {{x}} player(s) </h2>
-                </div>
-
-                <div id="chatBox" class="flex-item" fxFlex="70%" fxFlex.xs="70%" fxFlexFill>
-                        <chat-comp></chat-comp>
-                </div>
+            <div class="flex-item" fxFlex="10%" fxLayoutAlign="center center" fxFlexFill>
+                <button #quit routerLink="/startPage" type="button" class="btn btn-danger btn-block">Quit</button>
             </div>
         </div>
     </div>
+
+    <div class="flex-item" fxFlex="90%" fxFlex.xs="90%" fxFlexFill>
+        <div class="flex-container" fxLayout="column" fxLayoutAlign="center center" fxFlexFill>
+            <div id="waitingMessage" class="flex-item" fxFlex.xl=40% fxFlex.lg="50%" fxFlex.md="40%" fxFlex.sm="30%" fxLayoutAlign="center center" fxFlexFill>
+                    <h2 >Waiting for {{x}} player(s) </h2>
+            </div>
+
+            <div id="chatBox" class="flex-item" fxFlex="70%" fxFlex.xs="70%" fxFlexFill>
+                    <chat-comp></chat-comp>
+            </div>
+        </div>
+    </div>
+</div>

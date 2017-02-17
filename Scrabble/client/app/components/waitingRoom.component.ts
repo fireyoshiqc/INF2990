@@ -25,7 +25,7 @@ export class WaitingRoomComponent {
     @HostListener('window:keydown', ['$event'])
     keyboardInput(event: KeyboardEvent) {
         if (event.key === "Escape") {
-            this.router.navigate(['/testGame']); // TODO: Mettre le bon chemin
+            this.router.navigate(['/startPage']);
         }
     }
 }
