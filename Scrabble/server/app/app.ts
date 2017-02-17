@@ -12,11 +12,14 @@ import * as cookieParser from 'cookie-parser';
 import * as bodyParser from 'body-parser';
 import * as cors from 'cors';
 
-import * as indexRoute from './routes';
+//import * as indexRoute from './routes';
+
+import { PlayerManager } from './services/playerManager.service';
 
 export class Application {
 
   public app: express.Application;
+  public playerManager: PlayerManager;
 
   /**
    * Bootstrap the application.
@@ -40,6 +43,9 @@ export class Application {
 
     // Application instantiation
     this.app = express();
+
+    // Instanciate player manager
+    this.playerManager = new PlayerManager();
 
     //configure this.application
     this.config();
@@ -71,17 +77,31 @@ export class Application {
    * @method routes
    */
   public routes() {
-    let router: express.Router;
-    router = express.Router();
 
-    //create routes
-    const index: indexRoute.Index = new indexRoute.Index();
+    let playerManager = this.getMananager();
+    // Commented in Sudoku too
+    // let router: express.Router;
+    // router = express.Router();
 
-    //home page
-    router.get('/', index.index.bind(index.index));
+    // //create routes
+    // const index: indexRoute.Index = new indexRoute.Index();
 
-    //use router middleware
-    this.app.use(router);
+    // //home page
+    // router.get('/', index.index.bind(index.index));
+
+    // //use router middleware
+    // this.app.use(router);
+
+    this.app.post('/validatePlayerName', function(req, res){
+        let result = playerManager.validateName(req.body);
+        console.log("Validate player " + req.body);
+        res.send(true); // TODO: a changer en 
+    });
+
+    this.app.post('/addPlayer', function(req, res){
+        playerManager.addPlayer(req.body);
+        console.log("Added player " + req.body);
+    });
 
     // Gestion des erreurs
     this.app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
@@ -110,5 +130,9 @@ export class Application {
             error: {}
         });
     });
+  }
+
+  getMananager() : PlayerManager {
+      return this.playerManager;
   }
 }

@@ -17,7 +17,7 @@ export class StartPageComponent {
 
     onJoin() {
         console.log(this.capacity, this.playerName);
-        this.playerManagerService.validateName(this.playerName);
+        this.playerManagerService.validateName(this.playerName); // 
         if (this.playerManagerService.isNameValid()) {
 
 
