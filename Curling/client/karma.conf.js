@@ -29,7 +29,7 @@ module.exports = function(config) {
 
     client: {
       builtPaths: [appBase, testingBase], // add more spec base paths as needed
-      clearContext: false, // leave Jasmine Spec Runner output visible in browser
+      clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
 
     customLaunchers: {
@@ -61,6 +61,9 @@ module.exports = function(config) {
       'node_modules/zone.js/dist/fake-async-test.js',
 
       'node_modules/three/build/three.js',
+
+      { pattern: 'node_modules/sinon/**/*.js', included: false, watched: false },
+      { pattern: 'node_modules/sinon-chai/**/*.js', included: false, watched: false },
 
       // Everything that is in our local folder assets will be served by our server
       // see proxy section that will rewrite.
@@ -94,6 +97,9 @@ module.exports = function(config) {
       // (these paths need to be rewritten, see proxies section)
       { pattern: appSrcBase + '**/*.html', included: false, watched: true },
       { pattern: appSrcBase + '**/*.css', included: false, watched: true },
+
+      // The CSS files that will be copied by gulp are in the output folder
+      { pattern: appBase + '**/*.css', included: false, watched: true }, 
 
       // Paths for debugging with source maps in dev tools
       { pattern: appSrcBase + '**/*.ts', included: false, watched: false },
