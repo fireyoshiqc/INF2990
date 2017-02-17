@@ -1,0 +1,17 @@
+/***************/
+/* CURLING HUD */
+/***************/
+
+/*********************/
+/* BUTTON FOR CAMERA */
+/*********************/
+
+#cameraButton {
+    cursor: pointer;
+    display: block;
+    float: right;  
+    z-index: 3;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+}

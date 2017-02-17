@@ -11,19 +11,23 @@ import { SkyBox } from '../entities/skyBox';
 import { Rink } from '../entities/rink';
 import { LightManager } from './lightManager';
 import { PhysicsManager } from './physicsManager';
+import { CameraManager } from './cameraManager.service';
 
 @Injectable()
 export class GameRenderer {
 
     container: HTMLElement;
     scene: THREE.Scene;
-    camera: THREE.PerspectiveCamera;
     renderer: THREE.WebGLRenderer;
     ambientLight: THREE.HemisphereLight;
     isStarted = false;
     lightManager: LightManager;
     physicsManager: PhysicsManager;
+    cameraManager: CameraManager;
     clock: THREE.Clock;
+
+    // TODO : Remove when experimental test is done
+    stone1: CurlingStone;
 
     public init(container?: HTMLElement): void {
         this.container = container;
@@ -40,18 +44,16 @@ export class GameRenderer {
         }
         else {
             document.body.appendChild(this.renderer.domElement);
+            this.container = document.body;
         }
 
         let containerRect = this.container.getBoundingClientRect();
         //Adjust width and height to real container size
         this.renderer.setSize(containerRect.width, containerRect.height);
 
-        /*Field of view, aspect ratio, near, far*/
-        //TODO: Implement proper camera handler with FOV modifier relative to container size.
-        this.camera = new THREE.PerspectiveCamera(45,
-            containerRect.width / containerRect.height, 1, 10000);
         this.lightManager = new LightManager();
         this.physicsManager = new PhysicsManager();
+        this.cameraManager = new CameraManager(this.container);
 
         let skybox: SkyBox;
         skybox = new SkyBox();
@@ -66,11 +68,11 @@ export class GameRenderer {
         this.add(rink);
 
         // ----- Experimental : Adding 7 stones to test the collision ------- //
-        let stone1 = new CurlingStone(new THREE.Vector3(0.2, 0, -5),
+        this.stone1 = new CurlingStone(new THREE.Vector3(0.2, 0, -5),
             new THREE.Vector3(0, 0, 0));
-        stone1.init();
-        stone1.isBeingPlayed = true;
-        this.physicsManager.addStone(stone1);
+        this.stone1.init();
+        this.stone1.isBeingPlayed = true;
+        this.physicsManager.addStone(this.stone1);
 
         let stone2 = new CurlingStone(new THREE.Vector3(0, 0, 0),
             new THREE.Vector3(0, 0, -rink.RINK_LENGTH / 2));
@@ -114,11 +116,6 @@ export class GameRenderer {
 
         // -------------------END Experiment -------------------------------- //
 
-        //TODO: Implement this in a camera handler.
-        this.camera.position.z = -10;
-        this.camera.position.y = 2;
-        this.camera.rotation.x = -Math.PI / 18;
-
         this.physicsManager.getStones().forEach(stone => {
             this.add(stone);
         });
@@ -142,9 +139,8 @@ export class GameRenderer {
         //Adjust width and height to real container size
         this.renderer.setSize(containerRect.width, containerRect.height);
 
-        //TODO: Adjust camera FOV following aspect ratio
-        this.camera.aspect = (containerRect.width / containerRect.height);
-        this.camera.updateProjectionMatrix();
+        //Adjust camera FOV following aspect ratio
+        this.cameraManager.onResize(this.container);
     }
 
     render(): void {
@@ -153,10 +149,19 @@ export class GameRenderer {
         //TODO: Implement this.physicsManager.update() correctly
         let delta = this.clock.getDelta();
         this.physicsManager.update(delta);
-        this.renderer.render(this.scene, this.camera);
+
+        //Render scene using camera that is following the stone
+        this.cameraManager.followStone(this.stone1.position);
+        this.renderer.render(this.scene, this.cameraManager.getCamera());
     }
 
     add(obj: THREE.Group | THREE.Mesh): void {
         this.scene.add(obj);
+    }
+
+    switchCamera() {
+        (this.cameraManager.isUsingPerspectiveCamera()) ?
+            this.cameraManager.useOrthographicCamera(this.container) :
+            this.cameraManager.usePerspectiveCamera(this.container);
     }
 }
