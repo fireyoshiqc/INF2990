@@ -1,5 +1,5 @@
 {
-  "rulesDirectory":["node_modules/tslint-eslint-rules/dist/rules", "node_modules/codelyzer"],
+  "rulesDirectory":["node_modules/tslint-eslint-rules/dist/rules"],
   "rules": {
     "class-name": true,
     "curly": true,
