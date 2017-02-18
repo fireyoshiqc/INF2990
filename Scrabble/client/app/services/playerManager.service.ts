@@ -35,6 +35,10 @@ export class PlayerManagerService{
         this.capacity = capacity;
     }
 
+    getCapacity() : number {
+        return this.capacity;
+    }
+
     isNameValid(): boolean {
         return this.nameValid;
     }
