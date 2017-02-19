@@ -16,7 +16,7 @@
                     <div class="flex-container" fxLayout="row" fxLayoutAlign="center center" fxFlexFill>
                         <div class="flex-item" fxFlex="50%" fxLayoutAlign="center center" fxFlexFill>
                             <md-input-container>
-                                <input id="nameInput" md-input placeholder="Entrez votre nom..." type="text" [(ngModel)]="playerName">
+                                <input id="nameInput" (change)="validateName()" maxlength="30" md-input placeholder="Entrez votre nom... (au moins 4 caractères)" type="text" [(ngModel)]="playerName">
                             </md-input-container>
                         </div>
 

@@ -18,7 +18,6 @@ export class ChatComponent implements OnInit {
 
         this.socket.on("connect_error", () => {
             this.attemptingToConnect = true;
-
         });
 
         this.socket.on('message sent', (msg: string) => {

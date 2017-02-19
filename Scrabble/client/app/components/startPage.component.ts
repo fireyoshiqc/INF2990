@@ -5,9 +5,10 @@ import { PlayerManagerService } from '../services/playerManager.service';
 @Component({
     selector: 'startpage-comp',
     templateUrl: '/assets/templates/startPage.component.html',
-    providers:[PlayerManagerService]
+    providers: [PlayerManagerService]
 })
 export class StartPageComponent {
+
     capacity: number;
     playerName: string;
 
@@ -16,17 +17,22 @@ export class StartPageComponent {
     }
 
     onJoin() {
-        console.log(this.capacity, this.playerName);
-        this.playerManagerService.validateName(this.playerName); // 
         if (this.playerManagerService.isNameValid()) {
+            if (this.capacity > 1) {
+                this.playerManagerService.setName(this.playerName);
+                this.playerManagerService.addPlayer();
 
-
-            console.log("name valide!!!");
-            this.playerManagerService.setName(this.playerName);
-            this.playerManagerService.addPlayer();
-
-            this.playerManagerService.setCapacity(this.capacity);
-            this.router.navigate(['/waitingRoom']);
+                this.playerManagerService.setCapacity(this.capacity);
+                this.router.navigate(['/waitingRoom']);
+            } else {
+                alert("Veuillez choisir une taille de partie!!");
+            }
+        } else {
+            alert("NOM INVALIDE");
         }
+    }
+
+    validateName() {
+        this.playerManagerService.validateName(this.playerName);
     }
 }

@@ -4,20 +4,36 @@
  * @date 2017/02/17
  */
 
+import * as io from 'socket.io-client';
+
 export class PlayerManager {
 
+    socket: any;
     playerNames: string[];
 
     constructor() {
-        this.playerNames = new Array<string>();
-     }
+        this.socket = io.connect('http://localhost:3000');
 
-     validateName(name: string): Boolean {
-        console.log("Validating name " + name);
-        return this.playerNames.indexOf(name) === -1;
+        this.socket.on('wsValidateName', (name: string) => {
+            this.socket.emit('swNameValidated', this.validateName(name));
+        });
+
+        this.socket.on('wsAddPlayer', (name: string) => {
+            this.addPlayer(name);
+        });
+
+        this.playerNames = new Array<string>();
+    }
+
+    validateName(name: string): boolean {
+        let validity = this.playerNames.indexOf(name) === -1;
+        validity = validity && name.length > 3 && name.charAt(0) !== " " && name.charAt(name.length - 1) !== " ";
+        console.log("The name " + name + " is" + (validity ? "" : " not") + " valid");
+        return validity;
     }
 
     addPlayer(name: string) {
+        console.log("Name added : " + name);
         this.playerNames.push(name);
     }
 

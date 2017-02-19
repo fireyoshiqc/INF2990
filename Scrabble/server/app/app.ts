@@ -78,7 +78,6 @@ export class Application {
    */
   public routes() {
 
-    let playerManager = this.getMananager();
     // Commented in Sudoku too
     // let router: express.Router;
     // router = express.Router();
@@ -91,17 +90,6 @@ export class Application {
 
     // //use router middleware
     // this.app.use(router);
-
-    this.app.post('/validatePlayerName', function(req, res){
-        let result = playerManager.validateName(req.body);
-        console.log("Validate player " + req.body);
-        res.send(true); // TODO: a changer en 
-    });
-
-    this.app.post('/addPlayer', function(req, res){
-        playerManager.addPlayer(req.body);
-        console.log("Added player " + req.body);
-    });
 
     // Gestion des erreurs
     this.app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
@@ -130,9 +118,5 @@ export class Application {
             error: {}
         });
     });
-  }
-
-  getMananager() : PlayerManager {
-      return this.playerManager;
   }
 }

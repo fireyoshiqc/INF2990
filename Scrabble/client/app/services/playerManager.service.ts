@@ -1,42 +1,49 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
+import * as io from 'socket.io-client';
+
+export interface Player {
+    name: string;
+    capacity: number;
+}
 
 @Injectable()
-export class PlayerManagerService{
+export class PlayerManagerService {
 
+    socket: any;
     private nameValid: boolean;
-    private name: string;
-    private capacity: number; //CHANGE
+    private player = { name: "", capacity: 0 };
 
     constructor(private http: Http) {
+        this.socket = io.connect('http://localhost:3000');
+
+        this.socket.on('wcNameValidated', (validity: boolean) => {
+            this.nameValid = validity;
+        });
     }
 
     validateName(name: string) {
-        this.http.post('http://localhost:3000/validatePlayerName', name).subscribe(res => {
-            this.nameValid = (res.text() === "true");
-        });
+        this.socket.emit('cwValidateName', name);
     }
 
     addPlayer() {
-        this.http.post('http://localhost:3000/addPlayer', this.name).subscribe(res => {
-            //Empty
-        });
+        this.socket.emit('cwAddPlayer', this.player);
     }
 
     getName(): string {
-        return this.name;
+        return this.player.name;
     }
 
     setName(name: string) {
-        this.name = name;
+        this.player.name = name;
     }
 
     setCapacity(capacity: number) {
-        this.capacity = capacity;
+        this.player.capacity = capacity;
     }
 
-    getCapacity() : number {
-        return this.capacity;
+    getCapacity(): number {
+        return this.player.capacity;
     }
 
     isNameValid(): boolean {

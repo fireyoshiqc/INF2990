@@ -13,7 +13,8 @@
       // other libraries
       
       // our app is within the out folder
-      app: 'out/'
+      app: 'out/',
+      'socket.io-client': 'npm:socket.io-client/dist/socket.io.js'
     },
     // packages tells the System loader how to load when no filename and/or no extension
     packages: {

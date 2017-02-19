@@ -41,7 +41,22 @@ sio.on('connection', (socket) => {
         sio.emit('user disconnect', socket.id + "~ User has disconnected from chat.");
         console.log("User disconnected");
     });
+
+    socket.on('cwValidateName', (name: string) => {
+        sio.emit('wsValidateName', name);
+    });
+
+    socket.on('swNameValidated', (validity: boolean) => {
+        sio.emit('wcNameValidated', validity);
+    });
+
+    socket.on('cwAddPlayer', (player : any) => {
+        sio.emit('wsAddPlayer', player.name);
+        //player.capacity si vous avez besoin
+    });
 });
+
+
 
 /**
  * Normalise le port en un nombre, une chaîne de caractères ou la valeur false.
