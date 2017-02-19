@@ -12,7 +12,7 @@ export class CameraManager {
 
     private cameraPerspective: THREE.PerspectiveCamera;
     private cameraOrthographic: THREE.OrthographicCamera;
-    private currentCamera : THREE.Camera;
+    private currentCamera: THREE.Camera;
     private usingPerspectiveCamera = true; // by default, use perspective camera
     private readonly cameraOrthographicZoomFactor = 65 / (1440 * 715); // determined experimentally
 
@@ -35,7 +35,7 @@ export class CameraManager {
         this.cameraPerspective = new THREE.PerspectiveCamera(fovPerspectiveDeg,
             aspectPerspective, nearPlanePerspective, farPlanePerspective);
 
-        // Camera position    
+        // Camera position
         let positionZ = 2;
         let positionY = 2;
         let rotationX = -Math.PI / 18;
@@ -59,33 +59,33 @@ export class CameraManager {
         // Camera position
         this.cameraOrthographic.rotateX(-Math.PI / 2);
         this.cameraOrthographic.rotateZ(Math.PI / 2);
-        let positionCameraOrthographic : THREE.Vector3 = new THREE.Vector3(0, 5, -21);
+        let positionCameraOrthographic: THREE.Vector3 = new THREE.Vector3(0, 5, -21);
         this.cameraOrthographic.position.x = positionCameraOrthographic.x;
         this.cameraOrthographic.position.y = positionCameraOrthographic.y;
         this.cameraOrthographic.position.z = positionCameraOrthographic.z;
     }
 
-    isUsingPerspectiveCamera() : boolean {
+    isUsingPerspectiveCamera(): boolean {
         return this.usingPerspectiveCamera;
     }
 
-    usePerspectiveCamera(container : HTMLElement) : void {
+    usePerspectiveCamera(container: HTMLElement): void {
         this.usingPerspectiveCamera = true;
         this.currentCamera = this.cameraPerspective;
         this.onResize(container);
     }
 
-    useOrthographicCamera(container : HTMLElement) : void {
+    useOrthographicCamera(container: HTMLElement): void {
         this.usingPerspectiveCamera = false;
         this.currentCamera = this.cameraOrthographic;
         this.onResize(container);
     }
 
-    getCamera() : THREE.Camera {
+    getCamera(): THREE.Camera {
         return this.currentCamera;
     }
 
-    followStone(position : THREE.Vector3) : void {
+    followStone(position: THREE.Vector3): void {
         // only follow stone when using perspective camera
         if (this.usingPerspectiveCamera) {
             let offsetZ = 5;

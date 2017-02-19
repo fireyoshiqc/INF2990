@@ -18,12 +18,18 @@ export module TextureCacher {
         return texCache[path];
     }
 
+    //Used for tests
+    export function getTexture(path: string): THREE.Texture {
+        return texCache[path];
+    }
+
     export function discard(path: string) {
-        delete texCache[path];
+        if (texCache[path] !== undefined) {
+            delete texCache[path];
+        }
     }
 
     export function clear() {
         texCache = [];
     }
-
 }
