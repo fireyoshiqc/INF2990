@@ -14,7 +14,21 @@ export class CameraManager {
     private cameraOrthographic: THREE.OrthographicCamera;
     private currentCamera: THREE.Camera;
     private usingPerspectiveCamera = true; // by default, use perspective camera
-    private readonly cameraOrthographicZoomFactor = 65 / (1440 * 715); // determined experimentally
+    private readonly ORTHO_ZOOM_FACTOR = 90 / 1920; // determined experimentally
+    private readonly PERSPECTIVE_OFFSET = 5;
+    private readonly PERSPECTIVE_FOV = 45;
+    private readonly PERSPECTIVE_NEAR = 1;
+    private readonly PERSPECTIVE_FAR = 10000;
+    private readonly PERSPECTIVE_Z_POS = 2;
+    private readonly PERSPECTIVE_Y_POS = 2;
+    private readonly PERSPECTIVE_X_POS = -Math.PI / 18;
+    private readonly ORTHO_NEAR = 1;
+    private readonly ORTHO_FAR = 10000;
+    private readonly ORTHO_Z_POS = -21;
+    private readonly ORTHO_Y_POS = 5;
+    private readonly ORTHO_X_POS = 0;
+    private readonly ORTHO_Z_ROT = Math.PI / 2;
+    private readonly ORTHO_X_ROT = -Math.PI / 2;
 
     constructor(container: HTMLElement) {
         let containerRect = container.getBoundingClientRect();
@@ -28,41 +42,32 @@ export class CameraManager {
 
     private initPerspectiveCamera(containerRect: ClientRect) {
         // Camera creation
-        let fovPerspectiveDeg = 45;
         let aspectPerspective = containerRect.width / containerRect.height;
-        let nearPlanePerspective = 1;
-        let farPlanePerspective = 10000;
-        this.cameraPerspective = new THREE.PerspectiveCamera(fovPerspectiveDeg,
-            aspectPerspective, nearPlanePerspective, farPlanePerspective);
+        this.cameraPerspective = new THREE.PerspectiveCamera(this.PERSPECTIVE_FOV,
+            aspectPerspective, this.PERSPECTIVE_NEAR, this.PERSPECTIVE_FAR);
 
         // Camera position
-        let positionZ = 2;
-        let positionY = 2;
-        let rotationX = -Math.PI / 18;
-        this.cameraPerspective.position.z = positionZ;
-        this.cameraPerspective.position.y = positionY;
-        this.cameraPerspective.rotation.x = rotationX;
+        this.cameraPerspective.position.z = this.PERSPECTIVE_Z_POS;
+        this.cameraPerspective.position.y = this.PERSPECTIVE_Y_POS;
+        this.cameraPerspective.rotation.x = this.PERSPECTIVE_X_POS;
     }
 
     private initOrthographicCamera(containerRect: ClientRect) {
         // Camera creation
-        let zoomFactor = this.cameraOrthographicZoomFactor * containerRect.width * containerRect.height;
+        let zoomFactor = this.ORTHO_ZOOM_FACTOR * containerRect.width;
         let leftPlaneOrthographic = containerRect.width / -zoomFactor;
         let rightPlaneOrthographic = containerRect.width / zoomFactor;
-        let topPlaneOrthographic = containerRect.height / zoomFactor;
-        let bottomPlaneOrthographic = containerRect.height / -zoomFactor;
-        let nearPlaneOrthographic = 1;
-        let farPlaneOrthographic = 10000;
+        let topPlaneOrthographic = containerRect.height / (zoomFactor * containerRect.height);
+        let bottomPlaneOrthographic = containerRect.height / (-zoomFactor * containerRect.height);
         this.cameraOrthographic = new THREE.OrthographicCamera(leftPlaneOrthographic, rightPlaneOrthographic,
-            topPlaneOrthographic, bottomPlaneOrthographic, nearPlaneOrthographic, farPlaneOrthographic);
+            topPlaneOrthographic, bottomPlaneOrthographic, this.ORTHO_NEAR, this.ORTHO_FAR);
 
         // Camera position
-        this.cameraOrthographic.rotateX(-Math.PI / 2);
-        this.cameraOrthographic.rotateZ(Math.PI / 2);
-        let positionCameraOrthographic: THREE.Vector3 = new THREE.Vector3(0, 5, -21);
-        this.cameraOrthographic.position.x = positionCameraOrthographic.x;
-        this.cameraOrthographic.position.y = positionCameraOrthographic.y;
-        this.cameraOrthographic.position.z = positionCameraOrthographic.z;
+        this.cameraOrthographic.rotateX(this.ORTHO_X_ROT);
+        this.cameraOrthographic.rotateZ(this.ORTHO_Z_ROT);
+        this.cameraOrthographic.position.x = this.ORTHO_X_POS;
+        this.cameraOrthographic.position.y = this.ORTHO_Y_POS;
+        this.cameraOrthographic.position.z = this.ORTHO_Z_POS;
     }
 
     isUsingPerspectiveCamera(): boolean {
@@ -88,8 +93,7 @@ export class CameraManager {
     followStone(position: THREE.Vector3): void {
         // only follow stone when using perspective camera
         if (this.usingPerspectiveCamera) {
-            let offsetZ = 5;
-            this.cameraPerspective.position.z = position.z + offsetZ;
+            this.cameraPerspective.position.z = position.z + this.PERSPECTIVE_OFFSET;
         }
     }
 
@@ -104,7 +108,7 @@ export class CameraManager {
             this.cameraPerspective.updateProjectionMatrix();
         }
         else {
-            let zoomFactor = this.cameraOrthographicZoomFactor * containerRect.width * containerRect.height;
+            let zoomFactor = this.ORTHO_ZOOM_FACTOR * containerRect.width;
             this.cameraOrthographic.left = containerRect.width / -zoomFactor;
             this.cameraOrthographic.right = containerRect.width / zoomFactor;
             this.cameraOrthographic.top = containerRect.height / zoomFactor;
