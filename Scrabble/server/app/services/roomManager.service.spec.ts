@@ -1,6 +1,11 @@
-import { Room } from '../classes/room';
+/**
+ * roomManager.service.spec.ts
+ *
+ * @authors Mikael Ferland, Pierre To
+ * @date 2017/02/19
+ */
+
 import { RoomManager } from './roomManager.service';
-import * as io from 'socket.io';
 
 import { expect } from 'chai';
 
@@ -33,14 +38,14 @@ describe('RoomManager', () => {
 
     describe('addRoom()', () => {
         it('should create a room.', done => {
-            expect(roomManager.addRoom(2).getRoomID()).to.be.equal(0);
-            expect(roomManager.findRoom(2).getCapacity()).to.be.equal(2);
+            expect(roomManager.addRoom(2).getRoomInfo().roomID).to.be.equal(0);
+            expect(roomManager.findRoom(2).getRoomInfo().capacity).to.be.equal(2);
 
-            expect(roomManager.addRoom(3).getRoomID()).to.be.equal(1);
-            expect(roomManager.findRoom(3).getCapacity()).to.be.equal(3);
+            expect(roomManager.addRoom(3).getRoomInfo().roomID).to.be.equal(1);
+            expect(roomManager.findRoom(3).getRoomInfo().capacity).to.be.equal(3);
 
-            expect(roomManager.addRoom(4).getRoomID()).to.be.equal(2);
-            expect(roomManager.findRoom(4).getCapacity()).to.be.equal(4);
+            expect(roomManager.addRoom(4).getRoomInfo().roomID).to.be.equal(2);
+            expect(roomManager.findRoom(4).getRoomInfo().capacity).to.be.equal(4);
             done();
         });
 
@@ -50,13 +55,12 @@ describe('RoomManager', () => {
         });
     });
 
-    // describe('joinRoom()', () => {
-    //     it('should connect a player to an existing or a new room.', done => {
-
-    //         roomManager.joinRoom(clientSocket, 8);
-
-    //         expect(roomManager.findRoom(8).getNumberOfCurrentPlayers()).to.be.equal(1);
-    //         done();
-    //     });
-    // });
+    describe('joinRoom()', () => {
+         it('should locate and return an existing room with the given capacity.', done => {
+             expect(roomManager.joinRoom({name: "Joueur1", capacity: 2}).getRoomInfo().roomID).to.be.equal(0);
+             expect(roomManager.joinRoom({name: "Joueur2", capacity: 3}).getRoomInfo().roomID).to.be.equal(1);
+             expect(roomManager.joinRoom({name: "Joueur3", capacity: 4}).getRoomInfo().roomID).to.be.equal(2);
+             done();
+         });
+     });
 });

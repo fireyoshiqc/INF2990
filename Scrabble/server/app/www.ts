@@ -52,7 +52,35 @@ sio.on('connection', (socket) => {
 
     socket.on('cwAddPlayer', (player : any) => {
         sio.emit('wsAddPlayer', player.name);
-        //player.capacity si vous avez besoin
+
+        // Find (or create) a room in room manager service
+        sio.emit('wsFindRoom', player);
+    });
+
+    // Room was found/created, send the information to the client
+    socket.on('swFindRoom', (roomInfo: any, playerName: string) => {
+        // Timeout of 500 ms is used to let the client load the waiting room page
+        setTimeout(() => { sio.emit('wcFindRoom', roomInfo, playerName); }, 500);
+    });
+
+    // Allows client to join a specific room
+    socket.on('cwJoinRoom', (roomID: number) => {
+        socket.join(roomID.toString());
+    });
+
+    // Allows client to refresh the information of a specific room
+    socket.on('cwRefreshRoomInfo', (roomID: number) => {
+        sio.emit('wsRefreshRoomInfo', roomID);
+    });
+
+    socket.on('swRefreshRoomInfo', (roomInfo: any) => {
+        sio.sockets.in(roomInfo.roomID.toString()).emit('wcRefreshRoomInfo', roomInfo);
+    });
+
+    // Allows client to leave a specific room
+    socket.on('cwLeaveRoom', (roomID: number, playerName: string) => {
+        socket.leave(roomID.toString());
+        sio.emit('wsLeaveRoom', roomID, playerName);
     });
 });
 

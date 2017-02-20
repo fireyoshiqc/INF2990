@@ -5,64 +5,43 @@
  * @date 2017/02/18
  */
 
+export interface RoomInfo {
+    roomID: number;
+    capacity: number;
+    playerList: string[];
+}
+
 export class Room {
-    private roomID : number;
-    private numberOfCurrentPlayers : number;
-    private readonly capacity : number;
-    private isWaiting : boolean;
+    private roomInfo : RoomInfo = { roomID: -1, capacity: 0, playerList: new Array<string>() };
 
     constructor(roomID: number, capacity : number) {
-        this.roomID = roomID;
-        this.numberOfCurrentPlayers = 0;
-        this.capacity = capacity;
-        this.isWaiting = true;
+        this.roomInfo.roomID = roomID;
+        this.roomInfo.capacity = capacity;
+        this.roomInfo.playerList = new Array<string>();
     }
 
-    getRoomID(): number {
-        return this.roomID;
+    getRoomInfo(): RoomInfo {
+        return this.roomInfo;
     }
 
-    getNumberOfCurrentPlayers(): number {
-        return this.numberOfCurrentPlayers;
-    }
-
-    getCapacity(): number {
-        return this.capacity;
-    }
-
-    getIsWaiting(): boolean {
-        return this.isWaiting;
-    }
-
-    play() {
-        this.isWaiting = false;
-    }
-
-    // Returns true if a player has been added.
-    // Returns false if the room is already full.
-    addPlayer() : boolean {
+    addPlayer(playerName : string) {
         if (!this.isFull()) {
-            this.numberOfCurrentPlayers++;
-            return true;
-        }
-        else {
-            return false;
+            this.roomInfo.playerList.push(playerName);
         }
     }
 
-    // Returns true if a player has been removed.
-    // Returns false if the room is empty.
-    removePlayer() : boolean {
-        if (this.numberOfCurrentPlayers > 0) {
-            this.numberOfCurrentPlayers--;
-            return true;
-        }
-        else {
-            return false;
+    removePlayer(playerName : string) {
+        if (this.roomInfo.playerList.length > 0) {
+            let index = this.roomInfo.playerList.indexOf(playerName);
+            this.roomInfo.playerList.splice(index, 1);
         }
     }
 
     isFull() : boolean {
-        return this.numberOfCurrentPlayers === this.capacity;
+        return this.roomInfo.playerList.length >= this.roomInfo.capacity;
+    }
+
+    isEmpty() : boolean {
+        return this.roomInfo.playerList.length === 0;
     }
 }

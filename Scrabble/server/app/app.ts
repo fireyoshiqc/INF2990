@@ -15,11 +15,13 @@ import * as cors from 'cors';
 //import * as indexRoute from './routes';
 
 import { PlayerManager } from './services/playerManager.service';
+import { RoomManager } from './services/roomManager.service';
 
 export class Application {
 
   public app: express.Application;
   public playerManager: PlayerManager;
+  public roomManager: RoomManager;
 
   /**
    * Bootstrap the application.
@@ -46,6 +48,9 @@ export class Application {
 
     // Instanciate player manager
     this.playerManager = new PlayerManager();
+
+    // Instanciate room manager
+    this.roomManager = new RoomManager();
 
     //configure this.application
     this.config();

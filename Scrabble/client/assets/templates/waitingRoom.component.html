@@ -2,11 +2,11 @@
     <div class="flex-item" fxFlex="10%" fxFlexFill>
         <div class="flex-container" fxLayout="row" fxLayoutAlign="center center" fxFlexFill>
             <div class="flex-item" fxFlex="80%" fxFlexFill>
-                <h2>Welcome {{playerName}}!</h2>
+                <h2>Bienvenue {{playerName}}!</h2>
             </div>
 
             <div class="flex-item" fxFlex="10%" fxLayoutAlign="center center" fxFlexFill>
-                <button #quit routerLink="/startPage" type="button" class="btn btn-danger btn-block">Quit</button>
+                <button #quit (click)="leaveWaitingRoom()" type="button" class="btn btn-danger btn-block">Quitter</button>
             </div>
         </div>
     </div>
@@ -14,11 +14,14 @@
     <div class="flex-item" fxFlex="90%" fxFlex.xs="90%" fxFlexFill>
         <div class="flex-container" fxLayout="column" fxLayoutAlign="center center" fxFlexFill>
             <div id="waitingMessage" class="flex-item" fxFlex.xl=40% fxFlex.lg="50%" fxFlex.md="40%" fxFlex.sm="30%" fxLayoutAlign="center center" fxFlexFill>
-                    <h2 >Waiting for {{x}} player(s) </h2>
+                    <h2>Room ID : {{roomID}} -> En attente de {{missingPlayers}} joueur(s)</h2>
             </div>
 
-            <div id="chatBox" class="flex-item" fxFlex="70%" fxFlex.xs="70%" fxFlexFill>
-                    <chat-comp></chat-comp>
+            <div class="flex-item" fxFlex="70%" fxFlex.xs="70%" fxFlexFill>
+                <h1>Liste des joueurs en attente</h1>
+                <md-list-item md-multi-line md-list-item-text *ngFor="let player of playerList;">
+                    <h3 md-line><strong>{{player}}</strong></h3>
+                </md-list-item>
             </div>
         </div>
     </div>

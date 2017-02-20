@@ -1,3 +1,10 @@
+/**
+ * startPage.component.ts
+ *
+ * @authors Vincent Chassé, Yawen Hou 
+ * @date 2017/02/18
+ */
+
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { PlayerManagerService } from '../services/playerManager.service';
@@ -20,9 +27,9 @@ export class StartPageComponent {
         if (this.playerManagerService.isNameValid()) {
             if (this.capacity > 1) {
                 this.playerManagerService.setName(this.playerName);
+                this.playerManagerService.setCapacity(this.capacity);
                 this.playerManagerService.addPlayer();
 
-                this.playerManagerService.setCapacity(this.capacity);
                 this.router.navigate(['/waitingRoom']);
             } else {
                 alert("Veuillez choisir une taille de partie!!");

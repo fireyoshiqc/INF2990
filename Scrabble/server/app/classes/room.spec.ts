@@ -1,3 +1,10 @@
+/**
+ * room.spec.ts
+ *
+ * @authors Mikael Ferland, Pierre To
+ * @date 2017/02/19
+ */
+
 import { Room } from './room';
 
 import { expect } from 'chai';
@@ -13,36 +20,11 @@ describe('Room', () => {
         });
     });
 
-    describe('getRoomID()', () => {
-        it('should return 0.', done => {
-            expect(room.getRoomID()).to.be.equal(0);
-            done();
-        });
-    });
-
-    describe('getNumberOfCurrentPlayers()', () => {
-        it('should return 0.', done => {
-            expect(room.getNumberOfCurrentPlayers()).to.be.equal(0);
-            done();
-        });
-    });
-
-    describe('getMaximumNumberOfPlayers()', () => {
-        it('should return 4.', done => {
-            expect(room.getCapacity()).to.be.equal(4);
-            done();
-        });
-    });
-
-    describe('isWaiting()', () => {
-        it('should return true because the room is currently empty.', done => {
-            expect(room.getIsWaiting()).to.be.true;
-            done();
-        });
-
-        it('should return false because the room is now in progress.', done => {
-            room.play();
-            expect(room.getIsWaiting()).to.be.false;
+    describe('getRoomInfo()', () => {
+        it('should return default room info.', done => {
+            expect(room.getRoomInfo().roomID).to.be.equal(0);
+            expect(room.getRoomInfo().playerList.length).to.be.equal(0);
+            expect(room.getRoomInfo().capacity).to.be.equal(4);
             done();
         });
     });
@@ -50,13 +32,15 @@ describe('Room', () => {
     describe('addPlayer()', () => {
         it('should increment the number of players in the room.', done => {
             // Try adding five players in a room of 4
-            expect(room.addPlayer()).to.be.true;
-            expect(room.getNumberOfCurrentPlayers()).to.be.equal(1);
-            expect(room.addPlayer()).to.be.true;
-            expect(room.addPlayer()).to.be.true;
-            expect(room.addPlayer()).to.be.true;
-            expect(room.addPlayer()).to.be.false;
-            expect(room.getNumberOfCurrentPlayers()).to.be.equal(4);
+            room.addPlayer("Joueur1");
+            expect(room.getRoomInfo().playerList.find(playerName => playerName === "Joueur1")).to.be.equal("Joueur1");
+            expect(room.getRoomInfo().playerList.length).to.be.equal(1);
+            room.addPlayer("Joueur2");
+            room.addPlayer("Joueur3");
+            room.addPlayer("Joueur4");
+            expect(room.getRoomInfo().playerList.length).to.be.equal(4);
+            room.addPlayer("Joueur5"); // shouldn't do anything
+            expect(room.getRoomInfo().playerList.length).to.be.equal(4);
             done();
         });
     });
@@ -71,13 +55,22 @@ describe('Room', () => {
     describe('removePlayer()', () => {
         it('should decrement the number of players in the room.', done => {
             // Try removing five players in a room of 4
-            expect(room.removePlayer()).to.be.true;
-            expect(room.getNumberOfCurrentPlayers()).to.be.equal(3);
-            expect(room.removePlayer()).to.be.true;
-            expect(room.removePlayer()).to.be.true;
-            expect(room.removePlayer()).to.be.true;
-            expect(room.removePlayer()).to.be.false;
-            expect(room.getNumberOfCurrentPlayers()).to.be.equal(0);
+            room.removePlayer("Joueur1");
+            expect(room.getRoomInfo().playerList.find(playerName => playerName === "Joueur1")).to.be.undefined;
+            expect(room.getRoomInfo().playerList.length).to.be.equal(3);
+            room.removePlayer("Joueur2");
+            room.removePlayer("Joueur3");
+            room.removePlayer("Joueur4");
+            expect(room.getRoomInfo().playerList.length).to.be.equal(0);
+            room.removePlayer("Joueur5"); // shouldn't do anything
+            expect(room.getRoomInfo().playerList.length).to.be.equal(0);
+            done();
+        });
+    });
+
+    describe('isEmpty()', () => {
+        it('should return true when a room is empty.', done => {
+            expect(room.isEmpty()).to.be.true;
             done();
         });
     });
