@@ -11,7 +11,7 @@ export class TileRemover {
 
     readonly SQUARE_SIZE = 3;
     readonly NUM_EMPTY_TILES_EASY = 30;
-    readonly NUM_EMPTY_TILES_HARD = 30;
+    readonly NUM_EMPTY_TILES_HARD = 50;
     private sudoku: Sudoku;
 
     // Pour les tests

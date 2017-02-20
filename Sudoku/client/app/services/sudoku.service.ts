@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class SudokuService {
@@ -35,19 +36,25 @@ export class SudokuService {
     constructor(private http: Http) { }
 
     getEasySudoku() {
-        this.http.get('http://localhost:3002/getSudoku/easy').subscribe(res => {
-            this.initialGrid = res.json().grid;
-            this.inputGrid = res.json().grid;
-            this.difficulty = res.json().difficulty ? "difficile" : "facile";
-        });
+        this.http.get('http://localhost:3002/getSudoku/easy')
+            .toPromise()
+            .then(reponse => {
+                this.initialGrid = reponse.json().grid;
+                this.inputGrid = reponse.json().grid;
+                this.difficulty = reponse.json().difficulty ? "difficile" : "facile";
+            })
+            .catch(() => console.log("Could not get a easy sudoku."));
     }
 
     getHardSudoku() {
-        this.http.get('http://localhost:3002/getSudoku/hard').subscribe(res => {
-            this.initialGrid = res.json().grid;
-            this.inputGrid = res.json().grid;
-            this.difficulty = res.json().difficulty ? "difficile" : "facile";
-        });
+        this.http.get('http://localhost:3002/getSudoku/hard')
+            .toPromise()
+            .then(reponse => {
+                this.initialGrid = reponse.json().grid;
+                this.inputGrid = reponse.json().grid;
+                this.difficulty = reponse.json().difficulty ? "difficile" : "facile";
+            })
+            .catch(() => console.log("Could not get a hard sudoku."));
     }
 
     validateSudoku() {
