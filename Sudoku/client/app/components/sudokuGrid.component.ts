@@ -73,10 +73,11 @@ export class SudokuGridComponent {
                 })) {
                     entry.inputField.classList.remove("invalid");
                 }
-                else if (entry.inputField.value.length === 0) {
+                else {
                     // Adds invalid class to inputField (for blinking effect)
                     this.sudokuService.putInvalidField(entry.inputField);
                 }
+
                 this.sudokuService.putEntry({
                     value: Number.parseInt(entry.keyEvent.key),
                     row: entry.row, column: entry.column

@@ -34,53 +34,6 @@ describe('InputService', () => {
         });
     });
 
-    // describe('verifyEntry()', () => {
-    //     it('should return true when key pressed is left arrow', () => {
-    //         let event = new KeyboardEvent('keypress', {key : "ArrowLeft"});
-    //         expect(inputService.verifyEntry(event, testGrid, 0, 0)).to.be.true;
-    //     });
-    //
-    //     it('should return true when key pressed is up arrow', () => {
-    //         let event = new KeyboardEvent('keypress', {key : "ArrowUp"});
-    //         expect(inputService.verifyEntry(event, testGrid, 0, 0)).to.be.true;
-    //     });
-    //
-    //     it('should return true when key pressed is down arrow', () => {
-    //         let event = new KeyboardEvent('keypress', {key : "ArrowDown"});
-    //         expect(inputService.verifyEntry(event, testGrid, 0, 0)).to.be.true;
-    //     });
-    //
-    //     it('should return true when key pressed is right arrow', () => {
-    //         let event = new KeyboardEvent('keypress', {key : "ArrowRight"});
-    //         expect(inputService.verifyEntry(event, testGrid, 0, 0)).to.be.true;
-    //     });
-    //
-    //     it('should return true when key pressed is backspace', () => {
-    //         let event = new KeyboardEvent('keypress', {key : "Backspace"});
-    //         expect(inputService.verifyEntry(event, testGrid, 0, 0)).to.be.true;
-    //     });
-    //
-    //     it('should return true when key pressed is delete', () => {
-    //         let event = new KeyboardEvent('keypress', {key : "Delete"});
-    //         expect(inputService.verifyEntry(event, testGrid, 0, 0)).to.be.true;
-    //     });
-    //
-    //     it('should return true and prevent input when key pressed is "a"', () => {
-    //         let event = new KeyboardEvent('keypress', {key : "a"});
-    //         expect(inputService.verifyEntry(event, testGrid, 0, 0)).to.be.true;
-    //     });
-    //
-    //     it('should return true when key pressed is "1"', () => {
-    //         let event = new KeyboardEvent('keypress', {key : "1"});
-    //         expect(inputService.verifyEntry(event, testGrid, 0, 0)).to.be.true;
-    //     });
-    //
-    //     it('should return false when key pressed is "3"', () => {
-    //         let event = new KeyboardEvent('keypress', {key : "3"});
-    //         expect(inputService.verifyEntry(event, testGrid, 0, 0)).to.be.false;
-    //     });
-    // });
-
     describe('regexCheck', () => {
         it('should return true if the entered value is within the 1-9 range', () => {
             expect(inputService.regexCheck("1")).to.be.true;
