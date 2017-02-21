@@ -43,16 +43,14 @@ sio.on('connection', (socket) => {
     });
 
     socket.on('cwValidateName', (name: string) => {
-        sio.emit('wsValidateName', name);
+        sio.emit('wsValidateName', name, socket.id);
     });
 
-    socket.on('swNameValidated', (validity: boolean) => {
-        sio.emit('wcNameValidated', validity);
+    socket.on('swNameValidated', (validity: boolean, id: any) => {
+        sio.to(id).emit('wcNameValidated', validity);
     });
 
     socket.on('cwAddPlayer', (player: any) => {
-        //sio.emit('wsAddPlayer', player.name);
-
         // Find (or create) a room in room manager service
         sio.emit('wsFindRoom', player);
     });
@@ -61,7 +59,6 @@ sio.on('connection', (socket) => {
     socket.on('swFindRoom', (roomInfo: any, playerName: string) => {
         // Timeout of 500 ms is used to let the client load the waiting room page
         setTimeout(() => {
-            //socket.join(roomInfo.roomID.toString());
             sio.emit('wcFindRoom', roomInfo, playerName);
         }, 500);
     });
@@ -71,8 +68,6 @@ sio.on('connection', (socket) => {
         //TODO: C'EST TEMPORAIRE, ON DOIT MOVE THIS SHIT
         sio.emit('wsAddPlayer', roomID, playerName);
         socket.join(roomID.toString());
-
-
     });
 
     // Allows client to refresh the information of a specific room
@@ -95,20 +90,8 @@ sio.on('connection', (socket) => {
             let id = room.roomInfo.roomID as number;
             sio.sockets.in(id.toString()).emit('wcRefresh', room.roomInfo);
         }
-
-
     });
-
-
-
-
 });
-
-
-
-
-
-
 
 /**
  * Normalise le port en un nombre, une chaîne de caractères ou la valeur false.

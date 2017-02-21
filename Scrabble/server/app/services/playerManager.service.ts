@@ -14,8 +14,8 @@ export class PlayerManager {
     constructor() {
         this.socket = io.connect('http://localhost:3000');
 
-        this.socket.on('wsValidateName', (name: string) => {
-            this.socket.emit('swNameValidated', this.validateName(name));
+        this.socket.on('wsValidateName', (name: string, id: any) => {
+            this.socket.emit('swNameValidated', this.validateName(name), id);
         });
 
         this.socket.on('wsAddPlayer', (roomId: number, name: string) => {
