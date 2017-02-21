@@ -29,14 +29,17 @@ let sio = io.listen(server);
 
 sio.on('connection', (socket) => {
 
+    console.log("User connected");
     sio.emit('user connect', socket.id + "~ User has connected to chat.");
 
     socket.on('chat message', (msg: string) => {
         sio.emit('message sent', socket.id + " ~ " + msg);
+        console.log(msg);
     });
 
     socket.on('disconnect', (msg: any) => {
         sio.emit('user disconnect', socket.id + "~ User has disconnected from chat.");
+        console.log("User disconnected");
     });
 
     socket.on('cwValidateName', (name: string) => {
@@ -47,8 +50,8 @@ sio.on('connection', (socket) => {
         sio.emit('wcNameValidated', validity);
     });
 
-    socket.on('cwAddPlayer', (player : any) => {
-        sio.emit('wsAddPlayer', player.name);
+    socket.on('cwAddPlayer', (player: any) => {
+        //sio.emit('wsAddPlayer', player.name);
 
         // Find (or create) a room in room manager service
         sio.emit('wsFindRoom', player);
@@ -57,12 +60,19 @@ sio.on('connection', (socket) => {
     // Room was found/created, send the information to the client
     socket.on('swFindRoom', (roomInfo: any, playerName: string) => {
         // Timeout of 500 ms is used to let the client load the waiting room page
-        setTimeout(() => { sio.emit('wcFindRoom', roomInfo, playerName); }, 500);
+        setTimeout(() => {
+            //socket.join(roomInfo.roomID.toString());
+            sio.emit('wcFindRoom', roomInfo, playerName);
+        }, 500);
     });
 
     // Allows client to join a specific room
-    socket.on('cwJoinRoom', (roomID: number) => {
+    socket.on('cwJoinRoom', (roomID: number, playerName: string) => {
+        //TODO: C'EST TEMPORAIRE, ON DOIT MOVE THIS SHIT
+        sio.emit('wsAddPlayer', roomID, playerName);
         socket.join(roomID.toString());
+
+
     });
 
     // Allows client to refresh the information of a specific room
@@ -79,7 +89,26 @@ sio.on('connection', (socket) => {
         socket.leave(roomID.toString());
         sio.emit('wsLeaveRoom', roomID, playerName);
     });
+
+    socket.on('swRefresh', (existingRooms: any) => {
+        for (let room of existingRooms) {
+            let id = room.roomInfo.roomID as number;
+            sio.sockets.in(id.toString()).emit('wcRefresh', room.roomInfo);
+        }
+
+
+    });
+
+
+
+
 });
+
+
+
+
+
+
 
 /**
  * Normalise le port en un nombre, une chaîne de caractères ou la valeur false.

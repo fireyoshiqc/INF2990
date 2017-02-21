@@ -1,7 +1,7 @@
 /**
  * startPage.component.ts
  *
- * @authors Vincent Chassé, Yawen Hou 
+ * @authors Vincent Chassé, Yawen Hou
  * @date 2017/02/18
  */
 

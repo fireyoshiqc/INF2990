@@ -14,7 +14,14 @@
     <div class="flex-item" fxFlex="90%" fxFlex.xs="90%" fxFlexFill>
         <div class="flex-container" fxLayout="column" fxLayoutAlign="center center" fxFlexFill>
             <div id="waitingMessage" class="flex-item" fxFlex.xl=40% fxFlex.lg="50%" fxFlex.md="40%" fxFlex.sm="30%" fxLayoutAlign="center center" fxFlexFill>
-                    <h2>Room ID : {{roomID}} -> En attente de {{missingPlayers}} joueur(s)</h2>
+                <div *ngIf="this.missingPlayers !== 0">
+                  <h2>Room ID : {{roomID}} -> En attente de {{missingPlayers}} joueur(s)</h2>
+                </div>
+                <div *ngIf="this.missingPlayers === 0">
+                  <h2>Room ID : {{roomID}} -> Salle pleine, début de la partie...</h2>
+                </div>
+
+
             </div>
 
             <div class="flex-item" fxFlex="70%" fxFlex.xs="70%" fxFlexFill>

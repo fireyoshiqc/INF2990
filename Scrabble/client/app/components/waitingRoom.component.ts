@@ -1,7 +1,7 @@
 /**
  * waitingRoom.component.ts
  *
- * @authors Yawen Hou, Erica Bugden, Mikael Ferland, Pierre To
+ * @authors Yawen Hou, Erica Bugden, Mikael Ferland, Pierre To, Vincent Chassé, Félix Boulet
  * @date 2017/02/16
  */
 
@@ -20,20 +20,19 @@ export class WaitingRoomComponent {
     private roomID: number;
     private playerList: string[];
     private missingPlayers: number;
-    private timer: NodeJS.Timer;
+    private timer: any;
 
     constructor(public router: Router, private roomService: RoomService) {
         this.roomService = roomService;
 
         // Updates the room info every second
         this.timer = setInterval(() => {
-            this.roomService.refreshRoomInfo();
-
+            let roomInfo = this.roomService.getRoomInfo();
             this.playerName = this.roomService.getPlayerName();
-            this.roomID = this.roomService.getRoomInfo().roomID;
-            this.playerList = this.roomService.getRoomInfo().playerList;
-            this.missingPlayers = this.roomService.getRoomInfo().capacity
-                                - this.roomService.getRoomInfo().playerList.length;
+            this.roomID = roomInfo.roomID;
+            this.playerList = roomInfo.playerList;
+            this.missingPlayers = this.roomService.getMissingPlayers();
+            this.startIfFull();
         }, 1000);
     }
 
@@ -49,5 +48,16 @@ export class WaitingRoomComponent {
         clearInterval(this.timer);
         this.roomService.leaveRoom();
         this.router.navigate(['/startPage']);
+    }
+
+    startIfFull() {
+        if (this.missingPlayers === 0) {
+            clearInterval(this.timer);
+            setTimeout(() => {
+                this.router.navigate(['/testGame']);
+            }, 3000);
+
+        }
+
     }
 }

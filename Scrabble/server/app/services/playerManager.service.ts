@@ -9,7 +9,7 @@ import * as io from 'socket.io-client';
 export class PlayerManager {
 
     socket: any;
-    playerNames: string[];
+    players: Player[];
 
     constructor() {
         this.socket = io.connect('http://localhost:3000');
@@ -18,28 +18,36 @@ export class PlayerManager {
             this.socket.emit('swNameValidated', this.validateName(name));
         });
 
-        this.socket.on('wsAddPlayer', (name: string) => {
-            this.addPlayer(name);
+        this.socket.on('wsAddPlayer', (roomId: number, name: string) => {
+            this.addPlayer({ roomId: roomId, name: name });
         });
 
-        this.playerNames = new Array<string>();
+        this.players = [];
     }
 
     validateName(name: string): boolean {
-        let validity = this.playerNames.indexOf(name) === -1;
+
+        let validity = this.players.find(p => (p.name === name)) === undefined;
         validity = validity && name.length > 3 && name.charAt(0) !== " " && name.charAt(name.length - 1) !== " ";
         console.log("The name " + name + " is" + (validity ? "" : " not") + " valid");
         return validity;
     }
 
-    addPlayer(name: string) {
-        console.log("Name added : " + name);
-        this.playerNames.push(name);
+    addPlayer(player: Player) {
+        console.log("Name added : " + player.name);
+        //this.playerNames.push(name);
+        this.players.push(player);
     }
 
     removePlayer(name: string) {
-        if (this.playerNames.indexOf(name) !== -1) {
-            this.playerNames.splice(this.playerNames.indexOf(name));
+        let player = this.players.find(p => (p.name === name));
+        if (player !== undefined) {
+            this.players.splice(this.players.indexOf(player));
         }
     }
+}
+
+interface Player {
+    roomId: number;
+    name: string;
 }

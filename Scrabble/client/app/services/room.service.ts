@@ -22,6 +22,7 @@ export class RoomService {
     private roomInfo = { roomID: -1, capacity: 0, playerList: new Array<string>() };
     private roomJoined = false; // prevents wcFindRoom from being called multiple times
     private playerName: string;
+    private missingPlayers = -1;
 
     constructor(private http: Http) {
         this.socket = io.connect('http://localhost:3000');
@@ -32,18 +33,15 @@ export class RoomService {
                 this.roomInfo = roomInfo;
                 this.playerName = playerName;
 
-                this.socket.emit('cwJoinRoom', this.roomInfo.roomID);
+                this.socket.emit('cwJoinRoom', this.roomInfo.roomID, playerName);
                 this.roomJoined = true;
             }
         });
 
-        this.socket.on('wcRefreshRoomInfo', (roomInfo: any) => {
+        this.socket.on("wcRefresh", (roomInfo: any) => {
             this.roomInfo = roomInfo;
-        });
-    }
 
-    refreshRoomInfo() {
-        this.socket.emit('cwRefreshRoomInfo', this.roomInfo.roomID);
+        });
     }
 
     leaveRoom() {
@@ -52,16 +50,21 @@ export class RoomService {
         // reset all room info
         this.roomJoined = false;
         this.playerName = "";
+        this.missingPlayers = -1;
         this.roomInfo = { roomID: -1, capacity: 0, playerList: new Array<string>() };
 
         this.socket.disconnect();
     }
 
-    getRoomInfo() : RoomInfo {
+    getRoomInfo(): RoomInfo {
         return this.roomInfo;
     }
 
-    getPlayerName() : string {
+    getPlayerName(): string {
         return this.playerName;
+    }
+
+    getMissingPlayers(): number {
+      return this.roomInfo.capacity > 0 ? this.roomInfo.capacity - this.roomInfo.playerList.length : -1;
     }
 }
