@@ -7,9 +7,25 @@
 
 import { Sudoku, getRandomInt } from './sudoku.service';
 
+interface ArrayCoordinates {
+        x: number;
+        y: number;
+}
+
 export class SudokuRandomizer {
 
     private sudoku: Sudoku;
+    private readonly EXCHANGE_OPERATIONS_TABLE = [
+        (x: number, y: number) => { this.exchangeColumns(x, y); },
+        (x: number, y: number) => { this.exchangeRows(x, y); }
+    ];
+    private readonly FLIP_OPERATIONS_TABLE = [
+        () => { this.flipAroundBackwardDiagonal(); },
+        () => { this.flipAroundForwardDiagonal(); },
+        () => { this.flipHorizontally(); },
+        () => { this.flipVertically(); }
+    ];
+    private readonly RANDOM_OP_COUNT = 5000;
 
     static generateRandomValidIndexes(): number[] {
         const SQUARE_SIZE = 3;
@@ -22,62 +38,53 @@ export class SudokuRandomizer {
         return randomIndexes;
     }
 
-    // Pour les tests
     getSudoku(): Sudoku {
         return this.sudoku;
     }
 
-    // Pour les tests
     setSudoku(sudoku: Sudoku): void {
         this.sudoku = sudoku;
     }
 
     getRandomizedSudoku(sudoku: Sudoku): Sudoku {
         this.sudoku = sudoku;
-        const RANDOM_OP_COUNT = 5000;
-        let exchangeOperationsTable = [
-            (x: number, y: number) => { this.exchangeColumns(x, y); },
-            (x: number, y: number) => { this.exchangeRows(x, y); }
-        ];
-        let flipOperationsTable = [
-            () => { this.flipAroundBackwardDiagonal(); },
-            () => { this.flipAroundForwardDiagonal(); },
-            () => { this.flipHorizontally(); },
-            () => { this.flipVertically(); }
-        ];
         let randomInt: number;
-        let numberOfOperations = exchangeOperationsTable.length + flipOperationsTable.length;
+        let numberOfOperations = this.EXCHANGE_OPERATIONS_TABLE.length + this.FLIP_OPERATIONS_TABLE.length;
 
-        for (let i = 0; i < RANDOM_OP_COUNT; i++) {
+        // perform RANDOM_OP_COUNT operations on sudoku grid
+        // Each operation (echange and flip) has equal chances to happen
+        for (let i = 0; i < this.RANDOM_OP_COUNT; i++) {
             randomInt = getRandomInt(1, numberOfOperations);
 
             if (randomInt < 3) {
                 let table = SudokuRandomizer.generateRandomValidIndexes();
-                exchangeOperationsTable[randomInt - 1](table[0], table[1]);
+                this.EXCHANGE_OPERATIONS_TABLE[randomInt - 1](table[0], table[1]);
             } else {
-                flipOperationsTable[randomInt - 3]();
+                this.FLIP_OPERATIONS_TABLE[randomInt - 3]();
             }
         }
         return this.sudoku;
     }
 
-    exchangeColumns(column1: number, column2: number): void {
+    swap(array: number[][], coordinates1: ArrayCoordinates, coordinates2: ArrayCoordinates) {
         let temporary: number;
 
+        temporary = array[coordinates1.x][coordinates1.y];
+        array[coordinates1.x][coordinates1.y] = array[coordinates2.x][coordinates2.y];
+        array[coordinates2.x][coordinates2.y] = temporary;
+    }
+
+    exchangeColumns(column1: number, column2: number): void {
+
         for (let i = 0; i < this.sudoku.size; i++) {
-            temporary = this.sudoku.grid[i][column1];
-            this.sudoku.grid[i][column1] = this.sudoku.grid[i][column2];
-            this.sudoku.grid[i][column2] = temporary;
+            this.swap(this.sudoku.grid, {x: i, y: column1}, {x: i, y: column2});
         }
     }
 
     exchangeRows(row1: number, row2: number): void {
-        let temporary: number;
 
         for (let i = 0; i < this.sudoku.size; i++) {
-            temporary = this.sudoku.grid[row1][i];
-            this.sudoku.grid[row1][i] = this.sudoku.grid[row2][i];
-            this.sudoku.grid[row2][i] = temporary;
+            this.swap(this.sudoku.grid, {x: row1, y: i}, {x: row2, y: i});
         }
     }
 
@@ -94,28 +101,22 @@ export class SudokuRandomizer {
     }
 
     flipAroundBackwardDiagonal(): void {
-        let temporary: number;
 
         for (let i = 0; i < this.sudoku.size; i++) {
             // start condition is j = i + 1 : Ignore the elements on diagonal
             for (let j = i + 1; j < this.sudoku.size; j++) {
-                temporary = this.sudoku.grid[i][j];
-                this.sudoku.grid[i][j] = this.sudoku.grid[j][i];
-                this.sudoku.grid[j][i] = temporary;
+                this.swap(this.sudoku.grid, {x: i, y: j}, {x: j, y: i});
             }
         }
     }
 
     flipAroundForwardDiagonal(): void {
-        let temporary: number;
         let offset = this.sudoku.size - 1;
 
         for (let i = 0; i < this.sudoku.size; i++) {
             // end condition is j < this.size - i - 1 : Ignore the elements on diagonal
             for (let j = 0; j < this.sudoku.size - i - 1; j++) {
-                temporary = this.sudoku.grid[i][j];
-                this.sudoku.grid[i][j] = this.sudoku.grid[offset - j][offset - i];
-                this.sudoku.grid[offset - j][offset - i] = temporary;
+                this.swap(this.sudoku.grid, {x: i, y: j}, {x: offset - j, y: offset - i});
             }
         }
     }

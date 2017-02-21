@@ -21,16 +21,19 @@ export class SudokuManager {
         this.tileRemover = new TileRemover();
         this.easySudokus = [];
         this.hardSudokus = [];
+
         for (let i = 0; i < this.SUDOKU_STORAGE_SIZE; i++) {
             this.easySudokus.push(this.tileRemover.getUniqueSolutionSudoku(
                 this.sudokuRandomizer.getRandomizedSudoku(new Sudoku(Difficulty.Easy))));
+
             this.hardSudokus.push(this.tileRemover.getUniqueSolutionSudoku(
-            this.sudokuRandomizer.getRandomizedSudoku(new Sudoku(Difficulty.Hard))));
+                this.sudokuRandomizer.getRandomizedSudoku(new Sudoku(Difficulty.Hard))));
         }
     }
 
     getEasySudoku(): Sudoku {
         let sudoku;
+
         if (this.easySudokus.length === 0) {
             this.generateNewSudoku(Difficulty.Easy);
             sudoku = this.easySudokus.pop();
@@ -39,11 +42,13 @@ export class SudokuManager {
             sudoku = this.easySudokus.pop();
             setTimeout(() => { this.generateNewSudoku(Difficulty.Easy); }, 5000);
         }
+
         return sudoku;
     }
 
     getHardSudoku(): Sudoku {
         let sudoku;
+
         if (this.hardSudokus.length === 0) {
             this.generateNewSudoku(Difficulty.Hard);
             sudoku = this.hardSudokus.pop();
@@ -57,8 +62,9 @@ export class SudokuManager {
     }
 
     generateNewSudoku(difficulty: Difficulty): void {
-        let sudoku = this.tileRemover.getUniqueSolutionSudoku(this.sudokuRandomizer
-            .getRandomizedSudoku(new Sudoku(difficulty)));
+        let sudoku = this.tileRemover.getUniqueSolutionSudoku(
+            this.sudokuRandomizer.getRandomizedSudoku(new Sudoku(difficulty)));
+
         if (difficulty === Difficulty.Easy) {
             this.easySudokus.push(sudoku);
         }

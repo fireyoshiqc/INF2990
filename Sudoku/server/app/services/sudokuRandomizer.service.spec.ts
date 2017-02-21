@@ -12,6 +12,37 @@ import { expect } from 'chai';
 
 describe('SudokuRandomizer', () => {
 
+    describe('swap() ', () => {
+        it('should exchange two elements', done => {
+            let testGrid: number[][] = [
+                [1, 2, 3],
+                [4, 5, 6],
+                [7, 8, 9]
+            ];
+
+            let sudoku1 = new Sudoku();
+            sudoku1.grid = testGrid;
+            sudoku1.size = 3;
+
+            let sudokuRandomizer = new SudokuRandomizer();
+            sudokuRandomizer.setSudoku(sudoku1);
+            sudokuRandomizer.swap(sudokuRandomizer.getSudoku().grid, {x: 0, y: 0}, {x: 2, y: 2});
+
+            let solutionGrid: number[][] = [
+                [9, 2, 3],
+                [4, 5, 6],
+                [7, 8, 1]
+            ];
+
+            let sudoku2 = new Sudoku();
+            sudoku2.grid = solutionGrid;
+            sudoku2.size = 3;
+
+            expect(sudokuRandomizer.getSudoku().equals(sudoku2)).to.be.true;
+            done();
+        });
+    });
+
     describe('exchangeColumns() ', () => {
         it('should exchange two columns', done => {
             let testGrid: number[][] = [

@@ -14,7 +14,6 @@ export class TileRemover {
     readonly NUM_EMPTY_TILES_HARD = 50;
     private sudoku: Sudoku;
 
-    // Pour les tests
     setSudoku(sudoku: Sudoku): void {
         this.sudoku = sudoku;
     }
@@ -30,10 +29,12 @@ export class TileRemover {
 
         const MAX_TRIES = 30;
         let tries = 0;
+
         while (tilesToRemove > 0) {
             let tileToRemove = possibleIndexes[getRandomInt(0, possibleIndexes.length - 1)];
             let row = Math.floor(tileToRemove / 9);
             let column = tileToRemove % 9;
+
             if (this.sudoku.grid[row][column] !== 0 && this.tileCanBeRemoved(row, column)) {
                 removedValues.push(this.sudoku.grid[row][column]);
                 this.sudoku.grid[row][column] = 0;
@@ -42,6 +43,7 @@ export class TileRemover {
                 tilesToRemove--;
             } else {
                 tries++;
+
                 if (tries > MAX_TRIES) {
                     tries = 0;
                     this.sudoku.grid[row][column] = removedValues.pop();
@@ -50,6 +52,7 @@ export class TileRemover {
                 }
             }
         }
+
         return this.sudoku;
     }
 
@@ -59,23 +62,28 @@ export class TileRemover {
         for (let testValue = 1; testValue <= 9; testValue++) {
             if (testValue !== oldValue) {
                 this.sudoku.grid[row][column] = testValue;
+
                 if (this.isSolvable()) {
                     return false;
                 }
             }
         }
+
         return true;
     }
 
     isSolvable(): boolean {
         let zerosIndexes = new Array<number>();
+
         for (let index = 0; index < this.sudoku.size * this.sudoku.size; index++) {
             let column = index % 9;
             let row = Math.floor(index / 9);
+
             if (this.sudoku.grid[row][column] === 0) {
                 zerosIndexes.push(index);
             }
         }
+
         return this.solveSudoku(zerosIndexes);
     }
 
@@ -83,6 +91,7 @@ export class TileRemover {
         if (zerosIndexes.length === 0) {
             return this.sudoku.isValid();
         }
+
         let index = zerosIndexes.shift();
         let column = index % 9;
         let row = Math.floor(index / 9);
@@ -90,6 +99,7 @@ export class TileRemover {
         for (let value = 1; value <= this.sudoku.size; value++) {
             if (this.valueIsLegal(value, row, column)) {
                 this.sudoku.grid[row][column] = value;
+
                 if (this.solveSudoku(zerosIndexes.slice())) {
                     this.sudoku.grid[row][column] = 0;
                     return true;
@@ -97,6 +107,7 @@ export class TileRemover {
             }
         }
         this.sudoku.grid[row][column] = 0;
+
         return false;
     }
 

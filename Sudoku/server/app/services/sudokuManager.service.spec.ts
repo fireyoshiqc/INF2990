@@ -21,10 +21,12 @@ describe('SudokuManager', () => {
             let numberOfSudokus = 3;
 
             for (let i = 0; i < numberOfSudokus; i++) {
+
                 if (manager.easySudokus[i].difficulty !== Difficulty.Easy) {
                     sudokusGenerated = false;
                     break;
                 }
+
                 if (manager.hardSudokus[i].difficulty !== Difficulty.Hard) {
                     sudokusGenerated = false;
                     break;
