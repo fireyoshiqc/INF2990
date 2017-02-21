@@ -87,6 +87,18 @@ export class SudokuService {
         });
         this.invalidField = new Array<HTMLInputElement>();
     }
+
+    formatSelectedTableCell(input : HTMLInputElement) {
+        // Add .selected class to <input> and parent <td> element
+        input.classList.add("inputSelected");
+        input.parentElement.parentElement.classList.add("inputSelected");
+    }
+
+    unformatSelectedTableCell(input : HTMLInputElement) {
+        // Remove .selected class to <input> and parent <td> element
+        input.classList.remove("inputSelected");
+        input.parentElement.parentElement.classList.remove("inputSelected");
+    }
 }
 
 interface EntryNumber {

@@ -88,6 +88,14 @@ export class SudokuGridComponent {
             }
         }
     }
+
+    formatSelectedTableCell(input : HTMLInputElement) {
+        this.sudokuService.formatSelectedTableCell(input);
+    }
+
+    unformatSelectedTableCell(input : HTMLInputElement) {
+        this.sudokuService.unformatSelectedTableCell(input);
+    }
 }
 
 interface EntryEvent {

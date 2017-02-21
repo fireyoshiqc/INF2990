@@ -67,8 +67,9 @@ tr:nth-child(3n) td {
   border-bottom: solid ;
 }
 
-#inputField {
+.inputField {
   padding: 0px;
+  margin: 0px;
   color: seagreen;
   text-align: center;
   font-weight: bold;
@@ -77,6 +78,10 @@ tr:nth-child(3n) td {
   outline: 0px;
   width: 100%;
   height: 100%;
+}
+
+.inputSelected {
+  background-color: lightskyblue;
 }
 
 /*************************************/
