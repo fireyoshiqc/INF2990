@@ -7,8 +7,8 @@
 
 export class Letter {
     private readonly letter: string;
-    private texture: string;
     private readonly value: number;
+    private texture: string;
 
     constructor(letter: string, value: number) {
         this.letter = letter.charAt(0).toUpperCase();

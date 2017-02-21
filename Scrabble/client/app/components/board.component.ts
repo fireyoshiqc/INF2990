@@ -19,9 +19,7 @@ export class BoardComponent implements OnInit {
     board: BoardTile[][];
     readonly BOARD_LENGTH = 15;
 
-    constructor(private http: Http) {
-
-    }
+    constructor(private http: Http) { }
 
     ngOnInit() {
         this.board = [];
@@ -29,9 +27,9 @@ export class BoardComponent implements OnInit {
     }
 
     private loadBoard() {
-        this.http.get("/assets/objects/scrabbleBoard.json").map(res => res.json())
+        this.http.get("/assets/objects/scrabbleBoard.json")
+            .map(res => res.json())
             .subscribe(res => {
-                this.board = [];
                 for (let i = 0; i < this.BOARD_LENGTH; i++) {
                     this.board[i] = [];
                     for (let j = 0; j < this.BOARD_LENGTH; j++) {

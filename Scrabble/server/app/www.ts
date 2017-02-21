@@ -29,17 +29,14 @@ let sio = io.listen(server);
 
 sio.on('connection', (socket) => {
 
-    console.log("User connected");
     sio.emit('user connect', socket.id + "~ User has connected to chat.");
 
     socket.on('chat message', (msg: string) => {
         sio.emit('message sent', socket.id + " ~ " + msg);
-        console.log(msg);
     });
 
     socket.on('disconnect', (msg: any) => {
         sio.emit('user disconnect', socket.id + "~ User has disconnected from chat.");
-        console.log("User disconnected");
     });
 
     socket.on('cwValidateName', (name: string) => {
@@ -83,8 +80,6 @@ sio.on('connection', (socket) => {
         sio.emit('wsLeaveRoom', roomID, playerName);
     });
 });
-
-
 
 /**
  * Normalise le port en un nombre, une chaîne de caractères ou la valeur false.
