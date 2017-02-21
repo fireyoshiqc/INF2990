@@ -9,12 +9,18 @@ import { TextureCacher } from "../services/textureCacher";
 
 export class CurlingStone extends THREE.Group {
 
-    static readonly MAX_RADIUS = 0.145 * 2; //External radius of the stone
-    private readonly RADIUS = 0.145; //Radius of stone (torus)
-    private readonly HEIGHT = 0.290; //Height of stone (base).
+    static readonly MAX_RADIUS = 0.145; //* 2; //External radius of the stone
+    private readonly RADIUS = 0.145 / 2; //Radius of stone (torus)
+    private readonly HEIGHT = 0.290 / 2; //Height of stone (base).
     private readonly SFACES = 25; //Amount of faces for stone rendering.
-    private readonly HRADIUS = 0.025; //Radius of handle tube.
+    private readonly HRADIUS = 0.025 / 2; //Radius of handle tube.
     private readonly HFACES = 6; //Amount of faces for handle rendering.
+    private readonly COVER_CONE = 0.0275; //By how much the cover should extend from the inner radius of the stone.
+    private readonly HANDLE_HEIGHT = 0.04; //Height of the handle.
+    private readonly HANDLE_SHIFT = 0.025; //By how much the handle is tilting towards the center.
+    private readonly HANDLE_LENGTH = 0.13; //How long the top part of the handle is.
+    private readonly HANDLE_MELD = 0.005; //By how much the handle sinks into the cover.
+
 
     private texLoader: THREE.TextureLoader;
     stoneColor: string;
@@ -45,7 +51,7 @@ export class CurlingStone extends THREE.Group {
     }
 
     //Function for random stone color
-    getRandomColor() : string {
+    getRandomColor(): string {
         let letters = '0123456789ABCDEF';
         let color = '#';
         for (let i = 0; i < 6; i++) {
@@ -54,18 +60,18 @@ export class CurlingStone extends THREE.Group {
         return color;
     }
 
-    init() : void {
+    init(): void {
         this.texLoader = new THREE.TextureLoader();
 
         //Stone base
-        let torusGeometry : THREE.TorusGeometry;
+        let torusGeometry: THREE.TorusGeometry;
         torusGeometry = new THREE.TorusGeometry(this.RADIUS, this.RADIUS, this.SFACES, this.SFACES);
-        let cylinderGeometry : THREE.CylinderGeometry;
+        let cylinderGeometry: THREE.CylinderGeometry;
         cylinderGeometry = new THREE.CylinderGeometry(this.RADIUS, this.RADIUS,
-                                                      this.HEIGHT, this.SFACES);
+            this.HEIGHT, this.SFACES);
 
-        let torus : THREE.Mesh = new THREE.Mesh(torusGeometry);
-        let cylinder : THREE.Mesh = new THREE.Mesh(cylinderGeometry);
+        let torus: THREE.Mesh = new THREE.Mesh(torusGeometry);
+        let cylinder: THREE.Mesh = new THREE.Mesh(cylinderGeometry);
         cylinder.rotation.x = Math.PI / 2;
 
         //Merge base geometry
@@ -77,50 +83,51 @@ export class CurlingStone extends THREE.Group {
         curlingGeometry.merge(<THREE.Geometry>cylinder.geometry, cylinder.matrix);
 
         // Material for stone base
-        let material : THREE.MeshStandardMaterial;
-        let texture : THREE.Texture;
+        let material: THREE.MeshStandardMaterial;
+        let texture: THREE.Texture;
         texture = TextureCacher.load('/assets/textures/granite.jpg');
 
         material = new THREE.MeshStandardMaterial({
-            metalness : 0.0,
-            roughness : 0.2,
-            map : texture
+            metalness: 0.0,
+            roughness: 0.2,
+            map: texture
         });
 
-        let curlingMesh : THREE.Mesh = new THREE.Mesh(curlingGeometry, material);
+        let curlingMesh: THREE.Mesh = new THREE.Mesh(curlingGeometry, material);
         //-------------------- END CURLING BASE------------------------------------------ //
 
         /*-------------------- CURLING HANDLE------------------------------------------ */
         // Material for cover and tube
-        let handleMaterial : THREE.MeshStandardMaterial = new THREE.MeshStandardMaterial({
-            metalness : 0.5,
-            roughness : 0.2,
-            color : this.getRandomColor(),
+        let handleMaterial: THREE.MeshStandardMaterial = new THREE.MeshStandardMaterial({
+            metalness: 0.5,
+            roughness: 0.2,
+            color: this.getRandomColor(),
         });
 
         //Cover
-        let coverGeometry: THREE.CylinderGeometry = new THREE.CylinderGeometry(this.RADIUS, 0.2, 0.01, 25);
+        let coverGeometry: THREE.CylinderGeometry = new THREE.CylinderGeometry(
+            this.RADIUS, this.RADIUS + this.COVER_CONE, 0.01, this.SFACES);
         let cover: THREE.Mesh = new THREE.Mesh(coverGeometry);
         cover.position.y = this.RADIUS;
 
         //Curve for handle, 3D Spline curve
         let curve: THREE.CatmullRomCurve3 = new THREE.CatmullRomCurve3([
             new THREE.Vector3(0, 0, 0),
-            new THREE.Vector3(0.05, 0.08, 0),
-            new THREE.Vector3(0.26, 0.08, 0)
+            new THREE.Vector3(this.HANDLE_SHIFT, this.HANDLE_HEIGHT, 0),
+            new THREE.Vector3(this.HANDLE_LENGTH, this.HANDLE_HEIGHT, 0)
         ]);
 
         //Tube
         let tubeGeometry: THREE.TubeGeometry = new THREE.TubeGeometry(curve, 10, this.HRADIUS, this.HFACES, false);
         let tube: THREE.Mesh = new THREE.Mesh(tubeGeometry);
-        tube.position.y = this.RADIUS - 0.005;
+        tube.position.y = this.RADIUS - this.HANDLE_MELD;
         tube.position.x = -this.RADIUS;
 
         //End of tube
         let sphereGeometry: THREE.SphereGeometry = new THREE.SphereGeometry(this.HRADIUS, this.HFACES, this.HFACES);
         let sphere: THREE.Mesh = new THREE.Mesh(sphereGeometry);
-        sphere.position.y = this.RADIUS + 0.075;
-        sphere.position.x = -this.RADIUS + 0.26;
+        sphere.position.y = this.RADIUS + this.HANDLE_HEIGHT - this.HANDLE_MELD;
+        sphere.position.x = -this.RADIUS + this.HANDLE_LENGTH;
 
         //Merge handle geometry
         let handleGeometry: THREE.Geometry = new THREE.Geometry();
@@ -132,7 +139,7 @@ export class CurlingStone extends THREE.Group {
         sphere.updateMatrix();
         handleGeometry.merge(<THREE.Geometry>sphere.geometry, sphere.matrix);
 
-        let handleMesh : THREE.Mesh = new THREE.Mesh(handleGeometry, handleMaterial);
+        let handleMesh: THREE.Mesh = new THREE.Mesh(handleGeometry, handleMaterial);
 
         curlingMesh.rotation.x = Math.PI / 2;
         this.add(curlingMesh);

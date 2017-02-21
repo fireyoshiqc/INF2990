@@ -14,7 +14,7 @@ export class CameraManager {
     private cameraOrthographic: THREE.OrthographicCamera;
     private currentCamera: THREE.Camera;
     private usingPerspectiveCamera = true; // by default, use perspective camera
-    private readonly ORTHO_ZOOM_FACTOR = 90 / 1920; // determined experimentally
+    private readonly ORTHO_ZOOM_FACTOR = 80 / 1920; // determined experimentally
     private readonly PERSPECTIVE_OFFSET = 5;
     private readonly PERSPECTIVE_FOV = 45;
     private readonly PERSPECTIVE_NEAR = 1;
@@ -24,7 +24,7 @@ export class CameraManager {
     private readonly PERSPECTIVE_X_POS = -Math.PI / 18;
     private readonly ORTHO_NEAR = 1;
     private readonly ORTHO_FAR = 10000;
-    private readonly ORTHO_Z_POS = -21;
+    private readonly ORTHO_Z_POS = -23;
     private readonly ORTHO_Y_POS = 5;
     private readonly ORTHO_X_POS = 0;
     private readonly ORTHO_Z_ROT = Math.PI / 2;

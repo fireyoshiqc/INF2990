@@ -62,7 +62,6 @@ export class GameRenderer {
         //TODO: Adjust rink to add play lines (home, throw line, etc.)
         //TODO: Adjust ring positions on the rink (they're wrong right now)
         let rink: Rink = new Rink(skybox.skyBoxImages);
-        rink.position.z = -20;
         rink.position.z = -rink.RINK_LENGTH / 2;
         rink.position.y = rink.POS_RINK_Y;
         this.add(rink);

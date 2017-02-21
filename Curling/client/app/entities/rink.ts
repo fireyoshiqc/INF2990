@@ -10,8 +10,8 @@ import { TextureCacher } from "../services/textureCacher";
 export class Rink extends THREE.Group {
 
     //Rink
-    readonly POS_RINK_Y = -0.5;
-    readonly RINK_LENGTH = 42;
+    readonly POS_RINK_Y = -0.145;
+    readonly RINK_LENGTH = 46;
     readonly RINK_WIDTH = 4.4;
     private readonly RINK_HEIGHT = 0.1;
 
@@ -20,6 +20,7 @@ export class Rink extends THREE.Group {
     private readonly INNER_RADIUS = 0.6;
     private readonly MIDDLE_RADIUS = 1.2;
     private readonly OUTER_RADIUS = 1.8;
+    private readonly RINGS_OFFSET = 17.37; //By how much the ring set is off from the center of the rink.
 
     constructor(loaderImages : Array<string>) {
         super();
@@ -40,14 +41,14 @@ export class Rink extends THREE.Group {
             whiteIce.wrapS = whiteIce.wrapT = THREE.RepeatWrapping;
             redIce.wrapS = redIce.wrapT = THREE.RepeatWrapping;
             blueIce.wrapS = blueIce.wrapT = THREE.RepeatWrapping;
-            whiteIce.repeat.set(4, 40);
+            whiteIce.repeat.set(4, 46);
             redIce.repeat.set(2, 2);
             blueIce.repeat.set(4, 4);
 
             let blueRingGeometry : THREE.Geometry = new THREE.RingGeometry(this.MIDDLE_RADIUS, this.OUTER_RADIUS, 40);
             let blueRingMaterial : THREE.Material = new THREE.MeshPhongMaterial({
                 side : THREE.DoubleSide,
-                reflectivity : 0.5,
+                reflectivity : 0.7,
                 envMap : reflectTexture,
                 map : blueIce
             });
@@ -55,7 +56,7 @@ export class Rink extends THREE.Group {
             let redRingGeometry : THREE.Geometry = new THREE.RingGeometry(this.CENTER_RADIUS, this.INNER_RADIUS, 40);
             let redRingMaterial : THREE.Material = new THREE.MeshPhongMaterial({
                 side: THREE.DoubleSide,
-                reflectivity: 0.5,
+                reflectivity: 0.7,
                 envMap: reflectTexture,
                 map: redIce
             });
@@ -68,7 +69,7 @@ export class Rink extends THREE.Group {
             rings.position.y = this.RINK_HEIGHT;
             rings.rotation.x = Math.PI / 2;
 
-            rings.position.z = -(this.RINK_LENGTH / 2 - this.OUTER_RADIUS * 2);
+            rings.position.z = -(this.RINGS_OFFSET);
 
             //-----------FIN RINGS------------------------------------------------//
 
