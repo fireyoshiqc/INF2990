@@ -7,7 +7,7 @@
 
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import * as io from 'socket.io-client';
+import { SocketHandler } from './../modules/socketHandler.module';
 
 export interface RoomInfo {
     roomID: number;
@@ -25,7 +25,7 @@ export class RoomService {
     private missingPlayers = -1;
 
     constructor(private http: Http) {
-        this.socket = io.connect('http://localhost:3000');
+        this.socket = SocketHandler.requestSocket();
 
         this.socket.on('wcFindRoom', (roomInfo: any, playerName: string) => {
             if (!this.roomJoined) {
@@ -45,7 +45,7 @@ export class RoomService {
     }
 
     leaveRoom() {
-        this.socket.emit('cwLeaveRoom', this.roomInfo.roomID, this.playerName);
+        this.socket.emit('cwLeaveRoom', { roomID: this.roomInfo.roomID, playerName: this.playerName });
 
         // reset all room info
         this.roomJoined = false;
@@ -65,6 +65,10 @@ export class RoomService {
     }
 
     getMissingPlayers(): number {
-      return this.roomInfo.capacity > 0 ? this.roomInfo.capacity - this.roomInfo.playerList.length : -1;
+        return this.roomInfo.capacity > 0 ? this.roomInfo.capacity - this.roomInfo.playerList.length : -1;
+    }
+
+    saveSocket() {
+        SocketHandler.saveSocket(this.playerName, this.socket);
     }
 }

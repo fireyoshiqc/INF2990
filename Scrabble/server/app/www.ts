@@ -80,9 +80,9 @@ sio.on('connection', (socket) => {
     });
 
     // Allows client to leave a specific room
-    socket.on('cwLeaveRoom', (roomID: number, playerName: string) => {
-        socket.leave(roomID.toString());
-        sio.emit('wsLeaveRoom', roomID, playerName);
+    socket.on('cwLeaveRoom', (player: any) => {
+        socket.leave(player.roomID.toString());
+        sio.emit('wsLeaveRoom', player);
     });
 
     socket.on('swRefresh', (existingRooms: any) => {

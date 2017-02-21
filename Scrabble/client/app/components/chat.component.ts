@@ -45,8 +45,8 @@ export class ChatComponent implements OnInit {
         }
     }
 
-    onResize(event: any){
-      this.openWindow = window;
+    onResize(event: any) {
+        this.openWindow = window;
 
     }
 }

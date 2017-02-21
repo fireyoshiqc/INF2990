@@ -51,6 +51,7 @@ export class WaitingRoomComponent {
     }
 
     startIfFull() {
+        this.roomService.saveSocket();
         if (this.missingPlayers === 0) {
             clearInterval(this.timer);
             setTimeout(() => {

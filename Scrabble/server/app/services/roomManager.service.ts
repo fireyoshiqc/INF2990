@@ -25,8 +25,8 @@ export class RoomManager {
             this.socket.emit('swFindRoom', room.getRoomInfo(), player.name);
         });
 
-        this.socket.on('wsLeaveRoom', (roomID: number, playerName: string) => {
-            this.leaveRoom(roomID, playerName);
+        this.socket.on('wsLeaveRoom', (player: any) => {
+            this.leaveRoom(player);
         });
 
         setInterval(() => {
@@ -50,11 +50,11 @@ export class RoomManager {
         return room;
     }
 
-    leaveRoom(roomID: number, playerName: string) {
-        let room = this.existingRooms.find(r => (r.getRoomInfo().roomID === roomID));
+    leaveRoom(player: any) {
+        let room = this.existingRooms.find(r => (r.getRoomInfo().roomID === player.roomID));
 
         if (room !== undefined) {
-            room.removePlayer(playerName);
+            room.removePlayer(player.playerName);
 
             if (room.isEmpty()) {
                 let index = this.existingRooms.indexOf(room);
