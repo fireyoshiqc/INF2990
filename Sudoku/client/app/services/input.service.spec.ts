@@ -10,9 +10,8 @@ import { expect } from 'chai';
 
 describe('InputService', () => {
     let inputService: InputService;
-    /*
-    First element removed, testing with 2 for column, 3 for row, 9 for square
-    */
+
+    // First element removed, testing with 2 for column, 3 for row, 9 for square
     let testGrid: number[][] = [
         [0, 0, 3, 4, 5, 6, 7, 8, 0],
         [4, 5, 6, 7, 8, 9, 1, 2, 3],

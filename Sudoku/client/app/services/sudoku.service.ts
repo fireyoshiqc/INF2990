@@ -5,6 +5,8 @@ import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class SudokuService {
+    private readonly minIndex = 0;
+    private readonly maxIndex = 8;
     initialGrid = [
         [0, 2, 3, 4, 5, 0, 7, 8, 9],
         [4, 0, 6, 7, 8, 9, 0, 0, 0],
@@ -27,11 +29,9 @@ export class SudokuService {
         [0, 7, 8, 9, 1, 2, 3, 4, 5],
         [9, 1, 2, 3, 0, 5, 6, 0, 8]
     ];
-
     difficulty: string;
     isValid = "false";
-
-    invalidField: HTMLInputElement[] = new Array<HTMLInputElement>();
+    invalidFields: HTMLInputElement[] = new Array<HTMLInputElement>();
 
     constructor(private http: Http) { }
 
@@ -73,19 +73,22 @@ export class SudokuService {
     }
 
     putEntry(entry: EntryNumber) {
-        this.inputGrid[entry.row][entry.column] = entry.value;
+        if (entry.row >= this.minIndex && entry.column >= this.minIndex &&
+            entry.row <= this.maxIndex && entry.row <= this.maxIndex) {
+            this.inputGrid[entry.row][entry.column] = entry.value;
+        }
     }
 
     putInvalidField(invalidField: HTMLInputElement) {
         invalidField.classList.add("invalid");
-        this.invalidField.push(invalidField);
+        this.invalidFields.push(invalidField);
     }
 
-    resetInvalidField() {
-        this.invalidField.forEach(element => {
+    resetInvalidFields() {
+        this.invalidFields.forEach(element => {
             element.classList.remove("invalid");
         });
-        this.invalidField = new Array<HTMLInputElement>();
+        this.invalidFields = new Array<HTMLInputElement>();
     }
 
     formatSelectedTableCell(input : HTMLInputElement) {
