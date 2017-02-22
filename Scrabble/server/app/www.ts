@@ -8,6 +8,7 @@
 import { Application } from './app';
 import * as http from 'http';
 import * as io from 'socket.io';
+import { SocketManager } from './services/socketManager.service'
 
 const application: Application = Application.bootstrap();
 
@@ -26,6 +27,9 @@ server.on('error', onError);
 server.on('listening', onListening);
 
 let sio = io.listen(server);
+let socketManager = new SocketManager(server);
+
+
 
 sio.on('connection', (socket) => {
 
