@@ -19,6 +19,7 @@ describe('StopwatchService', () => {
             expect(stopwatchService.isVisible()).to.be.false;
             done();
         });
+
         it('should reveal a hidden timer.', done => {
             stopwatchService.toggleVisibility();
             expect(stopwatchService.isVisible()).to.be.true;
