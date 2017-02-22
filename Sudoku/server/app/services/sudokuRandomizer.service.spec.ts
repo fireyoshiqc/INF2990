@@ -26,7 +26,7 @@ describe('SudokuRandomizer', () => {
 
             let sudokuRandomizer = new SudokuRandomizer();
             sudokuRandomizer.setSudoku(sudoku1);
-            sudokuRandomizer.swap(sudokuRandomizer.getSudoku().grid, {x: 0, y: 0}, {x: 2, y: 2});
+            sudokuRandomizer.swap({x: 0, y: 0}, {x: 2, y: 2});
 
             let solutionGrid: number[][] = [
                 [9, 2, 3],

@@ -66,25 +66,25 @@ export class SudokuRandomizer {
         return this.sudoku;
     }
 
-    swap(array: number[][], coordinates1: ArrayCoordinates, coordinates2: ArrayCoordinates) {
+    swap(coordinates1: ArrayCoordinates, coordinates2: ArrayCoordinates) {
         let temporary: number;
 
-        temporary = array[coordinates1.x][coordinates1.y];
-        array[coordinates1.x][coordinates1.y] = array[coordinates2.x][coordinates2.y];
-        array[coordinates2.x][coordinates2.y] = temporary;
+        temporary = this.sudoku.grid[coordinates1.x][coordinates1.y];
+        this.sudoku.grid[coordinates1.x][coordinates1.y] = this.sudoku.grid[coordinates2.x][coordinates2.y];
+        this.sudoku.grid[coordinates2.x][coordinates2.y] = temporary;
     }
 
     exchangeColumns(column1: number, column2: number): void {
 
         for (let i = 0; i < this.sudoku.size; i++) {
-            this.swap(this.sudoku.grid, {x: i, y: column1}, {x: i, y: column2});
+            this.swap({x: i, y: column1}, {x: i, y: column2});
         }
     }
 
     exchangeRows(row1: number, row2: number): void {
 
         for (let i = 0; i < this.sudoku.size; i++) {
-            this.swap(this.sudoku.grid, {x: row1, y: i}, {x: row2, y: i});
+            this.swap({x: row1, y: i}, {x: row2, y: i});
         }
     }
 
@@ -105,7 +105,7 @@ export class SudokuRandomizer {
         for (let i = 0; i < this.sudoku.size; i++) {
             // start condition is j = i + 1 : Ignore the elements on diagonal
             for (let j = i + 1; j < this.sudoku.size; j++) {
-                this.swap(this.sudoku.grid, {x: i, y: j}, {x: j, y: i});
+                this.swap({x: i, y: j}, {x: j, y: i});
             }
         }
     }
@@ -116,7 +116,7 @@ export class SudokuRandomizer {
         for (let i = 0; i < this.sudoku.size; i++) {
             // end condition is j < this.size - i - 1 : Ignore the elements on diagonal
             for (let j = 0; j < this.sudoku.size - i - 1; j++) {
-                this.swap(this.sudoku.grid, {x: i, y: j}, {x: offset - j, y: offset - i});
+                this.swap({x: i, y: j}, {x: offset - j, y: offset - i});
             }
         }
     }
