@@ -65,8 +65,8 @@ sio.on('connection', (socket) => {
 
     // Allows client to join a specific room
     socket.on('cwJoinRoom', (roomID: number, playerName: string) => {
-        //TODO: C'EST TEMPORAIRE, ON DOIT MOVE THIS SHIT
-        sio.emit('wsAddPlayer', roomID, playerName);
+        //TODO: C'EST TEMPORAIRE, ON DOIT RETRAVAILLER DANS LE PROCHAIN SPRINT
+        sio.emit('wsAddPlayer', roomID, playerName, socket.id);
         socket.join(roomID.toString());
     });
 

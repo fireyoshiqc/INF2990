@@ -2,6 +2,12 @@ import { PlayerManager } from './playerManager.service';
 
 import { expect } from 'chai';
 
+interface Player {
+    roomId: number;
+    name: string;
+    socketId: string;
+}
+
 describe('PlayerManager', () => {
 
     let testPlayerManager = new PlayerManager();
@@ -16,16 +22,16 @@ describe('PlayerManager', () => {
 
     describe('validateName ', () => {
         it('should return true when the name does not exist in the playerNames array', done => {
-            let testPlayer = "Lala";
-            expect(testPlayerManager.validateName(testPlayer)).to.be.true;
+            let testPlayer = {roomId: 0, name: "Lala"};
+            expect(testPlayerManager.validateName(testPlayer.name)).to.be.true;
             done();
         });
     });
 
     describe('addPlayer ', () => {
         it('should add a player to playerNames array', done => {
-            let testPlayer = "Lala";
-            testPlayerManager.addPlayer({ roomId: 0, name: testPlayer });
+            let testPlayer = {roomId: 0, name: "Lala", socketId: "123"};
+            testPlayerManager.addPlayer(testPlayer);
             expect(testPlayerManager.players.length).to.equal(1);
             done();
         });
@@ -33,23 +39,23 @@ describe('PlayerManager', () => {
 
     describe('validateName ', () => {
         it('should return false when the name exists in the playerNames array', done => {
-            let testPlayer = "Lala";
-            expect(testPlayerManager.validateName(testPlayer)).to.be.false;
+            let testPlayer = {roomId: 0, name: "Lala"};
+            expect(testPlayerManager.validateName(testPlayer.name)).to.be.false;
             done();
         });
     });
 
     describe('removePlayer ', () => {
         it('should not remove a player that does not exist in the player name array', done => {
-            let testPlayer = "Mimi";
-            testPlayerManager.removePlayer(testPlayer);
+            let testPlayer = {roomId: 0, name: "Mimi"};
+            testPlayerManager.removePlayer(testPlayer.name);
             expect(testPlayerManager.players.length).to.equal(1);
             done();
         });
 
         it('should remove a player that exists in the player name array', done => {
-            let testPlayer = "Lala";
-            testPlayerManager.removePlayer(testPlayer);
+            let testPlayer = {roomId: 0, name: "Lala"};
+            testPlayerManager.removePlayer(testPlayer.name);
             expect(testPlayerManager.players).to.be.empty;
             done();
         });

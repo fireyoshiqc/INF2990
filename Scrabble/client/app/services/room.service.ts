@@ -45,7 +45,7 @@ export class RoomService {
     }
 
     leaveRoom() {
-        this.socket.emit('cwLeaveRoom', { roomID: this.roomInfo.roomID, playerName: this.playerName });
+        this.socket.emit('cwLeaveRoom', { roomID: this.roomInfo.roomID, name: this.playerName });
 
         // reset all room info
         this.roomJoined = false;
@@ -53,7 +53,7 @@ export class RoomService {
         this.missingPlayers = -1;
         this.roomInfo = { roomID: -1, capacity: 0, playerList: new Array<string>() };
 
-        this.socket.disconnect();
+        this.socket.disconnect(this.playerName);
     }
 
     getRoomInfo(): RoomInfo {
