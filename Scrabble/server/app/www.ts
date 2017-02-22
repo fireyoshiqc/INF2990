@@ -26,76 +26,8 @@ server.listen(appPort);
 server.on('error', onError);
 server.on('listening', onListening);
 
-let sio = io.listen(server);
 let socketManager = new SocketManager(server);
-
-
-
-sio.on('connection', (socket) => {
-
-    console.log("User connected");
-    sio.emit('user connect', socket.id + "~ User has connected to chat.");
-
-    socket.on('chat message', (msg: string) => {
-        sio.emit('message sent', socket.id + " ~ " + msg);
-        console.log(msg);
-    });
-
-    socket.on('disconnect', (msg: any) => {
-        sio.emit('user disconnect', socket.id + "~ User has disconnected from chat.");
-        console.log("User disconnected");
-    });
-
-    socket.on('cwValidateName', (name: string) => {
-        sio.emit('wsValidateName', name, socket.id);
-    });
-
-    socket.on('swNameValidated', (validity: boolean, id: any) => {
-        sio.to(id).emit('wcNameValidated', validity);
-    });
-
-    socket.on('cwAddPlayer', (player: any) => {
-        // Find (or create) a room in room manager service
-        sio.emit('wsFindRoom', player);
-    });
-
-    // Room was found/created, send the information to the client
-    socket.on('swFindRoom', (roomInfo: any, playerName: string) => {
-        // Timeout of 500 ms is used to let the client load the waiting room page
-        setTimeout(() => {
-            sio.emit('wcFindRoom', roomInfo, playerName);
-        }, 500);
-    });
-
-    // Allows client to join a specific room
-    socket.on('cwJoinRoom', (roomID: number, playerName: string) => {
-        //TODO: C'EST TEMPORAIRE, ON DOIT RETRAVAILLER DANS LE PROCHAIN SPRINT
-        sio.emit('wsAddPlayer', roomID, playerName, socket.id);
-        socket.join(roomID.toString());
-    });
-
-    // Allows client to refresh the information of a specific room
-    socket.on('cwRefreshRoomInfo', (roomID: number) => {
-        sio.emit('wsRefreshRoomInfo', roomID);
-    });
-
-    socket.on('swRefreshRoomInfo', (roomInfo: any) => {
-        sio.sockets.in(roomInfo.roomID.toString()).emit('wcRefreshRoomInfo', roomInfo);
-    });
-
-    // Allows client to leave a specific room
-    socket.on('cwLeaveRoom', (player: any) => {
-        socket.leave(player.roomID.toString());
-        sio.emit('wsLeaveRoom', player);
-    });
-
-    socket.on('swRefresh', (existingRooms: any) => {
-        for (let room of existingRooms) {
-            let id = room.roomInfo.roomID as number;
-            sio.sockets.in(id.toString()).emit('wcRefresh', room.roomInfo);
-        }
-    });
-});
+socketManager.handleSockets();
 
 /**
  * Normalise le port en un nombre, une chaîne de caractères ou la valeur false.
