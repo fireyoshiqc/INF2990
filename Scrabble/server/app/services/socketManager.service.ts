@@ -5,14 +5,19 @@
  * @date 2017/02/19
  */
 
-import { Room } from '../classes/room';
 import * as io from 'socket.io';
 import * as http from 'http';
+import { RoomManager } from './roomManager.service';
+import { PlayerManager } from './playerManager.service';
 
 export class SocketManager {
     sio: SocketIO.Server;
+    rmanager: RoomManager;
+    pmanager: PlayerManager;
     constructor(server: http.Server) {
         this.sio = io.listen(server);
+        this.rmanager = new RoomManager();
+        this.pmanager = new PlayerManager();
     }
     handleSockets() {
         this.sio.on('connection', (socket) => {
@@ -23,74 +28,68 @@ export class SocketManager {
             this.sio.emit('user connect', socket.id + "~ User has connected to chat.");
 
             socket.on('chat message', (msg: string) => {
+                // let player = this.pmanager.getSocketName(socket);
+                // if (player !== undefined) {
+                //     this.sio.emit('message sent', player.name + " ~ " + msg);
+                // }
+                //TODO: Use same socket, not new chat socket.
                 this.sio.emit('message sent', socket.id + " ~ " + msg);
                 console.log(msg);
             });
 
             socket.on('disconnect', (msg: any) => {
-                this.sio.emit('user disconnect', socket.id + "~ User has disconnected from chat.");
+                let player = this.pmanager.getSocketName(socket);
+                if (player !== undefined) {
+                    this.pmanager.removePlayer(player.name);
+                    this.rmanager.leaveRoom(player);
+                    this.sio.emit('user disconnect', player.name + "~ User has disconnected from chat.");
+                }
+
                 console.log("User disconnected");
             });
             //TODO: Rework the whole thing above.
 
-            //TODO: Replace by player manager call.
+            //IDEA: Check this out, we're gonna apply this model to everything first.
             socket.on('cwValidateName', (name: string) => {
-                this.sio.emit('wsValidateName', name, socket.id);
-            });
-
-            //TODO: Replace by player manager call.
-            socket.on('swNameValidated', (validity: boolean, id: any) => {
-                this.sio.to(id).emit('wcNameValidated', validity);
+                let validity = this.pmanager.validateName(name);
+                socket.emit('wcNameValidated', validity);
+                //this.sio.emit('wsValidateName', name, socket.id);
             });
 
             //TODO: Replace by player manager call.
             socket.on('cwAddPlayer', (player: any) => {
                 // Find (or create) a room in room manager service
-                this.sio.emit('wsFindRoom', player);
-            });
-
-            // Room was found/created, send the information to the client
-            // TODO: Replace by room manager call.
-            socket.on('swFindRoom', (roomInfo: any, playerName: string) => {
-                // Timeout of 500 ms is used to let the client load the waiting room page
+                let room = this.rmanager.joinRoom(player);
                 setTimeout(() => {
-                    this.sio.emit('wcFindRoom', roomInfo, playerName);
+                    this.sio.emit('wcFindRoom', room.getRoomInfo(), player.name);
                 }, 500);
             });
 
             // Allows client to join a specific room
-            //TODO: Replace by player manager call.
+            //IDEA: We should handle players via individual sockets in another class.
             socket.on('cwJoinRoom', (roomID: number, playerName: string) => {
                 //TODO: C'EST TEMPORAIRE, ON DOIT RETRAVAILLER DANS LE PROCHAIN SPRINT
-                this.sio.emit('wsAddPlayer', roomID, playerName, socket.id);
+                this.pmanager.addPlayer({ roomId: roomID, name: playerName, socketId: socket.id });
+                //this.sio.emit('wsAddPlayer', roomID, playerName, socket.id);
                 socket.join(roomID.toString());
-            });
-
-            // Allows client to refresh the information of a specific room
-            //TODO: Replace by room manager call.
-            socket.on('cwRefreshRoomInfo', (roomID: number) => {
-                this.sio.emit('wsRefreshRoomInfo', roomID);
-            });
-
-            //TODO: Replace by room manager call.
-            socket.on('swRefreshRoomInfo', (roomInfo: any) => {
-                this.sio.sockets.in(roomInfo.roomID.toString()).emit('wcRefreshRoomInfo', roomInfo);
             });
 
             // Allows client to leave a specific room
             //TODO: Replace by room manager call.
             socket.on('cwLeaveRoom', (player: any) => {
+                this.rmanager.leaveRoom(player);
+                this.pmanager.removePlayer(player.name);
                 socket.leave(player.roomID.toString());
-                this.sio.emit('wsLeaveRoom', player);
+
+                //this.sio.emit('wsLeaveRoom', player);
             });
 
-            //TODO: Replace by room manager call.
-            socket.on('swRefresh', (existingRooms: any) => {
-                for (let room of existingRooms) {
-                    let id = room.roomInfo.roomID as number;
-                    this.sio.sockets.in(id.toString()).emit('wcRefresh', room.roomInfo);
+            setInterval(() => {
+                for (let room of this.rmanager.getExistingRooms()) {
+                    let id = room.getRoomInfo().roomID as number;
+                    this.sio.sockets.in(id.toString()).emit('wcRefresh', room.getRoomInfo());
                 }
-            });
+            }, 1000);
         });
 
     }

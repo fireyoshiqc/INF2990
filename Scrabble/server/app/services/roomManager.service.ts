@@ -17,21 +17,6 @@ export class RoomManager {
     constructor() {
         this.existingRooms = new Array<Room>();
         this.currentRoomID = 0;
-
-        this.socket = io.connect('http://localhost:3000');
-
-        this.socket.on('wsFindRoom', (player: any) => {
-            let room = this.joinRoom(player);
-            this.socket.emit('swFindRoom', room.getRoomInfo(), player.name);
-        });
-
-        this.socket.on('wsLeaveRoom', (player: any) => {
-            this.leaveRoom(player);
-        });
-
-        setInterval(() => {
-            this.socket.emit('swRefresh', this.getExistingRooms());
-        }, 1000);
     }
 
     getExistingRooms(): Array<Room> {

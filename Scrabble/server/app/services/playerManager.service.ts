@@ -4,37 +4,11 @@
  * @date 2017/02/17
  */
 
-import * as io from 'socket.io-client';
-
 export class PlayerManager {
 
-    socket: any;
     players: Player[];
 
     constructor() {
-        this.socket = io.connect('http://localhost:3000');
-
-        this.socket.on('wsValidateName', (name: string, id: any) => {
-            this.socket.emit('swNameValidated', this.validateName(name), id);
-        });
-
-        this.socket.on('wsAddPlayer', (roomId: number, name: string, socketId: string) => {
-            this.addPlayer({ roomId: roomId, name: name, socketId: socketId });
-        });
-
-        this.socket.on('wsLeaveRoom', (player: any) => {
-            this.removePlayer(player.name);
-        });
-
-        this.socket.on('user disconnect', (msg: any) => {
-            let split = msg.split("~", 2);
-            let socketId = split[0];
-            let player = this.players.find(p => (p.socketId === socketId));
-            if (player !== undefined) {
-                this.removePlayer(player.name);
-            }
-        });
-
         this.players = [];
     }
 
@@ -57,6 +31,10 @@ export class PlayerManager {
         if (player !== undefined) {
             this.players.splice(this.players.indexOf(player));
         }
+    }
+
+    getSocketName(socket: SocketIO.Socket): Player {
+        return this.players.find(p => (p.socketId === socket.id));
     }
 }
 
