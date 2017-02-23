@@ -7,8 +7,7 @@
 
 import { Application } from './app';
 import * as http from 'http';
-import * as io from 'socket.io';
-import { SocketManager } from './services/socketManager.service'
+import { SocketManager } from './services/socketManager.service';
 
 const application: Application = Application.bootstrap();
 
