@@ -16,6 +16,7 @@ import * as cors from 'cors';
 //import * as indexRoute from './routes';
 
 import { SudokuManager } from './services/sudokuManager.service';
+import { Difficulty } from './services/sudoku.service';
 
 export class Application {
 
@@ -91,17 +92,13 @@ export class Application {
     //home page
     //router.get('/', index.index.bind(index.index));
 
-    this.app.get('/', function(req, res){
-        res.send('Hello Erica');
-    });
-
     this.app.get('/getSudoku/easy', function(req, res){
-        let easySudoku = sudokuManager.getEasySudoku();
+        let easySudoku = sudokuManager.getSudoku(Difficulty.Easy);
         res.send( { grid : easySudoku.grid, difficulty : easySudoku.difficulty } );
     });
 
     this.app.get('/getSudoku/hard', function(req, res){
-        let hardSudoku = sudokuManager.getHardSudoku();
+        let hardSudoku = sudokuManager.getSudoku(Difficulty.Hard);
         res.send( { grid : hardSudoku.grid, difficulty : hardSudoku.difficulty } );
     });
 
