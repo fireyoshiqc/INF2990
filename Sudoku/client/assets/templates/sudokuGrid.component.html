@@ -26,5 +26,8 @@
             <p *ngIf="stopwatchService.isVisible()">Timer : <span>{{stopwatchService.getMinutes()}}</span> min <span>{{stopwatchService.getSeconds()}}</span> sec</p>
         </div>
 
+        <div>
+            <h3 *ngIf="sudokuService.isValid==='true'">Félicitations! Vous avez réussi!</h3>
+        </div>
     </div>
 </body>

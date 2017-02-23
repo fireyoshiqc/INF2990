@@ -11,7 +11,7 @@ describe('SudokuGridComponent', () => {
     let stopwatchService: StopwatchService;
     let inputService: InputService;
 
-    let sudokuGridComponent = new SudokuGridComponent(sudokuService, stopwatchService, inputService)
+    let sudokuGridComponent = new SudokuGridComponent(sudokuService, stopwatchService, inputService);
 
     describe('Default constructor ', () => {
         it('should construct the SudokuGridComponent.', done => {

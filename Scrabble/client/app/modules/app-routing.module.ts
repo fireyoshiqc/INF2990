@@ -5,13 +5,11 @@ import { StartPageComponent } from '../components/startPage.component';
 import { WaitingRoomComponent } from '../components/waitingRoom.component';
 import { GameComponent } from '../components/game.component';
 
-// TODO : Put the right paths
 const routes: Routes = [
     { path: '', redirectTo: 'startPage', pathMatch: 'full' },
     { path: 'startPage', component: StartPageComponent },
     { path: 'waitingRoom', component: WaitingRoomComponent },
-    //TODO: Remove this path once the waiting rooms are fully functional
-    { path: 'testGame', component: GameComponent }
+    { path: 'testGame', component: GameComponent }  // TODO: Temporary, for testing
 ];
 @NgModule({
     imports: [RouterModule.forRoot(routes)],

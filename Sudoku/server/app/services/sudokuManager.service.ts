@@ -40,7 +40,8 @@ export class SudokuManager {
         }
         else {
             sudoku = this.easySudokus.pop();
-            setTimeout(() => { this.generateNewSudoku(Difficulty.Easy); }, 5000);
+            // Delay below is artificial to show that generation is non-blocking when sudokus are available
+            setTimeout(() => { this.generateNewSudoku(Difficulty.Easy); }, 5000);  
         }
 
         return sudoku;
@@ -55,7 +56,8 @@ export class SudokuManager {
         }
         else {
             sudoku = this.hardSudokus.pop();
-            setTimeout(() => { this.generateNewSudoku(Difficulty.Hard); }, 5000);
+            // Delay below is artificial to show that generation is non-blocking when sudokus are available
+            setTimeout(() => { this.generateNewSudoku(Difficulty.Hard); }, 5000); 
         }
 
         return sudoku;
