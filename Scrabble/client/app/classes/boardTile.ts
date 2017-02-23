@@ -18,13 +18,25 @@ export type TileType =
 export class BoardTile {
     private readonly tileType: TileType;
     private letter: Letter;
-    private isEmpty: Boolean;
+    private isEmpty: boolean;
     private texture: string;
 
     constructor(tileType: TileType = "Basic") {
         this.tileType = tileType;
         this.isEmpty = true;
         this.texture = "../../assets/textures/board/" + this.tileType + ".png";
+    }
+
+    getTileType(): TileType {
+        return this.tileType;
+    }
+
+    getLetter(): Letter {
+        return this.letter;
+    }
+
+    getIsEmpty(): boolean {
+        return this.isEmpty;
     }
 
     getTexture(): string {

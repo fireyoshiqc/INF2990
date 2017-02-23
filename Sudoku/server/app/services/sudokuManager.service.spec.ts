@@ -21,13 +21,17 @@ describe('SudokuManager', () => {
             let numberOfSudokus = 3;
 
             for (let i = 0; i < numberOfSudokus; i++) {
+                let indexEasy = manager.sudokus.findIndex(s => s.difficulty === Difficulty.Easy);
+                let indexHard = manager.sudokus.findIndex(s => s.difficulty === Difficulty.Hard);
 
-                if (manager.easySudokus[i].difficulty !== Difficulty.Easy) {
+                if (manager.sudokus[indexEasy].difficulty !== Difficulty.Easy) {
+                    manager.sudokus.splice(indexEasy, 1);
                     sudokusGenerated = false;
                     break;
                 }
 
-                if (manager.hardSudokus[i].difficulty !== Difficulty.Hard) {
+                if (manager.sudokus[indexHard].difficulty !== Difficulty.Hard) {
+                    manager.sudokus.splice(indexEasy, 1);
                     sudokusGenerated = false;
                     break;
                 }
@@ -40,7 +44,7 @@ describe('SudokuManager', () => {
 
     describe('getEasySudoku() ', () => {
         it('should get an easy sudoku object from SudokuManager', done => {
-            let sudoku = manager.getEasySudoku();
+            let sudoku = manager.getSudoku(Difficulty.Easy);
 
             expect(sudoku.countZeros()).to.equal(tileRemover.NUM_EMPTY_TILES_EASY);
             done();
@@ -49,7 +53,7 @@ describe('SudokuManager', () => {
 
     describe('getHardSudoku() ', () => {
         it('should get a hard sudoku object from SudokuManager', done => {
-            let sudoku = manager.getHardSudoku();
+            let sudoku = manager.getSudoku(Difficulty.Hard);
 
             expect(sudoku.countZeros()).to.equal(tileRemover.NUM_EMPTY_TILES_HARD);
             done();

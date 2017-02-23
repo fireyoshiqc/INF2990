@@ -16,6 +16,10 @@ export class Letter {
         this.value = value;
     }
 
+    getLetter(): string {
+        return this.letter;
+    }
+
     getValue(): number {
         return this.value;
     }
