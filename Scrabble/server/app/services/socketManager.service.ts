@@ -28,12 +28,12 @@ export class SocketManager {
             this.sio.emit('user connect', socket.id + "~ User has connected to chat.");
 
             socket.on('chat message', (msg: string) => {
-                // let player = this.pmanager.getSocketName(socket);
-                // if (player !== undefined) {
-                //     this.sio.emit('message sent', player.name + " ~ " + msg);
-                // }
+                let player = this.pmanager.getSocketName(socket);
+                if (player !== undefined) {
+                    this.sio.emit('message sent', player.name + " ~ " + msg);
+                }
                 //TODO: Use same socket, not new chat socket.
-                this.sio.emit('message sent', socket.id + " ~ " + msg);
+                //this.sio.emit('message sent', socket.id + " ~ " + msg);
                 console.log(msg);
             });
 

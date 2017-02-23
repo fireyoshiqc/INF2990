@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import * as io from 'socket.io-client';
+import { SocketHandler } from '../modules/socketHandler.module';
 
 @Component({
     moduleId: module.id,
@@ -14,7 +14,8 @@ export class ChatComponent implements OnInit {
     attemptingToConnect = false;
 
     ngOnInit() {
-        this.socket = io.connect('http://localhost:3000');
+        this.socket = SocketHandler.requestSocket('http://localhost:3000');
+        console.log(this.socket);
 
         this.socket.on("connect_error", () => {
             this.attemptingToConnect = true;

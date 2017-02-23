@@ -18,14 +18,14 @@ export interface RoomInfo {
 @Injectable()
 export class RoomService {
 
-    socket: any;
+    socket: SocketIOClient.Socket;
     private roomInfo = { roomID: -1, capacity: 0, playerList: new Array<string>() };
     private roomJoined = false; // prevents wcFindRoom from being called multiple times
     private playerName: string;
     private missingPlayers = -1;
 
     constructor(private http: Http) {
-        this.socket = SocketHandler.requestSocket();
+        this.socket = SocketHandler.requestSocket('http://localhost:3000');
 
         this.socket.on('wcFindRoom', (roomInfo: any, playerName: string) => {
             if (!this.roomJoined) {
@@ -52,8 +52,6 @@ export class RoomService {
         this.playerName = "";
         this.missingPlayers = -1;
         this.roomInfo = { roomID: -1, capacity: 0, playerList: new Array<string>() };
-
-        this.socket.disconnect(this.playerName);
     }
 
     getRoomInfo(): RoomInfo {
@@ -68,7 +66,4 @@ export class RoomService {
         return this.roomInfo.capacity > 0 ? this.roomInfo.capacity - this.roomInfo.playerList.length : -1;
     }
 
-    saveSocket() {
-        SocketHandler.saveSocket(this.playerName, this.socket);
-    }
 }

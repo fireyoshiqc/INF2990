@@ -15,7 +15,7 @@ export class PlayerManagerService {
     private player = { name: "", capacity: 0 };
 
     constructor(private http: Http) {
-        this.socket = SocketHandler.requestSocket();
+        this.socket = SocketHandler.requestSocket('http://localhost:3000');
 
         this.socket.on('wcNameValidated', (validity: boolean) => {
             this.nameValid = validity;
@@ -48,5 +48,9 @@ export class PlayerManagerService {
 
     isNameValid(): boolean {
         return this.nameValid;
+    }
+
+    saveSocket(){
+        SocketHandler.requestSocket('http://localhost:3000');
     }
 }

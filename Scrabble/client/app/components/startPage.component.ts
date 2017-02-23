@@ -30,7 +30,12 @@ export class StartPageComponent {
                 this.playerManagerService.setName(this.playerName);
                 this.playerManagerService.setCapacity(this.capacity);
                 this.playerManagerService.addPlayer();
-                let dialogRef = this.dialog.open(WaitingDialogComponent);
+                setTimeout(() => {
+                    this.dialog.open(WaitingDialogComponent, {
+                        disableClose: true
+                    });
+                }, 200);
+
                 //this.router.navigate(['/waitingRoom']);
             } else {
                 alert("Veuillez choisir une taille de partie!!");

@@ -3,22 +3,20 @@ import * as io from 'socket.io-client';
 
 export module SocketHandler {
 
-    let activeSockets: any = [];
+    let activeSocket: SocketIOClient.Socket;
 
-    export function requestSocket(name?: string): any {
-        let socket = io.connect('http://localhost:3000');
-        if (name) {
-            activeSockets[name] = socket;
+    export function requestSocket(server: string): any {
+
+        if (activeSocket === undefined) {
+            activeSocket = io.connect(server);
         }
-        return socket;
+        return activeSocket;
     }
 
-    export function saveSocket(name: string, socket: any) {
-        activeSockets[name] = socket;
-    }
-
-    export function getSavedSocket(name: string) {
-        return activeSockets[name];
+    export function disconnectSocket() {
+        console.log(activeSocket);
+        activeSocket.disconnect();
+        activeSocket = undefined;
     }
 
 }
