@@ -8,7 +8,6 @@
 import { Component, Optional } from '@angular/core';
 import { Router } from '@angular/router';
 import { PlayerManagerService } from '../services/playerManager.service';
-import { WaitingRoomComponent } from './waitingRoom.component';
 import { MdDialog, MdDialogRef } from '@angular/material';
 
 @Component({
@@ -51,5 +50,5 @@ export class StartPageComponent {
     <waiting-room-comp></waiting-room-comp>`,
 })
 export class WaitingDialogComponent {
-    constructor(@Optional() public dialogRef: MdDialogRef<any>){}
+    constructor( @Optional() public dialogRef: MdDialogRef<any>) { }
 }

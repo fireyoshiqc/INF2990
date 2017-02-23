@@ -8,7 +8,7 @@
 import { Component, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { RoomService } from '../services/room.service';
-import { MdDialog, MdDialogRef } from '@angular/material';
+import { MdDialogRef } from '@angular/material';
 
 @Component({
     moduleId: module.id,
@@ -17,7 +17,7 @@ import { MdDialog, MdDialogRef } from '@angular/material';
     providers: [RoomService]
 })
 export class WaitingRoomComponent {
-    
+
     private playerName: string;
     private roomID: number;
     private playerList: string[];
