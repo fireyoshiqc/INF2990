@@ -49,9 +49,8 @@ LIVRABLE DU VENDREDI 24 FÉVRIER 2017
     4.1 - Des tests sont disponibles sur le client et sur le serveur: npm test
     4.2 - serveur : npm start
     4.3 - client(s) : npm start (pour autant de clients que vous voulez)
-    4.4 - Il est possible de choisir un nom et un type de partie. Dès le jumelage terminé, les clients seront redirigés vers la page de jeu.
+    4.4 - Il est possible de choisir un nom unique et un type de partie. Dès le jumelage terminé, les clients seront redirigés vers la page de jeu.
     
     Pages du jeu : 
-    localhost:xxxx/startPage (Page d'accueil)
-    localhost:xxxx/waitingRoom (Message d'attente durant le jumelage automatique)
-    localhost:xxxx/testGame (Interface minimale de jeu avec un chat interactif)
+    localhost:xxxx/startPage (Page d'accueil. Le dialogue de la salle d'attente y est inclu)
+    localhost:xxxx/game (Interface minimale de jeu avec un chat interactif)

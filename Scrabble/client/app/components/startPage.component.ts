@@ -6,7 +6,6 @@
  */
 
 import { Component, Optional } from '@angular/core';
-import { Router } from '@angular/router';
 import { PlayerManagerService } from '../services/playerManager.service';
 import { MdDialog, MdDialogRef } from '@angular/material';
 
@@ -20,7 +19,7 @@ export class StartPageComponent {
     capacity: number;
     playerName: string;
 
-    constructor(public dialog: MdDialog, public router: Router, private playerManagerService: PlayerManagerService) {
+    constructor(public dialog: MdDialog, private playerManagerService: PlayerManagerService) {
         this.playerManagerService = playerManagerService;
     }
 
@@ -35,13 +34,11 @@ export class StartPageComponent {
                         disableClose: true
                     });
                 }, 200);
-
-                //this.router.navigate(['/waitingRoom']);
             } else {
                 alert("Veuillez choisir une taille de partie!!");
             }
         } else {
-            alert("NOM INVALIDE");
+            alert("Nom invalide!!");
         }
     }
 
@@ -51,9 +48,9 @@ export class StartPageComponent {
 }
 
 @Component({
-    template: `
-    <waiting-room-comp></waiting-room-comp>`,
+    template: `<waiting-room-comp></waiting-room-comp>`
 })
+
 export class WaitingDialogComponent {
     constructor( @Optional() public dialogRef: MdDialogRef<any>) { }
 }

@@ -1,4 +1,5 @@
 /**
+ * playerManager.service.ts
  *
  * @authors Vincent Chassé, Yawen Hou
  * @date 2017/02/17
@@ -33,8 +34,8 @@ export class PlayerManager {
         }
     }
 
-    getSocketName(socket: SocketIO.Socket): Player {
-        return this.players.find(p => (p.socketId === socket.id));
+    getSocketName(socketId: string): Player {
+        return this.players.find(p => (p.socketId === socketId));
     }
 }
 

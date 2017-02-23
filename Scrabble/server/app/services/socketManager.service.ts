@@ -19,35 +19,33 @@ export class SocketManager {
         this.rmanager = new RoomManager();
         this.pmanager = new PlayerManager();
     }
+
     handleSockets() {
         this.sio.on('connection', (socket) => {
-
 
             //TODO: Rework this whole thing.
             console.log("User connected");
             this.sio.emit('user connect', socket.id + "~ User has connected to chat.");
 
             socket.on('chat message', (msg: string) => {
-                let player = this.pmanager.getSocketName(socket);
+                let player = this.pmanager.getSocketName(socket.id);
                 if (player !== undefined) {
                     this.sio.emit('message sent', player.name + " ~ " + msg);
                 }
                 //TODO: Use same socket, not new chat socket.
-                //this.sio.emit('message sent', socket.id + " ~ " + msg);
                 console.log(msg);
             });
 
+            //TODO: Rework the whole thing above.
             socket.on('disconnect', (msg: any) => {
-                let player = this.pmanager.getSocketName(socket);
+                let player = this.pmanager.getSocketName(socket.id);
                 if (player !== undefined) {
                     this.pmanager.removePlayer(player.name);
                     this.rmanager.leaveRoom(player);
                     this.sio.emit('user disconnect', player.name + "~ User has disconnected from chat.");
                 }
-
                 console.log("User disconnected");
             });
-            //TODO: Rework the whole thing above.
 
             socket.on('cwValidateName', (name: string) => {
                 let validity = this.pmanager.validateName(name);

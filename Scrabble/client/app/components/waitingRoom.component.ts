@@ -51,7 +51,6 @@ export class WaitingRoomComponent {
         clearInterval(this.timer);
         this.roomService.leaveRoom();
         this.dialogRef.close();
-        //this.router.navigate(['/startPage']);
     }
 
     startIfFull() {
@@ -59,7 +58,7 @@ export class WaitingRoomComponent {
             clearInterval(this.timer);
             setTimeout(() => {
                 this.dialogRef.close();
-                this.router.navigate(['/testGame']);
+                this.router.navigate(['/game']);
             }, 3000);
 
         }

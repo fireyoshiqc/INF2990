@@ -1,5 +1,5 @@
 /**
- *
+ *gameMaster.service.ts
  *
  * @authors Vincent Chassé, Félix Boulet
  * @date 2017/02/17

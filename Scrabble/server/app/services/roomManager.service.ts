@@ -30,7 +30,6 @@ export class RoomManager {
         }
 
         room.addPlayer(player.name);
-
         return room;
     }
 
