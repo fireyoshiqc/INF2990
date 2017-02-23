@@ -49,14 +49,11 @@ export class SocketManager {
             });
             //TODO: Rework the whole thing above.
 
-            //IDEA: Check this out, we're gonna apply this model to everything first.
             socket.on('cwValidateName', (name: string) => {
                 let validity = this.pmanager.validateName(name);
                 socket.emit('wcNameValidated', validity);
-                //this.sio.emit('wsValidateName', name, socket.id);
             });
 
-            //TODO: Replace by player manager call.
             socket.on('cwAddPlayer', (player: any) => {
                 // Find (or create) a room in room manager service
                 let room = this.rmanager.joinRoom(player);
@@ -66,22 +63,16 @@ export class SocketManager {
             });
 
             // Allows client to join a specific room
-            //IDEA: We should handle players via individual sockets in another class.
             socket.on('cwJoinRoom', (roomID: number, playerName: string) => {
-                //TODO: C'EST TEMPORAIRE, ON DOIT RETRAVAILLER DANS LE PROCHAIN SPRINT
                 this.pmanager.addPlayer({ roomId: roomID, name: playerName, socketId: socket.id });
-                //this.sio.emit('wsAddPlayer', roomID, playerName, socket.id);
                 socket.join(roomID.toString());
             });
 
             // Allows client to leave a specific room
-            //TODO: Replace by room manager call.
             socket.on('cwLeaveRoom', (player: any) => {
                 this.rmanager.leaveRoom(player);
                 this.pmanager.removePlayer(player.name);
                 socket.leave(player.roomID.toString());
-
-                //this.sio.emit('wsLeaveRoom', player);
             });
 
             setInterval(() => {

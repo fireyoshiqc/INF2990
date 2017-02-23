@@ -12,5 +12,4 @@
 	  "noImplicitThis": true,
     "suppressImplicitAnyIndexErrors": true
   },
-  "compileOnSave": false
 }
