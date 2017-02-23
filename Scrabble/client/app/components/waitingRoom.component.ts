@@ -8,6 +8,7 @@
 import { Component, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { RoomService } from '../services/room.service';
+import { MdDialog, MdDialogRef } from '@angular/material';
 
 @Component({
     moduleId: module.id,
@@ -16,13 +17,15 @@ import { RoomService } from '../services/room.service';
     providers: [RoomService]
 })
 export class WaitingRoomComponent {
+    
     private playerName: string;
     private roomID: number;
     private playerList: string[];
     private missingPlayers: number;
     private timer: any;
 
-    constructor(public router: Router, private roomService: RoomService) {
+    constructor(public dialogRef: MdDialogRef<WaitingRoomComponent>,
+        public router: Router, private roomService: RoomService) {
         this.roomService = roomService;
 
         // Updates the room info every second
@@ -47,7 +50,8 @@ export class WaitingRoomComponent {
     leaveWaitingRoom() {
         clearInterval(this.timer);
         this.roomService.leaveRoom();
-        this.router.navigate(['/startPage']);
+        this.dialogRef.close();
+        //this.router.navigate(['/startPage']);
     }
 
     startIfFull() {
@@ -55,6 +59,7 @@ export class WaitingRoomComponent {
         if (this.missingPlayers === 0) {
             clearInterval(this.timer);
             setTimeout(() => {
+                this.dialogRef.close();
                 this.router.navigate(['/testGame']);
             }, 3000);
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import * as io from 'socket.io-client';
+import { SocketHandler } from '../modules/socketHandler.module';
 
 export interface Player {
     name: string;
@@ -15,7 +15,7 @@ export class PlayerManagerService {
     private player = { name: "", capacity: 0 };
 
     constructor(private http: Http) {
-        this.socket = io.connect('http://localhost:3000');
+        this.socket = SocketHandler.requestSocket();
 
         this.socket.on('wcNameValidated', (validity: boolean) => {
             this.nameValid = validity;

@@ -12,12 +12,13 @@ import { BoardComponent } from '../components/board.component';
 import { RackComponent } from '../components/rack.component';
 import { InfoComponent } from '../components/info.component';
 import { WaitingRoomComponent } from '../components/waitingRoom.component';
-import { StartPageComponent } from '../components/startPage.component';
+import { StartPageComponent, WaitingDialogComponent } from '../components/startPage.component';
 
 @NgModule({
     imports: [BrowserModule, FormsModule, AppRoutingModule, MaterialModule.forRoot(), FlexLayoutModule.forRoot()],
     declarations: [AppComponent, GameComponent, ChatComponent, BoardComponent, RackComponent, InfoComponent,
-                   WaitingRoomComponent, StartPageComponent],
+                   WaitingRoomComponent, StartPageComponent, WaitingDialogComponent],
+    entryComponents:[WaitingDialogComponent],
     bootstrap: [AppComponent]
 })
 export class AppModule { }
