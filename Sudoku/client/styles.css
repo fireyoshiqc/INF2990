@@ -1,18 +1,17 @@
+body, html {
+  font-family: 'Roboto', sans-serif;
+  font-weight: normal;
+  font-size: normal;
+}
+
 h1 {
   color: #369;
-  font-family: Arial, Helvetica, sans-serif;
   font-size: 250%;
 }
 
 /***************************/
 /* control panel component */
 /***************************/
-
-#gameArea {
-  height: 375px;
-  background-color: #fafafa;
-  border: 2px solid black;
-}
 
 #buttonPanel {
   text-align: center;
@@ -31,7 +30,7 @@ h1 {
 
 #infoPanel {
   float: right;
-  width: 300px;
+  width: 190px;
   margin-right: 315px;
 }
 

@@ -2,7 +2,7 @@
     <div id="sudokuGrid">
         <div id="grid">
             <form>
-                <input type="reset" value="Reset Sudoku" (click)="resetSudoku()">
+                <input md-button type="reset" value="Reset Sudoku" (click)="resetSudoku()">
                 <table>
                     <tr *ngFor="let row of sudokuService.initialGrid; let i = index">
                         <td *ngFor="let element of row; let j = index">

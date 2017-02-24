@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
     selector: 'my-app',
     template: `
-      <h1>Sudoku</h1>
+      <h1 align="center">Sudoku</h1>
       <game-area></game-area>
     `
 })
