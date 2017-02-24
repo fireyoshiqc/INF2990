@@ -17,7 +17,7 @@ export class GlComponent implements OnInit {
     }
 
     constructor(private gameRenderer: GameRenderer) {
-        // Empty constructor necessary for Angular
+        //EMPTY CONSTRUCTOR YADAYADA
     }
 
     onResize(event: any) {
