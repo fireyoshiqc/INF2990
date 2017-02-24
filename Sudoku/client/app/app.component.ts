@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
 
 @Component({
-    selector: 'my-app',
-    template: `
-      <h1 align="center">Sudoku</h1>
-      <game-area></game-area>
-    `
+  moduleId: module.id,
+  selector: 'my-app',
+  templateUrl: '/assets/templates/app.component.html'
 })
 export class AppComponent { }

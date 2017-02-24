@@ -1,12 +1,27 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
 body, html {
   font-family: 'Roboto', sans-serif;
   font-weight: normal;
   font-size: normal;
+  height: 100%;
+    width: 100%;
 }
 
 h1 {
   color: #369;
   font-size: 250%;
+}
+
+#wrapper {
+  width: calc(100vw);
+  height: calc(100vh);
 }
 
 /***************************/
