@@ -54,13 +54,8 @@ export class SudokuGridComponent {
     }
 
     putEntry(entry: EntryEvent) {
-        if (entry.keyEvent.key === "ArrowUp" || entry.keyEvent.key === "ArrowDown" ||
-            entry.keyEvent.key === "ArrowLeft" || entry.keyEvent.key === "ArrowRight") {
-                alert("ARROW");
-        }
-
         // Delete the number in the input case
-        if (entry.keyEvent.key === "Backspace" || entry.keyEvent.key === "Delete") {
+        if (this.inputService.isDelete(entry.keyEvent)) {
             entry.inputField.value = null;
             entry.inputField.classList.remove("invalid");
             this.sudokuService.putEntry({

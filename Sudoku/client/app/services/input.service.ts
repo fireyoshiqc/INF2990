@@ -43,6 +43,15 @@ export class InputService {
             .every(slicedRows => slicedRows.slice(y, y + this.SQUARE_SIZE)
                 .every(element => element !== entry.value));
     }
+
+    isArrowKey(keyEvent: KeyboardEvent): boolean {
+        return (keyEvent.key === "ArrowUp" || keyEvent.key === "ArrowDown" ||
+                keyEvent.key === "ArrowLeft" || keyEvent.key === "ArrowRight");
+    }
+
+    isDelete(keyEvent: KeyboardEvent): boolean {
+        return (keyEvent.key === "Backspace" || keyEvent.key === "Delete");
+    }
 }
 
 interface EntryValidation {
