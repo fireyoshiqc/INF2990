@@ -21,7 +21,7 @@
         <!-- TODO : Place div below in InformationPanelComponent -->
         <div id="infoPanel">
             <p><b>Pierre To</b></p>
-            <p>Le sudoku est valide : {{sudokuService.isValid}} </p>
+            <p>Le sudoku est valide : <md-icon *ngIf="sudokuService.isValid==='true'">check</md-icon><md-icon *ngIf="sudokuService.isValid==='false'">close</md-icon></p>
             <p>Niveau de difficulté : {{sudokuService.difficulty}} </p>
             <p *ngIf="stopwatchService.isVisible()">Timer : <span>{{stopwatchService.getMinutes()}}</span> min <span>{{stopwatchService.getSeconds()}}</span> sec</p>
         </div>

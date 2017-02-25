@@ -6,7 +6,7 @@
 }
 
 
-body, html {
+body, html, md-sidenav-container {
   font-family: 'Roboto', sans-serif;
   font-weight: normal;
   font-size: normal;
@@ -19,13 +19,18 @@ body, html {
   height: calc(100vh);
 }
 
+#sideButton {
+  margin-top: 1%;
+  margin-left:1%;
+}
+
 /***************************/
 /* control panel component */
 /***************************/
 
-#buttonPanel {
+#buttonPanel button {
   text-align: center;
-  margin-top: 15px;
+  margin: 10px;
 }
 
 #sudokuGrid {

@@ -1,9 +1,17 @@
 <div id="gameArea">
-    <div id="buttonPanel">
-        <button md-button (click)="sudokuGrid.getEasySudoku()">EASY sudoku</button>
-        <button md-button (click)="sudokuGrid.getHardSudoku()">HARD sudoku</button>
-        <button md-button (click)="sudokuGrid.validateSudoku()">Validate sudoku</button>
-        <button md-button (click)="sudokuGrid.toggleStopwatch()">{{ sudokuGrid.getStopwatchVisibility() ? "Hide" : "Show" }} stopwatch</button>
-    </div>
-    <sudoku-grid #sudokuGrid></sudoku-grid>
+    <md-sidenav-container>
+        <button id="sideButton" md-fab (click)="sidenav.toggle()"><md-icon>menu</md-icon></button>
+        <md-sidenav #sidenav mode="above" opened="false">
+
+
+            <div id="buttonPanel" class="flex-container" fxLayout="column" fxLayoutAlign="start">
+
+                <button md-raised-button color="accent" (click)="sudokuGrid.getEasySudoku(); sidenav.toggle()">EASY sudoku</button>
+                <button md-raised-button color="warn" (click)="sudokuGrid.getHardSudoku(); sidenav.toggle()">HARD sudoku</button>
+                <button md-raised-button color="primary" (click)="sudokuGrid.validateSudoku(); sidenav.toggle()">Validate sudoku</button>
+                <button md-raised-button color="primary" (click)="sudokuGrid.toggleStopwatch(); sidenav.toggle()">{{ sudokuGrid.getStopwatchVisibility() ? "Hide" : "Show" }} stopwatch</button>
+            </div>
+        </md-sidenav>
+        <sudoku-grid #sudokuGrid></sudoku-grid>
+    </md-sidenav-container>
 </div>
