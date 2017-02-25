@@ -34,18 +34,18 @@
 
                     <div class="flex-item" fxFlex="90%" fxFlex.xs="90%" fxLayoutAlign="center center" fxFlexFill>
                         <md-input-container>
-                            <input md-input placeholder="Écrivez un message ou une commande..." type="text" autocomplete="off" class="form-control" id="message" [(ngModel)]="msg.message" name="message">
+                            <input mdInput placeholder="Écrivez un message ou une commande..." type="text" autocomplete="off" class="form-control" id="message" [(ngModel)]="msg.message" name="message">
                         </md-input-container>
                     </div>
 
                     <div class="flex-item" fxFlex="10%" fxFlex.xs="10%" fxLayoutAlign="center center" fxFlexFill (window:resize)="onResize($event)">
                         <div [hidden]="openWindow.innerWidth < 1280">
-                            <button md-fab type="submit" class="btn btn-default" (click)="onSubmit(); messageForm.reset()">
+                            <button md-fab type="submit" (click)="onSubmit(); messageForm.reset()">
                           <i class="material-icons">send</i>
                         </button>
                         </div>
                         <div [hidden]="openWindow.innerWidth >= 1280">
-                            <button md-mini-fab type="submit" class="btn btn-default" (click)="onSubmit(); messageForm.reset()">
+                            <button md-mini-fab type="submit" (click)="onSubmit(); messageForm.reset()">
                           <i class="material-icons">send</i>
                         </button>
                         </div>

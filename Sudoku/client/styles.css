@@ -14,11 +14,6 @@ body, html {
     width: 100%;
 }
 
-h1 {
-  color: #369;
-  font-size: 250%;
-}
-
 #wrapper {
   width: calc(100vw);
   height: calc(100vh);

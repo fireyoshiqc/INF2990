@@ -16,7 +16,7 @@
                     <div class="flex-container" fxLayout="row" fxLayoutAlign="center center" fxFlexFill>
                         <div class="flex-item" fxFlex="50%" fxLayoutAlign="center center" fxFlexFill>
                             <md-input-container>
-                                <input id="nameInput" (change)="validateName()" maxlength="30" md-input placeholder="Entrez votre nom... (au moins 4 caractères)" type="text" [(ngModel)]="playerName">
+                                <input mdInput id="nameInput" (change)="validateName()" maxlength="30" md-input placeholder="Entrez votre nom... (au moins 4 caractères)" type="text" [(ngModel)]="playerName">
                             </md-input-container>
                         </div>
 
@@ -24,7 +24,7 @@
                         <div class="flex-item" fxFlex="5%" fxLayoutAlign="center center" fxFlexFill></div>
 
                         <div class="flex-item" fxFlex="10%" fxLayoutAlign="center center" fxFlexFill>
-                            <button type="button" (click)="onJoin()" class="btn btn-success btn-block">Join</button>
+                            <button md-raised-button color="accent" (click)="onJoin()">Join</button>
                         </div>
                     </div>
                     <!--End name and join button-->
