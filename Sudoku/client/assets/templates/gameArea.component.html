@@ -2,21 +2,17 @@
     fxLayout="row" fxLayoutAlign="center center">
     <md-sidenav-container>
         <md-sidenav #sidenav mode="above" opened="false">
-
-
             <div id="buttonPanel" class="flex-container" fxLayout="column" fxLayoutAlign="start">
                 <md-list>
-
-
                     <md-card id="infoCard">
                         <md-card-title>Sudoku</md-card-title>
                         <md-card-subtitle>FACTORY/24</md-card-subtitle>
                         <md-card-content>
                             Ce jeu de Sudoku classique, stylé à l'aide d'Angular Material, saura mettre à l'épreuve votre sens logique.<br>
-                            <br>
-                            Utilisez l'icône d'ampoule dans le coin supérieur droit afin de changer le thème de clair à sombre.<br>
-                            <br>
-                            Utilisez les boutons ci-dessous pour générer une nouvelle grille de sudoku, de la difficulté de votre choix, ou encore pour afficher les records de temps pour chacune des difficultés.<br>  
+                            <br> Utilisez l'icône d'ampoule dans le coin supérieur droit afin de changer le thème de clair
+                            à sombre.<br>
+                            <br> Utilisez les boutons ci-dessous pour générer une nouvelle grille de sudoku, de la difficulté
+                            de votre choix, ou encore pour afficher les records de temps pour chacune des difficultés.<br>
                         </md-card-content>
                     </md-card>
 
@@ -52,18 +48,9 @@
                 </button>
                 <button class="icon-button"><md-icon id="closeIcon">close</md-icon></button>
             </md-toolbar>
-            <!--<div class="flex-item" fxLayoutAlign="start" fxFlex fxFlexFill>
-        
-    </div>-->
             <div class="flex-item" fxLayoutAlign="center" fxFlex="auto" fxFlexFill>
                 <div id="gameArea">
-
-
-
                     <sudoku-grid #sudokuGrid></sudoku-grid>
-                    <button md-raised-button color="primary" (click)="sudokuGrid.resetSudoku()">Reset Sudoku</button>
-                    <button md-raised-button color="primary" (click)="sudokuGrid.toggleStopwatch()">{{ sudokuGrid.getStopwatchVisibility() ? "Masquer" : "Montrer" }} chronomètre</button>
-
                 </div>
             </div>
         </div>

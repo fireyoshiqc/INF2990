@@ -1,14 +1,15 @@
 <body>
     <div id="sudokuGrid">
-        <div id="grid">
+        <md-card id="grid">
             <form name="gridForm">
-                
+
                 <table [style.border-color]="isDarkTheme ? 'white' : 'black'">
                     <tr *ngFor="let row of sudokuService.initialGrid; let i = index" [style.border-color]="isDarkTheme ? 'white' : 'black'">
                         <td *ngFor="let element of row; let j = index" [style.border-color]="isDarkTheme ? 'white' : 'black'">
                             <div *ngIf="element==0">
                                 <input class="inputField" #inputField size="1" maxlength="1" (keydown)="putEntry({keyEvent:$event, inputField:inputField, row:i, column:j})"
-                                (focus)="formatSelectedTableCell(inputField)" (focusout)="unformatSelectedTableCell(inputField)" [style.color]="isDarkTheme ? 'limegreen' : 'seagreen'">
+                                    (focus)="formatSelectedTableCell(inputField)" (focusout)="unformatSelectedTableCell(inputField)"
+                                    [style.color]="isDarkTheme ? 'limegreen' : 'seagreen'">
                             </div>
                             <div *ngIf="element!=0">
                                 {{element}}
@@ -17,16 +18,27 @@
                     </tr>
                 </table>
             </form>
-        </div>
+        </md-card>
 
         <!-- TODO : Place div below in InformationPanelComponent -->
-        <div id="infoPanel">
-            <p><b>Pierre To</b></p>
-            <p>Le sudoku est valide : <md-icon *ngIf="sudokuService.isValid==='true'">check</md-icon><md-icon *ngIf="sudokuService.isValid==='false'">close</md-icon></p>
-            <p>Niveau de difficulté : {{sudokuService.difficulty}} </p>
-            <p *ngIf="stopwatchService.isVisible()">Timer : <span>{{stopwatchService.getMinutes()}}</span> min <span>{{stopwatchService.getSeconds()}}</span> sec</p>
-        </div>
-        
+        <md-card id="infoPanel">
+            <md-card-title>
+                Pierre To
+            </md-card-title>
+            <md-card-content>
+                <p>Le sudoku est valide :
+                    <md-icon *ngIf="sudokuService.isValid==='true'">check</md-icon>
+                    <md-icon *ngIf="sudokuService.isValid==='false'">close</md-icon>
+                </p>
+                <p>Niveau de difficulté : {{sudokuService.difficulty}} </p>
+                <p *ngIf="stopwatchService.isVisible()">Timer : <span>{{stopwatchService.getMinutes()}}</span> min <span>{{stopwatchService.getSeconds()}}</span>                    sec</p>
+            </md-card-content>
+            <md-card-actions>
+                <button md-raised-button color="primary" (click)="resetSudoku()">Réinitialiser la grille</button>
+                <button md-raised-button color="primary" (click)="toggleStopwatch()">{{ getStopwatchVisibility() ? "Masquer" : "Montrer" }} chronomètre</button>
+            </md-card-actions>
+        </md-card>
+
 
         <div>
             <h3 *ngIf="sudokuService.isValid==='true'">Félicitations! Vous avez réussi!</h3>

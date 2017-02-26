@@ -91,15 +91,15 @@ export class SudokuGridComponent {
         }
     }
 
-    formatSelectedTableCell(input : HTMLInputElement) {
+    formatSelectedTableCell(input: HTMLInputElement) {
         this.sudokuService.formatSelectedTableCell(input);
     }
 
-    unformatSelectedTableCell(input : HTMLInputElement) {
+    unformatSelectedTableCell(input: HTMLInputElement) {
         this.sudokuService.unformatSelectedTableCell(input);
     }
 
-    toggleTheme(){
+    toggleTheme() {
         this.isDarkTheme = !this.isDarkTheme;
 
     }
