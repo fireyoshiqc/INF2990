@@ -53,6 +53,56 @@ export class InputService {
         return (keyEvent.key === "Backspace" || keyEvent.key === "Delete");
     }
 
+    handleArrowKey(entry: EntryValidation, input: HTMLInputElement) {
+
+        switch (entry.value) {
+            case 37: // ArrowLeft
+                this.findNextInputField(entry, false, true);
+                break;
+            case 38: // ArrowUp
+                this.findNextInputField(entry, false, false);
+                break;
+            case 39: // ArrowRight
+                this.findNextInputField(entry, true, true);
+                break;
+            case 40: // ArrowDown
+                this.findNextInputField(entry, true, false);
+                break;
+            default:
+                break;
+        }
+
+        // Retrieve the new HTMLInputElement and apply focus
+        let table = input.parentElement.parentElement.parentElement.parentElement;
+        let nextRow = table.children.item(entry.row);
+        let nextColumn = nextRow.children.item(entry.column);
+        let nextInput : HTMLInputElement = <HTMLInputElement> (nextColumn.firstElementChild.firstElementChild);
+        nextInput.focus();
+    }
+
+    // QUESTION: Comment tester si cette methode devrait etre private ?
+    private findNextInputField(entry: EntryValidation, isIncrement: boolean, moveAlongRow: boolean) {
+        let gridValue;
+
+        do {
+            if (isIncrement && moveAlongRow) { // ArrowRight
+                entry.column = ((++entry.column) % this.GRID_SIZE + this.GRID_SIZE) % this.GRID_SIZE;
+            }
+            else if (isIncrement && !moveAlongRow) { // ArrowDown
+                entry.row = ((++entry.row) % this.GRID_SIZE + this.GRID_SIZE) % this.GRID_SIZE;
+            }
+            else if (!isIncrement && !moveAlongRow) { // ArrowUp
+                entry.row = ((--entry.row) % this.GRID_SIZE + this.GRID_SIZE) % this.GRID_SIZE;
+            }
+            else { // ArrowLeft
+                entry.column = ((--entry.column) % this.GRID_SIZE + this.GRID_SIZE) % this.GRID_SIZE;
+            }
+
+            gridValue = entry.grid[entry.row][entry.column];
+
+        } while ( gridValue !== 0);
+    }
+
     putInvalidField(invalidField: HTMLInputElement) {
         invalidField.parentElement.parentElement.classList.add("invalid");
         setTimeout(() => {

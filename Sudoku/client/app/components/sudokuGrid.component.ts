@@ -67,7 +67,14 @@ export class SudokuGridComponent {
             this.inputService.removeInvalidField(entry.inputField);
             this.sudokuService.putEntry(entryValidation);
         }
-        // 2- Number entered
+        // 2- Arrow key entered
+        else if (this.inputService.isArrowKey(entry.keyEvent)) {
+            //alert(entry.inputField.parentElement.parentElement.parentElement.parentElement.parentElement.className);
+            entryValidation.grid = this.sudokuService.initialGrid;
+            entryValidation.value = entry.keyEvent.keyCode;
+            this.inputService.handleArrowKey(entryValidation, entry.inputField);
+        }
+        // 3- Number entered
         else if (this.inputService.isNumber(entry.keyEvent.key)) {
             // "!" permis?
             if (!this.inputService.validate(entryValidation)) {
@@ -75,7 +82,7 @@ export class SudokuGridComponent {
             }
             this.sudokuService.putEntry(entryValidation);
         }
-        // 3- Invalid input
+        // 4- Invalid input
         else {
             entry.keyEvent.preventDefault();
         }

@@ -221,13 +221,13 @@ tr:nth-child(3n) td {
 }
 
 .inputSelected {
-    -webkit-animation: inputSelected 1s 1;
+    -webkit-animation: inputSelected 0.5s 1;
     /* Safari 4+ */
-    -moz-animation: inputSelected 1s 1;
+    -moz-animation: inputSelected 0.5s 1;
     /* Fx 5+ */
-    -o-animation: inputSelected 1s 1;
+    -o-animation: inputSelected 0.5s 1;
     /* Opera 12+ */
-    animation: inputSelected 1s 1;
+    animation: inputSelected 0.5s 1;
     /* IE 10+ */
     background-color: rgba(100, 100, 255, 0.6)
 }
@@ -269,13 +269,13 @@ tr:nth-child(3n) td {
 }
 
 .inputDeselected {
-    -webkit-animation: inputDeselected 1s 1;
+    -webkit-animation: inputDeselected 0.5s 1;
     /* Safari 4+ */
-    -moz-animation: inputDeselected 1s 1;
+    -moz-animation: inputDeselected 0.5s 1;
     /* Fx 5+ */
-    -o-animation: inputDeselected 1s 1;
+    -o-animation: inputDeselected 0.5s 1;
     /* Opera 12+ */
-    animation: inputDeselected 1s 1;
+    animation: inputDeselected 0.5s 1;
     /* IE 10+ */
     background-color: transparent
 }
