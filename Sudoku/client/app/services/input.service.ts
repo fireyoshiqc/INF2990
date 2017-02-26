@@ -13,7 +13,7 @@ export class InputService {
     readonly GRID_SIZE = 9;
     readonly SQUARE_SIZE = 3;
 
-    regexCheck(eventKey: string): boolean {
+    isNumber(eventKey: string): boolean {
         const pattern = /[1-9]/;
         return pattern.test(eventKey);
     }
@@ -51,6 +51,29 @@ export class InputService {
 
     isDelete(keyEvent: KeyboardEvent): boolean {
         return (keyEvent.key === "Backspace" || keyEvent.key === "Delete");
+    }
+
+    putInvalidField(invalidField: HTMLInputElement) {
+        invalidField.parentElement.parentElement.classList.add("invalid");
+        setTimeout(() => {
+            this.removeInvalidField(invalidField);
+        }, 3000);
+    }
+
+    removeInvalidField(invalidField: HTMLInputElement) {
+        invalidField.parentElement.parentElement.classList.remove("invalid");
+    }
+
+    formatSelectedTableCell(input: HTMLInputElement) {
+        // Add .selected class to parent <td> element
+        input.parentElement.parentElement.classList.add("inputSelected");
+        input.parentElement.parentElement.classList.remove("inputDeselected");
+    }
+
+    unformatSelectedTableCell(input: HTMLInputElement) {
+        // Remove .selected class to parent <td> element
+        input.parentElement.parentElement.classList.remove("inputSelected");
+        input.parentElement.parentElement.classList.add("inputDeselected");
     }
 }
 

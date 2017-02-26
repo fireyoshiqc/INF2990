@@ -33,15 +33,15 @@ describe('InputService', () => {
         });
     });
 
-    describe('regexCheck', () => {
+    describe('isNumber', () => {
         it('should return true if the entered value is within the 1-9 range', () => {
-            expect(inputService.regexCheck("1")).to.be.true;
+            expect(inputService.isNumber("1")).to.be.true;
         });
         it('should return false if the entered value is not within the 1-9 range', () => {
-            expect(inputService.regexCheck("0")).to.be.false;
+            expect(inputService.isNumber("0")).to.be.false;
         });
         it('should return false if the entered value is not a number', () => {
-            expect(inputService.regexCheck("A")).to.be.false;
+            expect(inputService.isNumber("A")).to.be.false;
         });
     });
 

@@ -31,7 +31,6 @@ export class SudokuService {
     ];
     difficulty: string;
     isValid = "false";
-    invalidFields: HTMLInputElement[] = new Array<HTMLInputElement>();
 
     constructor(private http: Http) { }
 
@@ -77,30 +76,6 @@ export class SudokuService {
             entry.row <= this.maxIndex && entry.row <= this.maxIndex) {
             this.inputGrid[entry.row][entry.column] = entry.value;
         }
-    }
-
-    putInvalidField(invalidField: HTMLInputElement) {
-        invalidField.parentElement.parentElement.classList.add("invalid");
-        this.invalidFields.push(invalidField);
-    }
-
-    resetInvalidFields() {
-        this.invalidFields.forEach(element => {
-            element.parentElement.parentElement.classList.remove("invalid");
-        });
-        this.invalidFields = new Array<HTMLInputElement>();
-    }
-
-    formatSelectedTableCell(input: HTMLInputElement) {
-        // Add .selected class to parent <td> element
-        input.parentElement.parentElement.classList.add("inputSelected");
-        input.parentElement.parentElement.classList.remove("inputDeselected");
-    }
-
-    unformatSelectedTableCell(input: HTMLInputElement) {
-        // Remove .selected class to parent <td> element
-        input.parentElement.parentElement.classList.remove("inputSelected");
-        input.parentElement.parentElement.classList.add("inputDeselected");
     }
 }
 

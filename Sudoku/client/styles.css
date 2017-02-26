@@ -325,6 +325,7 @@ tr:nth-child(3n) td {
     }
 }
 
+ /* Invalid class for inputField (blinking effect) */
 .invalid {
     -webkit-animation: invalid 1s 3;
     /* Safari 4+ */

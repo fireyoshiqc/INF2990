@@ -43,7 +43,7 @@ export class SudokuGridComponent {
     resetSudoku() {
         document.forms['gridForm'].reset();
         this.sudokuService.resetSudoku();
-        this.sudokuService.resetInvalidFields();
+        //this.sudokuService.resetInvalidFields();
         this.stopwatchService.restart();
     }
 
@@ -56,47 +56,37 @@ export class SudokuGridComponent {
     }
 
     putEntry(entry: EntryEvent) {
-        // Delete the number in the input case
-        if (this.inputService.isDelete(entry.keyEvent)) {
-            entry.inputField.value = null;
-            entry.inputField.parentElement.parentElement.classList.remove("invalid");
-            this.sudokuService.putEntry({
-                value: 0, row: entry.row, column: entry.column
-            });
-        }
-        // To add a number in the case
-        else {
-            if (this.inputService.regexCheck(entry.keyEvent.key)) {
-                if (this.inputService.validate({
-                    value: Number.parseInt(entry.keyEvent.key),
-                    grid: this.sudokuService.inputGrid,
-                    row: entry.row,
-                    column: entry.column
-                })) {
-                    entry.inputField.parentElement.parentElement.classList.remove("invalid");
-                }
-                else {
-                    // Adds invalid class to inputField (for blinking effect)
-                    this.sudokuService.putInvalidField(entry.inputField);
-                }
 
-                this.sudokuService.putEntry({
-                    value: Number.parseInt(entry.keyEvent.key),
-                    row: entry.row, column: entry.column
-                });
+        let entryValidation = { value: Number.parseInt(entry.keyEvent.key),
+                                grid: this.sudokuService.inputGrid,
+                                row: entry.row, column: entry.column };
+
+        // 1- Delete/Backspace entered
+        if (this.inputService.isDelete(entry.keyEvent)) {
+            entryValidation.value = 0;
+            this.inputService.removeInvalidField(entry.inputField);
+            this.sudokuService.putEntry(entryValidation);
+        }
+        // 2- Number entered
+        else if (this.inputService.isNumber(entry.keyEvent.key)) {
+            // "!" permis?
+            if (!this.inputService.validate(entryValidation)) {
+                this.inputService.putInvalidField(entry.inputField);
             }
-            else {
-                entry.keyEvent.preventDefault();
-            }
+            this.sudokuService.putEntry(entryValidation);
+        }
+        // 3- Invalid input
+        else {
+            entry.keyEvent.preventDefault();
         }
     }
 
     formatSelectedTableCell(input: HTMLInputElement) {
-        this.sudokuService.formatSelectedTableCell(input);
+        this.inputService.formatSelectedTableCell(input);
     }
 
     unformatSelectedTableCell(input: HTMLInputElement) {
-        this.sudokuService.unformatSelectedTableCell(input);
+        this.inputService.unformatSelectedTableCell(input);
     }
 
     toggleTheme() {
