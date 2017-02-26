@@ -11,7 +11,10 @@ body, html, md-sidenav-container {
   font-weight: normal;
   font-size: normal;
   height: 100%;
-    width: 100%;
+  width: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 #wrapper {
@@ -19,9 +22,87 @@ body, html, md-sidenav-container {
   height: calc(100vh);
 }
 
-#sideButton {
-  margin-top: 1%;
-  margin-left:1%;
+#topBar {
+  height: 56px;
+  padding-left: 16px;
+  padding-right: 16px;
+  box-shadow: 0px 4px 16px black;
+
+}
+
+#navIcon.material-icons.mat-icon {
+  color:white;
+  margin-left:16px;
+  font-size:32px;
+  height: 32px;
+  width:32px;
+}
+
+#lightIcon.material-icons.mat-icon {
+  color:black;
+  margin-left:16px;
+  font-size:32px;
+  height: 32px;
+  width:32px;
+}
+
+#darkIcon.material-icons.mat-icon {
+  color:white;
+  margin-left:16px;
+  font-size:32px;
+  height: 32px;
+  width:32px;
+}
+
+#closeIcon.material-icons.mat-icon {
+  color:white;
+  margin-left:16px;
+  font-size:32px;
+  height: 32px;
+  width:32px;
+}
+
+#easyIcon.material-icons.mat-icon {
+  margin-right:32px;
+  font-size:32px;
+  height: 32px;
+  width:32px;
+}
+#hardIcon.material-icons.mat-icon {
+  margin-right:32px;
+  font-size:32px;
+  height: 32px;
+  width:32px;
+}
+
+#title {
+  padding-left: 72px;
+
+}
+
+#topSpacer {
+  flex: 1 1 auto;
+}
+
+.icon-button {
+  cursor: pointer;
+  background: transparent;
+  border: none !important;
+}
+.icon-button:focus {
+  outline: none;
+}
+
+#infoCard {
+  width:320px;
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+.list-button{
+  width:320px;
+  padding-left: 5%;
+  padding-right:5%;
 }
 
 /***************************/
@@ -29,8 +110,7 @@ body, html, md-sidenav-container {
 /***************************/
 
 #buttonPanel button {
-  text-align: center;
-  margin: 10px;
+  text-align: start;
 }
 
 #sudokuGrid {

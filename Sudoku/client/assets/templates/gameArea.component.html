@@ -1,17 +1,70 @@
-<div id="gameArea">
+<div [class.dark-theme]="isDarkTheme" id="wrapper" class="flex-container" md-theme="light-sudoku-theme" md-theme-watch="true"
+    fxLayout="row" fxLayoutAlign="center center">
     <md-sidenav-container>
-        <button id="sideButton" md-fab (click)="sidenav.toggle()"><md-icon>menu</md-icon></button>
         <md-sidenav #sidenav mode="above" opened="false">
 
 
             <div id="buttonPanel" class="flex-container" fxLayout="column" fxLayoutAlign="start">
+                <md-list>
 
-                <button md-raised-button color="accent" (click)="sudokuGrid.getEasySudoku(); sidenav.toggle()">EASY sudoku</button>
-                <button md-raised-button color="warn" (click)="sudokuGrid.getHardSudoku(); sidenav.toggle()">HARD sudoku</button>
-                <button md-raised-button color="primary" (click)="sudokuGrid.validateSudoku(); sidenav.toggle()">Validate sudoku</button>
-                <button md-raised-button color="primary" (click)="sudokuGrid.toggleStopwatch(); sidenav.toggle()">{{ sudokuGrid.getStopwatchVisibility() ? "Hide" : "Show" }} stopwatch</button>
+
+                    <md-card id="infoCard">
+                        <md-card-title>Sudoku</md-card-title>
+                        <md-card-subtitle>FACTORY/24</md-card-subtitle>
+                        <md-card-content>
+                            Ce jeu de Sudoku classique, stylé à l'aide d'Angular Material, saura mettre à l'épreuve votre sens logique.<br>
+                            <br>
+                            Utilisez l'icône d'ampoule dans le coin supérieur droit afin de changer le thème de clair à sombre.<br>
+                            <br>
+                            Utilisez les boutons ci-dessous pour générer une nouvelle grille de sudoku, de la difficulté de votre choix, ou encore pour afficher les records de temps pour chacune des difficultés.<br>  
+                        </md-card-content>
+                    </md-card>
+
+                    <h3 md-subheader>Générer un sudoku</h3>
+                    <md-list-item>
+                        <button md-button class="list-button" (click)="sudokuGrid.getEasySudoku(); sidenav.toggle()"><md-icon id="easyIcon" color="accent">child_friendly</md-icon><strong>Facile</strong></button>
+                    </md-list-item>
+                    <md-list-item>
+                        <button md-button class="list-button" (click)="sudokuGrid.getHardSudoku(); sidenav.toggle()"><md-icon id="easyIcon" color="warn">whatshot</md-icon><strong>Difficile</strong></button>
+                    </md-list-item>
+                    <md-divider></md-divider>
+                    <h3 md-subheader>Records</h3>
+                    <md-list-item>
+                        <button md-button class="list-button" (click)="sidenav.toggle()"><md-icon id="easyIcon" color="primary">assessment</md-icon><strong>Afficher les records</strong></button>
+                    </md-list-item>
+                    <md-divider></md-divider>
+                    <md-list-item>
+                        <button md-raised-button color="primary" (click)="sudokuGrid.validateSudoku(); sidenav.toggle()">Validate sudoku</button>
+                    </md-list-item>
+
+                </md-list>
             </div>
         </md-sidenav>
-        <sudoku-grid #sudokuGrid></sudoku-grid>
+        <div class="flex-container" fxLayout="column" fxLayoutAlign="center center">
+
+            <md-toolbar id="topBar" color="primary">
+                <button class="icon-button" (click)="sidenav.toggle()"><md-icon id="navIcon">menu</md-icon></button>
+                <span id="title">Sudoku</span>
+                <span id="topSpacer"></span>
+                <button class="icon-button" (click)="toggleTheme()">
+                    <md-icon *ngIf="isDarkTheme" id="lightIcon">lightbulb_outline</md-icon>
+                    <md-icon *ngIf="!isDarkTheme" id="darkIcon">lightbulb_outline</md-icon>
+                </button>
+                <button class="icon-button"><md-icon id="closeIcon">close</md-icon></button>
+            </md-toolbar>
+            <!--<div class="flex-item" fxLayoutAlign="start" fxFlex fxFlexFill>
+        
+    </div>-->
+            <div class="flex-item" fxLayoutAlign="center" fxFlex="auto" fxFlexFill>
+                <div id="gameArea">
+
+
+
+                    <sudoku-grid #sudokuGrid></sudoku-grid>
+                    <button md-raised-button color="primary" (click)="sudokuGrid.toggleStopwatch()">{{ sudokuGrid.getStopwatchVisibility() ? "Masquer" : "Montrer" }} chronomètre</button>
+
+                </div>
+            </div>
+        </div>
     </md-sidenav-container>
-</div>
+    </div>

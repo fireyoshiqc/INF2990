@@ -4,4 +4,10 @@ import { Component } from '@angular/core';
     selector: 'game-area',
     templateUrl: '/assets/templates/gameArea.component.html'
 })
-export class GameAreaComponent { }
+export class GameAreaComponent {
+    private isDarkTheme = false;
+
+    toggleTheme() {
+        this.isDarkTheme = !this.isDarkTheme;
+    }
+ }

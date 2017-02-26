@@ -7,6 +7,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { AppComponent } from './app.component';
 import { SudokuGridComponent } from './components/sudokuGrid.component';
 import { GameAreaComponent } from './components/gameArea.component';
+import 'hammerjs';
 
 @NgModule({
     imports: [BrowserModule, HttpModule, MaterialModule.forRoot(), FlexLayoutModule.forRoot()],

@@ -14,6 +14,9 @@ $accent:  mat-palette($mat-amber, A400, A200, A700);
 // The warn palette is optional (defaults to red).
 $warn:    mat-palette($mat-red);
 
+$background : mat-light-theme-foreground($mat-grey, 50);
+$foreground : mat-light-theme-background($mat-grey, 900);
+
 // Create the theme object (a Sass map containing all of the palettes).
 $theme: mat-light-theme($primary, $accent, $warn);
 
@@ -21,3 +24,14 @@ $theme: mat-light-theme($primary, $accent, $warn);
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 @include angular-material-theme($theme);
+
+.dark-theme {
+    $dark-p: mat-palette($mat-deep-purple, 900);
+    $dark-a: mat-palette($mat-amber, 900);
+    $dark-w: mat-palette($mat-red);
+    $dark-b : mat-dark-theme-foreground($mat-grey, 900);
+    $dark-f : mat-dark-theme-foreground($mat-grey, 50);
+
+    $dark-t: mat-dark-theme($dark-p, $dark-a, $dark-w);
+    @include angular-material-theme($dark-t);
+}
