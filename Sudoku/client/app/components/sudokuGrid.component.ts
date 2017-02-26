@@ -11,6 +11,7 @@ import { InputService } from '../services/input.service';
 export class SudokuGridComponent {
     isValid: string;
     difficulty: string;
+    isDarkTheme = false;
 
     constructor(private sudokuService: SudokuService,
         private stopwatchService: StopwatchService,
@@ -40,6 +41,7 @@ export class SudokuGridComponent {
     }
 
     resetSudoku() {
+        document.forms['gridForm'].reset();
         this.sudokuService.resetSudoku();
         this.sudokuService.resetInvalidFields();
         this.stopwatchService.restart();
@@ -57,7 +59,7 @@ export class SudokuGridComponent {
         // Delete the number in the input case
         if (this.inputService.isDelete(entry.keyEvent)) {
             entry.inputField.value = null;
-            entry.inputField.classList.remove("invalid");
+            entry.inputField.parentElement.parentElement.classList.remove("invalid");
             this.sudokuService.putEntry({
                 value: 0, row: entry.row, column: entry.column
             });
@@ -71,7 +73,7 @@ export class SudokuGridComponent {
                     row: entry.row,
                     column: entry.column
                 })) {
-                    entry.inputField.classList.remove("invalid");
+                    entry.inputField.parentElement.parentElement.classList.remove("invalid");
                 }
                 else {
                     // Adds invalid class to inputField (for blinking effect)
@@ -95,6 +97,11 @@ export class SudokuGridComponent {
 
     unformatSelectedTableCell(input : HTMLInputElement) {
         this.sudokuService.unformatSelectedTableCell(input);
+    }
+
+    toggleTheme(){
+        this.isDarkTheme = !this.isDarkTheme;
+
     }
 }
 

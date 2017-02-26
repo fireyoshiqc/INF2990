@@ -46,7 +46,7 @@
                 <button class="icon-button" (click)="sidenav.toggle()"><md-icon id="navIcon">menu</md-icon></button>
                 <span id="title">Sudoku</span>
                 <span id="topSpacer"></span>
-                <button class="icon-button" (click)="toggleTheme()">
+                <button class="icon-button" (click)="toggleTheme(); sudokuGrid.toggleTheme()">
                     <md-icon *ngIf="isDarkTheme" id="lightIcon">lightbulb_outline</md-icon>
                     <md-icon *ngIf="!isDarkTheme" id="darkIcon">lightbulb_outline</md-icon>
                 </button>
@@ -61,6 +61,7 @@
 
 
                     <sudoku-grid #sudokuGrid></sudoku-grid>
+                    <button md-raised-button color="primary" (click)="sudokuGrid.resetSudoku()">Reset Sudoku</button>
                     <button md-raised-button color="primary" (click)="sudokuGrid.toggleStopwatch()">{{ sudokuGrid.getStopwatchVisibility() ? "Masquer" : "Montrer" }} chronomètre</button>
 
                 </div>

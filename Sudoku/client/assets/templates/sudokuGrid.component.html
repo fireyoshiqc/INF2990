@@ -1,13 +1,14 @@
 <body>
     <div id="sudokuGrid">
         <div id="grid">
-            <form>
-                <input md-button type="reset" value="Reset Sudoku" (click)="resetSudoku()">
-                <table>
-                    <tr *ngFor="let row of sudokuService.initialGrid; let i = index">
-                        <td *ngFor="let element of row; let j = index">
+            <form name="gridForm">
+                
+                <table [style.border-color]="isDarkTheme ? 'white' : 'black'">
+                    <tr *ngFor="let row of sudokuService.initialGrid; let i = index" [style.border-color]="isDarkTheme ? 'white' : 'black'">
+                        <td *ngFor="let element of row; let j = index" [style.border-color]="isDarkTheme ? 'white' : 'black'">
                             <div *ngIf="element==0">
-                                <input class="inputField" #inputField size="1" maxlength="1" (keydown)="putEntry({keyEvent:$event, inputField:inputField, row:i, column:j})" (focus)="formatSelectedTableCell(inputField)" (focusout)="unformatSelectedTableCell(inputField)">
+                                <input class="inputField" #inputField size="1" maxlength="1" (keydown)="putEntry({keyEvent:$event, inputField:inputField, row:i, column:j})"
+                                (focus)="formatSelectedTableCell(inputField)" (focusout)="unformatSelectedTableCell(inputField)" [style.color]="isDarkTheme ? 'limegreen' : 'seagreen'">
                             </div>
                             <div *ngIf="element!=0">
                                 {{element}}
@@ -25,6 +26,7 @@
             <p>Niveau de difficulté : {{sudokuService.difficulty}} </p>
             <p *ngIf="stopwatchService.isVisible()">Timer : <span>{{stopwatchService.getMinutes()}}</span> min <span>{{stopwatchService.getSeconds()}}</span> sec</p>
         </div>
+        
 
         <div>
             <h3 *ngIf="sudokuService.isValid==='true'">Félicitations! Vous avez réussi!</h3>

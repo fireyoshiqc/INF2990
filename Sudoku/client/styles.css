@@ -118,15 +118,10 @@ body, html, md-sidenav-container {
 }
 
 #grid {
-  float: left;
-  margin-left: 420px;
-  background-color: white;
 }
 
 #infoPanel {
-  float: right;
   width: 190px;
-  margin-right: 315px;
 }
 
 /*************************/
@@ -134,15 +129,15 @@ body, html, md-sidenav-container {
 /*************************/
 
 table {
-  margin: 1em auto;
   border-collapse: collapse;
 }
 
 td {
-  height: 30px;
-  width: 30px;
+  height: 60px;
+  width: 60px;
   border: 1px solid;
   text-align: center;
+  font-size:xx-large;
 }
 
 td:first-child {
@@ -164,7 +159,7 @@ tr:nth-child(3n) td {
 .inputField {
   padding: 0px;
   margin: 0px;
-  color: seagreen;
+  background-color:transparent;
   text-align: center;
   font-weight: bold;
   font-size: 100%;
@@ -174,8 +169,60 @@ tr:nth-child(3n) td {
   height: 100%;
 }
 
+@-webkit-keyframes inputSelected {
+  from { background-color: inherit; }
+  to { background-color: rgba(100, 100, 255, 0.6); }
+}
+
+@-moz-keyframes inputSelected {
+  from { background-color:inherit; }
+  to { background-color: inhrgba(100, 100, 255, 0.6)erit; }
+}
+
+@-o-keyframes inputSelected {
+  from { background-color:inherit; }
+  to { background-color: rgba(100, 100, 255, 0.6); }
+}
+
+@keyframes inputSelected {
+  from { background-color:inherit;}
+  to { background-color: rgba(100, 100, 255, 0.6); }
+}
+
 .inputSelected {
-  background-color: lightskyblue;
+  -webkit-animation: inputSelected 1s 1; /* Safari 4+ */
+  -moz-animation:    inputSelected 1s 1; /* Fx 5+ */
+  -o-animation:      inputSelected 1s 1; /* Opera 12+ */
+  animation:         inputSelected 1s 1; /* IE 10+ */
+  background-color: rgba(100, 100, 255, 0.6)
+}
+
+@-webkit-keyframes inputDeselected {
+  from { background-color: rgba(100, 100, 255, 0.6); }
+  to { background-color: inherit; }
+}
+
+@-moz-keyframes inputDeselected {
+  from { background-color:rgba(100, 100, 255, 0.6); }
+  to { background-color: inherit;  }
+}
+
+@-o-keyframes inputDeselected {
+  from { background-color:rgba(100, 100, 255, 0.6); }
+  to { background-color: inherit;  }
+}
+
+@keyframes inputDeselected {
+  from { background-color:rgba(100, 100, 255, 0.6);}
+  to { background-color: inherit; }
+}
+
+.inputDeselected {
+  -webkit-animation: inputDeselected 1s 1; /* Safari 4+ */
+  -moz-animation:    inputDeselected 1s 1; /* Fx 5+ */
+  -o-animation:      inputDeselected 1s 1; /* Opera 12+ */
+  animation:         inputDeselected 1s 1; /* IE 10+ */
+  background-color:  transparent
 }
 
 /*************************************/
@@ -183,22 +230,22 @@ tr:nth-child(3n) td {
 /*************************************/
 
 @-webkit-keyframes invalid {
-  from { background-color: #FF6666; }
+  from { background-color: rgba(255, 0, 0, 0.6); }
   to { background-color: inherit; }
 }
 
 @-moz-keyframes invalid {
-  from { background-color: #FF6666; }
+  from { background-color:rgba(255, 0, 0, 0.6); }
   to { background-color: inherit; }
 }
 
 @-o-keyframes invalid {
-  from { background-color: #FF6666; }
+  from { background-color:rgba(255, 0, 0, 0.6); }
   to { background-color: inherit; }
 }
 
 @keyframes invalid {
-  from { background-color: #FF6666; }
+  from { background-color:rgba(255, 0, 0, 0.6); }
   to { background-color: inherit; }
 }
 
