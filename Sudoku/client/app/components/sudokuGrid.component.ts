@@ -98,7 +98,6 @@ export class SudokuGridComponent {
 
     toggleTheme() {
         this.isDarkTheme = !this.isDarkTheme;
-
     }
 }
 

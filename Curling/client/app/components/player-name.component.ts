@@ -15,9 +15,11 @@ import { Player } from '../classes/player';
 
 export class PlayerNameComponent implements OnInit {
     player: Player;
+
     constructor() {
         //We hate empty blocks
     }
+
     ngOnInit(): void {
         this.player = new Player();
         this.player.name = "";
@@ -29,6 +31,4 @@ export class PlayerNameComponent implements OnInit {
         }
         return true;
     }
-
-
 }

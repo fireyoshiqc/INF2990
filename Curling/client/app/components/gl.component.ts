@@ -4,20 +4,22 @@ import { GameController } from '../services/gameController.service';
 
 @Component({
     selector: 'my-gl',
-    template: `
-        <modifier [container]="container"></modifier>
-        <div #container (window:resize)="onResize($event)">
-            <button md-raised-button id="cameraButton" (click)="switchCamera()">Changer la caméra</button>
-        </div>
-    `,
+    templateUrl: "/assets/templates/gl.component.html",
+    providers: [GameController]
 })
 export class GlComponent implements OnInit {
+    private isDarkTheme = false;
+
     ngOnInit(): void {
         console.log("ngOnInit called");
     }
 
     constructor(private gameController: GameController) {
         // Empty constructor necessary for Angular
+    }
+
+    toggleTheme() {
+        this.isDarkTheme = !this.isDarkTheme;
     }
 
     onResize(event: any) {
@@ -32,7 +34,12 @@ export class GlComponent implements OnInit {
         }
     }
 
-    switchCamera() : void {
+    resetGame(): void {
+        // TODO
+        alert("reset");
+    }
+
+    switchCamera(): void {
         this.gameController.switchCamera();
     }
 }
