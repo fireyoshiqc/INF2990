@@ -11,7 +11,7 @@ import { Rink } from '../entities/rink';
 export class LightManager {
 
     spawnSpotlights(posX : number, posY : number, posZ : number, rink : Rink) : SpotlightArray {
-        let spotlights = new SpotlightArray(rink.RINK_WIDTH, rink.RINK_LENGTH, 2, 6);
+        let spotlights = new SpotlightArray(Rink.RINK_WIDTH, Rink.RINK_LENGTH, 2, 6);
         spotlights.position.x = posX;
         spotlights.position.y = posY;
         spotlights.position.z = posZ;

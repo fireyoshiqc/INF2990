@@ -7,78 +7,54 @@
 
 import { Injectable } from '@angular/core';
 
-import { CurlingStone } from '../entities/curlingStone';
+import { CurlingStone, Team } from '../entities/curlingStone';
 import { GameRenderer } from './gameRenderer';
+import { Rink } from '../entities/rink';
 
 @Injectable()
 export class GameController {
-    // TODO: Remove when experimental tests are done
-    readonly RINK_LENGTH = 46;
-
     private gameRenderer: GameRenderer;
     private curlingStones: CurlingStone[] = [];
+    readonly RINGS_CENTER = new THREE.Vector3(0, 0, -Rink.RINK_LENGTH / 2 - Rink.RINGS_OFFSET);
+    private playerScore = 0;
+    private aiScore = 0;
 
     public init(container?: HTMLElement): void {
         this.gameRenderer = new GameRenderer();
 
         this.gameRenderer.init(container);
 
-        // ----- Experimental : Adding 7 stones to test the collision ------- //
-        let stone1 = new CurlingStone(new THREE.Vector3(0.2, 0, -5),
-            new THREE.Vector3(0, 0, 0));
-        stone1.init();
-        stone1.isBeingPlayed = true;
-        this.curlingStones.push(stone1);
+        CurlingStone.setPlayerStoneColor("#FFFFFF");
 
-        let stone2 = new CurlingStone(new THREE.Vector3(0, 0, 0),
-            new THREE.Vector3(0, 0, -this.RINK_LENGTH / 2));
-        stone2.init();
-        this.curlingStones.push(stone2);
-
-        let stone3 = new CurlingStone(new THREE.Vector3(0, 0, 0),
-            new THREE.Vector3(0.6, 0, -this.RINK_LENGTH / 2 - 0.5));
-        stone3.init();
-        this.curlingStones.push(stone3);
-
-        let stone4 = new CurlingStone(new THREE.Vector3(0, 0, 0),
-            new THREE.Vector3(0.6, 0, -this.RINK_LENGTH / 2 - 1.2));
-        stone4.init();
-        this.curlingStones.push(stone4);
-
-        let stone5 = new CurlingStone(new THREE.Vector3(0, 0, 0),
-            new THREE.Vector3(-0.5, 0, -this.RINK_LENGTH / 2 - 0.5));
-        stone5.init();
-        this.curlingStones.push(stone5);
-
-        let stone6 = new CurlingStone(new THREE.Vector3(0, 0, 0),
-            new THREE.Vector3(0, 0, -this.RINK_LENGTH / 2 - 0.9));
-        stone6.init();
-        this.curlingStones.push(stone6);
-
-        let stone7 = new CurlingStone(new THREE.Vector3(0, 0, 0),
-            new THREE.Vector3(0.1, 0, -this.RINK_LENGTH / 2 - 3));
-        stone7.init();
-        this.curlingStones.push(stone7);
-
-        let stone8 = new CurlingStone(new THREE.Vector3(0, 0, 0),
-            new THREE.Vector3(-2, 0, -this.RINK_LENGTH / 2));
-        stone8.init();
-        this.curlingStones.push(stone8);
-
-        let stone9 = new CurlingStone(new THREE.Vector3(0, 0, 0),
-            new THREE.Vector3(2, 0, -this.RINK_LENGTH / 2 - 1));
-        stone9.init();
-        this.curlingStones.push(stone9);
-
-        // -------------------END Experiment -------------------------------- //
-
-        this.gameRenderer.setStones(this.curlingStones);
+        // TODO : Lancement des pierres de curling
+        this.addStone(Team.Player, new THREE.Vector3(0, 0, 0));
 
         this.gameRenderer.render();
     }
 
+    addStone(team: Team, position: THREE.Vector3) {
+        let stone = new CurlingStone(team, new THREE.Vector3(0, 0, 0), position);
+
+        stone.init();
+        this.curlingStones.push(stone);
+
+        this.gameRenderer.addStone(stone);
+    }
+
     getCurlingStones(): CurlingStone[] {
         return this.curlingStones;
+    }
+
+    getGameRenderer(): GameRenderer {
+        return this.gameRenderer;
+    }
+
+    getPlayerScore(): number {
+        return this.playerScore;
+    }
+
+    getAiScore(): number {
+        return this.aiScore;
     }
 
     onResize(event: any): void {
@@ -88,4 +64,64 @@ export class GameController {
     switchCamera(): void {
         this.gameRenderer.switchCamera();
     }
+
+    sortStonesByDistance(): CurlingStone[] {
+        // deep copy
+        let sortStones = this.curlingStones.slice();
+
+        return sortStones.sort((stone1: CurlingStone, stone2: CurlingStone) => {
+            // if stone1 is closer to the rings than stone 2, it should be placed before stone 2
+            return stone1.position.distanceTo(this.RINGS_CENTER) - stone2.position.distanceTo(this.RINGS_CENTER);
+        });
+    }
+
+    updateScore(): void {
+        let sortStones = this.sortStonesByDistance();
+
+        let teamClosestStone = sortStones[0].getTeam();
+        let index = 0;
+        let score = 0;
+
+        // add points to the closest team for each stone that is inside of the rings
+        // and closer to the closest stone from the opposing team (in respect to the curling rules)
+        while (sortStones[index].getTeam() === teamClosestStone &&
+               sortStones[index].position.distanceTo(this.RINGS_CENTER) < Rink.OUTER_RADIUS) {
+            score++;
+            index++;
+        }
+
+        // update score of closest team
+        if (teamClosestStone === Team.Player) {
+            this.playerScore += score;
+        } else {
+            this.aiScore += score;
+        }
+    }
+
+
+    /******************** TEST HELPER *******************/
+
+    setStonesForScoringTests(): void {
+        this.addStone(Team.Player,
+            new THREE.Vector3(this.RINGS_CENTER.x, this.RINGS_CENTER.y, this.RINGS_CENTER.z + 3));
+        this.addStone(Team.Player,
+            new THREE.Vector3(this.RINGS_CENTER.x, this.RINGS_CENTER.y, this.RINGS_CENTER.z + 2.5));
+        this.addStone(Team.Player,
+            new THREE.Vector3(this.RINGS_CENTER.x, this.RINGS_CENTER.y, this.RINGS_CENTER.z + 2));
+        this.addStone(Team.Player,
+            new THREE.Vector3(this.RINGS_CENTER.x, this.RINGS_CENTER.y, this.RINGS_CENTER.z + 1));
+        this.addStone(Team.AI,
+            new THREE.Vector3(this.RINGS_CENTER.x, this.RINGS_CENTER.y, this.RINGS_CENTER.z + 3.5));
+        this.addStone(Team.AI,
+            new THREE.Vector3(this.RINGS_CENTER.x, this.RINGS_CENTER.y, this.RINGS_CENTER.z + 1.5));
+        this.addStone(Team.AI,
+            new THREE.Vector3(this.RINGS_CENTER.x, this.RINGS_CENTER.y, this.RINGS_CENTER.z + 0.5));
+        this.addStone(Team.AI, this.RINGS_CENTER);
+    }
+
+    resetStones(): void {
+        this.curlingStones = this.curlingStones.slice(0, 1);
+    }
+
+    /***************** END TEST HELPER *******************/
 }

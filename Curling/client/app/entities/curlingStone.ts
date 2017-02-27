@@ -7,7 +7,15 @@
 
 import { TextureCacher } from "../services/textureCacher";
 
+export enum Team {
+    Player,
+    AI
+}
+
 export class CurlingStone extends THREE.Group {
+
+    private static playerStoneColor = "#66B2FF";
+    private static aiStoneColor = "#FF6666";
 
     static readonly MAX_RADIUS = 0.145; //* 2; //External radius of the stone
     private readonly RADIUS = 0.145 / 2; //Radius of stone (torus)
@@ -21,26 +29,27 @@ export class CurlingStone extends THREE.Group {
     private readonly HANDLE_LENGTH = 0.13; //How long the top part of the handle is.
     private readonly HANDLE_MELD = 0.005; //By how much the handle sinks into the cover.
 
-
     private texLoader: THREE.TextureLoader;
     stoneColor: string;
     velocity: THREE.Vector3;
     isBeingPlayed = false;
+    private team: Team;
 
-    constructor(velocity?: THREE.Vector3, position?: THREE.Vector3, aColor?: string) {
+    // must be set before init()
+    static setPlayerStoneColor(aColor: string) {
+        let regex = new RegExp('#[0-9a-fA-F]{6}');
+
+        if (regex.test(aColor)) {
+            CurlingStone.playerStoneColor = aColor;
+        }
+    }
+
+    constructor(team: Team, velocity?: THREE.Vector3, position?: THREE.Vector3) {
         super();
-        if (aColor) {
-            let regex = new RegExp('#[0-9a-fA-F]{6}');
-            if (regex.test(aColor)) {
-                this.stoneColor = aColor;
-            }
-            else {
-                this.stoneColor = "#FFFFFF";
-            }
-        }
-        else {
-            this.stoneColor = "#FFFFFF";
-        }
+
+        this.team = team;
+
+        this.stoneColor = (this.team === Team.Player) ? CurlingStone.playerStoneColor : CurlingStone.aiStoneColor;
 
         if (velocity) {
             this.velocity = velocity;
@@ -48,6 +57,10 @@ export class CurlingStone extends THREE.Group {
         if (position) {
             this.position.set(position.x, position.y, position.z);
         }
+    }
+
+    getTeam(): Team {
+        return this.team;
     }
 
     //Function for random stone color
@@ -101,7 +114,7 @@ export class CurlingStone extends THREE.Group {
         let handleMaterial: THREE.MeshStandardMaterial = new THREE.MeshStandardMaterial({
             metalness: 0.5,
             roughness: 0.2,
-            color: this.getRandomColor(),
+            color: this.stoneColor
         });
 
         //Cover

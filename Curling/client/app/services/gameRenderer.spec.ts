@@ -6,7 +6,7 @@
  */
 
 import { GameRenderer } from './gameRenderer';
-import { CurlingStone } from '../entities/curlingStone';
+import { CurlingStone, Team } from '../entities/curlingStone';
 
 import { expect } from 'chai';
 
@@ -32,7 +32,7 @@ describe('GameRenderer', () => {
 
     describe('addToScene()', () => {
         it('should add a Group object (like a Curling Stone) to its contained Scene.', done => {
-            let testStone : CurlingStone = new CurlingStone();
+            let testStone : CurlingStone = new CurlingStone(Team.Player);
             testRenderer.addToScene(testStone);
             expect(testRenderer.scene.children).to.be.ok;
             done();

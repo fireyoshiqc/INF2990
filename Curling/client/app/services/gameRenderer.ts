@@ -25,7 +25,7 @@ export class GameRenderer {
     physicsManager: PhysicsManager;
     cameraManager: CameraManager;
     clock: THREE.Clock;
-    curlingStones: CurlingStone[];
+    curlingStones: CurlingStone[] = [];
 
     // TODO : Remove when experimental test is done
     activeStone: CurlingStone;
@@ -63,8 +63,8 @@ export class GameRenderer {
         //TODO: Adjust rink to add play lines (home, throw line, etc.)
         //TODO: Adjust ring positions on the rink (they're wrong right now)
         let rink: Rink = new Rink(skybox.skyBoxImages);
-        rink.position.z = -rink.RINK_LENGTH / 2;
-        rink.position.y = rink.POS_RINK_Y;
+        rink.position.z = -Rink.RINK_LENGTH / 2;
+        rink.position.y = Rink.POS_RINK_Y;
         this.addToScene(rink);
 
         /*--------------------LIGHT------------------------------------------ */
@@ -79,15 +79,10 @@ export class GameRenderer {
         this.isStarted = true;
     }
 
-    setStones(curlingStones: CurlingStone[]): void {
-        this.curlingStones = curlingStones;
-
-        this.curlingStones.forEach( stone => {
-            this.physicsManager.addStone(stone);
-            this.addToScene(stone);
-        });
-
-        this.activeStone = this.curlingStones[0];
+    addStone(stone: CurlingStone): void {
+        this.physicsManager.addStone(stone);
+        this.addToScene(stone);
+        this.activeStone = stone;
     }
 
     onResize(event: any) {
