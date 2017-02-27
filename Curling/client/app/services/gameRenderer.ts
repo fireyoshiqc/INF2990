@@ -25,9 +25,10 @@ export class GameRenderer {
     physicsManager: PhysicsManager;
     cameraManager: CameraManager;
     clock: THREE.Clock;
+    curlingStones: CurlingStone[];
 
     // TODO : Remove when experimental test is done
-    stone1: CurlingStone;
+    activeStone: CurlingStone;
 
     public init(container?: HTMLElement): void {
         this.container = container;
@@ -57,79 +58,36 @@ export class GameRenderer {
 
         let skybox: SkyBox;
         skybox = new SkyBox();
-        this.add(skybox);
+        this.addToScene(skybox);
 
         //TODO: Adjust rink to add play lines (home, throw line, etc.)
         //TODO: Adjust ring positions on the rink (they're wrong right now)
         let rink: Rink = new Rink(skybox.skyBoxImages);
         rink.position.z = -rink.RINK_LENGTH / 2;
         rink.position.y = rink.POS_RINK_Y;
-        this.add(rink);
-
-        // ----- Experimental : Adding 7 stones to test the collision ------- //
-        this.stone1 = new CurlingStone(new THREE.Vector3(0.2, 0, -5),
-            new THREE.Vector3(0, 0, 0));
-        this.stone1.init();
-        this.stone1.isBeingPlayed = true;
-        this.physicsManager.addStone(this.stone1);
-
-        let stone2 = new CurlingStone(new THREE.Vector3(0, 0, 0),
-            new THREE.Vector3(0, 0, -rink.RINK_LENGTH / 2));
-        stone2.init();
-        this.physicsManager.addStone(stone2);
-
-        let stone3 = new CurlingStone(new THREE.Vector3(0, 0, 0),
-            new THREE.Vector3(0.6, 0, -rink.RINK_LENGTH / 2 - 0.5));
-        stone3.init();
-        this.physicsManager.addStone(stone3);
-
-        let stone4 = new CurlingStone(new THREE.Vector3(0, 0, 0),
-            new THREE.Vector3(0.6, 0, -rink.RINK_LENGTH / 2 - 1.2));
-        stone4.init();
-        this.physicsManager.addStone(stone4);
-
-        let stone5 = new CurlingStone(new THREE.Vector3(0, 0, 0),
-            new THREE.Vector3(-0.5, 0, -rink.RINK_LENGTH / 2 - 0.5));
-        stone5.init();
-        this.physicsManager.addStone(stone5);
-
-        let stone6 = new CurlingStone(new THREE.Vector3(0, 0, 0),
-            new THREE.Vector3(0, 0, -rink.RINK_LENGTH / 2 - 0.9));
-        stone6.init();
-        this.physicsManager.addStone(stone6);
-
-        let stone7 = new CurlingStone(new THREE.Vector3(0, 0, 0),
-            new THREE.Vector3(0.1, 0, -rink.RINK_LENGTH / 2 - 3));
-        stone7.init();
-        this.physicsManager.addStone(stone7);
-
-        let stone8 = new CurlingStone(new THREE.Vector3(0, 0, 0),
-            new THREE.Vector3(-2, 0, -rink.RINK_LENGTH / 2));
-        stone8.init();
-        this.physicsManager.addStone(stone8);
-
-        let stone9 = new CurlingStone(new THREE.Vector3(0, 0, 0),
-            new THREE.Vector3(2, 0, -rink.RINK_LENGTH / 2 - 1));
-        stone9.init();
-        this.physicsManager.addStone(stone9);
-
-        // -------------------END Experiment -------------------------------- //
-
-        this.physicsManager.getStones().forEach(stone => {
-            this.add(stone);
-        });
+        this.addToScene(rink);
 
         /*--------------------LIGHT------------------------------------------ */
 
         this.scene.add(this.lightManager.spawnAmbientLight(0xffffff, 0x222277));
-        this.add(this.lightManager.spawnSpotlights(-2.2, 0, 0, rink));
+        this.addToScene(this.lightManager.spawnSpotlights(-2.2, 0, 0, rink));
 
         //------------------- END LIGHT------------------------------------------//
 
         //Start asynchronous render loop.
         this.clock = new THREE.Clock();
-        this.render();
         this.isStarted = true;
+    }
+
+    setStones(curlingStones: CurlingStone[]): void {
+        this.curlingStones = curlingStones;
+
+        this.curlingStones.forEach( stone => {
+            this.physicsManager.addStone(stone);
+            this.addToScene(stone);
+        });
+
+        this.activeStone = this.curlingStones[0];
     }
 
     onResize(event: any) {
@@ -150,11 +108,11 @@ export class GameRenderer {
         this.physicsManager.update(delta);
 
         //Render scene using camera that is following the stone
-        this.cameraManager.followStone(this.stone1.position);
+        this.cameraManager.followStone(this.activeStone.position);
         this.renderer.render(this.scene, this.cameraManager.getCamera());
     }
 
-    add(obj: THREE.Group | THREE.Mesh): void {
+    addToScene(obj: THREE.Group | THREE.Mesh): void {
         this.scene.add(obj);
     }
 

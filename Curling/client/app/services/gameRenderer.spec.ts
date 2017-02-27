@@ -30,10 +30,10 @@ describe('GameRenderer', () => {
         });
     });
 
-    describe('add()', () => {
+    describe('addToScene()', () => {
         it('should add a Group object (like a Curling Stone) to its contained Scene.', done => {
             let testStone : CurlingStone = new CurlingStone();
-            testRenderer.add(testStone);
+            testRenderer.addToScene(testStone);
             expect(testRenderer.scene.children).to.be.ok;
             done();
         });

@@ -1,5 +1,5 @@
 /**
- * cameraManager.service.ts
+ * cameraManager.service.spec.ts
  *
  * @authors Félix Boulet
  * @date 2017/02/18

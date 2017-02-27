@@ -1,6 +1,6 @@
 
 import { Component, OnInit, HostListener } from '@angular/core';
-import { GameRenderer } from '../services/gameRenderer';
+import { GameController } from '../services/gameController.service';
 
 @Component({
     selector: 'my-gl',
@@ -16,12 +16,12 @@ export class GlComponent implements OnInit {
         console.log("ngOnInit called");
     }
 
-    constructor(private gameRenderer: GameRenderer) {
+    constructor(private gameController: GameController) {
         // Empty constructor necessary for Angular
     }
 
     onResize(event: any) {
-        this.gameRenderer.onResize(event);
+        this.gameController.onResize(event);
     }
 
     // Player can switch camera view
@@ -33,6 +33,6 @@ export class GlComponent implements OnInit {
     }
 
     switchCamera() : void {
-        this.gameRenderer.switchCamera();
+        this.gameController.switchCamera();
     }
 }

@@ -12,14 +12,14 @@ import { PlayerNameComponent } from '../components/player-name.component';
 
 import { ModifierDirective } from '../directives/modifier.directive';
 
-import { GameRenderer } from '../services/gameRenderer';
+import { GameController } from '../services/gameController.service';
 
 import { MaterialModule } from '@angular/material';
 
 @NgModule({
     imports: [BrowserModule, FormsModule, AppRoutingModule, MaterialModule.forRoot()],
     declarations: [AppComponent, GlComponent, DashboardComponent, ModifierDirective, PlayerNameComponent],
-    providers: [GameRenderer],
+    providers: [GameController],
     bootstrap: [AppComponent]
 })
 
