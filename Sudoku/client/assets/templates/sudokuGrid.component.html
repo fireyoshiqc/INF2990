@@ -1,8 +1,7 @@
-<body>
-    <div id="sudokuGrid">
+<div id="sudokuGrid" class="flex-container" fxLayout.xs="column" fxLayout.gt-xs="column" fxLayout.gt-md="row" fxLayoutAlign="center center" fxFlexFill>
+    <div class="flex-item" fxLayoutAlign="center" fxFlex="auto" fxFlexFill>
         <md-card id="grid">
             <form name="gridForm">
-
                 <table [style.border-color]="isDarkTheme ? 'white' : 'black'">
                     <tr *ngFor="let row of sudokuService.initialGrid; let i = index" [style.border-color]="isDarkTheme ? 'white' : 'black'">
                         <td *ngFor="let element of row; let j = index" [style.border-color]="isDarkTheme ? 'white' : 'black'">
@@ -19,6 +18,9 @@
                 </table>
             </form>
         </md-card>
+    </div>
+
+    <div class="flex-item" fxLayoutAlign="center" fxFlex="auto" fxFlexFill>
 
         <!-- TODO : Place div below in InformationPanelComponent -->
         <md-card id="infoPanel">
@@ -44,4 +46,4 @@
             <h3 *ngIf="sudokuService.isValid==='true'">Félicitations! Vous avez réussi!</h3>
         </div>
     </div>
-</body>
+</div>
