@@ -9,7 +9,6 @@ import { InputService } from '../services/input.service';
     providers: [SudokuService, StopwatchService, InputService]
 })
 export class SudokuGridComponent {
-    isValid: string;
     difficulty: string;
     isDarkTheme = false;
 
@@ -34,10 +33,11 @@ export class SudokuGridComponent {
     }
 
     validateSudoku() {
-        this.sudokuService.validateSudoku();
-        if (this.sudokuService.isValid === "true") {
-            this.stopwatchService.stop();
-        }
+        this.sudokuService.validateSudoku(() => {
+            if (this.sudokuService.isValid) {
+                this.stopwatchService.stop();
+            }
+        });
     }
 
     resetSudoku() {
@@ -57,9 +57,11 @@ export class SudokuGridComponent {
 
     putEntry(entry: EntryEvent) {
 
-        let entryValidation = { value: Number.parseInt(entry.keyEvent.key),
-                                grid: this.sudokuService.inputGrid,
-                                row: entry.row, column: entry.column };
+        let entryValidation = {
+            value: Number.parseInt(entry.keyEvent.key),
+            grid: this.sudokuService.inputGrid,
+            row: entry.row, column: entry.column
+        };
 
         // 1- Delete/Backspace entered
         if (this.inputService.isDelete(entry.keyEvent)) {
@@ -85,6 +87,10 @@ export class SudokuGridComponent {
         // 4- Invalid input
         else {
             entry.keyEvent.preventDefault();
+        }
+
+        if (this.sudokuService.isGridFull()) {
+            this.validateSudoku();
         }
     }
 

@@ -1,5 +1,9 @@
-<div id="sudokuGrid" class="flex-container" fxLayout.xs="column" fxLayout.gt-xs="column" fxLayout.gt-md="row" fxLayoutAlign="center center" fxFlexFill>
-    <div class="flex-item" fxLayoutAlign.xs="center center" fxLayoutAlign.gt-xs="center center" fxLayoutAlign.gt-md="end center" fxFlex="50%" fxFlexFill>
+<div id="sudokuGrid" class="flex-container" fxLayout.xs="column" fxLayout.gt-xs="column" fxLayout.gt-md="row" fxLayoutAlign="center center"
+    fxFlexFill>
+
+    <div class="flex-item" fxLayoutAlign.xs="center center" fxLayoutAlign.gt-xs="center center" fxLayoutAlign.gt-md="end center"
+        fxFlex="50%" fxFlexFill>
+
         <md-card id="grid">
             <form name="gridForm">
                 <table [style.border-color]="isDarkTheme ? 'white' : 'black'">
@@ -8,7 +12,7 @@
                             <div *ngIf="element==0">
                                 <input class="inputField" #inputField size="1" maxlength="1" (keydown)="putEntry({keyEvent:$event, inputField:inputField, row:i, column:j})"
                                     (focus)="formatSelectedTableCell(inputField)" (focusout)="unformatSelectedTableCell(inputField)"
-                                    [style.color]="isDarkTheme ? 'limegreen' : 'seagreen'">
+                                    [style.color]="isDarkTheme ? 'limegreen' : 'seagreen'" [disabled]="sudokuService.isValid">
                             </div>
                             <div *ngIf="element!=0">
                                 {{element}}
@@ -18,19 +22,20 @@
                 </table>
             </form>
         </md-card>
+
     </div>
 
-    <div class="flex-item" fxLayoutAlign.xs="center center" fxLayoutAlign.gt-xs="center center" fxLayoutAlign.gt-md="start center" fxFlex="50%">
+    <div class="flex-item" fxLayoutAlign.xs="center center" fxLayoutAlign.gt-xs="center center" fxLayoutAlign.gt-md="start center"
+        fxFlex="50%">
 
-        <!-- TODO : Place div below in InformationPanelComponent -->
         <md-card id="infoPanel">
             <md-card-title>
                 Pierre To
             </md-card-title>
             <md-card-content>
                 <p>Le sudoku est valide :
-                    <md-icon *ngIf="sudokuService.isValid==='true'">check</md-icon>
-                    <md-icon *ngIf="sudokuService.isValid==='false'">close</md-icon>
+                    <md-icon *ngIf="sudokuService.isValid">check</md-icon>
+                    <md-icon *ngIf="!sudokuService.isValid">close</md-icon>
                 </p>
                 <p>Niveau de difficulté : {{sudokuService.difficulty}} </p>
                 <p *ngIf="stopwatchService.isVisible()">Timer : <span>{{stopwatchService.getMinutes()}}</span> min <span>{{stopwatchService.getSeconds()}}</span>                    sec</p>
@@ -41,9 +46,15 @@
             </md-card-actions>
         </md-card>
 
+        <md-card *ngIf="sudokuService.isValid">
+            <md-card-title>
+                Félicitations!
+            </md-card-title>
+            <md-card-content>
+                Vous avez réussi le sudoku en X secondes!
+            </md-card-content>
+        </md-card>
 
-        <div>
-            <h3 *ngIf="sudokuService.isValid==='true'">Félicitations! Vous avez réussi!</h3>
-        </div>
     </div>
+
 </div>
