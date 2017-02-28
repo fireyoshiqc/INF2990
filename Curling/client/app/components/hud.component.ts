@@ -1,5 +1,5 @@
 /**
- * hud.service.ts - Implements the heads-up display
+ * hud.component.ts - Implements the heads-up display
  *
  * @authors Pierre To, Mikaël Ferland
  * @date 2017/02/28
@@ -19,13 +19,13 @@ export enum AIDifficulty {
 
 export class HUDComponent {
     private isDarkTheme = false;
-    private playerCurlingStones = new Array<number>(7);
-    private aiCurlingStones = new Array<number>(7);
+    private playerCurlingStones = new Array<number>(7); // indicates the number of available curling stones for player
+    private aiCurlingStones = new Array<number>(7); // indicates the number of available curling stones for ai
     private playerName = "Nom joueur";
     private aiDifficulty = "CPU facile";
     private playerScore = 0;
     private aiScore = 0;
-    private rounds = [true, false, false];
+    private rounds = [false, false, false]; // indicates which rounds have been completed (true)
 
     @Output()
     switchCameraEvent: EventEmitter<string> = new EventEmitter();
@@ -34,24 +34,48 @@ export class HUDComponent {
         this.switchCameraEvent.emit('switchCameraEvent');
     }
 
-    toggleTheme() {
+    getTheme(): boolean {
+        return this.isDarkTheme;
+    }
+
+    toggleTheme(): void {
         this.isDarkTheme = !this.isDarkTheme;
+    }
+
+    getPlayerName(): string {
+        return this.playerName;
     }
 
     setPlayerName(name: string): void {
         this.playerName = name;
     }
 
+    getAIDDifficulty(): AIDifficulty {
+        return (this.aiDifficulty === "CPU facile") ? AIDifficulty.Easy : AIDifficulty.Hard;
+    }
+
     setAIDifficulty(difficulty: AIDifficulty): void {
         this.aiDifficulty = (difficulty === AIDifficulty.Easy) ? "CPU facile" : "CPU difficile";
+    }
+
+    getPlayerScore(): number {
+        return this.playerScore;
     }
 
     setPlayerScore(newScore: number): void {
         this.playerScore = newScore;
     }
 
+    getAIScore(): number {
+        return this.aiScore;
+    }
+
     setAIScore(newScore: number): void {
         this.aiScore = newScore;
+    }
+
+    getRounds(): boolean[] {
+        return this.rounds;
     }
 
     startNextRound(): void {
@@ -62,11 +86,19 @@ export class HUDComponent {
         }
     }
 
+    getPlayerCurlingStones(): number[] {
+        return this.playerCurlingStones;
+    }
+
     removePlayerCurlingStone(): void {
         this.playerCurlingStones.pop();
 
         // TODO : remove
         this.setPlayerScore(this.playerScore + 1);
+    }
+
+    getAICurlingStones(): number[] {
+        return this.aiCurlingStones;
     }
 
     removeAICurlingStone(): void {

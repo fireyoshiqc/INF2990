@@ -15,6 +15,10 @@ export class GlComponent {
         // Empty constructor necessary for Angular
     }
 
+    getTheme(): boolean {
+        return this.isDarkTheme;
+    }
+
     toggleTheme() {
         this.isDarkTheme = !this.isDarkTheme;
     }
