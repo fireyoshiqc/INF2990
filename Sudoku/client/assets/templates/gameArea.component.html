@@ -48,10 +48,8 @@
                 </button>
                 <button class="icon-button"><md-icon id="closeIcon">close</md-icon></button>
             </md-toolbar>
-            <div class="flex-item" fxLayoutAlign="center" fxFlex="auto" fxFlexFill>
-                <div id="gameArea">
-                    <sudoku-grid #sudokuGrid></sudoku-grid>
-                </div>
+            <div id="gameArea" class="flex-item" fxLayoutAlign="center" fxFlex="auto" fxFlexFill>
+                <sudoku-grid #sudokuGrid fxFlexFill></sudoku-grid>
             </div>
         </div>
     </md-sidenav-container>

@@ -126,12 +126,13 @@ md-sidenav-container {
 }
 
 #grid {
-    margin-top: 5%;
-    margin-bottom: 5%;
+    margin : 5%;
 }
 
 #infoPanel {
-    width: 100%;
+    margin: 5%;
+    margin-top: 0%;
+    width: 551px
 }
 
 
