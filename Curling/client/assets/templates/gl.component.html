@@ -8,7 +8,7 @@
                         <md-card-title>Curling</md-card-title>
                         <md-card-subtitle>FACTORY/24</md-card-subtitle>
                         <md-card-content>
-                            Ce jeu de curling classique saura mettre à l'épreuve votre dextérité.<br><br> 
+                            Ce jeu de curling classique saura mettre à l'épreuve votre dextérité.<br><br>
                             Utilisez l'icône d'ampoule dans le coin supérieur droit afin de changer le thème de clair à sombre.<br><br>
                             Utilisez les boutons ci-dessous pour réinitialiser le jeu ou encore pour afficher les records pour chacune des difficultés d'AI.<br>
                         </md-card-content>
@@ -41,23 +41,122 @@
 
         <div class="flex-container" fxLayout="column" fxLayoutAlign="center center">
 
-            <md-toolbar id="topBar" color="primary">
-                <button class="icon-button" (click)="sidenav.toggle()"><md-icon id="navIcon">menu</md-icon></button>
-                <span id="title">Curling</span>
-                <span id="topSpacer"></span>
-                <button class="icon-button" (click)="toggleTheme();">
-                    <md-icon *ngIf="isDarkTheme" id="lightIcon">lightbulb_outline</md-icon>
-                    <md-icon *ngIf="!isDarkTheme" id="darkIcon">lightbulb_outline</md-icon>
-                </button>
-                <button class="icon-button"><md-icon id="closeIcon">close</md-icon></button>
-            </md-toolbar>
+            <div class="flex-item" fxFlex="10%" fxFlexFill>
+                <md-toolbar id="topBar" color="primary">
+                    <button class="icon-button" (click)="sidenav.toggle()"><md-icon id="navIcon">menu</md-icon></button>
+                    <span id="title">Curling</span>
+                    <span id="topSpacer"></span>
+                    <button class="icon-button" (click)="toggleTheme();">
+                        <md-icon *ngIf="isDarkTheme" id="lightIcon">lightbulb_outline</md-icon>
+                        <md-icon *ngIf="!isDarkTheme" id="darkIcon">lightbulb_outline</md-icon>
+                    </button>
+                    <button class="icon-button"><md-icon id="closeIcon">close</md-icon></button>
+                </md-toolbar>
+            </div>
 
-            <div class="flex-item" fxLayoutAlign="center" fxFlex="auto" fxFlexFill>
-                <modifier [container]="container"></modifier>
-                <div #container (window:resize)="onResize($event)" style="height: 100%;">
-                    <button md-raised-button id="cameraButton" (click)="switchCamera()">Changer la caméra</button>
+            <modifier [container]="container"></modifier>
+            <div #container (window:resize)="onResize($event)"></div>
+
+            <!-- HUD -->
+            <div class="flex-item" fxFlex="90%" fxFlexFill style="position: fixed; z-index: 1; bottom:3px;">
+                <div class="flex-container" fxLayout="column">
+
+                    <div class="flex-item" fxFlex="auto" fxFlexFill>
+                        <div class="flex-container" fxLayout="row" fxFlexFill>
+
+                            <div class="flex-item" fxFlex="35%" fxFlexFill style="position:relative">
+
+                                <div style="border: 1px solid transparent; width: 100%; height: 90vh;">
+
+                                    <!-- Nametag du joueur -->
+                                    <div style="position: absolute; left: 2%; top: 2%;">
+                                        <md-card id="playerNameTag">
+                                            <md-card-title>{{playerName}}</md-card-title>
+                                            <md-card-subtitle>Joueur</md-card-subtitle>
+                                        </md-card>
+                                    </div>
+
+                                    <!-- Pierres de curling du joueur -->
+                                    <div style="position: absolute; left: 2%; bottom: 2%;">
+                                        <div *ngFor="let curlingStone of playerCurlingStones;">
+                                            <img src="./assets/textures/curlingStone-player-icon.png" height=50vh>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Changement de la caméra -->
+                                <button md-raised-button id="cameraButton" (click)="switchCamera()">
+                                    <md-icon color="primary">switch_camera</md-icon><strong> Caméra</strong>
+                                </button>
+
+                            </div>
+
+                            <div class="flex-item" fxFlex="30%" fxFlexFill style="position:relative">
+
+                                <div style="border: 1px solid transparent; width: 100%; height: 90vh">
+                                    
+                                    <div style="margin-top: 12px; margin-left: auto; margin-right: auto; width: 129.63px">
+                                        <md-card id="score">
+                                            <!-- Pointage -->
+                                            <md-card-title>{{playerScore}} - {{aiScore}}</md-card-title>
+
+                                            <!-- Manche en cours -->
+                                            <div *ngFor="let round of rounds;">
+                                                <div style="float: left; margin-left: 3%; margin-right: 3%">
+                                                    <img *ngIf="round === false" src="./assets/textures/curling-manche-noir-icon.png" height=30vh>
+                                                    <img *ngIf="round === true" src="./assets/textures/curling-manche-vert-icon.png" height=30vh>
+                                                </div>
+                                            </div>
+                                            <md-card-subtitle>Manche en cours</md-card-subtitle>
+
+                                        </md-card>
+                                    </div>
+                                </div>
+
+                                <!-- TODO: À enlever lorsque le lancement de pierre de curling implémenté -->
+                                <button md-raised-button style="position: absolute; left: 2%; bottom: 2%;" (click)="removePlayerCurlingStone()">
+                                    <md-icon color="primary">remove_circle</md-icon><strong> Lancer Joueur</strong>
+                                </button>
+
+                                <!-- TODO: À enlever lorsque le lancement de pierre de curling implémenté -->
+                                <button md-raised-button style="position: absolute; right: 2%; bottom: 2%;" (click)="removeAICurlingStone()">
+                                    <md-icon color="primary">remove_circle</md-icon><strong> Lancer AI</strong>
+                                </button>
+
+                            </div>
+
+                            <div class="flex-item" fxFlex="35%" fxFlexFill style="position:relative">
+
+                                <div style="border: 1px solid transparent; width: 100%; height: 90vh;">
+
+                                    <!-- Nametag du AI -->
+                                    <div style="position: absolute; right: 2%; top: 2%;">
+                                        <md-card id="aiNameTag">
+                                            <md-card-title>{{aiDifficulty}}</md-card-title>
+                                            <md-card-subtitle>AI</md-card-subtitle>
+                                        </md-card>
+                                    </div>
+
+                                    <!-- Pierres de curling de l'AI -->
+                                    <div style="position: absolute; right: 2%; bottom: 2%;">
+                                        <div *ngFor="let curlingStone of aiCurlingStones;">
+                                            <img src="./assets/textures/curlingStone-ai-icon.png" height=50vh>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- TODO: À enlever lorsque le changement de manche est implémenté -->
+                                <button md-raised-button style="position: absolute; left: 2%; bottom: 2%;" (click)="startNextRound()">
+                                    <md-icon color="primary">skip_next</md-icon><strong> Manche</strong>
+                                </button>
+
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
             </div>
+            <!-- End of HUD -->
 
         </div>
 
