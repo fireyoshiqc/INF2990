@@ -1,0 +1,40 @@
+<div class="flex-container" fxLayout="column" fxFlexFill>
+    <!--Espace pour ne que le boutton join ne soit pas colle a input-->
+    <!--Name and Join button-->
+    <div class="flex-item" fxFlex="auto" fxFlexFill>
+        <!--Name input (col)-->
+        <div class="flex-container" fxLayout="row" fxLayoutAlign="center center" fxFlexFill>
+            <div class="flex-item" fxFlex="50%" fxLayoutAlign="center center" fxFlexFill>
+                <md-input-container>
+                    <input mdInput id="nameInput" maxlength="30" placeholder="Entrez votre nom... (au moins 4 caractères)"
+                        type="text">
+                </md-input-container>
+            </div>
+
+            <!--Espace pour ne que le boutton join ne soit pas colle a input-->
+            <div class="flex-item" fxFlex="5%" fxLayoutAlign="center center" fxFlexFill></div>
+
+            <div class="flex-item" fxFlex="10%" fxLayoutAlign="center center" fxFlexFill>
+                <button md-raised-button color="accent">Join</button>
+            </div>
+        </div>
+        <!--End name and join button-->
+
+        <div class="flex-item" fxFlex="auto" fxFlexFill>
+            <!--Radio buttons-->
+            <div class="flex-container" fxLayout="row" fxLayoutAlign="center center" fxFlexFill>
+                <!--Espace pour ne que le boutton join ne soit pas colle a input-->
+                <div class="flex-item" fxFlex="20%" fxLayoutAlign="center center" fxFlexFill>
+                    Choisissez une difficulté de Sudoku :
+                </div>
+                <div class="flex-item" fxFlex="30%" fxLayoutAlign="center center" fxFlexFill>
+                    <md-radio-group>
+                        <md-radio-button value="facile">Facile</md-radio-button>
+                        <md-radio-button value="difficile">Difficile</md-radio-button>
+                    </md-radio-group>
+                </div>
+            </div>
+            <!--End radio buttons -->
+        </div>
+    </div>
+</div>
