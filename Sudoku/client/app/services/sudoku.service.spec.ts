@@ -64,4 +64,36 @@ describe('SudokuService', () => {
             done();
         });
     });
+
+    describe('isGridFull()', () => {
+        it('should return false if the grid is not completed', done => {
+            let inputGrid = [[0, 2, 3, 4, 5, 0, 7, 8, 9],
+                             [4, 0, 6, 7, 8, 9, 8, 0, 0],
+                             [0, 8, 1, 0, 0, 3, 0, 5, 6],
+                             [2, 0, 4, 5, 6, 7, 8, 9, 0],
+                             [5, 6, 7, 8, 0, 1, 2, 3, 4],
+                             [8, 9, 1, 2, 3, 4, 4, 6, 0],
+                             [3, 4, 6, 6, 0, 8, 9, 1, 2],
+                             [0, 7, 8, 9, 1, 2, 3, 4, 5],
+                             [9, 1, 2, 3, 0, 5, 6, 0, 8]];
+            sudokuService.inputGrid = inputGrid;
+            expect(sudokuService.isGridFull()).to.be.false;
+            done();
+        });
+
+        it('should return true if the grid is completed (full)', done => {
+            let inputGrid = [[1, 2, 3, 4, 5, 6, 7, 8, 9],
+                            [4, 5, 6, 7, 8, 9, 1, 2, 3],
+                            [7, 8, 9, 1, 2, 3, 4, 5, 6],
+                            [2, 3, 4, 5, 6, 7, 8, 9, 1],
+                            [5, 6, 7, 8, 9, 1, 2, 3, 4],
+                            [8, 9, 1, 2, 3, 4, 5, 6, 7],
+                            [3, 4, 5, 6, 7, 8, 9, 1, 2],
+                            [6, 7, 8, 9, 1, 2, 3, 4, 5],
+                            [9, 1, 2, 3, 4, 5, 6, 7, 8]];
+            sudokuService.inputGrid = inputGrid;
+            expect(sudokuService.isGridFull()).to.be.true;
+            done();
+        });
+    });
 });
