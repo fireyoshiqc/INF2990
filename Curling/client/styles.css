@@ -1,6 +1,6 @@
-/***************/
-/* CURLING HUD */
-/***************/
+/**************/
+/* CURLING UI */
+/**************/
 
 * {
     margin: 0;
@@ -26,6 +26,37 @@ md-sidenav-container {
     height: calc(100vh);
 }
 
+/*******************/
+/* side navigation */
+/*******************/
+
+#buttonPanel button {
+    text-align: start;
+}
+
+#infoCard {
+    width: 350px;
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.list-button {
+    width: 320px;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+#sidenavIcon.material-icons.mat-icon {
+    margin-right: 32px;
+    font-size: 32px;
+    height: 32px;
+    width: 32px;
+}
+
+/***********/
+/* top bar */
+/***********/
+
 #topBar {
     height: 56px;
     padding-left: 16px;
@@ -36,12 +67,30 @@ md-sidenav-container {
     top: 0;
 }
 
+.icon-button {
+    cursor: pointer;
+    background: transparent;
+    border: none !important;
+}
+
+.icon-button:focus {
+    outline: none;
+}
+
 #navIcon.material-icons.mat-icon {
     color: white;
     margin-left: 16px;
     font-size: 32px;
     height: 32px;
     width: 32px;
+}
+
+#title {
+    padding-left: 77px;
+}
+
+#topSpacer {
+    flex: 1 1 auto;
 }
 
 #lightIcon.material-icons.mat-icon {
@@ -71,78 +120,93 @@ md-sidenav-container {
     width: 32px;
 }
 
-#icon.material-icons.mat-icon {
-    margin-right: 32px;
-    font-size: 32px;
-    height: 32px;
-    width: 32px;
-}
-
-#title {
-    padding-left: 72px;
-}
-
-#topSpacer {
-    flex: 1 1 auto;
-}
-
-.icon-button {
-    cursor: pointer;
-    background: transparent;
-    border: none !important;
-}
-
-.icon-button:focus {
-    outline: none;
-}
-
-#infoCard {
-    width: 320px;
-    text-align: justify;
-    text-justify: inter-word;
-}
-
-.list-button {
-    width: 320px;
-    padding-left: 5%;
-    padding-right: 5%;
-}
-
-
-/***************************/
-
-
-/* control panel component */
-
-
-/***************************/
-
-#buttonPanel button {
-    text-align: start;
-}
-
-#sudokuGrid {
-    width: 100%;
-}
-
-#grid {
-    margin-top: 5%;
-    margin-bottom: 5%;
-}
-
-#infoPanel {
-    width: 100%;
-}
-
 /*******/
 /* HUD */
 /*******/
+
+#hudContainer {
+    position: fixed;
+    z-index: 1;
+    bottom:3px;
+}
+
+.columnContainer {
+    position: relative;
+}
+
+.column {
+    border: 1px solid transparent;
+    width: 100%;
+    height: 90vh;  
+}
+
+/* left column */
+
+#playerNameTagContainer {
+    position: absolute;
+    left: 2%; 
+    top: 2%;  
+}
 
 #playerNameTag.mat-card {
     padding: 10px;
     width: 100%;
     text-align: justify;
     text-justify: inter-word;
+}
+
+#playerCurlingStones {
+    position: absolute;
+    left: 2%;
+    bottom: 2%;
+}
+
+#cameraButton {
+    cursor: pointer;
+    z-index: 3;
+    position: absolute;
+    right: 2%;
+    bottom: 2%;
+}
+
+/* center column */
+
+#scoreboardContainer {
+    margin-top: 12px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 129.63px
+}
+
+#scoreboard.mat-card {
+    padding: 10px;
+    width: 100%;
+    text-align: center;
+    text-justify: inter-word;
+}
+
+#rounds {
+    float: left;
+    margin-left: 3%;
+    margin-right: 3%  
+}
+
+#playerThrowButton {
+    position: absolute;
+    left: 2%;
+    bottom: 2%;
+}
+
+#aiThrowButton {
+    position: absolute;
+    right: 2%;
+    bottom: 2%;
+}
+
+/* right column */
+
+#aiNameTagContainer {
+    position: absolute; right: 2%; top: 2%;
 }
 
 #aiNameTag.mat-card {
@@ -152,21 +216,14 @@ md-sidenav-container {
     text-justify: inter-word;
 }
 
-#score.mat-card {
-    padding: 10px;
-    width: 100%;
-    text-align: center;
-    text-justify: inter-word;
-}
-
-/*********************/
-/* BUTTON FOR CAMERA */
-/*********************/
-
-#cameraButton {
-    cursor: pointer;
-    z-index: 3;
+#aiCurlingStones {
     position: absolute;
     right: 2%;
     bottom: 2%;
+}
+
+#nextRoundButton {
+    position: absolute;
+    left: 2%;
+    bottom: 2%;    
 }

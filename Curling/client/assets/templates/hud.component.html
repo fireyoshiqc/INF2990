@@ -1,0 +1,86 @@
+<div class="flex-container" fxLayout="column">
+    <div class="flex-item" fxFlex="auto" fxFlexFill>
+        <div class="flex-container" fxLayout="row" fxFlexFill>
+
+            <div class="flex-item columnContainer" fxFlex="35%" fxFlexFill>
+                <div class="column">
+                    <!-- Nametag du joueur -->
+                    <div id="playerNameTagContainer">
+                        <md-card id="playerNameTag">
+                            <md-card-title>{{playerName}}</md-card-title>
+                            <md-card-subtitle>Joueur</md-card-subtitle>
+                        </md-card>
+                    </div>
+
+                    <!-- Pierres de curling du joueur -->
+                    <div id="playerCurlingStones">
+                        <div *ngFor="let curlingStone of playerCurlingStones;">
+                            <img src="./assets/textures/curlingStone-player-icon.png" height=50vh>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Changement de la caméra -->
+                <button md-raised-button id="cameraButton" (click)="sendSwitchCameraEvent()">
+                    <md-icon color="primary">switch_camera</md-icon><strong> Caméra</strong>
+                </button>
+            </div>
+
+            <div class="flex-item columnContainer" fxFlex="30%" fxFlexFill>
+                <div class="column">
+                    <div id="scoreboardContainer">
+                        <md-card id="scoreboard">
+                            <!-- Pointage -->
+                            <md-card-title>{{playerScore}} - {{aiScore}}</md-card-title>
+
+                            <!-- Manche en cours -->
+                            <div *ngFor="let round of rounds;">
+                                <div id="rounds">
+                                    <img *ngIf="round === false" src="./assets/textures/curling-manche-noir-icon.png" height=30vh>
+                                    <img *ngIf="round === true" src="./assets/textures/curling-manche-vert-icon.png" height=30vh>
+                                </div>
+                            </div>
+                            <md-card-subtitle>Manche en cours</md-card-subtitle>
+                        </md-card>
+                    </div>
+                </div>
+
+                <!-- TODO: À enlever lorsque le lancement de pierre de curling implémenté -->
+                <button md-raised-button id="playerThrowButton" (click)="removePlayerCurlingStone()">
+                    <md-icon color="primary">play_arrow</md-icon><strong> Lancer Joueur</strong>
+                </button>
+
+                <!-- TODO: À enlever lorsque le lancement de pierre de curling implémenté -->
+                <button md-raised-button id="aiThrowButton" (click)="removeAICurlingStone()">
+                    <md-icon color="primary">play_arrow</md-icon><strong> Lancer AI</strong>
+                </button>
+            </div>
+
+            <div class="flex-item columnContainer" fxFlex="35%" fxFlexFill>
+                <div class="column">
+
+                    <!-- Nametag du AI -->
+                    <div id="aiNameTagContainer">
+                        <md-card id="aiNameTag">
+                            <md-card-title>{{aiDifficulty}}</md-card-title>
+                            <md-card-subtitle>AI</md-card-subtitle>
+                        </md-card>
+                    </div>
+
+                    <!-- Pierres de curling de l'AI -->
+                    <div id="aiCurlingStones">
+                        <div *ngFor="let curlingStone of aiCurlingStones;">
+                            <img src="./assets/textures/curlingStone-ai-icon.png" height=50vh>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TODO: À enlever lorsque le changement de manche est implémenté -->
+                <button md-raised-button id="nextRoundButton" (click)="startNextRound()">
+                        <md-icon color="primary">fast_forward</md-icon><strong> Manche</strong>
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
