@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 @Component({
-    selector: 'dashboard',
+    selector: 'my-dashboard',
     template: `
     <nav>
-        <a >
+        <a>
         WebGL (Il me manque des attributs de routage ! [dans le anchor])
         </a>
         <h2>Essayez d'entrer /glcomp comme route dans la barre d'URL</h2>

@@ -8,6 +8,7 @@ import { AppComponent } from '../components/app.component';
 import { GlComponent } from '../components/gl.component';
 import { DashboardComponent } from '../components/dashboard.component';
 import { PlayerNameComponent } from '../components/player-name.component';
+import { HUDComponent } from '../components/hud.component';
 import { GameController } from '../services/gameController.service';
 
 import { ModifierDirective } from '../directives/modifier.directive';
@@ -16,7 +17,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
     imports: [BrowserModule, FormsModule, AppRoutingModule, MaterialModule.forRoot(), FlexLayoutModule.forRoot()],
-    declarations: [AppComponent, GlComponent, DashboardComponent, ModifierDirective, PlayerNameComponent],
+    declarations: [AppComponent, HUDComponent, GlComponent, DashboardComponent, ModifierDirective, PlayerNameComponent],
     providers: [GameController],
     bootstrap: [AppComponent]
 })
