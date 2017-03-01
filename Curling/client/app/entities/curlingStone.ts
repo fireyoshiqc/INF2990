@@ -103,7 +103,8 @@ export class CurlingStone extends THREE.Group {
         material = new THREE.MeshStandardMaterial({
             metalness: 0.0,
             roughness: 0.2,
-            map: texture
+            map: texture,
+            transparent: true
         });
 
         let curlingMesh: THREE.Mesh = new THREE.Mesh(curlingGeometry, material);
@@ -114,7 +115,8 @@ export class CurlingStone extends THREE.Group {
         let handleMaterial: THREE.MeshStandardMaterial = new THREE.MeshStandardMaterial({
             metalness: 0.5,
             roughness: 0.2,
-            color: this.stoneColor
+            color: this.stoneColor,
+            transparent: true
         });
 
         //Cover
@@ -157,5 +159,20 @@ export class CurlingStone extends THREE.Group {
         curlingMesh.rotation.x = Math.PI / 2;
         this.add(curlingMesh);
         this.add(handleMesh);
+    }
+
+    // TODO: Fix timing (currently not 1 sec)
+    fadeOut(): void {
+        let x = 0;
+        let stone = this;
+
+        let intervalID = window.setInterval(function () {
+            (<THREE.Mesh>stone.children[0]).material.opacity -= 0.05;
+            (<THREE.Mesh>stone.children[1]).material.opacity -= 0.05;
+
+            if (++x === 20) {
+                window.clearInterval(intervalID);
+            }
+        }, 50);
     }
 }

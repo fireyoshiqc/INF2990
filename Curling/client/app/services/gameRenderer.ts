@@ -111,7 +111,7 @@ export class GameRenderer {
         this.scene.add(obj);
     }
 
-    switchCamera() {
+    switchCamera(): void {
         (this.cameraManager.isUsingPerspectiveCamera()) ?
             this.cameraManager.useOrthographicCamera(this.container) :
             this.cameraManager.usePerspectiveCamera(this.container);
