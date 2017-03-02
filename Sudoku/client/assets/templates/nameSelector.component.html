@@ -4,14 +4,15 @@
 <md-dialog-content>
     <div id="nameBox" class="full-input">
         <md-input-container class="full-input">
-            <input mdInput class="full-input" maxlength="30" placeholder="Entrez votre nom... (au moins 4 caractères)" type="text" [(ngModel)]="playerName">
+            <input mdInput class="full-input" (change)="error = false" maxlength="30" placeholder="Entrez votre nom... (au moins 4 caractères)" type="text" [(ngModel)]="playerName">
+            <md-hint *ngIf="error" [ngStyle]="{'color': 'red'}" align="start">{{errorMessage}}</md-hint>
         </md-input-container>
         <button md-fab color="accent" (click)="onStart()"><md-icon>check</md-icon></button>
     </div>
 </md-dialog-content>
 <md-dialog-actions id="difficultyChoice">
     <p>Choisissez une difficulté de Sudoku :</p>
-    <md-radio-group [(ngModel)]="difficulty">
+    <md-radio-group (change)="error = false" [(ngModel)]="difficulty">
         <md-radio-button value="facile">Facile</md-radio-button>
         <md-radio-button value="difficile">Difficile</md-radio-button>
     </md-radio-group>

@@ -17,14 +17,25 @@ import { MdDialogRef } from '@angular/material';
 export class NameSelectorComponent {
     difficulty: string;
     playerName: string;
+    error: boolean = false;
+    errorMessage : string;
 
     constructor(public dialogRef: MdDialogRef<NameSelectorComponent>) {
     }
 
     onStart() {
+        this.error = false;
         //TODO: Make real validation for player name. This is temporary.
         if (this.difficulty !== undefined && this.playerName !== undefined && this.playerName.length >= 4) {
             this.dialogRef.close({ difficulty: this.difficulty, playerName: this.playerName });
+        }
+        else if (this.difficulty === undefined){
+            this.error = true;
+            this.errorMessage = "Veuillez choisir une difficulté.";
+        }
+        else {
+            this.error = true;
+            this.errorMessage = "Veuillez entrer un nom valide.";
         }
     }
 }
