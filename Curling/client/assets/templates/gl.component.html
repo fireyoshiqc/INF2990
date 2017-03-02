@@ -71,7 +71,7 @@
 
             <!-- hud -->
             <div class="flex-item" id="hudContainer" fxFlex="90%" fxFlexFill>
-                <my-hud #hud (switchCameraEvent)="switchCamera($event)"></my-hud>
+                <my-hud #hud (switchCameraEvent)="switchCamera()" (startThrowStoneEvent)="startThrowStone($event)"></my-hud>
             </div>
 
         </div>

@@ -29,9 +29,15 @@ export class HUDComponent {
 
     @Output()
     switchCameraEvent: EventEmitter<string> = new EventEmitter();
+    @Output()
+    startThrowStoneEvent: EventEmitter<string> = new EventEmitter();
 
     sendSwitchCameraEvent() {
-        this.switchCameraEvent.emit('switchCameraEvent');
+        this.switchCameraEvent.emit('camera change');
+    }
+
+    sendThrowStoneEvent() {
+        this.startThrowStoneEvent.emit('start stone throw');
     }
 
     getTheme(): boolean {
@@ -91,10 +97,8 @@ export class HUDComponent {
     }
 
     removePlayerCurlingStone(): void {
+        this.sendThrowStoneEvent();
         this.playerCurlingStones.pop();
-
-        // TODO : remove
-        this.setPlayerScore(this.playerScore + 1);
     }
 
     getAICurlingStones(): number[] {

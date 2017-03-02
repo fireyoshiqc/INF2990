@@ -10,21 +10,24 @@ import { Injectable } from '@angular/core';
 import { CurlingStone, Team } from '../entities/curlingStone';
 import { GameRenderer } from './gameRenderer';
 import { Rink } from '../entities/rink';
+import { GameState } from './gameStates/GameState';
+import { ShootingState } from './gameStates/ShootingState';
+import { IdleState } from './gameStates/IdleState';
+import { ChoosingAngleState } from './gameStates/ChoosingAngleState';
 
 @Injectable()
 export class GameController {
-
-    private readonly MAX_INITIAL_SPEED = 5;
-    private readonly MAX_HOLD_TIME_MS = 2000;
-    private readonly INTERVAL_DELAY_MS = 100;
 
     private gameRenderer: GameRenderer;
     private curlingStones: CurlingStone[] = [];
     readonly RINGS_CENTER = new THREE.Vector3(0, 0, -Rink.RINK_LENGTH / 2 - Rink.RINGS_OFFSET);
     private playerScore = 0;
     private aiScore = 0;
-    private timer: any;
-    private initialSpeedCounter = 0;
+
+    private idleState = new IdleState(this);
+    private shootingState = new ShootingState(this);
+    private ChoosingAngleState = new ChoosingAngleState(this);
+    private gameState: GameState = this.idleState;
 
     public init(container?: HTMLElement): void {
         this.gameRenderer = new GameRenderer();
@@ -106,18 +109,18 @@ export class GameController {
     }
 
     onMousedown(event: any) {
-        this.timer = setInterval(() => {
-            if (this.initialSpeedCounter < this.MAX_INITIAL_SPEED) {
-                this.initialSpeedCounter += this.MAX_INITIAL_SPEED / (this.MAX_HOLD_TIME_MS / this.INTERVAL_DELAY_MS);
-            }
-        }, this.INTERVAL_DELAY_MS);
+        this.gameState.onMouseDown(event);
     }
 
     onMouseUp(event: any) {
-        clearInterval(this.timer);
-        this.curlingStones[this.curlingStones.length - 1].velocity.
-            add(new THREE.Vector3(0, 0, -this.initialSpeedCounter));
-        this.initialSpeedCounter = 0;
+        this.gameState.onMouseUp(event);
+    }
+
+    startThrowStone(): void {
+        if (this.gameState == this.idleState) {
+            document.body.style.cursor = "wait";
+            this.gameState = this.ChoosingAngleState;
+        }
     }
 
     /******************** TEST HELPER *******************/

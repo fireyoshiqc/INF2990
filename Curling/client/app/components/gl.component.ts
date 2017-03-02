@@ -43,14 +43,18 @@ export class GlComponent {
     @HostListener('window:mouseup', ['$event'])
     onMouseUp(event: any) {
         this.gameController.onMouseUp(event);
-    }
+    }    
 
     resetGame(): void {
         // TODO
         alert("reset");
     }
 
-    switchCamera(event?: any): void {
+    switchCamera(): void {
         this.gameController.switchCamera();
     }
+
+    startThrowStone(event?: any): void{
+        this.gameController.startThrowStone();
+    }    
 }
