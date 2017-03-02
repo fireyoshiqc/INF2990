@@ -9,12 +9,16 @@ export class ChoosingAngleState implements GameState{
         this.gameController = gameController;
     }
 
-    onMouseDown(event: any): void{
-        
+    onMouseDown(event: any): void {
+        //empty for the moment
     }
 
-    onMouseUp(event: any): void{
+    onMouseUp(event: any): void {
+        //empty for the moment
+    }
 
+    onMouseMove(event: any): void {
+        console.log(event.clientX, event.clientY);
     }
 
 }

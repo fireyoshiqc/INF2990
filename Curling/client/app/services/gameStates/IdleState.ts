@@ -9,12 +9,16 @@ export class IdleState implements GameState{
         this.gameController = gameController;
     }
 
-    onMouseDown(event: any): void{
-        
+    onMouseDown(event: any): void {
+        //Do nothing
     }
 
-    onMouseUp(event: any): void{
+    onMouseUp(event: any): void {
+         //Do nothing
+    }
 
+    onMouseMove(event: any): void {
+        //Do nothing
     }
 
 }

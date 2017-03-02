@@ -30,4 +30,8 @@ export class ShootingState implements GameState {
         this.initialSpeedCounter = 0;
     }
 
+    onMouseMove(event: any): void {
+        //Do nothing
+    }
+
 }

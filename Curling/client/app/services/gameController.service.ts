@@ -26,7 +26,7 @@ export class GameController {
 
     private idleState = new IdleState(this);
     private shootingState = new ShootingState(this);
-    private ChoosingAngleState = new ChoosingAngleState(this);
+    private choosingAngleState = new ChoosingAngleState(this);
     private gameState: GameState = this.idleState;
 
     public init(container?: HTMLElement): void {
@@ -116,10 +116,14 @@ export class GameController {
         this.gameState.onMouseUp(event);
     }
 
+    onMouseMove(event: any) {
+        this.gameState.onMouseMove(event);
+    }
+
     startThrowStone(): void {
-        if (this.gameState == this.idleState) {
+        if (this.gameState === this.idleState) {
             document.body.style.cursor = "wait";
-            this.gameState = this.ChoosingAngleState;
+            this.gameState = this.choosingAngleState;
         }
     }
 

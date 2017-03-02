@@ -43,7 +43,12 @@ export class GlComponent {
     @HostListener('window:mouseup', ['$event'])
     onMouseUp(event: any) {
         this.gameController.onMouseUp(event);
-    }    
+    }
+
+    @HostListener('window:mousemove', ['$event'])
+    onMouseMove(event: any) {
+        this.gameController.onMouseMove(event);
+    }
 
     resetGame(): void {
         // TODO
@@ -56,5 +61,5 @@ export class GlComponent {
 
     startThrowStone(event?: any): void{
         this.gameController.startThrowStone();
-    }    
+    }
 }
