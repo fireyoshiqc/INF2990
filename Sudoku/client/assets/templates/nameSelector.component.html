@@ -1,0 +1,18 @@
+<h2 md-dialog-title>
+    Bienvenue sur le jeu de Sudoku!
+</h2>
+<md-dialog-content>
+    <div id="nameBox" class="full-input">
+        <md-input-container class="full-input">
+            <input mdInput class="full-input" maxlength="30" placeholder="Entrez votre nom... (au moins 4 caractères)" type="text" [(ngModel)]="playerName">
+        </md-input-container>
+        <button md-fab color="accent" (click)="onStart()"><md-icon>check</md-icon></button>
+    </div>
+</md-dialog-content>
+<md-dialog-actions id="difficultyChoice">
+    <p>Choisissez une difficulté de Sudoku :</p>
+    <md-radio-group [(ngModel)]="difficulty">
+        <md-radio-button value="facile">Facile</md-radio-button>
+        <md-radio-button value="difficile">Difficile</md-radio-button>
+    </md-radio-group>
+</md-dialog-actions>

@@ -1,21 +1,42 @@
-import { Component } from '@angular/core';
+import { Component, AfterViewInit, Optional } from '@angular/core';
 import { SudokuService } from '../services/sudoku.service';
 import { StopwatchService } from '../services/stopwatch.service';
 import { InputService } from '../services/input.service';
+import { MdDialog, MdDialogRef } from '@angular/material';
 
 @Component({
     selector: 'sudoku-grid',
     templateUrl: '/assets/templates/sudokuGrid.component.html',
     providers: [SudokuService, StopwatchService, InputService]
 })
-export class SudokuGridComponent {
-    difficulty: string;
+export class SudokuGridComponent implements AfterViewInit {
     isDarkTheme = false;
+    private dialogRef: MdDialogRef<NameDialogComponent>;
 
-    constructor(private sudokuService: SudokuService,
+    constructor(public dialog: MdDialog, private sudokuService: SudokuService,
         private stopwatchService: StopwatchService,
         private inputService: InputService) {
         this.sudokuService = sudokuService;
+    }
+
+    ngAfterViewInit() {
+        // Necessary to fix prodmode exclusive error (data binding changed on init)
+        setTimeout(() => {
+            this.dialogRef = this.dialog.open(NameDialogComponent, {
+                disableClose: true
+            });
+            this.dialogRef.afterClosed().subscribe(result => {
+                if (result.difficulty === "facile"){
+                    this.getEasySudoku();
+                }
+                else if (result.difficulty === "difficile"){
+                    this.getHardSudoku();
+                }
+                this.sudokuService.difficulty = result.difficulty;
+                this.sudokuService.playerName = result.playerName;
+            });
+        });
+
     }
 
     getSudokuService() {
@@ -112,4 +133,13 @@ interface EntryEvent {
     inputField: HTMLInputElement;
     row: number;
     column: number;
+}
+
+
+@Component({
+    template: `<name-selector-comp></name-selector-comp>`
+})
+
+export class NameDialogComponent {
+    constructor( @Optional() public dialogRef: MdDialogRef<any>) { }
 }
