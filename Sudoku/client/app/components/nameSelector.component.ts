@@ -17,7 +17,7 @@ import { MdDialogRef } from '@angular/material';
 export class NameSelectorComponent {
     difficulty: string;
     playerName: string;
-    error: boolean = false;
+    error = false;
     errorMessage : string;
 
     constructor(public dialogRef: MdDialogRef<NameSelectorComponent>) {
