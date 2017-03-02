@@ -25,6 +25,7 @@ export class GameRenderer {
     physicsManager: PhysicsManager;
     cameraManager: CameraManager;
     clock: THREE.Clock;
+    raycaster: THREE.Raycaster;
     curlingStones: CurlingStone[] = [];
 
     // TODO : Remove when experimental test is done
@@ -33,6 +34,7 @@ export class GameRenderer {
     public init(container?: HTMLElement): void {
         this.container = container;
         this.scene = new THREE.Scene();
+        this.raycaster = new THREE.Raycaster();
 
         /*We have to set the size at which we want to render our app. We use the width and the height of the browser.*/
         this.renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -65,6 +67,7 @@ export class GameRenderer {
         let rink: Rink = new Rink(skybox.skyBoxImages);
         rink.position.z = -Rink.RINK_LENGTH / 2;
         rink.position.y = Rink.POS_RINK_Y;
+        rink.name = "rink";
         this.addToScene(rink);
 
         /*--------------------LIGHT------------------------------------------ */
@@ -115,5 +118,18 @@ export class GameRenderer {
         (this.cameraManager.isUsingPerspectiveCamera()) ?
             this.cameraManager.useOrthographicCamera(this.container) :
             this.cameraManager.usePerspectiveCamera(this.container);
+    }
+
+    calculateAngle(mouse: THREE.Vector2): void {
+        this.raycaster.setFromCamera(mouse, this.cameraManager.getCamera());
+        let intersects = this.raycaster.intersectObject(this.scene.getObjectByName("rink"), true);
+        if (intersects.length > 0) {
+            let intersectionPoint = intersects[0].point;
+            let distance = intersectionPoint.x;
+            let angle = distance / (Rink.RINK_WIDTH / 2) * 30;
+            console.log(angle);
+        }
+
+
     }
 }
