@@ -35,6 +35,16 @@ export class GlComponent {
         }
     }
 
+    @HostListener('window:mousedown', ['$event'])
+    onMouseDown(event: any) {
+        this.gameController.onMousedown(event);
+    }
+
+    @HostListener('window:mouseup', ['$event'])
+    onMouseUp(event: any) {
+        this.gameController.onMouseUp(event);
+    }
+
     resetGame(): void {
         // TODO
         alert("reset");

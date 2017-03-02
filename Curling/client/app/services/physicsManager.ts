@@ -116,7 +116,7 @@ export class PhysicsManager {
             let isPastBackLine = stone.position.z < -(Rink.RINK_LENGTH + CurlingStone.MAX_RADIUS);
             let isPastRinkSides = Math.abs(stone.position.x) > (Rink.RINK_WIDTH / 2 - CurlingStone.MAX_RADIUS);
             // TODO: Replace -10 with correct ligne de jeu value
-            let hasStoppedBeforeGameLine = (stone.velocity.length() < 0.01) && (stone.position.z > -10);
+            let hasStoppedBeforeGameLine = false; //(stone.velocity.length() < 0.01) && (stone.position.z > -10);
 
             if (isPastBackLine || isPastRinkSides || hasStoppedBeforeGameLine) {
                 stone.velocity = new THREE.Vector3(0, 0, 0);

@@ -13,11 +13,18 @@ import { Rink } from '../entities/rink';
 
 @Injectable()
 export class GameController {
+
+    private readonly MAX_INITIAL_SPEED = 5;
+    private readonly MAX_HOLD_TIME_MS = 2000;
+    private readonly INTERVAL_DELAY_MS = 100;
+
     private gameRenderer: GameRenderer;
     private curlingStones: CurlingStone[] = [];
     readonly RINGS_CENTER = new THREE.Vector3(0, 0, -Rink.RINK_LENGTH / 2 - Rink.RINGS_OFFSET);
     private playerScore = 0;
     private aiScore = 0;
+    private timer: any;
+    private initialSpeedCounter = 0;
 
     public init(container?: HTMLElement): void {
         this.gameRenderer = new GameRenderer();
@@ -85,7 +92,7 @@ export class GameController {
         // add points to the closest team for each stone that is inside of the rings
         // and closer to the closest stone from the opposing team (in respect to the curling rules)
         while (sortStones[index].getTeam() === teamClosestStone &&
-               sortStones[index].position.distanceTo(this.RINGS_CENTER) < Rink.OUTER_RADIUS) {
+            sortStones[index].position.distanceTo(this.RINGS_CENTER) < Rink.OUTER_RADIUS) {
             score++;
             index++;
         }
@@ -98,6 +105,20 @@ export class GameController {
         }
     }
 
+    onMousedown(event: any) {
+        this.timer = setInterval(() => {
+            if (this.initialSpeedCounter < this.MAX_INITIAL_SPEED) {
+                this.initialSpeedCounter += this.MAX_INITIAL_SPEED / (this.MAX_HOLD_TIME_MS / this.INTERVAL_DELAY_MS);
+            }
+        }, this.INTERVAL_DELAY_MS);
+    }
+
+    onMouseUp(event: any) {
+        clearInterval(this.timer);
+        this.curlingStones[this.curlingStones.length - 1].velocity.
+            add(new THREE.Vector3(0, 0, -this.initialSpeedCounter));
+        this.initialSpeedCounter = 0;
+    }
 
     /******************** TEST HELPER *******************/
 
