@@ -30,6 +30,7 @@ export class SudokuService {
         [9, 1, 2, 3, 0, 5, 6, 0, 8]
     ];
     difficulty: string;
+    playerName = "";
     isValid = false;
 
     constructor(private http: Http) { }
@@ -63,7 +64,7 @@ export class SudokuService {
             this.isValid = (res.text() === "true");
             callback(); // Must be called after the Sudoku is validated (to end the timer, for example).
         })
-        .catch(() => console.log("Could not validate sudoku."));
+            .catch(() => console.log("Could not validate sudoku."));
     }
 
     resetSudoku() {

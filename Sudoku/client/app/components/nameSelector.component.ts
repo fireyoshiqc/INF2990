@@ -21,6 +21,12 @@ export class NameSelectorComponent {
     constructor(public dialogRef: MdDialogRef<NameSelectorComponent>) {
     }
 
+    onStart() {
+        //TODO: Make real validation for player name. This is temporary.
+        if (this.difficulty !== undefined && this.playerName !== undefined && this.playerName.length >= 4) {
+            this.dialogRef.close({ difficulty: this.difficulty, playerName: this.playerName });
+        }
+    }
 }
 
 

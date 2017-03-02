@@ -22,6 +22,21 @@ md-sidenav-container {
     height: calc(100vh);
 }
 
+#nameBox {
+    display: inline-flex;
+    margin-top:2%;
+    margin-bottom: 2%;
+}
+
+.full-input {
+    width:100%;
+}
+
+#difficultyChoice {
+    margin-top:2%;
+    margin-bottom: 2%;
+}
+
 #topBar {
     height: 56px;
     padding-left: 16px;
@@ -126,7 +141,7 @@ md-sidenav-container {
 }
 
 #grid {
-    margin : 5%;
+    margin: 5%;
 }
 
 #infoPanel {
@@ -326,7 +341,9 @@ tr:nth-child(3n) td {
     }
 }
 
- /* Invalid class for inputField (blinking effect) */
+
+/* Invalid class for inputField (blinking effect) */
+
 .invalid {
     -webkit-animation: invalid 1s 3;
     /* Safari 4+ */
