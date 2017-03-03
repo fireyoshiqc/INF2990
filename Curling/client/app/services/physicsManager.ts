@@ -11,12 +11,12 @@ export class PhysicsManager {
     readonly COEFFICIENT_OF_FRICTION = 0.0168;
     readonly FRICTION_MAGNITUDE = this.GRAVITY_N_PER_KG * this.COEFFICIENT_OF_FRICTION;
     readonly CURVE_ANGLE = Math.PI / 300;
-    private curlingStones: CurlingStone[] = new Array();
+    private curlingStones: CurlingStone[] = [];
     private delta: number;
 
-    constructor() {
+    constructor(curlingStones: CurlingStone[]) {
         //TODO: Make constructor related calls (create Curling stones?)
-        this.curlingStones = new Array() as Array<CurlingStone>;
+        this.curlingStones = curlingStones;
     }
 
     addStone(curlingStone: CurlingStone) {

@@ -33,6 +33,10 @@ export class GameRenderer {
     // TODO : Remove when experimental test is done
     activeStone: CurlingStone;
 
+    constructor(curlingStones: CurlingStone[]) {
+        this.curlingStones = curlingStones;
+    }
+
     public init(container?: HTMLElement): void {
         this.container = container;
         this.scene = new THREE.Scene();
@@ -57,7 +61,7 @@ export class GameRenderer {
         this.renderer.setSize(containerRect.width, containerRect.height);
 
         this.lightManager = new LightManager();
-        this.physicsManager = new PhysicsManager();
+        this.physicsManager = new PhysicsManager(this.curlingStones);
         this.cameraManager = new CameraManager(this.container);
 
         let skybox: SkyBox;

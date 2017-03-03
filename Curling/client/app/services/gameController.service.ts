@@ -33,25 +33,21 @@ export class GameController {
     private gameState: GameState = this.idleState;
 
     public init(container?: HTMLElement): void {
-        this.gameRenderer = new GameRenderer();
-
+        this.gameRenderer = new GameRenderer(this.curlingStones);
         this.gameRenderer.init(container);
 
         CurlingStone.setPlayerStoneColor("#FFFFFF");
 
         // TODO : Lancement des pierres de curling
         this.addStone(Team.Player, new THREE.Vector3(0, 0, 0));
-
         this.gameRenderer.render();
     }
 
     addStone(team: Team, position: THREE.Vector3) {
         let stone = new CurlingStone(team, new THREE.Vector3(0, 0, 0), position);
-
         stone.init();
 
         this.curlingStones.push(stone);
-
         this.gameRenderer.addStone(stone);
     }
 

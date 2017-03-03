@@ -11,12 +11,12 @@ import { CurlingStone, Team } from '../entities/curlingStone';
 import { expect } from 'chai';
 
 describe('GameRenderer', () => {
-    let testRenderer : GameRenderer;
-    testRenderer = new GameRenderer();
+    let testCurlingStones = new Array<CurlingStone>();
+    let testRenderer = new GameRenderer(testCurlingStones);
 
     describe('Default constructor ', () => {
         it('should construct an empty GameRenderer object.', done => {
-            testRenderer = new GameRenderer();
+            testRenderer = new GameRenderer(testCurlingStones);
             expect(testRenderer).to.be.an.instanceof(GameRenderer);
             done();
         });

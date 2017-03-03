@@ -5,12 +5,12 @@ import { expect } from 'chai';
 
 describe('PhysicsManager', () => {
 
-    let testPhysicsManager: PhysicsManager;
-    testPhysicsManager = new PhysicsManager();
+    let testCurlingStones = new Array<CurlingStone>();
+    let testPhysicsManager = new PhysicsManager(testCurlingStones);
 
     describe('Default constructor ', () => {
         it('should construct the PhysicsManager.', done => {
-            testPhysicsManager = new PhysicsManager();
+            testPhysicsManager = new PhysicsManager(testCurlingStones);
             expect(testPhysicsManager).to.not.be.undefined;
             expect(testPhysicsManager).to.be.an.instanceof(PhysicsManager);
             done();
