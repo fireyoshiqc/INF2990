@@ -169,19 +169,18 @@ export class CurlingStone extends THREE.Group {
         this.add(handleMesh);
     }
 
-    // TODO: Fix timing (currently not 1 sec)
     fadeOut(): void {
         let x = 0;
         let stone = this;
 
         let intervalID = window.setInterval(function () {
-            (<THREE.Mesh>stone.children[0]).material.opacity -= 0.05;
-            (<THREE.Mesh>stone.children[1]).material.opacity -= 0.05;
+            (<THREE.Mesh>stone.children[0]).material.opacity -= 0.01;
+            (<THREE.Mesh>stone.children[1]).material.opacity -= 0.01;
 
-            if (++x === 20) {
+            if (++x === 100) {
                 window.clearInterval(intervalID);
             }
-        }, 50);
+        }, 10);
     }
 
     isBeingPlayed(): boolean {

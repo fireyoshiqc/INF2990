@@ -33,8 +33,6 @@ export class PhysicsManager {
         // Collision
         this.updateCollidingStonesDirection();
         this.updateAllStonesPosition();
-
-        this.removeOutOfBoundsStones();
     }
 
     private updateCollidingStonesDirection(): void {
@@ -106,9 +104,9 @@ export class PhysicsManager {
         }
     }
 
-    // Fight over where this function should be later
-    // Problems with de-spawning & being a physics object
-    private removeOutOfBoundsStones(): void {
+    getOutOfBoundsStones(): CurlingStone[] {
+        let outOfBoundsStones: CurlingStone[] = [];
+
         this.curlingStones.forEach(stone => {
             let isPastBackLine = stone.position.z < -(Rink.RINK_LENGTH + CurlingStone.MAX_RADIUS);
             let isPastRinkSides = Math.abs(stone.position.x) > (Rink.RINK_WIDTH / 2 - CurlingStone.MAX_RADIUS);
@@ -116,9 +114,10 @@ export class PhysicsManager {
             let hasStoppedBeforeGameLine = false; //(stone.velocity.length() < 0.01) && (stone.position.z > -10);
 
             if (isPastBackLine || isPastRinkSides || hasStoppedBeforeGameLine) {
-                stone.velocity = new THREE.Vector3(0, 0, 0);
-                stone.fadeOut();
+                outOfBoundsStones.push(stone);
             }
         });
+
+        return outOfBoundsStones;
     }
 }

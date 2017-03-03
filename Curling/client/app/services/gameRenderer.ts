@@ -160,12 +160,20 @@ export class GameRenderer {
         this.scene.remove(this.curveObject);
     }
 
+    removeOutOfBoundsStones(outOfBoundsStones: CurlingStone[]) {
+        outOfBoundsStones.forEach(stone => {
+            let index = this.curlingStones.indexOf(stone);
+            this.curlingStones.splice(index, 1);
+            stone.fadeOut();
+        });
+    }
+
     render(): void {
         window.requestAnimationFrame(() => this.render());
 
-        //TODO: Implement this.physicsManager.update() correctly
         let delta = this.clock.getDelta();
         this.physicsManager.update(delta);
+        this.removeOutOfBoundsStones(this.physicsManager.getOutOfBoundsStones());
 
         let scalarOffset = this.TRANSLATE_OFFSET * delta;
         this.totalTranslateOffset += scalarOffset;
