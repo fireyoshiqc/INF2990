@@ -99,7 +99,6 @@ export class GameRenderer {
     }
 
     addStone(stone: CurlingStone): void {
-        this.physicsManager.addStone(stone);
         this.addToScene(stone);
         this.activeStone = stone;
     }

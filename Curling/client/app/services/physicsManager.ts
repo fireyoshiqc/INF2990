@@ -19,10 +19,6 @@ export class PhysicsManager {
         this.curlingStones = curlingStones;
     }
 
-    addStone(curlingStone: CurlingStone) {
-        this.curlingStones.push(curlingStone);
-    }
-
     clearStones() {
         this.curlingStones.splice(0, this.curlingStones.length);
     }

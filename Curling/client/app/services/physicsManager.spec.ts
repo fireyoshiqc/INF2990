@@ -17,26 +17,10 @@ describe('PhysicsManager', () => {
         });
     });
 
-    describe('addStone() and getStones() ', () => {
-        it('should contains five instances of CurlingStone.', done => {
-            for (let i = 0; i < 5; i++) {
-                testPhysicsManager.addStone(new CurlingStone(Team.AI));
-            }
-            let testCurlingStones = testPhysicsManager.getStones();
-
-            expect(testCurlingStones).to.not.be.empty;
-            expect(testCurlingStones).to.have.lengthOf(5);
-            testCurlingStones.forEach(testInstance => {
-                expect(testInstance).to.be.an.instanceof(CurlingStone);
-            });
-            done();
-        });
-    });
-
     describe('update()', () => {
         it('should update the curling stone position according to its speed.', done => {
             testPhysicsManager.clearStones();
-            testPhysicsManager.addStone(new CurlingStone(Team.AI, new THREE.Vector3(0, 0, 1),
+            testPhysicsManager.getStones().push(new CurlingStone(Team.AI, new THREE.Vector3(0, 0, 1),
                 new THREE.Vector3(0, 0, 0)));
 
             //Tests 60 frames at 60 FPS, so 1 second.
@@ -56,8 +40,8 @@ describe('PhysicsManager', () => {
             let stone2 = new CurlingStone(Team.AI, new THREE.Vector3(0, 0, -1), new THREE.Vector3(0, 0, 1));
 
             //testPhysicsManager = new PhysicsManager();
-            testPhysicsManager.addStone(stone1);
-            testPhysicsManager.addStone(stone2);
+            testPhysicsManager.getStones().push(stone1);
+            testPhysicsManager.getStones().push(stone2);
 
             //Tests 60 frames at 60 FPS, so 1 second.
             for (let i = 0; i < 60; i++) {
