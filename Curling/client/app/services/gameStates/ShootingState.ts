@@ -9,7 +9,7 @@ export class ShootingState implements GameState {
 
     private timer: any;
     private initialSpeedCounter = 0;
-    private gameController : GameController;
+    private gameController: GameController;
 
     constructor(gameController: GameController) {
         this.gameController = gameController;
@@ -25,9 +25,13 @@ export class ShootingState implements GameState {
 
     onMouseUp(event: any): void {
         clearInterval(this.timer);
+        let shootingAngle = this.gameController.getShootingAngle();
+        let angleInRad = THREE.Math.degToRad(shootingAngle);
         this.gameController.getCurlingStones()[this.gameController.getCurlingStones().length - 1].velocity.
-            add(new THREE.Vector3(0, 0, -this.initialSpeedCounter));
+            add(new THREE.Vector3(this.initialSpeedCounter * Math.sin(angleInRad), 0,
+                -this.initialSpeedCounter * Math.cos(angleInRad)));
         this.initialSpeedCounter = 0;
+        this.gameController.enterSweepingState();
     }
 
     onMouseMove(event: any): void {

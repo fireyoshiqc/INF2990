@@ -12,6 +12,11 @@ export enum Team {
     AI
 }
 
+export enum SpinOrientation {
+    CLOCKWISE = -1,
+    ANTI_CLOCKWISE = 1
+}
+
 export class CurlingStone extends THREE.Group {
 
     private static playerStoneColor = "#66B2FF";
@@ -32,7 +37,8 @@ export class CurlingStone extends THREE.Group {
     private texLoader: THREE.TextureLoader;
     stoneColor: string;
     velocity: THREE.Vector3;
-    isBeingPlayed = false;
+    private beingPlayed = false;
+    private spinOrientation: SpinOrientation;
     private team: Team;
 
     // must be set before init()
@@ -57,6 +63,8 @@ export class CurlingStone extends THREE.Group {
         if (position) {
             this.position.set(position.x, position.y, position.z);
         }
+        this.spinOrientation = SpinOrientation.CLOCKWISE;
+        this.beingPlayed = true;
     }
 
     getTeam(): Team {
@@ -174,5 +182,17 @@ export class CurlingStone extends THREE.Group {
                 window.clearInterval(intervalID);
             }
         }, 50);
+    }
+
+    isBeingPlayed(): boolean {
+        return this.beingPlayed;
+    }
+
+    setSpinOrientation(orientation: SpinOrientation): void {
+        this.spinOrientation = orientation;
+    }
+
+    getSpinOrientation(): SpinOrientation {
+        return this.spinOrientation;
     }
 }

@@ -120,16 +120,15 @@ export class GameRenderer {
             this.cameraManager.usePerspectiveCamera(this.container);
     }
 
-    calculateAngle(mouse: THREE.Vector2): void {
+    calculateAngle(mouse: THREE.Vector2): number {
         this.raycaster.setFromCamera(mouse, this.cameraManager.getCamera());
         let intersects = this.raycaster.intersectObject(this.scene.getObjectByName("rink"), true);
         if (intersects.length > 0) {
             let intersectionPoint = intersects[0].point;
             let distance = intersectionPoint.x;
             let angle = distance / (Rink.RINK_WIDTH / 2) * 30;
-            console.log(angle);
+            return angle;
         }
-
-
+        return null;
     }
 }

@@ -88,13 +88,14 @@ export class PhysicsManager {
 
     private updateCurlingStonePosition(stone: CurlingStone, separationCorrection?: number) {
         if (separationCorrection === undefined) {
-            if (stone.isBeingPlayed) {
+            if (stone.isBeingPlayed()) {
                 //Curve calculation only for the stone that was thrown
                 let curvedVelocity = stone.velocity.clone();
-                curvedVelocity.x = Math.cos(this.delta * this.CURVE_ANGLE) * stone.velocity.x
-                    + Math.sin(this.delta * this.CURVE_ANGLE) * stone.velocity.z;
-                curvedVelocity.z = -Math.sin(this.delta * this.CURVE_ANGLE) * stone.velocity.x
-                    + Math.cos(this.delta * this.CURVE_ANGLE) * stone.velocity.z;
+                let curveFactor = this.delta * stone.getSpinOrientation() * this.CURVE_ANGLE;
+                curvedVelocity.x = Math.cos(curveFactor) * stone.velocity.x
+                    + Math.sin(curveFactor) * stone.velocity.z;
+                curvedVelocity.z = -Math.sin(curveFactor) * stone.velocity.x
+                    + Math.cos(curveFactor) * stone.velocity.z;
                 stone.velocity = curvedVelocity.clone();
             }
 

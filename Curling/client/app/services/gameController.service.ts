@@ -14,6 +14,7 @@ import { GameState } from './gameStates/GameState';
 import { ShootingState } from './gameStates/ShootingState';
 import { IdleState } from './gameStates/IdleState';
 import { ChoosingAngleState } from './gameStates/ChoosingAngleState';
+import { SweepingState } from './gameStates/SweepingState';
 
 @Injectable()
 export class GameController {
@@ -23,10 +24,12 @@ export class GameController {
     readonly RINGS_CENTER = new THREE.Vector3(0, 0, -Rink.RINK_LENGTH / 2 - Rink.RINGS_OFFSET);
     private playerScore = 0;
     private aiScore = 0;
+    private shootingAngle: number;
 
     private idleState = new IdleState(this);
     private shootingState = new ShootingState(this);
     private choosingAngleState = new ChoosingAngleState(this);
+    private sweepingState = new SweepingState(this);
     private gameState: GameState = this.idleState;
 
     public init(container?: HTMLElement): void {
@@ -46,6 +49,7 @@ export class GameController {
         let stone = new CurlingStone(team, new THREE.Vector3(0, 0, 0), position);
 
         stone.init();
+
         this.curlingStones.push(stone);
 
         this.gameRenderer.addStone(stone);
@@ -120,11 +124,28 @@ export class GameController {
         this.gameState.onMouseMove(event);
     }
 
+    enterShootingState() {
+        this.gameState = this.shootingState;
+    }
+
+    enterSweepingState() {
+        document.body.style.cursor = "default";
+        this.gameState = this.sweepingState;
+    }
+
     startThrowStone(): void {
         if (this.gameState === this.idleState) {
-            document.body.style.cursor = "wait";
+            document.body.style.cursor = "none";
             this.gameState = this.choosingAngleState;
         }
+    }
+
+    setShootingAngle(angle: number) {
+        this.shootingAngle = angle;
+    }
+
+    getShootingAngle(): number {
+        return this.shootingAngle;
     }
 
     /******************** TEST HELPER *******************/
