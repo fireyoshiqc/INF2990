@@ -34,6 +34,7 @@ export class GameRenderer {
     directionCurve: THREE.LineCurve3;
     curveObject: THREE.Line;
     private totalTranslateOffset = 0;
+    private curveAngle = 0;
 
     // TODO : Remove when experimental test is done
     activeStone: CurlingStone;
@@ -87,11 +88,11 @@ export class GameRenderer {
 
         curveGeometry.computeLineDistances();
 
-        let curveMaterial = new THREE.LineDashedMaterial( {
+        let curveMaterial = new THREE.LineDashedMaterial({
             color: 0xff0000,
             dashSize: this.DASH_SIZE,
             gapSize: this.GAP_SIZE,
-        } );
+        });
 
         // Create the final object to add to the scene
         this.curveObject = new THREE.Line(curveGeometry, curveMaterial);
@@ -141,13 +142,14 @@ export class GameRenderer {
             let intersectionPoint = intersects[0].point;
             let distance = intersectionPoint.x;
             let angle = distance / (Rink.RINK_WIDTH / 2) * 30;
+            this.curveAngle = THREE.Math.degToRad(angle);
             return angle;
         }
         return null;
     }
 
-    updateDirectionCurve(angle: number): void {
-        this.curveObject.geometry.rotateY(THREE.Math.degToRad(angle));
+    updateDirectionCurve(angleDifference: number): void {
+        this.curveObject.geometry.rotateY(THREE.Math.degToRad(angleDifference));
     }
 
     showDirectionCurve(): void {
@@ -158,20 +160,22 @@ export class GameRenderer {
         this.scene.remove(this.curveObject);
     }
 
-     render(): void {
+    render(): void {
         window.requestAnimationFrame(() => this.render());
 
         //TODO: Implement this.physicsManager.update() correctly
         let delta = this.clock.getDelta();
         this.physicsManager.update(delta);
 
-        let tempOffset = this.TRANSLATE_OFFSET * delta;
-        this.totalTranslateOffset += tempOffset;
+        let scalarOffset = this.TRANSLATE_OFFSET * delta;
+        this.totalTranslateOffset += scalarOffset;
 
-        this.curveObject.translateZ(-tempOffset);
+        this.curveObject.translateX(scalarOffset * Math.sin(this.curveAngle));
+        this.curveObject.translateZ(-scalarOffset * Math.cos(this.curveAngle));
 
         if (this.totalTranslateOffset > this.DASH_SIZE * 2) {
-            this.curveObject.translateZ(this.totalTranslateOffset);
+            this.curveObject.position.x = 0;
+            this.curveObject.position.z = 0;
             this.totalTranslateOffset = 0;
         }
 

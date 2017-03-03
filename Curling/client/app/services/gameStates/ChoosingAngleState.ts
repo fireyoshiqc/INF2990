@@ -37,7 +37,7 @@ export class ChoosingAngleState implements GameState {
             this.waiting = true;
             setTimeout(() => {
                 this.waiting = false;
-            }, 50);
+            }, 10);
         }
     }
 
