@@ -59,7 +59,7 @@ export class GlComponent {
         this.gameController.switchCamera();
     }
 
-    startThrowStone(event?: any): void{
-        this.gameController.startThrowStone();
+    startThrowStone(event: any): void {
+        this.gameController.startThrowStone(event);
     }
 }

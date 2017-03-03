@@ -50,6 +50,11 @@
                     <md-icon color="primary">play_arrow</md-icon><strong> Lancer Joueur</strong>
                 </button>
 
+                <md-slide-toggle id="spinOrientationSwitch" [(ngModel)]="selectedSpin">
+                    <div *ngIf="selectedSpin == true">Right Spin</div>
+                    <div *ngIf="selectedSpin == false">Left Spin</div>
+                </md-slide-toggle>
+
                 <!-- TODO: À enlever lorsque le lancement de pierre de curling implémenté -->
                 <button md-raised-button id="aiThrowButton" (click)="removeAICurlingStone()">
                     <md-icon color="primary">play_arrow</md-icon><strong> Lancer AI</strong>

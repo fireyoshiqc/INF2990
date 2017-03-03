@@ -197,6 +197,12 @@ md-sidenav-container {
     bottom: 2%;
 }
 
+#spinOrientationSwitch {
+    position: absolute;
+    left: 50%;
+    bottom: 0%;
+}
+
 #aiThrowButton {
     position: absolute;
     right: 2%;

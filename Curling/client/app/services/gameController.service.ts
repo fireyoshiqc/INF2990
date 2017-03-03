@@ -7,7 +7,7 @@
 
 import { Injectable } from '@angular/core';
 
-import { CurlingStone, Team } from '../entities/curlingStone';
+import { CurlingStone, Team, SpinOrientation } from '../entities/curlingStone';
 import { GameRenderer } from './gameRenderer';
 import { Rink } from '../entities/rink';
 import { GameState } from './gameStates/GameState';
@@ -133,8 +133,13 @@ export class GameController {
         this.gameState = this.sweepingState;
     }
 
-    startThrowStone(): void {
+    startThrowStone(event: any): void {
         if (this.gameState === this.idleState) {
+            if (event === "true") { //Counter Clockwise Spin
+                this.curlingStones[this.curlingStones.length - 1].setSpinOrientation(SpinOrientation.CLOCKWISE);
+            } else {
+                this.curlingStones[this.curlingStones.length - 1].setSpinOrientation(SpinOrientation.COUNTER_CLOCKWISE);
+            }
             document.body.style.cursor = "none";
             this.gameState = this.choosingAngleState;
         }

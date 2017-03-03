@@ -5,7 +5,7 @@
  * @date 2017/02/28
  */
 
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, HostListener } from '@angular/core';
 
 export enum AIDifficulty {
     Easy,
@@ -25,6 +25,7 @@ export class HUDComponent {
     private aiDifficulty = "CPU facile";
     private playerScore = 0;
     private aiScore = 0;
+    private selectedSpin = false;
     private rounds = [false, false, false]; // indicates which rounds have been completed (true)
 
     @Output()
@@ -32,12 +33,22 @@ export class HUDComponent {
     @Output()
     startThrowStoneEvent: EventEmitter<string> = new EventEmitter();
 
+    @HostListener('window:keydown', ['$event'])
+    keyboardInput(event: KeyboardEvent) {
+        if (event.key === "a") {
+            this.selectedSpin = false;
+        }
+        if (event.key === "d") {
+            this.selectedSpin = true;
+        }
+    }
+
     sendSwitchCameraEvent() {
         this.switchCameraEvent.emit('camera change');
     }
 
-    sendThrowStoneEvent() {
-        this.startThrowStoneEvent.emit('start stone throw');
+    sendThrowStoneEvent(selectedSpin: boolean) {
+        this.startThrowStoneEvent.emit(selectedSpin + "");
     }
 
     getTheme(): boolean {
@@ -97,7 +108,7 @@ export class HUDComponent {
     }
 
     removePlayerCurlingStone(): void {
-        this.sendThrowStoneEvent();
+        this.sendThrowStoneEvent(this.selectedSpin);
         this.playerCurlingStones.pop();
     }
 

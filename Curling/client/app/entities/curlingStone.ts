@@ -14,7 +14,7 @@ export enum Team {
 
 export enum SpinOrientation {
     CLOCKWISE = -1,
-    ANTI_CLOCKWISE = 1
+    COUNTER_CLOCKWISE = 1
 }
 
 export class CurlingStone extends THREE.Group {
