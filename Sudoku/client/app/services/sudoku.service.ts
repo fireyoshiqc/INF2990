@@ -89,6 +89,26 @@ export class SudokuService {
             (row.find(column =>
                 (column === 0)) === 0)) === undefined;
     }
+
+    quitGame(): Promise<boolean> {
+        let postPromise = new Promise((resolve, reject) => {
+            this.http.post('http://localhost:3002/removeName', { "name": this.playerName })
+                .toPromise()
+                .then(res => {
+                    if (res.text() === "true") {
+                        console.log("Removed name '" + name + "' from server.");
+                        resolve(true);
+                    }
+                    else {
+                        console.log("Something went wrong... the player's name wasn't registered on the server!");
+                        resolve(false);
+                    }
+                })
+                .catch(() => { console.log("Could not delete name from server."); resolve(false); });
+        });
+        return postPromise;
+
+    }
 }
 
 interface EntryNumber {

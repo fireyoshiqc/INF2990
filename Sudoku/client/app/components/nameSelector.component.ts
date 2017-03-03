@@ -8,28 +8,44 @@
 import { Component } from '@angular/core';
 //import { RoomService } from '../services/room.service';
 import { MdDialogRef } from '@angular/material';
+import { NameService } from '../services/name.service';
 
 @Component({
     moduleId: module.id,
     selector: 'name-selector-comp',
     templateUrl: '/assets/templates/nameSelector.component.html',
+    providers: [NameService]
 })
 export class NameSelectorComponent {
     difficulty: string;
     playerName: string;
     error = false;
-    errorMessage : string;
+    errorMessage: string;
 
-    constructor(public dialogRef: MdDialogRef<NameSelectorComponent>) {
+    constructor(public dialogRef: MdDialogRef<NameSelectorComponent>, private nameService: NameService) {
     }
 
     onStart() {
         this.error = false;
         //TODO: Make real validation for player name. This is temporary.
-        if (this.difficulty !== undefined && this.playerName !== undefined && this.playerName.length >= 4) {
-            this.dialogRef.close({ difficulty: this.difficulty, playerName: this.playerName });
+
+        if (this.difficulty !== undefined && this.playerName !== undefined) {
+            this.nameService.validateName(this.playerName).then((response) => {
+                if (response) {
+                    this.dialogRef.close({ difficulty: this.difficulty, playerName: this.playerName });
+                }
+                else {
+                    this.error = true;
+                    this.errorMessage = "Ce nom est déjà pris ou contient des caractères invalides!";
+
+                }
+            });
         }
-        else if (this.difficulty === undefined){
+
+        // if (this.difficulty !== undefined && this.nameService.validateName(this.playerName)) {
+
+        // }
+        else if (this.difficulty === undefined) {
             this.error = true;
             this.errorMessage = "Veuillez choisir une difficulté.";
         }

@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, Optional } from '@angular/core';
+import { Component, AfterViewInit, Optional, HostListener } from '@angular/core';
 import { SudokuService } from '../services/sudoku.service';
 import { StopwatchService } from '../services/stopwatch.service';
 import { InputService } from '../services/input.service';
@@ -26,10 +26,10 @@ export class SudokuGridComponent implements AfterViewInit {
                 disableClose: true
             });
             this.dialogRef.afterClosed().subscribe(result => {
-                if (result.difficulty === "facile"){
+                if (result.difficulty === "facile") {
                     this.getEasySudoku();
                 }
-                else if (result.difficulty === "difficile"){
+                else if (result.difficulty === "difficile") {
                     this.getHardSudoku();
                 }
                 this.sudokuService.difficulty = result.difficulty;
@@ -126,6 +126,13 @@ export class SudokuGridComponent implements AfterViewInit {
     toggleTheme() {
         this.isDarkTheme = !this.isDarkTheme;
     }
+
+    @HostListener('window:beforeunload', ['$event'])
+    onBeforeUnload(event: any): any {
+        console.log("trying to quit game");
+        this.sudokuService.quitGame();
+        return;
+    }
 }
 
 interface EntryEvent {
@@ -134,7 +141,6 @@ interface EntryEvent {
     row: number;
     column: number;
 }
-
 
 @Component({
     template: `<name-selector-comp></name-selector-comp>`

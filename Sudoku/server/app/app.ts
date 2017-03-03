@@ -17,11 +17,13 @@ import * as cors from 'cors';
 
 import { SudokuManager } from './services/sudokuManager.service';
 import { Difficulty } from './services/sudoku.service';
+import { NameManagerService } from './services/nameManager.service';
 
 export class Application {
 
     public app: express.Application;
     public sudokuManager: SudokuManager;
+    public nameManager: NameManagerService;
 
     /**
      * Bootstrap the application.
@@ -48,6 +50,7 @@ export class Application {
 
         // Instantiate sudoku manager
         this.sudokuManager = new SudokuManager();
+        this.nameManager = new NameManagerService();
 
         //configure this.application
         this.config();
@@ -80,7 +83,8 @@ export class Application {
      */
     public routes() {
 
-        let sudokuManager = this.getManager();
+        let sudokuManager = this.getSudokuManager();
+        let nameManager = this.getNameManager();
 
         // TODO : Remove comments below when routers will be required
         //let router: express.Router;
@@ -105,6 +109,14 @@ export class Application {
         this.app.post('/validateSudoku', function (req, res) {
             let result = sudokuManager.verifySudoku(req.body);
             res.send(result);
+        });
+
+        this.app.post('/validateName', function (req, res) {
+            res.send(nameManager.validateName(req.body.name));
+        });
+
+        this.app.post('/removeName', function (req, res) {
+            res.send(nameManager.removeName(req.body.name));
         });
 
         // TODO : Remove comment below when routers will be required
@@ -139,7 +151,11 @@ export class Application {
         });
     }
 
-    getManager(): SudokuManager {
+    getSudokuManager(): SudokuManager {
         return this.sudokuManager;
+    }
+
+    getNameManager(): NameManagerService {
+        return this.nameManager;
     }
 }
