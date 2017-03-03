@@ -50,7 +50,7 @@
                     <md-icon color="primary">play_arrow</md-icon><strong> Lancer Joueur</strong>
                 </button>
 
-                <md-slide-toggle id="spinOrientationSwitch" [(ngModel)]="selectedSpin">
+                <md-slide-toggle id="spinOrientationSwitch" [(ngModel)]="selectedSpin" [disabled] = "sliderDisabled">
                     <div *ngIf="selectedSpin == true">Right Spin</div>
                     <div *ngIf="selectedSpin == false">Left Spin</div>
                 </md-slide-toggle>

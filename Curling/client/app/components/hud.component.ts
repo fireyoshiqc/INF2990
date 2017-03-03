@@ -27,6 +27,7 @@ export class HUDComponent {
     private aiScore = 0;
     private selectedSpin = false;
     private rounds = [false, false, false]; // indicates which rounds have been completed (true)
+    private sliderDisabled = false;
 
     @Output()
     switchCameraEvent: EventEmitter<string> = new EventEmitter();
@@ -35,11 +36,13 @@ export class HUDComponent {
 
     @HostListener('window:keydown', ['$event'])
     keyboardInput(event: KeyboardEvent) {
-        if (event.key === "a") {
-            this.selectedSpin = false;
+        if (!this.sliderDisabled) {
+            if (event.key === "a") {
+            this.selectedSpin = false; // Spin antihoraire
         }
         if (event.key === "d") {
-            this.selectedSpin = true;
+            this.selectedSpin = true; // Spin horaire 
+        }
         }
     }
 
@@ -108,6 +111,7 @@ export class HUDComponent {
     }
 
     removePlayerCurlingStone(): void {
+        this.sliderDisabled = true;
         this.sendThrowStoneEvent(this.selectedSpin);
         this.playerCurlingStones.pop();
     }

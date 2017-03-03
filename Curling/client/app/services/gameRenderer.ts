@@ -16,6 +16,10 @@ import { CameraManager } from './cameraManager.service';
 @Injectable()
 export class GameRenderer {
 
+    private readonly DASH_SIZE = 0.1;
+    private readonly GAP_SIZE = 0.1;
+    private readonly TRANSLATE_OFFSET = 0.5;
+
     container: HTMLElement;
     scene: THREE.Scene;
     renderer: THREE.WebGLRenderer;
@@ -29,6 +33,7 @@ export class GameRenderer {
     curlingStones: CurlingStone[] = [];
     directionCurve: THREE.LineCurve3;
     curveObject: THREE.Line;
+    private totalTranslateOffset = 0;
 
     // TODO : Remove when experimental test is done
     activeStone: CurlingStone;
@@ -76,11 +81,17 @@ export class GameRenderer {
         rink.name = "rink";
         this.addToScene(rink);
 
-        this.directionCurve = new THREE.LineCurve3(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, -10));
+        this.directionCurve = new THREE.LineCurve3(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, -30));
         let curveGeometry = new THREE.Geometry();
         curveGeometry.vertices = this.directionCurve.getPoints(2);
 
-        let curveMaterial = new THREE.LineBasicMaterial({ color: 0xff0000 });
+        curveGeometry.computeLineDistances();
+
+        let curveMaterial = new THREE.LineDashedMaterial( {
+            color: 0xff0000,
+            dashSize: this.DASH_SIZE,
+            gapSize: this.GAP_SIZE,
+        } );
 
         // Create the final object to add to the scene
         this.curveObject = new THREE.Line(curveGeometry, curveMaterial);
@@ -111,18 +122,6 @@ export class GameRenderer {
 
         //Adjust camera FOV following aspect ratio
         this.cameraManager.onResize(this.container);
-    }
-
-    render(): void {
-        window.requestAnimationFrame(() => this.render());
-
-        //TODO: Implement this.physicsManager.update() correctly
-        let delta = this.clock.getDelta();
-        this.physicsManager.update(delta);
-
-        //Render scene using camera that is following the stone
-        this.cameraManager.followStone(this.activeStone.position);
-        this.renderer.render(this.scene, this.cameraManager.getCamera());
     }
 
     addToScene(obj: THREE.Group | THREE.Mesh): void {
@@ -157,5 +156,27 @@ export class GameRenderer {
 
     hideDirectionCurve(): void {
         this.scene.remove(this.curveObject);
+    }
+
+     render(): void {
+        window.requestAnimationFrame(() => this.render());
+
+        //TODO: Implement this.physicsManager.update() correctly
+        let delta = this.clock.getDelta();
+        this.physicsManager.update(delta);
+        
+        let tempOffset = this.TRANSLATE_OFFSET * delta;
+        this.totalTranslateOffset += tempOffset;
+
+        this.curveObject.translateZ(-tempOffset);
+
+        if (this.totalTranslateOffset > this.DASH_SIZE * 2) {
+            this.curveObject.translateZ(this.totalTranslateOffset);
+            this.totalTranslateOffset = 0;
+        }        
+
+        //Render scene using camera that is following the stone
+        this.cameraManager.followStone(this.activeStone.position);
+        this.renderer.render(this.scene, this.cameraManager.getCamera());
     }
 }
