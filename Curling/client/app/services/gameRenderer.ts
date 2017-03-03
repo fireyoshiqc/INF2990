@@ -27,6 +27,8 @@ export class GameRenderer {
     clock: THREE.Clock;
     raycaster: THREE.Raycaster;
     curlingStones: CurlingStone[] = [];
+    directionCurve: THREE.LineCurve3;
+    curveObject: THREE.Line;
 
     // TODO : Remove when experimental test is done
     activeStone: CurlingStone;
@@ -69,6 +71,16 @@ export class GameRenderer {
         rink.position.y = Rink.POS_RINK_Y;
         rink.name = "rink";
         this.addToScene(rink);
+
+        this.directionCurve = new THREE.LineCurve3(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, -10));
+        let curveGeometry = new THREE.Geometry();
+        curveGeometry.vertices = this.directionCurve.getPoints(2);
+
+        let curveMaterial = new THREE.LineBasicMaterial({ color: 0xff0000 });
+
+        // Create the final object to add to the scene
+        this.curveObject = new THREE.Line(curveGeometry, curveMaterial);
+
 
         /*--------------------LIGHT------------------------------------------ */
 
@@ -130,5 +142,17 @@ export class GameRenderer {
             return angle;
         }
         return null;
+    }
+
+    updateDirectionCurve(angle: number): void {
+        this.curveObject.geometry.rotateY(angle / 180 * Math.PI);
+    }
+
+    showDirectionCurve(): void {
+        this.scene.add(this.curveObject);
+    }
+
+    hideDirectionCurve(): void {
+        this.scene.remove(this.curveObject);
     }
 }

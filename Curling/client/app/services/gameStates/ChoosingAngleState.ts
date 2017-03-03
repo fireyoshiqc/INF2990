@@ -30,6 +30,7 @@ export class ChoosingAngleState implements GameState {
             this.setMouse(event);
             let angle = this.gameController.getGameRenderer().calculateAngle(this.mouse);
             if (angle !== null) {
+                this.gameController.getGameRenderer().updateDirectionCurve(this.angle - angle);
                 console.log(angle);
                 this.angle = angle;
             }

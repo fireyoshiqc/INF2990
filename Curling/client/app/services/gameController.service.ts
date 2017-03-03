@@ -130,6 +130,7 @@ export class GameController {
 
     enterSweepingState() {
         document.body.style.cursor = "default";
+        this.gameRenderer.hideDirectionCurve();
         this.gameState = this.sweepingState;
     }
 
@@ -141,6 +142,7 @@ export class GameController {
                 this.curlingStones[this.curlingStones.length - 1].setSpinOrientation(SpinOrientation.COUNTER_CLOCKWISE);
             }
             document.body.style.cursor = "none";
+            this.gameRenderer.showDirectionCurve();
             this.gameState = this.choosingAngleState;
         }
     }

@@ -24,14 +24,16 @@ export class ShootingState implements GameState {
     }
 
     onMouseUp(event: any): void {
-        clearInterval(this.timer);
-        let shootingAngle = this.gameController.getShootingAngle();
-        let angleInRad = THREE.Math.degToRad(shootingAngle);
-        this.gameController.getCurlingStones()[this.gameController.getCurlingStones().length - 1].velocity.
-            add(new THREE.Vector3(this.initialSpeedCounter * Math.sin(angleInRad), 0,
-                -this.initialSpeedCounter * Math.cos(angleInRad)));
-        this.initialSpeedCounter = 0;
-        this.gameController.enterSweepingState();
+        if (this.initialSpeedCounter > 0) {
+            clearInterval(this.timer);
+            let shootingAngle = this.gameController.getShootingAngle();
+            let angleInRad = THREE.Math.degToRad(shootingAngle);
+            this.gameController.getCurlingStones()[this.gameController.getCurlingStones().length - 1].velocity.
+                add(new THREE.Vector3(this.initialSpeedCounter * Math.sin(angleInRad), 0,
+                    -this.initialSpeedCounter * Math.cos(angleInRad)));
+            this.initialSpeedCounter = 0;
+            this.gameController.enterSweepingState();
+        }
     }
 
     onMouseMove(event: any): void {
