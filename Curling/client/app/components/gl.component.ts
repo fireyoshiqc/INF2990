@@ -15,6 +15,10 @@ export class GlComponent {
         // Empty constructor necessary for Angular
     }
 
+    getGameController(): GameController {
+        return this.gameController;
+    }
+
     getTheme(): boolean {
         return this.isDarkTheme;
     }

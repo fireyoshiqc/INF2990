@@ -5,7 +5,7 @@
  * @date 2017/02/28
  */
 
-import { Component, Output, EventEmitter, HostListener } from '@angular/core';
+import { Component, Input, Output, EventEmitter, HostListener } from '@angular/core';
 
 export enum AIDifficulty {
     Easy,
@@ -23,8 +23,8 @@ export class HUDComponent {
     private aiCurlingStones = new Array<number>(7); // indicates the number of available curling stones for ai
     private playerName = "Nom joueur";
     private aiDifficulty = "CPU facile";
-    private playerScore = 0;
-    private aiScore = 0;
+    @Input() private playerScore = 0; // data modified in gameControler.service.ts
+    @Input() private aiScore = 0; // data modified in gameControler.service.ts
     private selectedSpin = false;
     private rounds = [false, false, false]; // indicates which rounds have been completed (true)
     private sliderDisabled = false;
@@ -37,16 +37,18 @@ export class HUDComponent {
     @HostListener('window:keydown', ['$event'])
     keyboardInput(event: KeyboardEvent) {
         if (!this.sliderDisabled) {
+
             if (event.key === "a") {
-            this.selectedSpin = false; // Spin antihoraire
-        }
-        if (event.key === "d") {
-            this.selectedSpin = true; // Spin horaire 
-        }
+                this.selectedSpin = false; // Spin antihoraire
+            }
+
+            if (event.key === "d") {
+                this.selectedSpin = true; // Spin horaire
+            }
         }
     }
 
-    sendSwitchCameraEvent() {
+    sendSwitchCameraEvent(): void {
         this.switchCameraEvent.emit('camera change');
     }
 
@@ -122,8 +124,5 @@ export class HUDComponent {
 
     removeAICurlingStone(): void {
         this.aiCurlingStones.pop();
-
-        // TODO : remove
-        this.setAIScore(this.aiScore + 1);
     }
 }

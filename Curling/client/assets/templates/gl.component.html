@@ -71,7 +71,11 @@
 
             <!-- hud -->
             <div class="flex-item" id="hudContainer" fxFlex="90%" fxFlexFill>
-                <my-hud #hud (switchCameraEvent)="switchCamera()" (startThrowStoneEvent)="startThrowStone($event)"></my-hud>
+                <my-hud #hud 
+                    (switchCameraEvent)="switchCamera()" 
+                    (startThrowStoneEvent)="startThrowStone($event)"
+                    [aiScore]="getGameController().aiScore"
+                    [playerScore]="getGameController().playerScore"></my-hud>
             </div>
 
         </div>

@@ -164,7 +164,7 @@ export class GameRenderer {
         //TODO: Implement this.physicsManager.update() correctly
         let delta = this.clock.getDelta();
         this.physicsManager.update(delta);
-        
+
         let tempOffset = this.TRANSLATE_OFFSET * delta;
         this.totalTranslateOffset += tempOffset;
 
@@ -173,7 +173,7 @@ export class GameRenderer {
         if (this.totalTranslateOffset > this.DASH_SIZE * 2) {
             this.curveObject.translateZ(this.totalTranslateOffset);
             this.totalTranslateOffset = 0;
-        }        
+        }
 
         //Render scene using camera that is following the stone
         this.cameraManager.followStone(this.activeStone.position);
