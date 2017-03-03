@@ -145,7 +145,7 @@ export class GameRenderer {
     }
 
     updateDirectionCurve(angle: number): void {
-        this.curveObject.geometry.rotateY(angle / 180 * Math.PI);
+        this.curveObject.geometry.rotateY(THREE.Math.degToRad(angle));
     }
 
     showDirectionCurve(): void {
