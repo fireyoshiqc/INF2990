@@ -32,6 +32,8 @@ export class HUDComponent {
     @Output()
     switchCameraEvent: EventEmitter<string> = new EventEmitter();
     @Output()
+    nextRoundEvent: EventEmitter<string> = new EventEmitter();
+    @Output()
     startThrowStoneEvent: EventEmitter<string> = new EventEmitter();
 
     @HostListener('window:keydown', ['$event'])
@@ -52,7 +54,11 @@ export class HUDComponent {
         this.switchCameraEvent.emit('camera change');
     }
 
-    sendThrowStoneEvent(selectedSpin: boolean) {
+    sendNextRoundEvent(): void {
+        this.nextRoundEvent.emit('next round + calculate scores');
+    }
+
+    sendThrowStoneEvent(selectedSpin: boolean): void {
         this.startThrowStoneEvent.emit(selectedSpin + "");
     }
 

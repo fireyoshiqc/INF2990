@@ -87,23 +87,14 @@ md-sidenav-container {
 
 #title {
     padding-left: 77px;
+    font-size: 40px;
 }
 
 #topSpacer {
     flex: 1 1 auto;
 }
 
-#lightIcon.material-icons.mat-icon {
-    color: black;
-    margin-left: 16px;
-    margin-right: 16px;
-    font-size: 32px;
-    height: 32px;
-    width: 32px;
-}
-
-#darkIcon.material-icons.mat-icon {
-    color: white;
+#lightBulbIcon.material-icons.mat-icon {
     margin-left: 16px;
     margin-right: 16px;
     font-size: 32px;
@@ -140,6 +131,15 @@ md-sidenav-container {
     height: 90vh;  
 }
 
+.defaultCursor:hover {
+    cursor: default;
+}
+
+.mdFabIcon {
+    font-size: 2.8rem;
+    display: block !important;
+}
+
 /* left column */
 
 #playerNameTagContainer {
@@ -167,6 +167,12 @@ md-sidenav-container {
     position: absolute;
     right: 2%;
     bottom: 2%;
+}
+
+#cameraButtonIcon {
+  width: 2.82rem;
+  height: 2.68rem;
+  font-size: 40px; 
 }
 
 /* center column */
@@ -197,16 +203,29 @@ md-sidenav-container {
     bottom: 2%;
 }
 
+#playerThrowButtonIcon {
+  width: 2.82rem;
+  height: 2.68rem;
+  font-size: 40px; 
+}
+
 #spinOrientationSwitch {
     position: absolute;
     left: 40%;
     bottom: 0%;
+    color: black;
 }
 
 #aiThrowButton {
     position: absolute;
     right: 2%;
     bottom: 2%;
+}
+
+#aiThrowButtonIcon {
+  width: 2.82rem;
+  height: 2.68rem;
+  font-size: 40px; 
 }
 
 /* right column */
@@ -232,4 +251,10 @@ md-sidenav-container {
     position: absolute;
     left: 2%;
     bottom: 2%;    
+}
+
+#nextRoundButtonIcon {
+  width: 2.82rem;
+  height: 2.68rem;
+  font-size: 40px; 
 }

@@ -63,6 +63,10 @@ export class GlComponent {
         this.gameController.switchCamera();
     }
 
+    nextRound(): void {
+        this.gameController.updateScore();
+    }
+
     startThrowStone(event: any): void {
         this.gameController.startThrowStone(event);
     }

@@ -21,7 +21,7 @@
                     <h3 md-subheader>Partie</h3>
                     <md-list-item>
                         <button md-button class="list-button" (click)="resetGame(); sidenav.toggle()">
-                            <md-icon id="sidenavIcon" color="primary">autorenew</md-icon><strong>Réinitialiser</strong>
+                            <md-icon id="sidenavIcon">autorenew</md-icon><strong>Réinitialiser</strong>
                         </button>
                     </md-list-item>
                     <md-divider></md-divider>
@@ -29,7 +29,7 @@
                     <h3 md-subheader>Records</h3>
                     <md-list-item>
                         <button md-button class="list-button" (click)="sidenav.toggle()">
-                            <md-icon id="sidenavIcon" color="primary">assessment</md-icon><strong>Afficher les records</strong>
+                            <md-icon id="sidenavIcon">assessment</md-icon><strong>Afficher les records</strong>
                         </button>
                     </md-list-item>
                     <md-divider></md-divider>
@@ -37,7 +37,7 @@
                     <h3 md-subheader>Aide</h3>
                     <md-list-item>
                         <button md-button class="list-button" (click)="sidenav.toggle()">
-                            <md-icon id="sidenavIcon" color="primary">help outline</md-icon><strong>Afficher le tutoriel</strong>
+                            <md-icon id="sidenavIcon">help outline</md-icon><strong>Afficher le tutoriel</strong>
                         </button>
                     </md-list-item>
                     <md-divider></md-divider>
@@ -53,12 +53,11 @@
                     <button class="icon-button" (click)="sidenav.toggle()"><md-icon id="navIcon">menu</md-icon></button>
                     
                     <span id="topSpacer"></span>
-                    <span id="title">Curling</span>
+                    <span class="defaultCursor" id="title"><strong>Curling</strong></span>
                     <span id="topSpacer"></span>
 
                     <button class="icon-button" (click)="toggleTheme(); hud.toggleTheme();">
-                        <md-icon *ngIf="isDarkTheme" id="lightIcon">lightbulb_outline</md-icon>
-                        <md-icon *ngIf="!isDarkTheme" id="darkIcon">lightbulb_outline</md-icon>
+                         <md-icon id="lightBulbIcon">lightbulb_outline</md-icon>
                     </button>
                     
                     <button class="icon-button"><md-icon id="closeIcon">close</md-icon></button>
@@ -72,7 +71,8 @@
             <!-- hud -->
             <div class="flex-item" id="hudContainer" fxFlex="90%" fxFlexFill>
                 <my-hud #hud 
-                    (switchCameraEvent)="switchCamera()" 
+                    (switchCameraEvent)="switchCamera()"
+                    (nextRoundEvent)="nextRound()"
                     (startThrowStoneEvent)="startThrowStone($event)"
                     [aiScore]="getGameController().aiScore"
                     [playerScore]="getGameController().playerScore"></my-hud>
