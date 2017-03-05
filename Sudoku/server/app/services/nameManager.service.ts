@@ -10,7 +10,6 @@ export class NameManagerService {
     validateName(name: string): boolean {
         if (name.length >= 4 && this.names.findIndex(listedName => (listedName === name)) === -1) {
             this.names.push(name);
-            console.log(this.names);
             return true;
         }
         else {
@@ -19,7 +18,6 @@ export class NameManagerService {
     }
     removeName(name: string): boolean {
         let index = this.names.findIndex(listedName => (listedName === name));
-        console.log(this.names);
         if (index !== -1) {
             this.names.splice(index, 1);
             return true;
