@@ -100,8 +100,8 @@ md-sidenav-container {
 }
 
 #title {
-    padding-left: 77px;
-    font-size: 40px;
+    padding-left: 72px;
+    font-size: 28px;
 }
 
 #topSpacer {
@@ -144,13 +144,13 @@ md-sidenav-container {
 }
 
 #grid {
-    margin: 5%;
+    margin: 3%;
 }
 
 #infoPanel {
-    margin: 5%;
+    margin: 3%;
     margin-top: 0%;
-    width: 551px
+    width: 530px
 }
 
 
