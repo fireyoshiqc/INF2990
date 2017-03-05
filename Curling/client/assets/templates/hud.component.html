@@ -21,8 +21,8 @@
                 </div>
 
                 <!-- Changement de la caméra -->
-                <button md-fab class="animatedButton" id="cameraButton" (click)="sendSwitchCameraEvent()">
-                    <md-icon class="mdFabIcon" id="cameraButtonIcon">switch_camera</md-icon>
+                <button md-raised-button class="animatedButton" id="cameraButton" (click)="sendSwitchCameraEvent()">
+                    <md-icon class="mdIcon">switch_camera</md-icon><strong> Caméra</strong>
                 </button>
             </div>
 
@@ -46,18 +46,18 @@
                 </div>
 
                 <!-- TODO: À enlever lorsque le lancement de pierre de curling implémenté -->
-                <button md-fab class="animatedButton" id="playerThrowButton" (click)="removePlayerCurlingStone()">
-                    <md-icon class="mdFabIcon" id="playerThrowButtonIcon">directions_walk</md-icon>
+                <button md-raised-button class="animatedButton" id="playerThrowButton" (click)="removePlayerCurlingStone()">
+                    <md-icon class="mdIcon">transfer_within_a_station</md-icon><strong> Joueur</strong>
                 </button>
 
                 <md-slide-toggle id="spinOrientationSwitch" [(ngModel)]="selectedSpin" [disabled] = "sliderDisabled">
-                    <div *ngIf="selectedSpin == true">Right Spin</div>
-                    <div *ngIf="selectedSpin == false">Left Spin</div>
+                    <div *ngIf="selectedSpin == true"><md-icon class="mdSlideIcon">rotate_right</md-icon><strong> Rot. Droite</strong></div>
+                    <div *ngIf="selectedSpin == false"><md-icon class="mdSlideIcon">rotate_left</md-icon><strong> Rot. Gauche</strong></div>
                 </md-slide-toggle>
 
                 <!-- TODO: À enlever lorsque le lancement de pierre de curling implémenté -->
-                <button md-fab class="animatedButton" id="aiThrowButton" (click)="removeAICurlingStone()">
-                    <md-icon class="mdFabIcon" id="aiThrowButtonIcon">android</md-icon>
+                <button md-raised-button class="animatedButton" id="aiThrowButton" (click)="removeAICurlingStone()">
+                    <md-icon class="mdIcon">android</md-icon><strong> Ordi</strong>
                 </button>
             </div>
 
@@ -68,7 +68,7 @@
                     <div id="aiNameTagContainer">
                         <md-card class="defaultCursor lightTag" id="aiNameTag">
                             <md-card-title><strong>{{aiDifficulty}}</strong></md-card-title>
-                            <md-card-subtitle>AI</md-card-subtitle>
+                            <md-card-subtitle>Ordinateur</md-card-subtitle>
                         </md-card>
                     </div>
 
@@ -81,8 +81,8 @@
                 </div>
 
                 <!-- TODO: À enlever lorsque le changement de manche est implémenté -->
-                <button md-fab class="animatedButton" id="nextRoundButton" (click)="startNextRound(); sendNextRoundEvent();">
-                        <md-icon class="mdFabIcon" id="nextRoundButtonIcon">fast_forward</md-icon>
+                <button md-raised-button class="animatedButton" id="nextRoundButton" (click)="startNextRound(); sendNextRoundEvent();">
+                        <md-icon class="mdIcon">fast_forward</md-icon><strong> Manche</strong>
                 </button>
             </div>
 

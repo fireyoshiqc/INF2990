@@ -135,9 +135,14 @@ md-sidenav-container {
     cursor: default;
 }
 
-.mdFabIcon {
-    font-size: 2.8rem;
-    display: block !important;
+.mdIcon.mat-icon {
+    height: 100%;
+    width: 2rem;
+    font-size: 2rem;
+}
+
+button.mat-raised-button {
+    padding: 0.2rem 0.5rem 0.2rem 0.4rem;
 }
 
 /* left column */
@@ -169,12 +174,6 @@ md-sidenav-container {
     bottom: 2%;
 }
 
-#cameraButtonIcon {
-  width: 2.82rem;
-  height: 2.68rem;
-  font-size: 40px; 
-}
-
 /* center column */
 
 #scoreboardContainer {
@@ -203,29 +202,28 @@ md-sidenav-container {
     bottom: 2%;
 }
 
-#playerThrowButtonIcon {
-  width: 2.82rem;
-  height: 2.68rem;
-  font-size: 40px; 
-}
-
 #spinOrientationSwitch {
     position: absolute;
-    left: 40%;
-    bottom: 0%;
+    bottom: 1%;
     color: black;
+    left: 35%;
+    right: 35%;
+}
+
+.mdSlideIcon.mat-icon {
+    height: 100%;
+    width: 1.5rem;
+    font-size: 1.5rem;
+}
+
+.mdSlideIcon {
+    float: left;
 }
 
 #aiThrowButton {
     position: absolute;
     right: 2%;
     bottom: 2%;
-}
-
-#aiThrowButtonIcon {
-  width: 2.82rem;
-  height: 2.68rem;
-  font-size: 40px; 
 }
 
 /* right column */
@@ -251,10 +249,4 @@ md-sidenav-container {
     position: absolute;
     left: 2%;
     bottom: 2%;    
-}
-
-#nextRoundButtonIcon {
-  width: 2.82rem;
-  height: 2.68rem;
-  font-size: 40px; 
 }
