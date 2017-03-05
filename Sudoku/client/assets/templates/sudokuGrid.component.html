@@ -26,7 +26,7 @@
     </div>
 
     <div class="flex-item" fxLayoutAlign.xs="center center" fxLayoutAlign.gt-xs="center center" fxLayoutAlign.gt-md="start center"
-        fxFlex="50%">
+        fxFlex="30%">
 
         <md-card id="infoPanel">
             <md-card-title>
@@ -38,11 +38,11 @@
                     <md-icon *ngIf="!sudokuService.isValid">close</md-icon>
                 </p>
                 <p>Niveau de difficulté : {{sudokuService.difficulty}} </p>
-                <p *ngIf="stopwatchService.isVisible()">Timer : <span>{{stopwatchService.getMinutes()}}</span> min <span>{{stopwatchService.getSeconds()}}</span>                    sec</p>
+                <p *ngIf="stopwatchService.isVisible()">Chronomètre : <span>{{stopwatchService.getMinutes()}}</span> min <span>{{stopwatchService.getSeconds()}}</span>                    sec</p>
             </md-card-content>
-            <md-card-actions>
+            <md-card-actions id="controlButtons">
                 <button md-raised-button color="primary" (click)="resetSudoku()">Réinitialiser la grille</button>
-                <button md-raised-button color="primary" (click)="toggleStopwatch()">{{ getStopwatchVisibility() ? "Masquer" : "Montrer" }} chronomètre</button>
+                <button md-raised-button color="primary" (click)="toggleStopwatch()">{{ getStopwatchVisibility() ? "Masquer" : "Montrer" }} le chronomètre</button>
             </md-card-actions>
         </md-card>
 

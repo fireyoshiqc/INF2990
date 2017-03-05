@@ -32,9 +32,23 @@ md-sidenav-container {
     width:100%;
 }
 
+#checkIcon.material-icons.mat-icon {
+    color: white;
+}
+
+.separator {
+    width: 5px;
+    height: auto;
+    display: inline-block;
+}
+
 #difficultyChoice {
     margin-top:2%;
     margin-bottom: 2%;
+}
+
+#difficultyChoiceText {
+    padding-top: 3px;
 }
 
 #topBar {
@@ -45,24 +59,13 @@ md-sidenav-container {
 }
 
 #navIcon.material-icons.mat-icon {
-    color: white;
     margin-left: 16px;
     font-size: 32px;
     height: 32px;
     width: 32px;
 }
 
-#lightIcon.material-icons.mat-icon {
-    color: black;
-    margin-left: 16px;
-    margin-right: 16px;
-    font-size: 32px;
-    height: 32px;
-    width: 32px;
-}
-
-#darkIcon.material-icons.mat-icon {
-    color: white;
+#lightBulbIcon.material-icons.mat-icon {
     margin-left: 16px;
     margin-right: 16px;
     font-size: 32px;
@@ -71,7 +74,6 @@ md-sidenav-container {
 }
 
 #closeIcon.material-icons.mat-icon {
-    color: white;
     margin-left: 16px;
     margin-right: 16px;
     font-size: 32px;
@@ -86,6 +88,10 @@ md-sidenav-container {
     width: 32px;
 }
 
+.easySudokuIcon.material-icons.mat-icon {
+    color: limegreen;
+}
+
 #hardIcon.material-icons.mat-icon {
     margin-right: 32px;
     font-size: 32px;
@@ -94,7 +100,8 @@ md-sidenav-container {
 }
 
 #title {
-    padding-left: 72px;
+    padding-left: 77px;
+    font-size: 40px;
 }
 
 #topSpacer {
@@ -112,7 +119,7 @@ md-sidenav-container {
 }
 
 #infoCard {
-    width: 320px;
+    width: 350px;
     text-align: justify;
     text-justify: inter-word;
 }
@@ -125,11 +132,7 @@ md-sidenav-container {
 
 
 /***************************/
-
-
 /* control panel component */
-
-
 /***************************/
 
 #buttonPanel button {
@@ -152,11 +155,7 @@ md-sidenav-container {
 
 
 /*************************/
-
-
 /* sudoku grid component */
-
-
 /*************************/
 
 table {
@@ -296,13 +295,12 @@ tr:nth-child(3n) td {
     background-color: transparent
 }
 
+#controlButtons {
+    text-align: center;
+}
 
 /*************************************/
-
-
 /* blinking effect for invalid input */
-
-
 /*************************************/
 
 @-webkit-keyframes invalid {

@@ -18,7 +18,7 @@
 
                     <h3 md-subheader>Générer un sudoku</h3>
                     <md-list-item>
-                        <button md-button class="list-button" (click)="sudokuGrid.getEasySudoku(); sidenav.toggle()"><md-icon id="easyIcon" color="accent">child_friendly</md-icon><strong>Facile</strong></button>
+                        <button md-button class="list-button" (click)="sudokuGrid.getEasySudoku(); sidenav.toggle()"><md-icon class="easySudokuIcon" id="easyIcon">child_friendly</md-icon><strong>Facile</strong></button>
                     </md-list-item>
                     <md-list-item>
                         <button md-button class="list-button" (click)="sudokuGrid.getHardSudoku(); sidenav.toggle()"><md-icon id="easyIcon" color="warn">whatshot</md-icon><strong>Difficile</strong></button>
@@ -26,24 +26,29 @@
                     <md-divider></md-divider>
                     <h3 md-subheader>Records</h3>
                     <md-list-item>
-                        <button md-button class="list-button" (click)="sidenav.toggle()"><md-icon id="easyIcon" color="primary">assessment</md-icon><strong>Afficher les records</strong></button>
+                        <button md-button class="list-button" (click)="sidenav.toggle()"><md-icon id="easyIcon" color="accent">assessment</md-icon><strong>Afficher les records</strong></button>
                     </md-list-item>
                     <md-divider></md-divider>
                 </md-list>
             </div>
         </md-sidenav>
         <div class="flex-container" fxLayout="column" fxLayoutAlign="center center">
-
             <md-toolbar id="topBar" color="primary">
+
                 <button class="icon-button" (click)="sidenav.toggle()"><md-icon id="navIcon">menu</md-icon></button>
-                <span id="title">Sudoku</span>
+
                 <span id="topSpacer"></span>
+                <span id="title"><strong>Sudoku</strong></span>
+                <span id="topSpacer"></span>
+
                 <button class="icon-button" (click)="toggleTheme(); sudokuGrid.toggleTheme()">
-                    <md-icon *ngIf="isDarkTheme" id="lightIcon">lightbulb_outline</md-icon>
-                    <md-icon *ngIf="!isDarkTheme" id="darkIcon">lightbulb_outline</md-icon>
+                        <md-icon id="lightBulbIcon">lightbulb_outline</md-icon>
                 </button>
+
                 <button class="icon-button"><md-icon id="closeIcon">close</md-icon></button>
+
             </md-toolbar>
+
             <div id="gameArea" class="flex-item" fxLayoutAlign="center" fxFlex="auto" fxFlexFill>
                 <sudoku-grid #sudokuGrid fxFlexFill></sudoku-grid>
             </div>

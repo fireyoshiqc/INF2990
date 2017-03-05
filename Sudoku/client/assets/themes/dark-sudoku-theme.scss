@@ -6,24 +6,33 @@
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue.
-$primary: mat-palette($mat-deep-purple, A400, A200, A700);
-$accent : mat-palette($mat-amber, A400, A200, A700);
+$primary: mat-palette($mat-orange, 500, 300, 900);
+$accent : mat-palette($mat-blue, A200, 50, 600);
 // The warn palette is optional (defaults to red).
 $warn : mat-palette($mat-red);
 $background: mat-light-theme-foreground($mat-grey, 50);
 $foreground: mat-light-theme-background($mat-grey, 900);
 // Create the theme object (a Sass map containing all of the palettes).
 $theme: mat-light-theme($primary, $accent, $warn);
+
+#topBar.mat-toolbar.mat-primary, .mat-icon, .mat-icon.mat-primary {
+    color: #1565C0;
+}
+
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 @include angular-material-theme($theme);
 .dark-theme {
-    $dark-p: mat-palette($mat-deep-purple, 900);
-    $dark-a: mat-palette($mat-amber, 900);
+    $dark-p: mat-palette($mat-deep-orange, 800);
+    $dark-a: mat-palette($mat-grey, 50);
     $dark-w: mat-palette($mat-red);
     $dark-b: mat-dark-theme-foreground($mat-grey, 900);
     $dark-f: mat-dark-theme-foreground($mat-grey, 50);
     $dark-t: mat-dark-theme($dark-p, $dark-a, $dark-w);
     @include angular-material-theme($dark-t);
+
+    #topBar.mat-toolbar.mat-primary, .mat-icon, .mat-icon.mat-primary {
+        color: white;
+    }
 }
