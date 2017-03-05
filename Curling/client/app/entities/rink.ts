@@ -22,21 +22,22 @@ export class Rink extends THREE.Group {
     static readonly OUTER_RADIUS = 1.8;
     static readonly RINGS_OFFSET = 17.37; //By how much the ring set is off from the center of the rink.
 
-    constructor(loaderImages : Array<string>) {
+    constructor(loaderImages: Array<string>) {
         super();
 
         //-------------REFLECTIVE TEXTURE-------------------------------------//
-        let loader : THREE.CubeTextureLoader;
+        let loader: THREE.CubeTextureLoader;
         loader = new THREE.CubeTextureLoader();
 
         loader.load(loaderImages, (reflectTexture) => {
             reflectTexture.format = THREE.RGBFormat;
             reflectTexture.mapping = THREE.CubeReflectionMapping;
+
             //--------------RINGS-------------------------------------------------//
 
-            let whiteIce : THREE.Texture = TextureCacher.load("/assets/textures/white_ice.jpg");
-            let redIce : THREE.Texture = TextureCacher.load("/assets/textures/red_ice.jpg");
-            let blueIce : THREE.Texture = TextureCacher.load("/assets/textures/blue_ice.jpg");
+            let whiteIce: THREE.Texture = TextureCacher.load("/assets/textures/white_ice.jpg");
+            let redIce: THREE.Texture = TextureCacher.load("/assets/textures/red_ice.jpg");
+            let blueIce: THREE.Texture = TextureCacher.load("/assets/textures/blue_ice.jpg");
 
             whiteIce.wrapS = whiteIce.wrapT = THREE.RepeatWrapping;
             redIce.wrapS = redIce.wrapT = THREE.RepeatWrapping;
@@ -45,24 +46,24 @@ export class Rink extends THREE.Group {
             redIce.repeat.set(2, 2);
             blueIce.repeat.set(4, 4);
 
-            let blueRingGeometry : THREE.Geometry = new THREE.RingGeometry(Rink.MIDDLE_RADIUS, Rink.OUTER_RADIUS, 40);
-            let blueRingMaterial : THREE.Material = new THREE.MeshPhongMaterial({
-                side : THREE.DoubleSide,
-                reflectivity : 0.7,
-                envMap : reflectTexture,
-                map : blueIce
+            let blueRingGeometry: THREE.Geometry = new THREE.RingGeometry(Rink.MIDDLE_RADIUS, Rink.OUTER_RADIUS, 40);
+            let blueRingMaterial: THREE.Material = new THREE.MeshPhongMaterial({
+                side: THREE.DoubleSide,
+                reflectivity: 0.7,
+                envMap: reflectTexture,
+                map: blueIce
             });
-            let blueRing : THREE.Mesh = new THREE.Mesh(blueRingGeometry, blueRingMaterial);
-            let redRingGeometry : THREE.Geometry = new THREE.RingGeometry(Rink.CENTER_RADIUS, Rink.INNER_RADIUS, 40);
-            let redRingMaterial : THREE.Material = new THREE.MeshPhongMaterial({
+            let blueRing: THREE.Mesh = new THREE.Mesh(blueRingGeometry, blueRingMaterial);
+            let redRingGeometry: THREE.Geometry = new THREE.RingGeometry(Rink.CENTER_RADIUS, Rink.INNER_RADIUS, 40);
+            let redRingMaterial: THREE.Material = new THREE.MeshPhongMaterial({
                 side: THREE.DoubleSide,
                 reflectivity: 0.7,
                 envMap: reflectTexture,
                 map: redIce
             });
-            let redRing : THREE.Mesh = new THREE.Mesh(redRingGeometry, redRingMaterial);
+            let redRing: THREE.Mesh = new THREE.Mesh(redRingGeometry, redRingMaterial);
 
-            let rings : THREE.Group = new THREE.Group();
+            let rings: THREE.Group = new THREE.Group();
             rings.add(blueRing);
             rings.add(redRing);
 
@@ -74,17 +75,32 @@ export class Rink extends THREE.Group {
             //-----------FIN RINGS------------------------------------------------//
 
             //--------------ICE---------------------------------------------------//
-            let rinkMaterial : THREE.Material = new THREE.MeshPhongMaterial({
-                reflectivity : 0.7,
-                envMap : reflectTexture,
-                map : whiteIce
+            let rinkMaterial: THREE.Material = new THREE.MeshPhongMaterial({
+                reflectivity: 0.7,
+                envMap: reflectTexture,
+                map: whiteIce
             });
 
-            let rinkGeometry : THREE.Geometry = new THREE.BoxGeometry(Rink.RINK_WIDTH,
+            let rinkGeometry: THREE.Geometry = new THREE.BoxGeometry(Rink.RINK_WIDTH,
                 Rink.RINK_HEIGHT, Rink.RINK_LENGTH, 32);
 
-            let rink : THREE.Mesh = new THREE.Mesh(rinkGeometry, rinkMaterial);
+            let rink: THREE.Mesh = new THREE.Mesh(rinkGeometry, rinkMaterial);
             //--------------FIN ICE---------------------------------------------------//
+
+            //--------------GAME LINE---------------------------------------------------//
+            // let material = new THREE.LineBasicMaterial({
+            //     color: 0x0000ff
+            // });
+
+            // let geometry = new THREE.Geometry();
+            // geometry.vertices.push(
+            //     new THREE.Vector3(-Rink.RINK_WIDTH / 2, Rink.RINK_HEIGHT, (Rink.RINK_LENGTH / 2) - 10),
+            //     new THREE.Vector3(Rink.RINK_WIDTH / 2, Rink.RINK_HEIGHT, (Rink.RINK_LENGTH / 2) - 10)
+            // );
+
+            // let gameLine = new THREE.Line(geometry, material);
+            // this.add(gameLine);
+            //--------------END GAME LINE---------------------------------------------------//
 
             //Assemble
             this.add(rings);
