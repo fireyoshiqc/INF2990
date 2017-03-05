@@ -19,6 +19,7 @@ export class ShootingState implements GameState {
         this.timer = setInterval(() => {
             if (this.initialSpeedCounter < this.MAX_INITIAL_SPEED) {
                 this.initialSpeedCounter += this.MAX_INITIAL_SPEED / (this.MAX_HOLD_TIME_MS / this.INTERVAL_DELAY_MS);
+                this.gameController.setForceValue(this.initialSpeedCounter / this.MAX_INITIAL_SPEED * 100);
             }
         }, this.INTERVAL_DELAY_MS);
     }
@@ -32,7 +33,7 @@ export class ShootingState implements GameState {
             let stone = this.gameController.getCurlingStones()[this.gameController.getCurlingStones().length - 1];
             stone.setHasBeenShot();
             stone.velocity.add(new THREE.Vector3(this.initialSpeedCounter * Math.sin(angleInRad), 0,
-                              -this.initialSpeedCounter * Math.cos(angleInRad)));
+                -this.initialSpeedCounter * Math.cos(angleInRad)));
             this.initialSpeedCounter = 0;
 
             this.gameController.enterSweepingState();

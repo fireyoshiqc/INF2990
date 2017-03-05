@@ -129,7 +129,6 @@ export class SudokuGridComponent implements AfterViewInit {
 
     @HostListener('window:beforeunload', ['$event'])
     onBeforeUnload(event: any): any {
-        console.log("trying to quit game");
         this.sudokuService.quitGame();
         return;
     }

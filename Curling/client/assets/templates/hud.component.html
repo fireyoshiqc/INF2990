@@ -19,7 +19,7 @@
                         </div>
                     </div>
                 </div>
-
+                
                 <!-- Changement de la caméra -->
                 <button md-raised-button class="animatedButton" id="cameraButton" (click)="sendSwitchCameraEvent()">
                     <md-icon class="mdIcon">switch_camera</md-icon><strong> Caméra</strong>
@@ -42,6 +42,14 @@
                             </div>
                             <md-card-subtitle>Manche en cours</md-card-subtitle>
                         </md-card>
+                    </div>
+
+                    <!-- Force bar -->
+                    <div *ngIf = "forceIsVisible === true">
+                        <div id = "forceBarLabel">
+                            <strong>Force</strong>
+                        </div>
+                        <md-progress-bar id = "forceBar" color="primary" [value]="forceValue" mode="determinate"></md-progress-bar>
                     </div>
                 </div>
 

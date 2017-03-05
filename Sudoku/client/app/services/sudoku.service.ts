@@ -90,24 +90,10 @@ export class SudokuService {
                 (column === 0)) === 0)) === undefined;
     }
 
-    quitGame(): Promise<boolean> {
-        let postPromise = new Promise((resolve, reject) => {
-            this.http.post('http://localhost:3002/removeName', { "name": this.playerName })
-                .toPromise()
-                .then(res => {
-                    if (res.text() === "true") {
-                        console.log("Removed name '" + name + "' from server.");
-                        resolve(true);
-                    }
-                    else {
-                        console.log("Something went wrong... the player's name wasn't registered on the server!");
-                        resolve(false);
-                    }
-                })
-                .catch(() => { console.log("Could not delete name from server."); resolve(false); });
-        });
-        return postPromise;
-
+    quitGame(): void {
+        //Send beacon to server to signal name removal before page unload.
+        let blob = new Blob([JSON.stringify({"name": this.playerName})], {type: 'application/json; charset=UTF-8'});
+        navigator.sendBeacon('http://localhost:3002/removeName', blob);
     }
 }
 

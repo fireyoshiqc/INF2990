@@ -11,6 +11,7 @@ export class SweepingState implements GameState{
 
     onMouseDown(event: any): void {
         //Do nothing
+        this.gameController.enterIdleState();
     }
 
     onMouseUp(event: any): void {
