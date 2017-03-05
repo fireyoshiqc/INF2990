@@ -38,6 +38,7 @@ export class CurlingStone extends THREE.Group {
     stoneColor: string;
     velocity: THREE.Vector3;
     private beingPlayed = false;
+    private hasBeenShot = false;
     private spinOrientation: SpinOrientation;
     private team: Team;
 
@@ -185,6 +186,14 @@ export class CurlingStone extends THREE.Group {
 
     isBeingPlayed(): boolean {
         return this.beingPlayed;
+    }
+
+    getHasBeenShot(): boolean {
+        return this.hasBeenShot;
+    }
+
+    setHasBeenShot() {
+        this.hasBeenShot = true;
     }
 
     setSpinOrientation(orientation: SpinOrientation): void {
