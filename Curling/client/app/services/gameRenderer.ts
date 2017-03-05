@@ -31,7 +31,7 @@ export class GameRenderer {
     clock: THREE.Clock;
     raycaster: THREE.Raycaster;
     curlingStones: CurlingStone[] = [];
-    directionCurve: THREE.LineCurve3;
+    curveGeometry: THREE.Geometry;
     curveObject: THREE.Line;
     private totalTranslateOffset = 0;
     private curveAngle = 0;
@@ -82,11 +82,11 @@ export class GameRenderer {
         rink.name = "rink";
         this.addToScene(rink);
 
-        this.directionCurve = new THREE.LineCurve3(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, -30));
-        let curveGeometry = new THREE.Geometry();
-        curveGeometry.vertices = this.directionCurve.getPoints(2);
+        let directionCurve = new THREE.LineCurve3(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, -30));
+        this.curveGeometry = new THREE.Geometry();
+        this.curveGeometry.vertices = directionCurve.getPoints(1);
 
-        curveGeometry.computeLineDistances();
+        this.curveGeometry.computeLineDistances();
 
         let curveMaterial = new THREE.LineDashedMaterial({
             color: 0xff0000,
@@ -95,7 +95,7 @@ export class GameRenderer {
         });
 
         // Create the final object to add to the scene
-        this.curveObject = new THREE.Line(curveGeometry, curveMaterial);
+        this.curveObject = new THREE.Line(this.curveGeometry, curveMaterial);
 
 
         /*--------------------LIGHT------------------------------------------ */
@@ -150,6 +150,8 @@ export class GameRenderer {
 
     updateDirectionCurve(angleDifference: number): void {
         this.curveObject.geometry.rotateY(THREE.Math.degToRad(angleDifference));
+        // Update end point of the directional line
+        this.curveGeometry.vertices[1] = this.getFurthestCollisionPoint();
     }
 
     showDirectionCurve(): void {
@@ -168,6 +170,22 @@ export class GameRenderer {
         });
     }
 
+    getFurthestCollisionPoint(): THREE.Vector3 {
+        let x = 0, z = 0;
+        // Bordure
+        if (this.curveAngle !== 0) {
+            x = Math.sign(this.curveAngle) * Rink.RINK_WIDTH / 2;
+            z = -x / Math.tan(this.curveAngle);
+        }
+        if (-z > Rink.RINK_LENGTH) {
+            z = -Rink.RINK_LENGTH;
+            x = -z * Math.tan(this.curveAngle);
+        }
+
+        // TO-DO: curlingStones
+        return new THREE.Vector3(x, 0, z);
+    }
+
     render(): void {
         window.requestAnimationFrame(() => this.render());
 
@@ -175,6 +193,7 @@ export class GameRenderer {
         this.physicsManager.update(delta);
         this.removeOutOfBoundsStones(this.physicsManager.getOutOfBoundsStones());
 
+        // Ligne de direction - Fourmillement
         let scalarOffset = this.TRANSLATE_OFFSET * delta;
         this.totalTranslateOffset += scalarOffset;
 
