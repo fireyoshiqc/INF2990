@@ -196,6 +196,19 @@ button.mat-raised-button {
     margin-right: 3%  
 }
 
+#forceBarLabel {
+    position: absolute;
+    bottom: 18%;
+    left: 2%;
+}
+
+#forceBar {
+    position: absolute;
+    bottom: 15%;
+    left: 2%;
+    height: 2%;
+}
+
 #playerThrowButton {
     position: absolute;
     left: 2%;

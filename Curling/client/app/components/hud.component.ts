@@ -28,6 +28,8 @@ export class HUDComponent {
     private selectedSpin = false;
     private rounds = [false, false, false]; // indicates which rounds have been completed (true)
     private sliderDisabled = false;
+    @Input() private forceIsVisible = false;
+    @Input() private forceValue = 0;
 
     @Output()
     switchCameraEvent: EventEmitter<string> = new EventEmitter();
@@ -100,6 +102,18 @@ export class HUDComponent {
 
     setAIScore(newScore: number): void {
         this.aiScore = newScore;
+    }
+
+    getForceValue(): number {
+        return this.forceValue;
+    }
+
+    setForceValue(newForceValue: number): void {
+        this.forceValue = newForceValue;
+    }
+
+    setForceVisibility(newForceVisibility: boolean): void {
+        this.forceIsVisible = newForceVisibility;
     }
 
     getRounds(): boolean[] {

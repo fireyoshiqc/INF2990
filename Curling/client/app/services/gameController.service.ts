@@ -32,6 +32,9 @@ export class GameController {
     private sweepingState = new SweepingState(this);
     private gameState: GameState = this.idleState;
 
+    private forceIsVisible = false;
+    private forceValue = 0;
+
     public init(container?: HTMLElement): void {
         this.gameRenderer = new GameRenderer(this.curlingStones);
         this.gameRenderer.init(container);
@@ -65,6 +68,14 @@ export class GameController {
 
     getAiScore(): number {
         return this.aiScore;
+    }
+
+    getForceValue(): number {
+        return this.forceValue;
+    }
+
+    setForceValue(newForceValue: number): void {
+        this.forceValue = newForceValue;
     }
 
     onResize(event: any): void {
@@ -121,6 +132,7 @@ export class GameController {
     }
 
     enterShootingState() {
+        this.forceIsVisible = true;
         this.gameState = this.shootingState;
     }
 
@@ -128,6 +140,10 @@ export class GameController {
         document.body.style.cursor = "default";
         this.gameRenderer.hideDirectionCurve();
         this.gameState = this.sweepingState;
+    }
+
+    enterIdleState() {
+        this.forceIsVisible = false;
     }
 
     startThrowStone(event: any): void {

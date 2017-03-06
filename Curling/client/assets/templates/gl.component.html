@@ -75,7 +75,9 @@
                     (nextRoundEvent)="nextRound()"
                     (startThrowStoneEvent)="startThrowStone($event)"
                     [aiScore]="getGameController().aiScore"
-                    [playerScore]="getGameController().playerScore"></my-hud>
+                    [playerScore]="getGameController().playerScore"
+                    [forceIsVisible]="getGameController().forceIsVisible"
+                    [forceValue]="getGameController().forceValue"></my-hud>
             </div>
 
         </div>
