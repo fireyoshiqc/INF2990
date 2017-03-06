@@ -4,6 +4,7 @@ import { GameController } from '../gameController.service';
 export class ShootingState implements GameState {
 
     private readonly MAX_INITIAL_SPEED = 5;
+    private readonly MIN_INITIAL_SPEED = 1;
     private readonly MAX_HOLD_TIME_MS = 2000;
     private readonly INTERVAL_DELAY_MS = 100;
 
@@ -25,8 +26,8 @@ export class ShootingState implements GameState {
     }
 
     onMouseUp(event: any): void {
-        if (this.initialSpeedCounter > 0) {
-            clearInterval(this.timer);
+
+        if (this.initialSpeedCounter > this.MIN_INITIAL_SPEED) {
             let shootingAngle = this.gameController.getShootingAngle();
             let angleInRad = THREE.Math.degToRad(shootingAngle);
 
@@ -37,7 +38,12 @@ export class ShootingState implements GameState {
             this.initialSpeedCounter = 0;
 
             this.gameController.enterSweepingState();
+        } else {
+            this.initialSpeedCounter = 0;
+            this.gameController.setForceValue(0);
         }
+
+        clearInterval(this.timer);
     }
 
     onMouseMove(event: any): void {
