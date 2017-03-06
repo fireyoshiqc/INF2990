@@ -42,7 +42,7 @@ export class SocketManager {
                 if (player !== undefined) {
                     this.pmanager.removePlayer(player.name);
                     this.rmanager.leaveRoom(player);
-                    this.sio.emit('user disconnect', player.name + "~ User has disconnected from chat.");
+                    this.sio.emit('user disconnect', player.name + "~ L'utilisateur a quitté la partie.");
                 }
                 console.log("User disconnected");
             });
