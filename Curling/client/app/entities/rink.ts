@@ -48,18 +48,22 @@ export class Rink extends THREE.Group {
             blueIce.repeat.set(4, 4);
 
             let blueRingGeometry: THREE.Geometry = new THREE.RingGeometry(Rink.MIDDLE_RADIUS, Rink.OUTER_RADIUS, 40);
-            let blueRingMaterial: THREE.Material = new THREE.MeshPhongMaterial({
+            let blueRingMaterial: THREE.Material = new THREE.MeshStandardMaterial({
                 side: THREE.DoubleSide,
-                reflectivity: 0.7,
+                metalness: 0.6,
+                roughness: 0.2,
                 envMap: reflectTexture,
+                envMapIntensity: 1.0,
                 map: blueIce
             });
             let blueRing: THREE.Mesh = new THREE.Mesh(blueRingGeometry, blueRingMaterial);
             let redRingGeometry: THREE.Geometry = new THREE.RingGeometry(Rink.CENTER_RADIUS, Rink.INNER_RADIUS, 40);
-            let redRingMaterial: THREE.Material = new THREE.MeshPhongMaterial({
+            let redRingMaterial: THREE.Material = new THREE.MeshStandardMaterial({
                 side: THREE.DoubleSide,
-                reflectivity: 0.7,
+                metalness: 0.6,
+                roughness: 0.2,
                 envMap: reflectTexture,
+                envMapIntensity: 1.0,
                 map: redIce
             });
             let redRing: THREE.Mesh = new THREE.Mesh(redRingGeometry, redRingMaterial);
@@ -68,17 +72,19 @@ export class Rink extends THREE.Group {
             rings.add(blueRing);
             rings.add(redRing);
 
-            rings.position.y = Rink.RINK_HEIGHT;
-            rings.rotation.x = Math.PI / 2;
+            rings.position.y = Rink.RINK_HEIGHT / 2 + 0.001;
+            rings.rotation.x = -Math.PI / 2;
 
             rings.position.z = -(Rink.RINGS_OFFSET);
 
             //-----------FIN RINGS------------------------------------------------//
 
             //--------------ICE---------------------------------------------------//
-            let rinkMaterial: THREE.Material = new THREE.MeshPhongMaterial({
-                reflectivity: 0.7,
+            let rinkMaterial: THREE.Material = new THREE.MeshStandardMaterial({
+                metalness: 0.6,
+                roughness: 0.2,
                 envMap: reflectTexture,
+                envMapIntensity: 1.0,
                 map: whiteIce
             });
 
@@ -88,6 +94,27 @@ export class Rink extends THREE.Group {
             let rink: THREE.Mesh = new THREE.Mesh(rinkGeometry, rinkMaterial);
             //--------------FIN ICE---------------------------------------------------//
 
+            //------------PROOF OF CONCEPT SWEEPING-----------------------------------//
+            let sweptDiscGeometry: THREE.Geometry = new THREE.CircleGeometry(0.500, 20);
+            let discMaterial: THREE.Material = new THREE.MeshStandardMaterial({
+                side: THREE.DoubleSide,
+                metalness: 0.7,
+                roughness: 0.0,
+                envMap: reflectTexture,
+                envMapIntensity: 1.0,
+                map: whiteIce
+            });
+
+            for (let i = 0; i < 50; i++) {
+                let disc: THREE.Mesh = new THREE.Mesh(sweptDiscGeometry, discMaterial);
+                this.add(disc);
+                disc.position.x = Math.pow((0.02 * i), 2);
+                disc.position.y = Rink.RINK_HEIGHT / 2 + 0.001;
+                disc.position.z = 20 - 0.145 * i;
+                disc.rotation.x = -Math.PI / 2;
+            }
+            //------------END OF PROOF OF CONCEPT SWEEPING------------------------------//
+
             //--------------GAME LINE---------------------------------------------------//
             let gameLineMaterial = new THREE.LineBasicMaterial({
                 color: 0xff0000
@@ -96,11 +123,11 @@ export class Rink extends THREE.Group {
             let gameLineGeometry = new THREE.Geometry();
             gameLineGeometry.vertices.push(
                 new THREE.Vector3(-Rink.RINK_WIDTH / 2 + 0.05,
-                                   Rink.RINK_HEIGHT, (Rink.RINK_LENGTH / 2) + Rink.HOG_LINE),
+                    Rink.RINK_HEIGHT, (Rink.RINK_LENGTH / 2) + Rink.HOG_LINE),
                 new THREE.Vector3(Rink.RINK_WIDTH / 2 - 0.05, Rink.RINK_HEIGHT, (Rink.RINK_LENGTH / 2) + Rink.HOG_LINE)
             );
 
-           let gameLine = new THREE.Line(gameLineGeometry, gameLineMaterial);
+            let gameLine = new THREE.Line(gameLineGeometry, gameLineMaterial);
 
             //--------------END GAME LINE---------------------------------------------------//
 

@@ -101,7 +101,7 @@ export class GameRenderer {
 
         /*--------------------LIGHT------------------------------------------ */
 
-        this.scene.add(this.lightManager.spawnAmbientLight(0xffffff, 0x222277));
+        this.scene.add(this.lightManager.spawnAmbientLight(0xffffff, 0x000077));
         this.addToScene(this.lightManager.spawnSpotlights(-2.2, 0, 0, rink));
 
         //------------------- END LIGHT------------------------------------------//
