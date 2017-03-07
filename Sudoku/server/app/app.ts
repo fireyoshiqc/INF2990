@@ -18,12 +18,14 @@ import * as cors from 'cors';
 import { SudokuManager } from './services/sudokuManager.service';
 import { Difficulty } from './services/sudoku.service';
 import { NameManagerService } from './services/nameManager.service';
+import { DatabaseService } from './services/database.service';
 
 export class Application {
 
     public app: express.Application;
     public sudokuManager: SudokuManager;
     public nameManager: NameManagerService;
+    public database: DatabaseService;
 
     /**
      * Bootstrap the application.
@@ -51,6 +53,7 @@ export class Application {
         // Instantiate sudoku manager
         this.sudokuManager = new SudokuManager();
         this.nameManager = new NameManagerService();
+        this.database = new DatabaseService();
 
         //configure this.application
         this.config();
@@ -73,6 +76,7 @@ export class Application {
         this.app.use(cookieParser());
         this.app.use(express.static(path.join(__dirname, '../client')));
         this.app.use(cors());
+        this.database.connect();
     }
 
     /**
