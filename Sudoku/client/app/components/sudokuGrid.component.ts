@@ -64,7 +64,6 @@ export class SudokuGridComponent implements AfterViewInit {
     resetSudoku() {
         document.forms['gridForm'].reset();
         this.sudokuService.resetSudoku();
-        //this.sudokuService.resetInvalidFields();
         this.stopwatchService.restart();
     }
 

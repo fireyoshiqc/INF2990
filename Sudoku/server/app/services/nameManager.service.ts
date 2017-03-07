@@ -23,6 +23,7 @@ export class NameManagerService {
             return false;
         }
     }
+
     removeName(name: string): boolean {
         let index = this.names.findIndex(listedName => (listedName === name));
         if (index !== -1) {
