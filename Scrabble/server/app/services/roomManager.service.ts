@@ -11,7 +11,6 @@ export class RoomManager {
 
     private existingRooms: Array<Room>;
     private currentRoomID: number;
-    socket: any;
 
     constructor() {
         this.existingRooms = new Array<Room>();

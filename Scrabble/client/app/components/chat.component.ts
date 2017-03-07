@@ -26,6 +26,12 @@ export class ChatComponent implements OnInit {
             this.msgList.push(new Message(msg));
         });
 
+        this.socket.on('command sent', (msg: string) => {
+            this.attemptingToConnect = false;
+            msg += " JE SUIS UNE COMMANDE. (TODO : remplacer par de la couleur)\n";
+            this.msgList.push(new Message(msg));
+        });
+
         this.socket.on('user connect', (msg: string) => {
             this.attemptingToConnect = false;
             this.msgList.push(new Message(msg));

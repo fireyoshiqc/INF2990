@@ -5,6 +5,12 @@
  * @date 2017/02/17
  */
 
+export interface Player {
+    roomId: number;
+    name: string;
+    socketId: string;
+}
+
 export class PlayerManager {
 
     players: Player[];
@@ -37,10 +43,4 @@ export class PlayerManager {
     getSocketName(socketId: string): Player {
         return this.players.find(p => (p.socketId === socketId));
     }
-}
-
-interface Player {
-    roomId: number;
-    name: string;
-    socketId: string;
 }

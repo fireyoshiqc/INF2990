@@ -3,21 +3,26 @@
  *
  * @authors Félix Boulet
  * @date 2017/02/19
+ * @modified by Mikael Ferland, Pierre To on 2017/03/07
  */
 
 import * as io from 'socket.io';
 import * as http from 'http';
 import { RoomManager } from './roomManager.service';
-import { PlayerManager } from './playerManager.service';
+import { PlayerManager, Player } from './playerManager.service';
+import { CommandParser, CommandStatus } from './commandParser.service';
 
 export class SocketManager {
     sio: SocketIO.Server;
     rmanager: RoomManager;
     pmanager: PlayerManager;
+    cparser: CommandParser;
+
     constructor(server: http.Server) {
         this.sio = io.listen(server);
         this.rmanager = new RoomManager();
         this.pmanager = new PlayerManager();
+        this.cparser = new CommandParser();
     }
 
     handleSockets() {
@@ -29,9 +34,17 @@ export class SocketManager {
 
             socket.on('chat message', (msg: string) => {
                 let player = this.pmanager.getSocketName(socket.id);
+
                 if (player !== undefined) {
-                    this.sio.emit('message sent', player.name + " ~ " + msg);
+                    if (this.cparser.isACommand(msg)) {
+                        this.parseCommand(msg, player);
+                    }
+                    else {
+                        // regular message
+                        this.sio.emit('message sent', player.name + " ~ " + msg);
+                    }
                 }
+
                 //TODO: Use same socket, not new chat socket.
                 console.log(msg);
             });
@@ -81,5 +94,20 @@ export class SocketManager {
             }, 1000);
         });
 
+    }
+
+    private parseCommand(msg: string, player: Player): void {
+        let command = this.cparser.createCommand(msg);
+
+        if (command.commandStatus === CommandStatus.VALID_COMMAND) {
+            // Appel de gameMaster pour l'exécution de la commande
+            msg += "\nAppel à gameMaster pour exécution";
+        } else if (command.commandStatus === CommandStatus.INVALID_COMMAND_SYNTAX) {
+            msg += "\nCette commande ne respecte pas la syntaxe. Voir !aide";
+        } else if (command.commandStatus === CommandStatus.UNDEFINED_COMMAND) {
+            msg += "\nCette commande n'existe pas.";
+        }
+
+        this.sio.emit('command sent', player.name + " ~ " + msg);
     }
 }
