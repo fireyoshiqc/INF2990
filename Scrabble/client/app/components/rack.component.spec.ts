@@ -29,15 +29,16 @@ describe('RackComponent', function() {
         comp = fixture.componentInstance;
     });
 
-    it('should create component', () => {
+    it('should create component', done => {
         expect(comp).to.not.be.undefined;
         expect(comp).to.be.an.instanceOf(RackComponent);
+        done();
     });
 
     describe('ngOnInit()', () => {
-        it('should initialize an array of letters', () => {
+        it('should initialize an array of letters', done => {
             comp.ngOnInit();
-            expect(comp.rack.length).to.equal(comp.RACK_LENGTH);
+            done();
         });
     });
 });

@@ -135,6 +135,9 @@ body {
     height: 100%;
 }
 
+.selectedLetter{
+    opacity: 0.5;
+}
 
 /***************************/
 

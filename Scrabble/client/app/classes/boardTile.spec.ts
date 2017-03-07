@@ -27,10 +27,10 @@ describe('BoardTile', () => {
 
     describe('putLetter()', () => {
         it('should put a Letter on a BoardTile object.', done => {
-            let letter = new Letter("A", 1);
+            let letter = new Letter("A");
             boardTile.putLetter(letter);
 
-            expect(boardTile.getLetter()).to.be.equal(letter);
+            expect(boardTile.getLetter()).to.equal(letter);
             done();
         });
     });

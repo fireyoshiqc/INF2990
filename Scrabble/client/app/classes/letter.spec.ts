@@ -11,7 +11,7 @@ import { expect } from 'chai';
 
 describe('Letter', () => {
 
-    let letter = new Letter("a", 1);
+    let letter = new Letter("a");
 
     describe('Default constructor', () => {
         it('should construct a BoardTile object.', done => {

@@ -6,25 +6,30 @@
  */
 
 import { Component, OnInit } from '@angular/core';
+import { RackManager } from '../services/rackManager.service';
 
 import { Letter } from '../classes/letter';
 
 @Component({
     moduleId: module.id,
     selector: 'rack-comp',
-    templateUrl: '/assets/templates/rack.component.html'
+    templateUrl: '/assets/templates/rack.component.html',
+    providers: [RackManager]
 })
 
 export class RackComponent implements OnInit {
-    rack: Letter[];
-    readonly RACK_LENGTH = 7;
+
+    constructor(private rackManager: RackManager) {
+        this.rackManager = rackManager;
+    }
 
     ngOnInit() {
-        this.rack = [];
 
-        //TODO: Modify this so it picks letters from the letter stash
-        for (let i = 0; i < this.RACK_LENGTH; i++) {
-            this.rack[i] = new Letter("A", 1);
-        }
+    }
+
+    keyboardInput(event: KeyboardEvent) {
+        let letter = event.key;
+        console.log("lettre recue (rack): " + letter);
+        this.rackManager.handleInput(letter);
     }
 }
