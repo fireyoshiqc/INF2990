@@ -111,8 +111,7 @@ export class PhysicsManager {
             if (stone.getHasBeenShot()) {
                 let isPastBackLine = stone.position.z < -(Rink.RINK_LENGTH + CurlingStone.MAX_RADIUS);
                 let isPastRinkSides = Math.abs(stone.position.x) > (Rink.RINK_WIDTH / 2 - CurlingStone.MAX_RADIUS);
-                // TODO: Replace -10 with correct ligne de jeu value
-                let hasStoppedBeforeGameLine = stone.velocity.length() < 0.01 && (stone.position.z > -10);
+                let hasStoppedBeforeGameLine = stone.velocity.length() < 0.01 && (stone.position.z > Rink.HOG_LINE);
 
                 if (isPastBackLine || isPastRinkSides || hasStoppedBeforeGameLine) {
                     outOfBoundsStones.push(stone);

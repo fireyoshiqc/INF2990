@@ -9,6 +9,10 @@ import { expect } from 'chai';
 
 import { GameController } from './gameController.service';
 import { Team } from '../entities/curlingStone';
+import { ShootingState } from './gameStates/ShootingState';
+import { IdleState } from './gameStates/IdleState';
+import { ChoosingAngleState } from './gameStates/ChoosingAngleState';
+import { SweepingState } from './gameStates/SweepingState';
 
 describe('GameController', () => {
     let gameController = new GameController();
@@ -27,6 +31,7 @@ describe('GameController', () => {
 
             expect(gameController.getCurlingStones().length).to.be.equal(1);
             expect(gameController.getCurlingStones()[0].getTeam()).to.be.equal(Team.Player);
+            expect(gameController.getCurrentState()).to.be.instanceOf(IdleState);
             expect(gameController.getGameRenderer().isStarted).to.be.true;
 
             done();
@@ -87,6 +92,48 @@ describe('GameController', () => {
 
                 expect(gameController.getCurlingStones().length).to.be.equal(1);
 
+                done();
+            });
+        });
+
+        describe('startThrowStone()', () => {
+            it('should switch gameController to choosingAngleState with clockwise spin', done => {
+                gameController.startThrowStone("true");
+                expect(gameController.getCurlingStones()[0].getSpinOrientation()).to.be.equal(-1);
+                expect(gameController.getCurrentState()).to.be.instanceOf(ChoosingAngleState);
+                done();
+            });
+
+            it('should switch gameController to choosingAngleState with counterClockwise spin', done => {
+                gameController.enterIdleState();
+                gameController.startThrowStone("false");
+                expect(gameController.getCurlingStones()[0].getSpinOrientation()).to.be.equal(1);
+                expect(gameController.getCurrentState()).to.be.instanceOf(ChoosingAngleState);
+                done();
+            });
+        });
+
+        describe('enterShootingState()', () => {
+            it('should switch gameController to shootingState with the force bar visible', done => {
+                gameController.enterShootingState();
+                expect(gameController.isForceVisible()).to.be.true;
+                expect(gameController.getCurrentState()).to.be.instanceOf(ShootingState);
+                done();
+            });
+        });
+
+        describe('enterSweepingState()', () => {
+            it('should switch gameController to sweepingState with the force bar visible', done => {
+                gameController.enterSweepingState();
+                expect(gameController.getCurrentState()).to.be.instanceOf(SweepingState);
+                done();
+            });
+        });
+
+         describe('enterIdleState()', () => {
+            it('should switch gameController to idleState with the force bar visible', done => {
+                gameController.enterIdleState();
+                expect(gameController.getCurrentState()).to.be.instanceOf(IdleState);
                 done();
             });
         });

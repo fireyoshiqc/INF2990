@@ -32,7 +32,7 @@ export class GameController {
     private sweepingState = new SweepingState(this);
     private gameState: GameState = this.idleState;
 
-    private forceIsVisible = false;
+    private forceVisible = false;
     private forceValue = 0;
 
     public init(container?: HTMLElement): void {
@@ -68,6 +68,10 @@ export class GameController {
 
     getAiScore(): number {
         return this.aiScore;
+    }
+
+    isForceVisible(): boolean {
+        return this.forceVisible;
     }
 
     getForceValue(): number {
@@ -132,7 +136,7 @@ export class GameController {
     }
 
     enterShootingState() {
-        this.forceIsVisible = true;
+        this.forceVisible = true;
         this.gameState = this.shootingState;
     }
 
@@ -143,17 +147,18 @@ export class GameController {
     }
 
     enterIdleState() {
-        this.forceIsVisible = false;
+        this.gameState = this.idleState;
+        this.forceVisible = false;
     }
 
     startThrowStone(event: any): void {
         if (this.gameState === this.idleState) {
-            if (event === "true") { //Counter Clockwise Spin
+            if (event === "true") { //Clockwise Spin
                 this.curlingStones[this.curlingStones.length - 1].setSpinOrientation(SpinOrientation.CLOCKWISE);
             } else {
                 this.curlingStones[this.curlingStones.length - 1].setSpinOrientation(SpinOrientation.COUNTER_CLOCKWISE);
             }
-            document.body.style.cursor = "none";
+            //document.body.style.cursor = "none";
             this.gameRenderer.updateDirectionCurve(0);
             this.gameRenderer.showDirectionCurve();
             this.gameState = this.choosingAngleState;
@@ -166,6 +171,10 @@ export class GameController {
 
     getShootingAngle(): number {
         return this.shootingAngle;
+    }
+
+    getCurrentState(): GameState {
+        return this.gameState;
     }
 
     /******************** TEST HELPER *******************/

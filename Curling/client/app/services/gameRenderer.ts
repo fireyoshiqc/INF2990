@@ -97,7 +97,7 @@ export class GameRenderer {
 
         // Create the final object to add to the scene
         this.curveObject = new THREE.Line(this.curveGeometry, curveMaterial);
-
+        this.curveObject.name = "directionalCurve"; // For testing only
 
         /*--------------------LIGHT------------------------------------------ */
 
@@ -137,6 +137,7 @@ export class GameRenderer {
     }
 
     calculateAngle(mouse: THREE.Vector2): number {
+        console.log(mouse);
         this.raycaster.setFromCamera(mouse, this.cameraManager.getCamera());
         let intersects = this.raycaster.intersectObject(this.scene.getObjectByName("rink"), true);
         if (intersects.length > 0) {
@@ -171,7 +172,7 @@ export class GameRenderer {
         });
     }
 
-    getFurthestCollisionPoint(): THREE.Vector3 {
+    private getFurthestCollisionPoint(): THREE.Vector3 {
         let x = 0, z = 0;
         // Bordure
         if (this.curveAngle !== 0) {
