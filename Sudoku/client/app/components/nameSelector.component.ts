@@ -26,8 +26,8 @@ export class NameSelectorComponent {
     }
 
     onStart() {
+
         this.error = false;
-        //TODO: Make real validation for player name. This is temporary.
 
         if (this.difficulty !== undefined && this.playerName !== undefined) {
             this.nameService.validateName(this.playerName).then((response) => {
@@ -42,9 +42,6 @@ export class NameSelectorComponent {
             });
         }
 
-        // if (this.difficulty !== undefined && this.nameService.validateName(this.playerName)) {
-
-        // }
         else if (this.difficulty === undefined) {
             this.error = true;
             this.errorMessage = "Veuillez choisir une difficulté.";

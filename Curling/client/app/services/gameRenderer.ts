@@ -19,6 +19,7 @@ export class GameRenderer {
     private readonly DASH_SIZE = 0.1;
     private readonly GAP_SIZE = 0.1;
     private readonly TRANSLATE_OFFSET = 0.5;
+    private readonly SPIN_SPEED = 2 * Math.PI / 3;
 
     container: HTMLElement;
     scene: THREE.Scene;
@@ -96,7 +97,7 @@ export class GameRenderer {
 
         // Create the final object to add to the scene
         this.curveObject = new THREE.Line(this.curveGeometry, curveMaterial);
-
+        this.curveObject.name = "directionalCurve"; // For testing only
 
         /*--------------------LIGHT------------------------------------------ */
 
@@ -170,7 +171,7 @@ export class GameRenderer {
         });
     }
 
-    getFurthestCollisionPoint(): THREE.Vector3 {
+    private getFurthestCollisionPoint(): THREE.Vector3 {
         let x = 0, z = 0;
         // Bordure
         if (this.curveAngle !== 0) {
@@ -216,6 +217,11 @@ export class GameRenderer {
             this.curveObject.position.x = 0;
             this.curveObject.position.z = 0;
             this.totalTranslateOffset = 0;
+        }
+
+        // Rotate the active stone
+        if (this.activeStone.velocity.length() > 0.1) {
+            this.activeStone.rotateY(this.activeStone.getSpinOrientation() * delta * this.SPIN_SPEED);
         }
 
         //Render scene using camera that is following the stone

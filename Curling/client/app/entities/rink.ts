@@ -14,6 +14,7 @@ export class Rink extends THREE.Group {
     static readonly RINK_LENGTH = 46;
     static readonly RINK_WIDTH = 4.4;
     private static readonly RINK_HEIGHT = 0.1;
+    static readonly HOG_LINE = -11.28;
 
     //Rings
     private static readonly CENTER_RADIUS = 0.15;
@@ -88,21 +89,23 @@ export class Rink extends THREE.Group {
             //--------------FIN ICE---------------------------------------------------//
 
             //--------------GAME LINE---------------------------------------------------//
-            // let material = new THREE.LineBasicMaterial({
-            //     color: 0x0000ff
-            // });
+            let gameLineMaterial = new THREE.LineBasicMaterial({
+                color: 0xff0000
+            });
 
-            // let geometry = new THREE.Geometry();
-            // geometry.vertices.push(
-            //     new THREE.Vector3(-Rink.RINK_WIDTH / 2, Rink.RINK_HEIGHT, (Rink.RINK_LENGTH / 2) - 10),
-            //     new THREE.Vector3(Rink.RINK_WIDTH / 2, Rink.RINK_HEIGHT, (Rink.RINK_LENGTH / 2) - 10)
-            // );
+            let gameLineGeometry = new THREE.Geometry();
+            gameLineGeometry.vertices.push(
+                new THREE.Vector3(-Rink.RINK_WIDTH / 2 + 0.05,
+                                   Rink.RINK_HEIGHT, (Rink.RINK_LENGTH / 2) + Rink.HOG_LINE),
+                new THREE.Vector3(Rink.RINK_WIDTH / 2 - 0.05, Rink.RINK_HEIGHT, (Rink.RINK_LENGTH / 2) + Rink.HOG_LINE)
+            );
 
-            // let gameLine = new THREE.Line(geometry, material);
-            // this.add(gameLine);
+           let gameLine = new THREE.Line(gameLineGeometry, gameLineMaterial);
+
             //--------------END GAME LINE---------------------------------------------------//
 
             //Assemble
+            this.add(gameLine);
             this.add(rings);
             this.add(rink);
 

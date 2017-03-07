@@ -80,7 +80,6 @@ export class InputService {
         nextInput.focus();
     }
 
-    // QUESTION: Comment tester si cette methode devrait etre private ?
     private findNextInputField(entry: EntryValidation, isIncrement: boolean, moveAlongRow: boolean) {
         let gridValue;
 

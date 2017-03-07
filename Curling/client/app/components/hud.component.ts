@@ -28,7 +28,7 @@ export class HUDComponent {
     private selectedSpin = false;
     private rounds = [false, false, false]; // indicates which rounds have been completed (true)
     private sliderDisabled = false;
-    @Input() private forceIsVisible = false;
+    @Input() private forceVisible = false;
     @Input() private forceValue = 0;
 
     @Output()
@@ -113,7 +113,7 @@ export class HUDComponent {
     }
 
     setForceVisibility(newForceVisibility: boolean): void {
-        this.forceIsVisible = newForceVisibility;
+        this.forceVisible = newForceVisibility;
     }
 
     getRounds(): boolean[] {
