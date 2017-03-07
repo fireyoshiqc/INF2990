@@ -23,26 +23,62 @@ if [ -d $SUS -a -d $SUC -a -d $SCS -a -d $SCC -a -d $CUS -a -d $CUC ]
 then
   echo "Directory structure is good, beginning npm install task..."
   cd Sudoku/server
+  if [ "$1" = "--clean" ]
+  then
+    echo "Cleanup old modules..."
+    rm -rf node_modules
+    echo "Success."
+  fi
   echo "Installing Sudoku server modules..."
   npm install $MOD
   echo "Sudoku server modules installed."
   cd ../client
+  if [ "$1" = "--clean" ]
+  then
+    echo "Cleanup old modules..."
+    rm -rf node_modules
+    echo "Success."
+  fi
   echo "Installing Sudoku client modules..."
   npm install $MOD
   echo "Sudoku client modules installed."
   cd ../../Scrabble/server
+  if [ "$1" = "--clean" ]
+  then
+    echo "Cleanup old modules..."
+    rm -rf node_modules
+    echo "Success."
+  fi
   echo "Installing Scrabble server modules..."
   npm install $MOD
   echo "Scrabble server modules installed."
   cd ../client
+  if [ "$1" = "--clean" ]
+  then
+    echo "Cleanup old modules..."
+    rm -rf node_modules
+    echo "Success."
+  fi
   echo "Installing Scrabble client modules..."
   npm install $MOD
   echo "Scrabble client modules installed."
   cd ../../Curling/server
+  if [ "$1" = "--clean" ]
+  then
+    echo "Cleanup old modules..."
+    rm -rf node_modules
+    echo "Success."
+  fi
   echo "Installing Curling server modules..."
   npm install $MOD
   echo "Curling server modules installed."
   cd ../client
+  if [ "$1" = "--clean" ]
+  then
+    echo "Cleanup old modules..."
+    rm -rf node_modules
+    echo "Success."
+  fi
   echo "Installing Curling client modules..."
   npm install $MOD
   echo "Curling client modules installed."
