@@ -137,7 +137,6 @@ export class GameRenderer {
     }
 
     calculateAngle(mouse: THREE.Vector2): number {
-        console.log(mouse);
         this.raycaster.setFromCamera(mouse, this.cameraManager.getCamera());
         let intersects = this.raycaster.intersectObject(this.scene.getObjectByName("rink"), true);
         if (intersects.length > 0) {
