@@ -18,6 +18,7 @@ describe('NameManagerService', () => {
         it('should construct a name manager with an empty array of names', done => {
             testNameManager = new NameManagerService();
             expect(testNameManager).to.exist;
+            expect(testNameManager).to.be.an.instanceof(NameManagerService);
             done();
         });
 
