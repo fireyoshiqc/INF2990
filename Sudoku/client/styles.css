@@ -147,10 +147,10 @@ md-sidenav-container {
     margin: 3%;
 }
 
-#infoPanel {
+.info-panel {
     margin: 3%;
     margin-top: 0%;
-    width: 530px
+    width: 500px
 }
 
 

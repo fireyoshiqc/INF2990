@@ -25,20 +25,16 @@
 
     </div>
 
-    <div class="flex-item" fxLayoutAlign.xs="center center" fxLayoutAlign.gt-xs="center center" fxLayoutAlign.gt-md="start center"
+    <div class="flex-item" fxLayout="column" fxLayoutAlign.xs="center center" fxLayoutAlign.gt-xs="center center" fxLayoutAlign.gt-md="start start"
         fxFlex="50%">
 
-        <md-card id="infoPanel">
+        <md-card class="info-panel">
             <md-card-title>
                 {{sudokuService.playerName}}
             </md-card-title>
             <md-card-content>
-                <p>Le sudoku est valide :
-                    <md-icon *ngIf="sudokuService.isValid">check</md-icon>
-                    <md-icon *ngIf="!sudokuService.isValid">close</md-icon>
-                </p>
                 <p>Niveau de difficulté : {{sudokuService.difficulty}} </p>
-                <p *ngIf="stopwatchService.isVisible()">Chronomètre : <span>{{stopwatchService.getMinutes()}}</span> min <span>{{stopwatchService.getSeconds()}}</span>                    sec</p>
+                <p *ngIf="stopwatchService.isVisible()">Chronomètre : <span>{{stopwatchService.getMinutes()}}</span> min <span>{{stopwatchService.getSeconds()}}</span> sec</p>
             </md-card-content>
             <md-card-actions id="controlButtons">
                 <button md-raised-button color="accent" (click)="resetSudoku()">Réinitialiser la grille</button>
@@ -46,12 +42,12 @@
             </md-card-actions>
         </md-card>
 
-        <md-card *ngIf="sudokuService.isValid">
+        <md-card class="info-panel" *ngIf="sudokuService.isValid">
             <md-card-title>
                 Félicitations!
             </md-card-title>
             <md-card-content>
-                Vous avez réussi le sudoku en X secondes!
+                <p>Vous avez réussi le sudoku {{sudokuService.difficulty}} en <span>{{stopwatchService.getMinutes()}}</span> min <span>{{stopwatchService.getSeconds()}}</span> sec!</p>
             </md-card-content>
         </md-card>
 
