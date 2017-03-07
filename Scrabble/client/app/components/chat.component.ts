@@ -53,7 +53,6 @@ export class ChatComponent implements OnInit {
 
     keyboardInput(event: KeyboardEvent) {
         //TODO: gérer le input à partir d'ici
-        let letter = event.key;
     }
 }
 

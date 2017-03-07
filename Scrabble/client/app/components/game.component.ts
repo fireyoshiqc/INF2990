@@ -1,6 +1,6 @@
 import { Component, HostListener, ViewChild } from '@angular/core';
 import { RackComponent } from './rack.component';
-import { ChatComponent } from './chat.component';
+//import { ChatComponent } from './chat.component';
 
 @Component({
     moduleId: module.id,

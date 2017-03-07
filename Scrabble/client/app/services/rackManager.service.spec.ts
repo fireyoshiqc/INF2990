@@ -6,7 +6,7 @@
  */
 
 import { RackManager } from './rackManager.service';
-import { Letter } from '../classes/letter'
+import { Letter } from '../classes/letter';
 
 import { expect } from 'chai';
 

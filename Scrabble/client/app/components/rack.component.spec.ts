@@ -34,11 +34,4 @@ describe('RackComponent', function() {
         expect(comp).to.be.an.instanceOf(RackComponent);
         done();
     });
-
-    describe('ngOnInit()', () => {
-        it('should initialize an array of letters', done => {
-            comp.ngOnInit();
-            done();
-        });
-    });
 });
