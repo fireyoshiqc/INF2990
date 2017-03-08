@@ -97,12 +97,12 @@ export class CurlingStone extends THREE.Group {
         cylinder.rotation.x = Math.PI / 2;
 
         //Merge base geometry
-        let curlingGeometry: THREE.Geometry = new THREE.Geometry();
+        let stoneGeometry: THREE.Geometry = new THREE.Geometry();
 
         torus.updateMatrix();
-        curlingGeometry.merge(<THREE.Geometry>torus.geometry, torus.matrix);
+        stoneGeometry.merge(<THREE.Geometry>torus.geometry, torus.matrix);
         cylinder.updateMatrix();
-        curlingGeometry.merge(<THREE.Geometry>cylinder.geometry, cylinder.matrix);
+        stoneGeometry.merge(<THREE.Geometry>cylinder.geometry, cylinder.matrix);
 
         // Material for stone base
         let material: THREE.MeshStandardMaterial;
@@ -116,7 +116,7 @@ export class CurlingStone extends THREE.Group {
             transparent: true
         });
 
-        let curlingMesh: THREE.Mesh = new THREE.Mesh(curlingGeometry, material);
+        let stoneMesh: THREE.Mesh = new THREE.Mesh(stoneGeometry, material);
         //-------------------- END CURLING BASE------------------------------------------ //
 
         /*-------------------- CURLING HANDLE------------------------------------------ */
@@ -165,8 +165,8 @@ export class CurlingStone extends THREE.Group {
 
         let handleMesh: THREE.Mesh = new THREE.Mesh(handleGeometry, handleMaterial);
 
-        curlingMesh.rotation.x = Math.PI / 2;
-        this.add(curlingMesh);
+        stoneMesh.rotation.x = Math.PI / 2;
+        this.add(stoneMesh);
         this.add(handleMesh);
     }
 
@@ -182,6 +182,36 @@ export class CurlingStone extends THREE.Group {
                 window.clearInterval(intervalID);
             }
         }, 10);
+    }
+
+    highlightOn(): void {
+        let outlineMaterial = new THREE.MeshBasicMaterial({color: 0x00ff00, side: THREE.BackSide});
+
+        // Highlight stone
+        let stoneMesh = <THREE.Mesh>this.children[0];
+        let stoneGeometry = <THREE.Geometry>(stoneMesh.geometry);
+        let outlineStoneMesh = new THREE.Mesh(stoneGeometry, outlineMaterial);
+        outlineStoneMesh.scale.multiplyScalar(1.10);
+        stoneMesh.add(outlineStoneMesh);
+
+        // Highlight handle
+        let handleMesh = <THREE.Mesh>this.children[1];
+        let handleGeometry = <THREE.Geometry>(handleMesh.geometry);
+        let outlineHandleMesh = new THREE.Mesh(handleGeometry, outlineMaterial);
+        outlineHandleMesh.scale.multiplyScalar(1.10);
+        handleMesh.add(outlineHandleMesh);
+    }
+
+    highlightOff(): void {
+        // Remove stone highlight
+        let stoneMesh = <THREE.Mesh>this.children[0];
+        let outlineStoneMesh = stoneMesh.children[0];
+        stoneMesh.remove(outlineStoneMesh);
+
+        // Remove handle highlight
+        let handleMesh = <THREE.Mesh>this.children[1];
+        let outlineHandleMesh = handleMesh.children[0];
+        handleMesh.remove(outlineHandleMesh);
     }
 
     isBeingPlayed(): boolean {
