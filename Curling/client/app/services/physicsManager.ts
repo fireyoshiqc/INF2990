@@ -122,6 +122,18 @@ export class PhysicsManager {
         return outOfBoundsStones;
     }
 
+    allStonesHaveStopped(): boolean {
+        let allStonesHaveStopped = true;
+
+        this.curlingStones.forEach(stone => {
+            if (stone.velocity.length() > 0.01) {
+                allStonesHaveStopped = false;
+            }
+        });
+
+        return allStonesHaveStopped;
+    }
+
     /******************** TEST HELPER *******************/
 
     setStonesForOutOfBoundsTests(): void {

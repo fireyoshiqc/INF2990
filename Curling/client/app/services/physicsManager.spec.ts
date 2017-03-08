@@ -93,4 +93,26 @@ describe('PhysicsManager', () => {
             done();
         });
     });
+
+    describe('allStonesHaveStopped()', () => {
+        it('should return true when all stones have stopped moving.', done => {
+            testPhysicsManager.clearStones();
+
+            let position = new THREE.Vector3(0, 0, 0);
+            let velocity = new THREE.Vector3(0, 0, 0);
+
+            testPhysicsManager.getStones().push(new CurlingStone(null, velocity, position));
+            testPhysicsManager.getStones().push(new CurlingStone(null, velocity, position));
+
+            expect(testPhysicsManager.allStonesHaveStopped()).to.be.true;
+            done();
+        });
+
+        it('should return false when some stones stones are still moving.', done => {
+            testPhysicsManager.getStones()[1].velocity.z = -100;  // Give one stone speed
+
+            expect(testPhysicsManager.allStonesHaveStopped()).to.be.false;
+            done();
+        });
+    });
 });
