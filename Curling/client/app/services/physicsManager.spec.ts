@@ -1,5 +1,6 @@
 import { PhysicsManager } from './physicsManager';
 import { CurlingStone, Team } from '../entities/curlingStone';
+import { Rink } from '../entities/rink';
 
 import { expect } from 'chai';
 
@@ -23,7 +24,7 @@ describe('PhysicsManager', () => {
             testPhysicsManager.getStones().push(new CurlingStone(Team.AI, new THREE.Vector3(0, 0, 1),
                 new THREE.Vector3(0, 0, 0)));
 
-            //Tests 60 frames at 60 FPS, so 1 second.
+            // Tests 60 frames at 60 FPS, so 1 second.
             for (let i = 0; i < 60; i++) {
                 testPhysicsManager.update(1 / 60);
             }
@@ -52,6 +53,34 @@ describe('PhysicsManager', () => {
 
             expect(testPhysicsManager.getStones()[0].velocity.z).to.be.below(0);
             expect(testPhysicsManager.getStones()[1].velocity.z).to.be.above(0);
+            done();
+        });
+    });
+
+    describe('getOutOfBoundsStones()', () => {
+        it('should detect when a stone has partially passed the left boundary.', done => {
+            // let curlingStones: CurlingStone[] = [];
+            // let stone = new CurlingStone(Team.AI,
+            //                              new THREE.Vector3(0, 0, 0),
+            //                              new THREE.Vector3(-(Rink.RINK_WIDTH / 2 - CurlingStone.MAX_RADIUS) - 0.1, 0, 0));
+            // curlingStones.push(stone);
+            // testPhysicsManager = new PhysicsManager(curlingStones);
+
+            // expect(testPhysicsManager.getOutOfBoundsStones().length).to.be.equal(1);
+            // expect(testPhysicsManager.getOutOfBoundsStones()[0]).to.be.instanceOf(CurlingStone);
+            // expect(testPhysicsManager.getOutOfBoundsStones()[0]).to.be.equal(stone);
+            done();
+        });
+        it('should detect when a stone has partially passed the right boundary.', done => {
+
+            done();
+        });
+        it('should detect when a stone has completely passed the backline.', done => {
+
+            done();
+        });
+        it('should detect when a stone has stopped before the gameline.', done => {
+
             done();
         });
     });
