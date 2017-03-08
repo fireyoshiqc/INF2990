@@ -89,6 +89,7 @@ export class Application {
 
         let sudokuManager = this.getSudokuManager();
         let nameManager = this.getNameManager();
+        let database = this.getDatabaseService();
 
         // TODO : Remove comments below when routers will be required
         //let router: express.Router;
@@ -121,6 +122,10 @@ export class Application {
 
         this.app.post('/removeName', function (req, res) {
             res.send(nameManager.removeName(req.body.name));
+        });
+
+        this.app.put('/addScore', function (req, res) {
+            database.addScore(req.body.name, req.body.time, req.body.difficulty);
         });
 
         // TODO : Remove comment below when routers will be required
@@ -161,5 +166,9 @@ export class Application {
 
     getNameManager(): NameManagerService {
         return this.nameManager;
+    }
+
+    getDatabaseService(): DatabaseService {
+        return this.database;
     }
 }
