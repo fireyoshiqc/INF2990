@@ -1,6 +1,5 @@
 import { PhysicsManager } from './physicsManager';
 import { CurlingStone, Team } from '../entities/curlingStone';
-import { Rink } from '../entities/rink';
 
 import { expect } from 'chai';
 
@@ -59,28 +58,38 @@ describe('PhysicsManager', () => {
 
     describe('getOutOfBoundsStones()', () => {
         it('should detect when a stone has partially passed the left boundary.', done => {
-            // let curlingStones: CurlingStone[] = [];
-            // let stone = new CurlingStone(Team.AI,
-            //                              new THREE.Vector3(0, 0, 0),
-            //                              new THREE.Vector3(-(Rink.RINK_WIDTH / 2 - CurlingStone.MAX_RADIUS) - 0.1, 0, 0));
-            // curlingStones.push(stone);
-            // testPhysicsManager = new PhysicsManager(curlingStones);
+            testPhysicsManager.setStonesForOutOfBoundsTests();
+            testPhysicsManager.getStones()[0].setHasBeenShot();
 
-            // expect(testPhysicsManager.getOutOfBoundsStones().length).to.be.equal(1);
-            // expect(testPhysicsManager.getOutOfBoundsStones()[0]).to.be.instanceOf(CurlingStone);
-            // expect(testPhysicsManager.getOutOfBoundsStones()[0]).to.be.equal(stone);
+            expect(testPhysicsManager.getOutOfBoundsStones().length).to.be.equal(1);
+            expect(testPhysicsManager.getOutOfBoundsStones()[0]).to.be.instanceOf(CurlingStone);
             done();
         });
+
         it('should detect when a stone has partially passed the right boundary.', done => {
+            testPhysicsManager.getStones().splice(0, 1);
+            testPhysicsManager.getStones()[0].setHasBeenShot();
 
+            expect(testPhysicsManager.getOutOfBoundsStones().length).to.be.equal(1);
+            expect(testPhysicsManager.getOutOfBoundsStones()[0]).to.be.instanceOf(CurlingStone);
             done();
         });
+
         it('should detect when a stone has completely passed the backline.', done => {
+            testPhysicsManager.getStones().splice(0, 1);
+            testPhysicsManager.getStones()[0].setHasBeenShot();
 
+            expect(testPhysicsManager.getOutOfBoundsStones().length).to.be.equal(1);
+            expect(testPhysicsManager.getOutOfBoundsStones()[0]).to.be.instanceOf(CurlingStone);
             done();
         });
-        it('should detect when a stone has stopped before the gameline.', done => {
 
+        it('should detect when a stone has stopped before the gameline.', done => {
+            testPhysicsManager.getStones().splice(0, 1);
+            testPhysicsManager.getStones()[0].setHasBeenShot();
+
+            expect(testPhysicsManager.getOutOfBoundsStones().length).to.be.equal(1);
+            expect(testPhysicsManager.getOutOfBoundsStones()[0]).to.be.instanceOf(CurlingStone);
             done();
         });
     });

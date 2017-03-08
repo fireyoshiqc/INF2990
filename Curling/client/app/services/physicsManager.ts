@@ -121,4 +121,29 @@ export class PhysicsManager {
 
         return outOfBoundsStones;
     }
+
+    /******************** TEST HELPER *******************/
+
+    setStonesForOutOfBoundsTests(): void {
+        this.clearStones();
+
+        let speed = new THREE.Vector3(0, 0, 0);
+
+        // Past left boundary
+        let leftPos = new THREE.Vector3(-(Rink.RINK_WIDTH / 2 - CurlingStone.MAX_RADIUS) - 0.1, 0, 0);
+        this.curlingStones.push(new CurlingStone(null, speed, leftPos));
+
+        // Past right boundary
+        let rightPos = new THREE.Vector3((Rink.RINK_WIDTH / 2 - CurlingStone.MAX_RADIUS) + 0.1, 0, 0);
+        this.curlingStones.push(new CurlingStone(null, speed, rightPos));
+
+        // Past back line
+        let backPos = new THREE.Vector3(0, 0, -(Rink.RINK_LENGTH + CurlingStone.MAX_RADIUS) - 0.1);
+        this.curlingStones.push(new CurlingStone(null, speed, backPos));
+
+        // Stopped before game line
+        this.curlingStones.push(new CurlingStone(null, speed, new THREE.Vector3(0, 0, 0)));
+    }
+
+    /***************** END TEST HELPER *******************/
 }
