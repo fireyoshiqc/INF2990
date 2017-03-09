@@ -198,7 +198,7 @@ export class PhysicsManager {
     /***************** END TEST HELPER *******************/
 }
 
-export interface SweptSpot {
+interface SweptSpot {
     position: THREE.Vector3;
     ttl: number;
     id: number;
