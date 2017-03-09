@@ -137,5 +137,13 @@ describe('GameController', () => {
                 done();
             });
         });
+
+        describe('enterChoosingAngleState()', () => {
+            it('should switch gameController to enterChoosingAngleState', done => {
+                gameController.enterChoosingAngleState();
+                expect(gameController.getCurrentState()).to.be.instanceOf(ChoosingAngleState);
+                done();
+            });
+        });
     });
 });
