@@ -6,6 +6,7 @@
  */
 
 import { TextureCacher } from "../services/textureCacher";
+import { CurlingStone } from "./curlingStone";
 
 export class Rink extends THREE.Group {
 
@@ -33,6 +34,8 @@ export class Rink extends THREE.Group {
     private whiteIce: THREE.Texture;
     private blueIce: THREE.Texture;
     private redIce: THREE.Texture;
+
+    private rinkClipPlanes: THREE.Plane[];
 
     constructor(loaderImages: Array<string>) {
         super();
@@ -70,10 +73,19 @@ export class Rink extends THREE.Group {
     }
 
     private buildRink(): void {
+        this.buildClipPlanes();
         this.buildIce();
         this.buildSweptBuffer();
         this.buildGameLines();
         this.buildRings();
+    }
+
+    private buildClipPlanes(): void {
+        let leftPlane = new THREE.Plane(new THREE.Vector3(1, 0, 0), Rink.RINK_WIDTH / 2);
+        let rightPlane = new THREE.Plane(new THREE.Vector3(-1, 0, 0), Rink.RINK_WIDTH / 2);
+        let frontPlane = new THREE.Plane(new THREE.Vector3(0, 0, -1), 0);
+        let backPlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), Rink.RINK_LENGTH);
+        this.rinkClipPlanes = [leftPlane, rightPlane, frontPlane, backPlane];
     }
 
     private buildRings(): void {
@@ -104,7 +116,7 @@ export class Rink extends THREE.Group {
         rings.add(blueRing);
         rings.add(redRing);
 
-        rings.position.y = Rink.RINK_HEIGHT / 2 + 0.0001;
+        rings.position.y = Rink.RINK_HEIGHT / 2 + 0.0005;
         rings.rotation.x = -Math.PI / 2;
 
         rings.position.z = -(Rink.RINGS_OFFSET);
@@ -132,15 +144,16 @@ export class Rink extends THREE.Group {
     }
 
     private buildSweptBuffer(): void {
-        let sweptDiscGeometry: THREE.Geometry = new THREE.CircleGeometry(0.500, 20);
+        let sweptDiscGeometry: THREE.Geometry = new THREE.CircleGeometry(CurlingStone.MAX_RADIUS, 20);
         let discMaterial: THREE.Material = new THREE.MeshStandardMaterial({
             side: THREE.DoubleSide,
             metalness: 0.7,
             roughness: 0.0,
             envMap: this.reflectTexture,
             envMapIntensity: 1.0,
-            map: this.whiteIce
+            map: this.whiteIce,
         });
+        discMaterial.clippingPlanes = this.rinkClipPlanes;
 
         for (let i = 0; i < this.SWEPT_BUFFER_MAX; i++) {
             let disc: THREE.Mesh = new THREE.Mesh(sweptDiscGeometry, discMaterial);
@@ -176,6 +189,30 @@ export class Rink extends THREE.Group {
     public addSpot(x: number, z: number) {
         this.sweptSpotsBuffer[this.sweptBufferIndex].position.x = x;
         this.sweptSpotsBuffer[this.sweptBufferIndex].position.z = z;
+        let currentBuffer = this.sweptBufferIndex;
         this.sweptBufferIndex = (this.sweptBufferIndex + 1) % this.SWEPT_BUFFER_MAX;
+        return currentBuffer;
+    }
+
+    public removeSpot(id: number) {
+        this.sweptSpotsBuffer[id].position.z = 50;
+        //TODO: Make the spot fade out. This code works but is buggy with multiple spots at once.
+
+        // let x = 0;
+        // let self = this;
+        // let intervalID = setInterval(() => {
+        //     (<THREE.MeshStandardMaterial>self.sweptSpotsBuffer[id].material).metalness -= 0.001;
+        //     (<THREE.MeshStandardMaterial>self.sweptSpotsBuffer[id].material).roughness += 0.002;
+        //     if (++x === 100) {
+        //         clearInterval(intervalID);
+        //         self.sweptSpotsBuffer[id].position.z = 50;
+        //         (<THREE.MeshStandardMaterial>self.sweptSpotsBuffer[id].material).metalness = 0.7;
+        //         (<THREE.MeshStandardMaterial>self.sweptSpotsBuffer[id].material).roughness = 0.0;
+        //     }
+        // }, 10);
+    }
+
+    public getRinkLength(): number {
+        return Rink.RINK_LENGTH;
     }
 }

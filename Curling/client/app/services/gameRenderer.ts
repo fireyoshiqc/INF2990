@@ -10,7 +10,7 @@ import { CurlingStone } from '../entities/curlingStone';
 import { SkyBox } from '../entities/skyBox';
 import { Rink } from '../entities/rink';
 import { LightManager } from './lightManager';
-import { PhysicsManager } from './physicsManager';
+import { PhysicsManager, SweptSpot } from './physicsManager';
 import { CameraManager } from './cameraManager.service';
 
 @Injectable()
@@ -38,10 +38,6 @@ export class GameRenderer {
     private curveAngle = 0;
     private rink: Rink;
 
-    //TEMPORARY
-    private spotX = 0;
-    private spotZ = 23;
-
     // TODO : Remove when experimental test is done
     activeStone: CurlingStone;
 
@@ -57,6 +53,7 @@ export class GameRenderer {
         /*We have to set the size at which we want to render our app. We use the width and the height of the browser.*/
         this.renderer = new THREE.WebGLRenderer({ antialias: true });
         this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.renderer.localClippingEnabled = true;
 
         if (this.container !== undefined) {
             if (this.container.getElementsByTagName('canvas').length === 0) {
@@ -142,8 +139,7 @@ export class GameRenderer {
     }
 
     calculateAngle(mouse: THREE.Vector2): number {
-        this.raycaster.setFromCamera(mouse, this.cameraManager.getCamera());
-        let intersects = this.raycaster.intersectObject(this.scene.getObjectByName("rink"), true);
+        let intersects = this.checkIfMouseOnIce(mouse);
         if (intersects.length > 0) {
             let intersectionPoint = intersects[0].point;
             let distance = intersectionPoint.x;
@@ -152,6 +148,16 @@ export class GameRenderer {
             return angle;
         }
         return null;
+    }
+
+    checkIfMouseOnIce(mouse: THREE.Vector2): THREE.Intersection[] {
+        this.raycaster.setFromCamera(mouse, this.cameraManager.getCamera());
+        let intersects = this.raycaster.intersectObject(this.scene.getObjectByName("rink"), true);
+        return intersects;
+    }
+
+    getRink(): Rink {
+        return this.rink;
     }
 
     updateDirectionCurve(angleDifference: number): void {
@@ -210,11 +216,12 @@ export class GameRenderer {
         let delta = this.clock.getDelta();
         this.physicsManager.update(delta);
         this.removeOutOfBoundsStones(this.physicsManager.getOutOfBoundsStones());
+        let self = this;
+        this.physicsManager.getDecayedSpots().forEach(spot => {
+            self.rink.removeSpot(spot.id);
+        });
+        this.physicsManager.cleanDecayedSpots();
 
-        if (this.rink.isLoadingDone()) {
-            this.rink.addSpot(this.spotX, this.spotZ);
-            this.spotZ-=delta;
-        }
         // Ligne de direction - Fourmillement
         let scalarOffset = this.TRANSLATE_OFFSET * delta;
         this.totalTranslateOffset += scalarOffset;
