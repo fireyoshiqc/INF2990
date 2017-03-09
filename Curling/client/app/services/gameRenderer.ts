@@ -10,7 +10,7 @@ import { CurlingStone } from '../entities/curlingStone';
 import { SkyBox } from '../entities/skyBox';
 import { Rink } from '../entities/rink';
 import { LightManager } from './lightManager';
-import { PhysicsManager, SweptSpot } from './physicsManager';
+import { PhysicsManager } from './physicsManager';
 import { CameraManager } from './cameraManager.service';
 
 @Injectable()

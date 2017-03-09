@@ -64,7 +64,7 @@ describe('GameRenderer', () => {
         });
 
         it ('should return a null when when the mouse is placed outside of the rink', done => {
-            let mouse = new THREE.Vector2(0, 0);
+            let mouse = new THREE.Vector2(10000, 10000);
             let angle = testRenderer.calculateAngle(mouse);
             expect(angle).to.be.null;
             done();
