@@ -23,120 +23,159 @@ export class Rink extends THREE.Group {
     static readonly OUTER_RADIUS = 1.8;
     static readonly RINGS_OFFSET = 17.37; //By how much the ring set is off from the center of the rink.
 
+    private sweptSpotsBuffer: THREE.Mesh[] = [];
+    private sweptBufferIndex = 0;
+    private readonly SWEPT_BUFFER_MAX = 50;
+
+    private reflectTexture: THREE.CubeTexture;
+    private loadingDone = false;
+
+    private whiteIce: THREE.Texture;
+    private blueIce: THREE.Texture;
+    private redIce: THREE.Texture;
+
     constructor(loaderImages: Array<string>) {
         super();
+        let self = this;
+        this.loadTextures();
+        this.loadEnvmap(loaderImages, () => {
+            self.buildRink();
+            self.loadingDone = true;
+        });
+    }
 
-        //-------------REFLECTIVE TEXTURE-------------------------------------//
+    private loadTextures(): void {
+        this.redIce = TextureCacher.load("/assets/textures/red_ice.jpg");
+        this.blueIce = TextureCacher.load("/assets/textures/blue_ice.jpg");
+        this.whiteIce = TextureCacher.load("/assets/textures/white_ice.jpg");
+
+        this.redIce.wrapS = this.redIce.wrapT = THREE.RepeatWrapping;
+        this.blueIce.wrapS = this.blueIce.wrapT = THREE.RepeatWrapping;
+        this.redIce.repeat.set(2, 2);
+        this.blueIce.repeat.set(4, 4);
+        this.whiteIce.repeat.set(4, 46);
+        this.whiteIce.wrapS = this.whiteIce.wrapT = THREE.RepeatWrapping;
+    }
+
+    private loadEnvmap(loaderImages: Array<string>, callback: () => void): void {
         let loader: THREE.CubeTextureLoader;
         loader = new THREE.CubeTextureLoader();
-
+        let self = this;
         loader.load(loaderImages, (reflectTexture) => {
             reflectTexture.format = THREE.RGBFormat;
             reflectTexture.mapping = THREE.CubeReflectionMapping;
-
-            //--------------RINGS-------------------------------------------------//
-
-            let whiteIce: THREE.Texture = TextureCacher.load("/assets/textures/white_ice.jpg");
-            let redIce: THREE.Texture = TextureCacher.load("/assets/textures/red_ice.jpg");
-            let blueIce: THREE.Texture = TextureCacher.load("/assets/textures/blue_ice.jpg");
-
-            whiteIce.wrapS = whiteIce.wrapT = THREE.RepeatWrapping;
-            redIce.wrapS = redIce.wrapT = THREE.RepeatWrapping;
-            blueIce.wrapS = blueIce.wrapT = THREE.RepeatWrapping;
-            whiteIce.repeat.set(4, 46);
-            redIce.repeat.set(2, 2);
-            blueIce.repeat.set(4, 4);
-
-            let blueRingGeometry: THREE.Geometry = new THREE.RingGeometry(Rink.MIDDLE_RADIUS, Rink.OUTER_RADIUS, 40);
-            let blueRingMaterial: THREE.Material = new THREE.MeshStandardMaterial({
-                side: THREE.DoubleSide,
-                metalness: 0.6,
-                roughness: 0.2,
-                envMap: reflectTexture,
-                envMapIntensity: 1.0,
-                map: blueIce
-            });
-            let blueRing: THREE.Mesh = new THREE.Mesh(blueRingGeometry, blueRingMaterial);
-            let redRingGeometry: THREE.Geometry = new THREE.RingGeometry(Rink.CENTER_RADIUS, Rink.INNER_RADIUS, 40);
-            let redRingMaterial: THREE.Material = new THREE.MeshStandardMaterial({
-                side: THREE.DoubleSide,
-                metalness: 0.6,
-                roughness: 0.2,
-                envMap: reflectTexture,
-                envMapIntensity: 1.0,
-                map: redIce
-            });
-            let redRing: THREE.Mesh = new THREE.Mesh(redRingGeometry, redRingMaterial);
-
-            let rings: THREE.Group = new THREE.Group();
-            rings.add(blueRing);
-            rings.add(redRing);
-
-            rings.position.y = Rink.RINK_HEIGHT / 2 + 0.001;
-            rings.rotation.x = -Math.PI / 2;
-
-            rings.position.z = -(Rink.RINGS_OFFSET);
-
-            //-----------FIN RINGS------------------------------------------------//
-
-            //--------------ICE---------------------------------------------------//
-            let rinkMaterial: THREE.Material = new THREE.MeshStandardMaterial({
-                metalness: 0.6,
-                roughness: 0.2,
-                envMap: reflectTexture,
-                envMapIntensity: 1.0,
-                map: whiteIce
-            });
-
-            let rinkGeometry: THREE.Geometry = new THREE.BoxGeometry(Rink.RINK_WIDTH,
-                Rink.RINK_HEIGHT, Rink.RINK_LENGTH, 32);
-
-            let rink: THREE.Mesh = new THREE.Mesh(rinkGeometry, rinkMaterial);
-            //--------------FIN ICE---------------------------------------------------//
-
-            //------------PROOF OF CONCEPT SWEEPING-----------------------------------//
-            let sweptDiscGeometry: THREE.Geometry = new THREE.CircleGeometry(0.500, 20);
-            let discMaterial: THREE.Material = new THREE.MeshStandardMaterial({
-                side: THREE.DoubleSide,
-                metalness: 0.7,
-                roughness: 0.0,
-                envMap: reflectTexture,
-                envMapIntensity: 1.0,
-                map: whiteIce
-            });
-
-            for (let i = 0; i < 50; i++) {
-                let disc: THREE.Mesh = new THREE.Mesh(sweptDiscGeometry, discMaterial);
-                this.add(disc);
-                disc.position.x = Math.pow((0.02 * i), 2);
-                disc.position.y = Rink.RINK_HEIGHT / 2 + 0.001;
-                disc.position.z = 20 - 0.145 * i;
-                disc.rotation.x = -Math.PI / 2;
-            }
-            //------------END OF PROOF OF CONCEPT SWEEPING------------------------------//
-
-            //--------------GAME LINE---------------------------------------------------//
-            let gameLineMaterial = new THREE.LineBasicMaterial({
-                color: 0xff0000
-            });
-
-            let gameLineGeometry = new THREE.Geometry();
-            gameLineGeometry.vertices.push(
-                new THREE.Vector3(-Rink.RINK_WIDTH / 2 + 0.05,
-                    Rink.RINK_HEIGHT, (Rink.RINK_LENGTH / 2) + Rink.HOG_LINE),
-                new THREE.Vector3(Rink.RINK_WIDTH / 2 - 0.05, Rink.RINK_HEIGHT, (Rink.RINK_LENGTH / 2) + Rink.HOG_LINE)
-            );
-
-            let gameLine = new THREE.Line(gameLineGeometry, gameLineMaterial);
-
-            //--------------END GAME LINE---------------------------------------------------//
-
-            //Assemble
-            this.add(gameLine);
-            this.add(rings);
-            this.add(rink);
-
+            self.reflectTexture = reflectTexture;
+            callback();
         });
-        //-----------END REFLECTIVE TEXTURE-----------------------------------//
+    }
+
+    private buildRink(): void {
+        this.buildIce();
+        this.buildSweptBuffer();
+        this.buildGameLines();
+        this.buildRings();
+    }
+
+    private buildRings(): void {
+
+        let blueRingGeometry: THREE.Geometry = new THREE.RingGeometry(Rink.MIDDLE_RADIUS, Rink.OUTER_RADIUS, 40);
+        let blueRingMaterial: THREE.Material = new THREE.MeshStandardMaterial({
+            side: THREE.DoubleSide,
+            metalness: 0.6,
+            roughness: 0.2,
+            envMap: this.reflectTexture,
+            envMapIntensity: 1.0,
+            map: this.blueIce
+        });
+        let blueRing: THREE.Mesh = new THREE.Mesh(blueRingGeometry, blueRingMaterial);
+
+        let redRingGeometry: THREE.Geometry = new THREE.RingGeometry(Rink.CENTER_RADIUS, Rink.INNER_RADIUS, 40);
+        let redRingMaterial: THREE.Material = new THREE.MeshStandardMaterial({
+            side: THREE.DoubleSide,
+            metalness: 0.6,
+            roughness: 0.2,
+            envMap: this.reflectTexture,
+            envMapIntensity: 1.0,
+            map: this.redIce
+        });
+        let redRing: THREE.Mesh = new THREE.Mesh(redRingGeometry, redRingMaterial);
+
+        let rings: THREE.Group = new THREE.Group();
+        rings.add(blueRing);
+        rings.add(redRing);
+
+        rings.position.y = Rink.RINK_HEIGHT / 2 + 0.0001;
+        rings.rotation.x = -Math.PI / 2;
+
+        rings.position.z = -(Rink.RINGS_OFFSET);
+
+        this.add(rings);
+    }
+
+    private buildIce(): void {
+
+        let rinkMaterial: THREE.Material = new THREE.MeshStandardMaterial({
+            metalness: 0.6,
+            roughness: 0.2,
+            envMap: this.reflectTexture,
+            envMapIntensity: 1.0,
+            map: this.whiteIce
+        });
+
+        let rinkGeometry: THREE.Geometry = new THREE.BoxGeometry(Rink.RINK_WIDTH,
+            Rink.RINK_HEIGHT, Rink.RINK_LENGTH, 32);
+
+        let rink: THREE.Mesh = new THREE.Mesh(rinkGeometry, rinkMaterial);
+
+        this.add(rink);
+
+    }
+
+    private buildSweptBuffer(): void {
+        let sweptDiscGeometry: THREE.Geometry = new THREE.CircleGeometry(0.500, 20);
+        let discMaterial: THREE.Material = new THREE.MeshStandardMaterial({
+            side: THREE.DoubleSide,
+            metalness: 0.7,
+            roughness: 0.0,
+            envMap: this.reflectTexture,
+            envMapIntensity: 1.0,
+            map: this.whiteIce
+        });
+
+        for (let i = 0; i < this.SWEPT_BUFFER_MAX; i++) {
+            let disc: THREE.Mesh = new THREE.Mesh(sweptDiscGeometry, discMaterial);
+            disc.position.y = Rink.RINK_HEIGHT / 2 + 0.0001;
+            disc.position.z = 50;
+            disc.rotation.x = -Math.PI / 2;
+            this.sweptSpotsBuffer.push(disc);
+            this.add(disc);
+        }
+
+    }
+
+    private buildGameLines(): void {
+        let gameLineMaterial = new THREE.LineBasicMaterial({
+            color: 0xff0000
+        });
+
+        let gameLineGeometry = new THREE.Geometry();
+        gameLineGeometry.vertices.push(
+            new THREE.Vector3(-Rink.RINK_WIDTH / 2 + 0.05,
+                Rink.RINK_HEIGHT, (Rink.RINK_LENGTH / 2) + Rink.HOG_LINE),
+            new THREE.Vector3(Rink.RINK_WIDTH / 2 - 0.05, Rink.RINK_HEIGHT, (Rink.RINK_LENGTH / 2) + Rink.HOG_LINE)
+        );
+
+        let gameLine = new THREE.Line(gameLineGeometry, gameLineMaterial);
+        this.add(gameLine);
+    }
+
+    public isLoadingDone(): boolean {
+        return this.loadingDone;
+    }
+
+    public addSpot(x: number, z: number) {
+        this.sweptSpotsBuffer[this.sweptBufferIndex].position.x = x;
+        this.sweptSpotsBuffer[this.sweptBufferIndex].position.z = z;
+        this.sweptBufferIndex = (this.sweptBufferIndex + 1) % this.SWEPT_BUFFER_MAX;
     }
 }

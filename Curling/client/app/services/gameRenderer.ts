@@ -36,6 +36,11 @@ export class GameRenderer {
     curveObject: THREE.Line;
     private totalTranslateOffset = 0;
     private curveAngle = 0;
+    private rink: Rink;
+
+    //TEMPORARY
+    private spotX = 0;
+    private spotZ = 23;
 
     // TODO : Remove when experimental test is done
     activeStone: CurlingStone;
@@ -77,11 +82,11 @@ export class GameRenderer {
 
         //TODO: Adjust rink to add play lines (home, throw line, etc.)
         //TODO: Adjust ring positions on the rink (they're wrong right now)
-        let rink: Rink = new Rink(skybox.skyBoxImages);
-        rink.position.z = -Rink.RINK_LENGTH / 2;
-        rink.position.y = Rink.POS_RINK_Y;
-        rink.name = "rink";
-        this.addToScene(rink);
+        this.rink = new Rink(skybox.skyBoxImages);
+        this.rink.position.z = -Rink.RINK_LENGTH / 2;
+        this.rink.position.y = Rink.POS_RINK_Y;
+        this.rink.name = "rink";
+        this.addToScene(this.rink);
 
         let directionCurve = new THREE.LineCurve3(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, -30));
         this.curveGeometry = new THREE.Geometry();
@@ -102,7 +107,7 @@ export class GameRenderer {
         /*--------------------LIGHT------------------------------------------ */
 
         this.scene.add(this.lightManager.spawnAmbientLight(0xffffff, 0x000077));
-        this.addToScene(this.lightManager.spawnSpotlights(-2.2, 0, 0, rink));
+        this.addToScene(this.lightManager.spawnSpotlights(-2.2, 0, 0, this.rink));
 
         //------------------- END LIGHT------------------------------------------//
 
@@ -206,6 +211,10 @@ export class GameRenderer {
         this.physicsManager.update(delta);
         this.removeOutOfBoundsStones(this.physicsManager.getOutOfBoundsStones());
 
+        if (this.rink.isLoadingDone()) {
+            this.rink.addSpot(this.spotX, this.spotZ);
+            this.spotZ-=delta;
+        }
         // Ligne de direction - Fourmillement
         let scalarOffset = this.TRANSLATE_OFFSET * delta;
         this.totalTranslateOffset += scalarOffset;

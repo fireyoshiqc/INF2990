@@ -34,7 +34,6 @@ export class CurlingStone extends THREE.Group {
     private readonly HANDLE_LENGTH = 0.13; //How long the top part of the handle is.
     private readonly HANDLE_MELD = 0.005; //By how much the handle sinks into the cover.
 
-    private texLoader: THREE.TextureLoader;
     stoneColor: string;
     velocity: THREE.Vector3;
     private beingPlayed = false;
@@ -83,8 +82,6 @@ export class CurlingStone extends THREE.Group {
     }
 
     init(): void {
-        this.texLoader = new THREE.TextureLoader();
-
         //Stone base
         let torusGeometry: THREE.TorusGeometry;
         torusGeometry = new THREE.TorusGeometry(this.RADIUS, this.RADIUS, this.SFACES, this.SFACES);

@@ -12,6 +12,7 @@ export class PhysicsManager {
     readonly FRICTION_MAGNITUDE = this.GRAVITY_N_PER_KG * this.COEFFICIENT_OF_FRICTION;
     readonly CURVE_ANGLE = Math.PI / 300;
     private curlingStones: CurlingStone[] = [];
+    private sweptSpots: THREE.Vector3[] = [];
     private delta: number;
 
     constructor(curlingStones: CurlingStone[]) {
@@ -82,10 +83,15 @@ export class PhysicsManager {
 
     private updateCurlingStonePosition(stone: CurlingStone, separationCorrection?: number) {
         if (separationCorrection === undefined) {
+
+            let multiplier: number;
+
+            this.checkforSweptSpots(stone) ? multiplier = 0.5 : multiplier = 1.0;
+
             if (stone.isBeingPlayed()) {
                 //Curve calculation only for the stone that was thrown
                 let curvedVelocity = stone.velocity.clone();
-                let curveFactor = this.delta * stone.getSpinOrientation() * this.CURVE_ANGLE;
+                let curveFactor = multiplier * this.delta * stone.getSpinOrientation() * this.CURVE_ANGLE;
                 curvedVelocity.x = Math.cos(curveFactor) * stone.velocity.x
                     + Math.sin(curveFactor) * stone.velocity.z;
                 curvedVelocity.z = -Math.sin(curveFactor) * stone.velocity.x
@@ -93,15 +99,28 @@ export class PhysicsManager {
                 stone.velocity = curvedVelocity.clone();
             }
 
-            //TODO: Check if stone is on a brushed ice area, if so, reduce friction by a certain factor.
             stone.velocity.sub((stone.velocity.clone().normalize()
-                .multiplyScalar(this.FRICTION_MAGNITUDE * this.delta)));
+                .multiplyScalar(multiplier * this.FRICTION_MAGNITUDE * this.delta)));
             stone.position.add((stone.velocity.clone().multiplyScalar(this.delta)));
+
         }
         else {
             //For stone separation
             stone.position.add(stone.velocity.clone().multiplyScalar(separationCorrection * this.delta));
         }
+    }
+
+    private checkforSweptSpots(stone: CurlingStone): boolean {
+        this.sweptSpots.forEach(spot => {
+            if ((stone.position.clone().sub(spot)).length() <= CurlingStone.MAX_RADIUS) {
+                return true;
+            }
+        });
+        return false;
+    }
+
+    getSweptSpots(): THREE.Vector3[] {
+        return this.sweptSpots;
     }
 
     getOutOfBoundsStones(): CurlingStone[] {
