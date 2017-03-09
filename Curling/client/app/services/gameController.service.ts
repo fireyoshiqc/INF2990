@@ -135,6 +135,13 @@ export class GameController {
         this.gameState.onMouseMove(event);
     }
 
+    enterChoosingAngleState() {
+        document.body.style.cursor = "none";
+        this.gameRenderer.updateDirectionCurve(0);
+        this.gameRenderer.showDirectionCurve();
+        this.gameState = this.choosingAngleState;
+    }
+
     enterShootingState() {
         this.forceVisible = true;
         this.gameState = this.shootingState;
@@ -158,10 +165,8 @@ export class GameController {
             } else {
                 this.curlingStones[this.curlingStones.length - 1].setSpinOrientation(SpinOrientation.COUNTER_CLOCKWISE);
             }
-            document.body.style.cursor = "none";
-            this.gameRenderer.updateDirectionCurve(0);
-            this.gameRenderer.showDirectionCurve();
-            this.gameState = this.choosingAngleState;
+
+            this.enterChoosingAngleState();
         }
     }
 

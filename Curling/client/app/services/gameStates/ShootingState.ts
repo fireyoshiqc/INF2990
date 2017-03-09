@@ -41,8 +41,8 @@ export class ShootingState implements GameState {
         } else {
             this.initialSpeedCounter = 0;
             this.gameController.setForceValue(0);
+            this.gameController.enterChoosingAngleState();
         }
-
         clearInterval(this.timer);
     }
 
