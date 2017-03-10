@@ -13,7 +13,7 @@ export class Letter {
 
     constructor(letter: string) {
         this.selected = false;
-        this.letter = letter.charAt(0).toUpperCase();
+        this.letter = letter.toUpperCase();
         this.texture = "../../assets/textures/letters/" + this.letter + ".png";
         this.value = this.getLetterValue();
     }
@@ -57,6 +57,8 @@ export class Letter {
             value = 8;
         } else if ("KWXYZ".includes(this.letter)) {
             value = 10;
+        } else if ("JOKER".includes(this.letter)) {
+            value = 0;
         }
 
         return value;

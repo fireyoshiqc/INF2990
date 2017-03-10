@@ -19,7 +19,7 @@ describe('RackManager', function () {
     });
 
     describe('Default constructor', function () {
-        it('should construct a rack manager', done => {
+        it('should construct a rack manager.', done => {
             expect(rackManager).to.exist;
             expect(rackManager).to.be.instanceOf(RackManager);
             done();
@@ -27,7 +27,7 @@ describe('RackManager', function () {
     });
 
     describe('getRack()', function () {
-        it('should return a rack of size 7', done => {
+        it('should return a rack of size 7.', done => {
             expect(rackManager.getRackLetters().length).to.equal(RackManager.RACK_LENGTH);
             expect(rackManager.getRackLetters()[0]).to.be.instanceOf(Letter);
             done();
