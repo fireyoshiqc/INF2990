@@ -1,14 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { SocketHandler } from '../modules/socketHandler.module';
+import { Message, MessageFromServer } from '../classes/message';
 
 @Component({
     moduleId: module.id,
     selector: 'chat-comp',
     templateUrl: '/assets/templates/chat.component.html'
 })
+
 export class ChatComponent implements OnInit {
     socket: any;
-    msg = new Message("");
+    msgFromClient: string;
     msgList = new Array<Message>();
     openWindow = window;
     attemptingToConnect = false;
@@ -21,33 +23,32 @@ export class ChatComponent implements OnInit {
             this.attemptingToConnect = true;
         });
 
-        this.socket.on('message sent', (msg: string) => {
+        this.socket.on('message sent', (msg: MessageFromServer) => {
             this.attemptingToConnect = false;
             this.msgList.push(new Message(msg));
         });
 
-        this.socket.on('command sent', (msg: string) => {
+        this.socket.on('command sent', (msg: MessageFromServer) => {
             this.attemptingToConnect = false;
-            msg += " JE SUIS UNE COMMANDE. (TODO : remplacer par de la couleur)\n";
+            this.msgList.push(new Message(msg, true));
+        });
+
+        this.socket.on('user connect', (msg: MessageFromServer) => {
+            this.attemptingToConnect = false;
             this.msgList.push(new Message(msg));
         });
 
-        this.socket.on('user connect', (msg: string) => {
-            this.attemptingToConnect = false;
-            this.msgList.push(new Message(msg));
-        });
-
-        this.socket.on('user disconnect', (msg: string) => {
+        this.socket.on('user disconnect', (msg: MessageFromServer) => {
             this.attemptingToConnect = false;
             this.msgList.push(new Message(msg));
         });
     }
 
     onSubmit() {
-        if (this.msg.message !== undefined && this.msg.message !== null) {
-            if (this.msg.message.replace(/\s+/g, "") !== "") {
+        if (this.msgFromClient !== undefined && this.msgFromClient !== null) {
+            if (this.msgFromClient.replace(/\s+/g, "") !== "") {
                 //Remove all spaces as a test to prevent sending huge empty messages
-                this.socket.emit('chat message', this.msg.message);
+                this.socket.emit('chat message', this.msgFromClient);
             }
         }
     }
@@ -59,16 +60,5 @@ export class ChatComponent implements OnInit {
 
     keyboardInput(event: KeyboardEvent) {
         //TODO: gérer le input à partir d'ici
-    }
-}
-
-export class Message {
-    username = "";
-    submessage = "";
-
-    constructor(public message: string) {
-        let split = message.split("~", 2);
-        this.username = split[0];
-        this.submessage = split[1];
     }
 }

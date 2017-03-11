@@ -5,24 +5,7 @@
  * @date 2017/03/05
  */
 
-export enum CommandType {
-    PLACER,
-    CHANGER,
-    PASSER,
-    AIDE
-}
-
-export enum CommandStatus {
-    UNDEFINED_COMMAND, // command does not exist (see EXISTING_COMMAND)
-    INVALID_COMMAND_SYNTAX, // command does not have proper syntax
-    VALID_COMMAND
-}
-
-export interface Command {
-    msg: string;
-    commandType: CommandType;
-    commandStatus: CommandStatus;
-}
+import { Command, CommandType, CommandStatus, CommandPlaceLetter, CommandChangeLetter } from '../classes/command';
 
 export class CommandParser {
     private readonly EXISTING_COMMANDS = ["!placer", "!changer", "!passer", "!aide"];
@@ -47,7 +30,25 @@ export class CommandParser {
 
         let commandStatus = this.validateCommand(msg, commandTypeIndex);
 
-        return { msg: msg, commandType: commandTypeIndex, commandStatus: commandStatus };
+        return new Command(commandTypeIndex, commandStatus);
+    }
+
+    createCommandPlaceLetter(msg: string): CommandPlaceLetter {
+        msg = msg.trim();
+        let row = msg.substring(8, 9);
+        let column = Number.parseInt(msg.substr(9, 11));
+        let orientation = (column > 9) ? msg.substr(11, 12) : msg.substr(10, 11);
+        let word = msg.substring(12).trim();
+
+        return new CommandPlaceLetter(CommandType.PLACER, CommandStatus.VALID_COMMAND,
+                                      row, column, orientation, word);
+    }
+
+    createCommandChangeLetter(msg: string): CommandChangeLetter {
+        msg = msg.trim();
+        let letters = msg.substring(9);
+
+        return new CommandChangeLetter(CommandType.CHANGER, CommandStatus.VALID_COMMAND, letters);
     }
 
     private validateCommand(msg: string, commandType: CommandType): CommandStatus {

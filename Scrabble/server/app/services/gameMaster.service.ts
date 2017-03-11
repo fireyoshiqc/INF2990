@@ -5,7 +5,7 @@
  * @date 2017/02/17
  */
 
-import * as io from 'socket.io-client';
+import { Command, CommandType } from '../classes/command';
 
 export enum CommandExecutionStatus {
     SUCCESS,
@@ -13,12 +13,26 @@ export enum CommandExecutionStatus {
 }
 
 export class GameMaster {
-    socket: any;
-    games: Array<ScrabbleGame>;
+    private games: Array<ScrabbleGame>;
 
-    constructor() {
-        this.socket = io.connect('http://localhost:3000');
-    }
+    // handleCommand(cmd: Command): CommandExecutionStatus {
+    //     switch (cmd.commandType) {
+    //         case CommandType.PLACER :
+    //             this.placeLetter(cmd.msg);
+    //             return CommandExecutionStatus.SUCCESS;
+    //             break;
+    //         case CommandType.CHANGER :
+    //             break;
+    //         case CommandType.PASSER :
+    //             break;
+    //         default :
+    //             return CommandExecutionStatus.ERROR;
+    //     }
+    // }
+
+    // placeLetter(cmd: string) {
+
+    // }
 }
 
 class ScrabbleGame {

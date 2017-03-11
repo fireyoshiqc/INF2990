@@ -10,19 +10,23 @@ import * as io from 'socket.io';
 import * as http from 'http';
 import { RoomManager } from './roomManager.service';
 import { PlayerManager, Player } from './playerManager.service';
-import { CommandParser, CommandStatus } from './commandParser.service';
+import { CommandParser } from './commandParser.service';
+import { Command, CommandType, CommandStatus, CommandPlaceLetter, CommandChangeLetter } from '../classes/command';
+import { GameMaster } from './gameMaster.service';
 
 export class SocketManager {
     sio: SocketIO.Server;
     rmanager: RoomManager;
     pmanager: PlayerManager;
     cparser: CommandParser;
+    gmaster: GameMaster;
 
     constructor(server: http.Server) {
         this.sio = io.listen(server);
         this.rmanager = new RoomManager();
         this.pmanager = new PlayerManager();
         this.cparser = new CommandParser();
+        this.gmaster = new GameMaster();
     }
 
     handleSockets() {
@@ -30,7 +34,8 @@ export class SocketManager {
 
             //TODO: Rework this whole thing.
             console.log("User connected");
-            this.sio.emit('user connect', socket.id + "~ User has connected to chat.");
+            let connectMsg = "User has connected to chat.";
+            this.sio.emit('user connect', { username: socket.id, submessage: connectMsg });
 
             socket.on('chat message', (msg: string) => {
                 let player = this.pmanager.getSocketName(socket.id);
@@ -41,7 +46,7 @@ export class SocketManager {
                     }
                     else {
                         // regular message
-                        this.sio.emit('message sent', player.name + " ~ " + msg);
+                        this.sio.emit('message sent', { username: player.name, submessage: msg });
                     }
                 }
 
@@ -55,7 +60,8 @@ export class SocketManager {
                 if (player !== undefined) {
                     this.pmanager.removePlayer(player.name);
                     this.rmanager.leaveRoom(player);
-                    this.sio.emit('user disconnect', player.name + "~ L'utilisateur a quitté la partie.");
+                    let disconnectMsg = "L'utilisateur a quitté la partie.";
+                    this.sio.emit('user disconnect', { username: player.name, submessage: disconnectMsg });
                 }
                 console.log("User disconnected");
             });
@@ -98,16 +104,31 @@ export class SocketManager {
 
     private parseCommand(msg: string, player: Player): void {
         let command = this.cparser.createCommand(msg);
+        let commandResponse = "";
 
         if (command.commandStatus === CommandStatus.VALID_COMMAND) {
-            // Appel de gameMaster pour l'exécution de la commande
-            msg += "\nAppel à gameMaster pour exécution";
+            if (command.commandType === CommandType.AIDE) {
+                // TODO mettre un message d'aide pertinent
+                commandResponse = " Voici l'aide...";
+            } else if (command.commandType === CommandType.PLACER) {
+                let cmd = this.cparser.createCommandPlaceLetter(msg);
+                commandResponse = cmd.commandType + " " + cmd.commandStatus + " "
+                                + cmd.row + cmd.column + cmd.orientation + " " + cmd.word;
+                // this.gmaster.handleCommand(command);
+            } else if (command.commandType === CommandType.CHANGER) {
+                let cmd = this.cparser.createCommandChangeLetter(msg);
+                commandResponse = cmd.commandType + " " + cmd.commandStatus + " " + cmd.letters;
+                // this.gmaster.handleCommand(command);
+            } else if (command.commandType === CommandType.PASSER) {
+                commandResponse = command.commandType + " " + command.commandStatus + " PASSER";
+                // this.gmaster.handleCommand(command);
+            }
         } else if (command.commandStatus === CommandStatus.INVALID_COMMAND_SYNTAX) {
-            msg += "\nCette commande ne respecte pas la syntaxe. Voir !aide";
+            commandResponse = "ERREUR : Cette commande ne respecte pas la syntaxe. Voir !aide";
         } else if (command.commandStatus === CommandStatus.UNDEFINED_COMMAND) {
-            msg += "\nCette commande n'existe pas.";
+            commandResponse = "ERREUR : Cette commande n'existe pas. Voir !aide";
         }
 
-        this.sio.emit('command sent', player.name + " ~ " + msg);
+        this.sio.emit('command sent', { username: player.name, submessage: msg, commandResponse: commandResponse });
     }
 }

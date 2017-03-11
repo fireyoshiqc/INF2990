@@ -6,15 +6,15 @@
 
                 <md-list dense id="chatList">
                     <md-list-item md-multi-line md-list-item-text *ngFor="let msg of msgList; let i = index">
-                        <h3 md-line><strong>{{msg.username}}</strong></h3>
-                        <p md-line>{{msg.submessage}}</p>
+                        <h3 md-line><strong>{{msg.getUsername()}}</strong></h3>
+                        <p md-line [ngClass] = "{'commandMessage' : msg.getIsCommand()}">{{msg.getSubmessage()}}</p>
+                        <p md-line class="commandMessage" *ngIf="msg.getCommandResponse().length > 0">{{msg.getCommandResponse()}}</p>
                     </md-list-item>
                 </md-list>
             </div>
         </div>
         <div [hidden]="!attemptingToConnect">
             <div class="flex-container" fxLayout="column" fxLayout.xs="column" fxLayoutAlign="center center" fxLayoutAlign.xs="center center" fxFlexFill>
-
 
                     <p class="ConnectText">SERVEUR HORS-LIGNE</p>
                     <md-spinner></md-spinner>
@@ -34,7 +34,7 @@
 
                     <div class="flex-item" fxFlex="90%" fxFlex.xs="90%" fxLayoutAlign="center center" fxFlexFill>
                         <md-input-container>
-                            <input mdInput placeholder="Écrivez un message ou une commande..." type="text" autocomplete="off" class="form-control" id="message" [(ngModel)]="msg.message" name="message">
+                            <input mdInput placeholder="Écrivez un message ou une commande..." type="text" autocomplete="off" class="form-control" id="message" [(ngModel)]="msgFromClient" name="message">
                         </md-input-container>
                     </div>
 

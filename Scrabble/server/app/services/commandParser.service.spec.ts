@@ -5,7 +5,8 @@
  * @date 2017/03/05
  */
 
-import { CommandParser, CommandStatus } from './commandParser.service';
+import { CommandParser } from './commandParser.service';
+import { CommandStatus } from '../classes/command';
 
 import { expect } from 'chai';
 

@@ -215,6 +215,9 @@ md-list {
     word-break: break-all;
 }
 
+.commandMessage {
+    color: #2E7D32;
+}
 
 /**********************/
 
