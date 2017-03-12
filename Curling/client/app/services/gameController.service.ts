@@ -16,8 +16,15 @@ import { IdleState } from './gameStates/IdleState';
 import { ChoosingAngleState } from './gameStates/ChoosingAngleState';
 import { SweepingState } from './gameStates/SweepingState';
 
+export enum AIDifficulty {
+    Easy,
+    Hard
+}
+
 @Injectable()
 export class GameController {
+    private playerName: string;
+    private aiDifficulty: string;
 
     private gameRenderer: GameRenderer;
     private curlingStones: CurlingStone[] = [];
@@ -44,6 +51,22 @@ export class GameController {
         // TODO : Lancement des pierres de curling
         this.addStone(Team.Player, new THREE.Vector3(0, 0, 0));
         this.gameRenderer.render();
+    }
+
+    getPlayerName(): string {
+        return this.playerName;
+    }
+
+    setPlayerName(name: string): void {
+        this.playerName = name;
+    }
+
+    getAIDDifficulty(): AIDifficulty {
+        return (this.aiDifficulty === "CPU facile") ? AIDifficulty.Easy : AIDifficulty.Hard;
+    }
+
+    setAIDifficulty(difficulty: AIDifficulty): void {
+        this.aiDifficulty = (difficulty === AIDifficulty.Easy) ? "CPU facile" : "CPU difficile";
     }
 
     addStone(team: Team, position: THREE.Vector3) {
@@ -180,6 +203,12 @@ export class GameController {
 
     getCurrentState(): GameState {
         return this.gameState;
+    }
+
+    quitGame(): void {
+        //Send beacon to server to signal name removal before page unload.
+        let blob = new Blob([JSON.stringify({"name": this.playerName})], {type: 'application/json; charset=UTF-8'});
+        navigator.sendBeacon('http://localhost:3002/removeName', blob);
     }
 
     /******************** TEST HELPER *******************/

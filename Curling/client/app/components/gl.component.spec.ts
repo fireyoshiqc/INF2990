@@ -13,7 +13,7 @@ import { expect } from 'chai';
 describe('GlComponent', () => {
 
     let gameController = new GameController();
-    let glComponent = new GlComponent(gameController);
+    let glComponent = new GlComponent(null, gameController);
 
     describe('Default constructor ', () => {
         it('should construct the GlComponent.', done => {

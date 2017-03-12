@@ -1,6 +1,7 @@
 
-import { Component, HostListener } from '@angular/core';
-import { GameController } from '../services/gameController.service';
+import { Component, HostListener, Optional, AfterViewInit } from '@angular/core';
+import { GameController, AIDifficulty } from '../services/gameController.service';
+import { MdDialog, MdDialogRef } from '@angular/material';
 
 @Component({
     selector: 'my-gl',
@@ -8,11 +9,34 @@ import { GameController } from '../services/gameController.service';
     providers: [GameController]
 })
 
-export class GlComponent {
+export class GlComponent implements AfterViewInit {
     private isDarkTheme = false;
+    private dialogRef: MdDialogRef<NameDialogComponent>;
 
-    constructor(private gameController: GameController) {
+    constructor(public dialog: MdDialog, private gameController: GameController) {
         // Empty constructor necessary for Angular
+    }
+
+    ngAfterViewInit() {
+        // Necessary to fix prodmode exclusive error (data binding changed on init)
+        setTimeout(() => {
+            this.dialogRef = this.dialog.open(NameDialogComponent, {
+                disableClose: true
+            });
+
+            this.dialogRef.afterClosed().subscribe(result => {
+                this.gameController.setPlayerName(result.playerName);
+
+                if (result.difficulty === "facile") {
+                    this.gameController.setAIDifficulty(AIDifficulty.Easy);
+                    //this.gameController.startAIEasy();
+                }
+                else if (result.difficulty === "difficile") {
+                    this.gameController.setAIDifficulty(AIDifficulty.Hard);
+                    //this.gameController.startAIHard();
+                }
+            });
+        });
     }
 
     getGameController(): GameController {
@@ -54,6 +78,12 @@ export class GlComponent {
         this.gameController.onMouseMove(event);
     }
 
+    @HostListener('window:beforeunload', ['$event'])
+    onBeforeUnload(event: any): any {
+        this.gameController.quitGame();
+        return;
+    }
+
     resetGame(): void {
         // TODO
         alert("reset");
@@ -70,4 +100,12 @@ export class GlComponent {
     startThrowStone(event: any): void {
         this.gameController.startThrowStone(event);
     }
+}
+
+@Component({
+    template: `<name-selector-comp></name-selector-comp>`
+})
+
+export class NameDialogComponent {
+    constructor( @Optional() public dialogRef: MdDialogRef<any>) { }
 }

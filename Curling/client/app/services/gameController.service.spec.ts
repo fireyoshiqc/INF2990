@@ -7,7 +7,7 @@
 
 import { expect } from 'chai';
 
-import { GameController } from './gameController.service';
+import { GameController, AIDifficulty } from './gameController.service';
 import { Team } from '../entities/curlingStone';
 import { ShootingState } from './gameStates/ShootingState';
 import { IdleState } from './gameStates/IdleState';
@@ -34,6 +34,28 @@ describe('GameController', () => {
             expect(gameController.getCurrentState()).to.be.instanceOf(IdleState);
             expect(gameController.getGameRenderer().isStarted).to.be.true;
 
+            done();
+        });
+    });
+
+    describe('setPlayerName()', () => {
+        it('should set the name of the player.', done => {
+            gameController.setPlayerName("Nouveau nom joueur");
+            expect(gameController.getPlayerName()).to.be.equal("Nouveau nom joueur");
+            done();
+        });
+    });
+
+    describe('setAIDifficulty()', () => {
+        it('should set the difficulty of the AI to hard.', done => {
+            gameController.setAIDifficulty(AIDifficulty.Hard);
+            expect(gameController.getAIDDifficulty()).to.be.equal(AIDifficulty.Hard);
+            done();
+        });
+
+        it('should set the difficulty of the AI to easy.', done => {
+            gameController.setAIDifficulty(AIDifficulty.Easy);
+            expect(gameController.getAIDDifficulty()).to.be.equal(AIDifficulty.Easy);
             done();
         });
     });

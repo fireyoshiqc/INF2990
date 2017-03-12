@@ -7,11 +7,6 @@
 
 import { Component, Input, Output, EventEmitter, HostListener } from '@angular/core';
 
-export enum AIDifficulty {
-    Easy,
-    Hard
-}
-
 @Component({
     selector: 'my-hud',
     templateUrl: "/assets/templates/hud.component.html"
@@ -21,13 +16,15 @@ export class HUDComponent {
     private isDarkTheme = false;
     private playerCurlingStones = new Array<number>(7); // indicates the number of available curling stones for player
     private aiCurlingStones = new Array<number>(7); // indicates the number of available curling stones for ai
-    private playerName = "Nom joueur";
-    private aiDifficulty = "CPU facile";
-    @Input() private playerScore = 0; // data modified in gameControler.service.ts
-    @Input() private aiScore = 0; // data modified in gameControler.service.ts
     private selectedSpin = false;
     private rounds = [false, false, false]; // indicates which rounds have been completed (true)
-    private sliderDisabled = false;
+    private sliderDisabled = false; // false : spin counterclockwise, true : spin clockwiser
+
+    // data modified in gameControler.service.ts
+    @Input() private playerName: string;
+    @Input() private aiDifficulty: string;
+    @Input() private playerScore = 0;
+    @Input() private aiScore = 0;
     @Input() private forceVisible = false;
     @Input() private forceValue = 0;
 
@@ -76,32 +73,16 @@ export class HUDComponent {
         return this.playerName;
     }
 
-    setPlayerName(name: string): void {
-        this.playerName = name;
-    }
-
-    getAIDDifficulty(): AIDifficulty {
-        return (this.aiDifficulty === "CPU facile") ? AIDifficulty.Easy : AIDifficulty.Hard;
-    }
-
-    setAIDifficulty(difficulty: AIDifficulty): void {
-        this.aiDifficulty = (difficulty === AIDifficulty.Easy) ? "CPU facile" : "CPU difficile";
+    getAIDDifficulty(): string {
+        return this.aiDifficulty;
     }
 
     getPlayerScore(): number {
         return this.playerScore;
     }
 
-    setPlayerScore(newScore: number): void {
-        this.playerScore = newScore;
-    }
-
     getAIScore(): number {
         return this.aiScore;
-    }
-
-    setAIScore(newScore: number): void {
-        this.aiScore = newScore;
     }
 
     getForceValue(): number {

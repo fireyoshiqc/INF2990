@@ -5,7 +5,7 @@
  * @date 2017/02/28
  */
 
-import { HUDComponent, AIDifficulty } from './hud.component';
+import { HUDComponent } from './hud.component';
 
 import { expect } from 'chai';
 
@@ -30,44 +30,16 @@ describe('HUDComponent', () => {
         });
     });
 
-    describe('setPlayerName()', () => {
-        it('should set the name of the player.', done => {
-            expect(hudComponent.getPlayerName()).to.be.equal("Nom joueur");
-            hudComponent.setPlayerName("Nouveau nom joueur");
-            expect(hudComponent.getPlayerName()).to.be.equal("Nouveau nom joueur");
-            done();
-        });
-    });
-
-    describe('setAIDifficulty()', () => {
-        it('should set the difficulty of the AI to hard.', done => {
-            expect(hudComponent.getAIDDifficulty()).to.be.equal(AIDifficulty.Easy);
-            hudComponent.setAIDifficulty(AIDifficulty.Hard);
-            expect(hudComponent.getAIDDifficulty()).to.be.equal(AIDifficulty.Hard);
-            done();
-        });
-
-        it('should set the difficulty of the AI to easy.', done => {
-            hudComponent.setAIDifficulty(AIDifficulty.Easy);
-            expect(hudComponent.getAIDDifficulty()).to.be.equal(AIDifficulty.Easy);
-            done();
-        });
-    });
-
-    describe('setPlayerScore()', () => {
-        it('should set the score of the player.', done => {
+    describe('getPlayerScore()', () => {
+        it('should set the default score of the player.', done => {
             expect(hudComponent.getPlayerScore()).to.be.equal(0);
-            hudComponent.setPlayerScore(3);
-            expect(hudComponent.getPlayerScore()).to.be.equal(3);
             done();
         });
     });
 
-    describe('setAIScore()', () => {
-        it('should set the score of the AI.', done => {
+    describe('getAIScore()', () => {
+        it('should get the default score of the AI.', done => {
             expect(hudComponent.getAIScore()).to.be.equal(0);
-            hudComponent.setAIScore(5);
-            expect(hudComponent.getAIScore()).to.be.equal(5);
             done();
         });
     });

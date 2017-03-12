@@ -26,6 +26,39 @@ md-sidenav-container {
     height: calc(100vh);
 }
 
+/*****************/
+/* name selector */
+/*****************/
+
+#nameBox {
+    display: inline-flex;
+    margin-top:2%;
+    margin-bottom: 2%;
+}
+
+.full-input {
+    width:100%;
+}
+
+#checkIcon.material-icons.mat-icon {
+    color: #EEEEEE;
+}
+
+.separator {
+    width: 5px;
+    height: auto;
+    display: inline-block;
+}
+
+#difficultyChoice {
+    margin-top:2%;
+    margin-bottom: 2%;
+}
+
+#difficultyChoiceText {
+    padding-top: 3px;
+}
+
 /*******************/
 /* side navigation */
 /*******************/

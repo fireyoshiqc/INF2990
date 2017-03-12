@@ -74,6 +74,8 @@
                     (switchCameraEvent)="switchCamera()"
                     (nextRoundEvent)="nextRound()"
                     (startThrowStoneEvent)="startThrowStone($event)"
+                    [playerName]="getGameController().playerName"
+                    [aiDifficulty]="getGameController().aiDifficulty"
                     [aiScore]="getGameController().aiScore"
                     [playerScore]="getGameController().playerScore"
                     [forceVisible]="getGameController().forceVisible"
