@@ -5,12 +5,15 @@
  * @date 2017/03/05
  */
 
-import { Command, CommandType, CommandStatus, CommandPlaceLetter, CommandChangeLetter } from '../classes/command';
+import { Command, CommandType, CommandStatus } from '../classes/command';
+import { CommandPlaceLetter } from '../classes/commandPlaceLetter';
+import { CommandChangeLetter } from '../classes/commandChangeLetter';
 
 export class CommandParser {
     private readonly EXISTING_COMMANDS = ["!placer", "!changer", "!passer", "!aide"];
-    private readonly PLACE_LETTER_REGEX = /^(!placer)\s[a-oA-O](10|11|12|13|14|15|[1-9])[h|H|v|V]\s[a-zA-Z]{1,7}$/;
-    private readonly CHANGE_LETTER_REGEX = /^(!changer)\s([a-z]|[*]){1,7}$/;
+    private readonly PLACE_LETTER_REGEX =
+        /^(!placer)\s([a-oA-O])(10|11|12|13|14|15|[1-9])([h|H|v|V])\s([a-zA-Z]{1,7})$/;
+    private readonly CHANGE_LETTER_REGEX = /^(!changer)\s([a-z*]{1,7})$/;
     private readonly SKIP_TURN_REGEX = /^(!passer)$/;
     private readonly HELP_REGEX = /^(!aide)$/;
 
@@ -30,25 +33,39 @@ export class CommandParser {
 
         let commandStatus = this.validateCommand(msg, commandTypeIndex);
 
+        // create specific commands (with supplied parameters) if command is valid
+        if (commandStatus === CommandStatus.VALID_COMMAND) {
+            if (commandTypeIndex === CommandType.PLACER) {
+                return this.createCommandPlaceLetter(msg);
+            } else if (commandTypeIndex === CommandType.CHANGER) {
+                return this.createCommandChangeLetter(msg);
+            }
+        }
+
         return new Command(commandTypeIndex, commandStatus);
     }
 
-    createCommandPlaceLetter(msg: string): CommandPlaceLetter {
+    private createCommandPlaceLetter(msg: string): CommandPlaceLetter {
         msg = msg.trim();
-        let row = msg.substring(8, 9);
-        let column = Number.parseInt(msg.substr(9, 11));
-        let orientation = (column > 9) ? msg.substr(11, 12) : msg.substr(10, 11);
-        let word = msg.substring(12).trim();
 
-        return new CommandPlaceLetter(CommandType.PLACER, CommandStatus.VALID_COMMAND,
-                                      row, column, orientation, word);
+        // obtain command arguments with regex
+        let placeLetterArgs = msg.match(this.PLACE_LETTER_REGEX);
+        let row = placeLetterArgs[2].toLowerCase();
+        let column = Number.parseInt(placeLetterArgs[3]);
+        let orientation = placeLetterArgs[4].toLowerCase();
+        let word = placeLetterArgs[5];
+
+        return new CommandPlaceLetter(row, column, orientation, word);
     }
 
-    createCommandChangeLetter(msg: string): CommandChangeLetter {
+    private createCommandChangeLetter(msg: string): CommandChangeLetter {
         msg = msg.trim();
-        let letters = msg.substring(9);
 
-        return new CommandChangeLetter(CommandType.CHANGER, CommandStatus.VALID_COMMAND, letters);
+        // obtain command arguments with regex
+        let changeLetterArgs = msg.match(this.CHANGE_LETTER_REGEX);
+        let letters = changeLetterArgs[2];
+
+        return new CommandChangeLetter(letters);
     }
 
     private validateCommand(msg: string, commandType: CommandType): CommandStatus {

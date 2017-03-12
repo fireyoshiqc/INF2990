@@ -11,8 +11,8 @@ import * as http from 'http';
 import { RoomManager } from './roomManager.service';
 import { PlayerManager, Player } from './playerManager.service';
 import { CommandParser } from './commandParser.service';
-import { Command, CommandType, CommandStatus, CommandPlaceLetter, CommandChangeLetter } from '../classes/command';
-import { GameMaster } from './gameMaster.service';
+import { CommandType, CommandStatus } from '../classes/command';
+import { GameMaster, CommandExecutionStatus } from './gameMaster.service';
 
 export class SocketManager {
     sio: SocketIO.Server;
@@ -106,26 +106,22 @@ export class SocketManager {
         let command = this.cparser.createCommand(msg);
         let commandResponse = "";
 
-        if (command.commandStatus === CommandStatus.VALID_COMMAND) {
-            if (command.commandType === CommandType.AIDE) {
+        if (command.getCommandStatus() === CommandStatus.VALID_COMMAND) {
+
+            if (command.getCommandType() === CommandType.AIDE) {
                 // TODO mettre un message d'aide pertinent
-                commandResponse = " Voici l'aide...";
-            } else if (command.commandType === CommandType.PLACER) {
-                let cmd = this.cparser.createCommandPlaceLetter(msg);
-                commandResponse = cmd.commandType + " " + cmd.commandStatus + " "
-                                + cmd.row + cmd.column + cmd.orientation + " " + cmd.word;
-                // this.gmaster.handleCommand(command);
-            } else if (command.commandType === CommandType.CHANGER) {
-                let cmd = this.cparser.createCommandChangeLetter(msg);
-                commandResponse = cmd.commandType + " " + cmd.commandStatus + " " + cmd.letters;
-                // this.gmaster.handleCommand(command);
-            } else if (command.commandType === CommandType.PASSER) {
-                commandResponse = command.commandType + " " + command.commandStatus + " PASSER";
-                // this.gmaster.handleCommand(command);
+                commandResponse = "Voici l'aide...";
+            } else {
+                // Command is valid, execute it
+                let executionStatus = this.gmaster.handleCommand(command, player);
+                commandResponse = (executionStatus === CommandExecutionStatus.SUCCESS) ?
+                    // TODO changer le message d'erreur lorsque les commandes sont implémentées
+                    "" : "ERREUR : Cette commande n'est pas encore implémentée. TODO changer le msg.";
             }
-        } else if (command.commandStatus === CommandStatus.INVALID_COMMAND_SYNTAX) {
+
+        } else if (command.getCommandStatus() === CommandStatus.INVALID_COMMAND_SYNTAX) {
             commandResponse = "ERREUR : Cette commande ne respecte pas la syntaxe. Voir !aide";
-        } else if (command.commandStatus === CommandStatus.UNDEFINED_COMMAND) {
+        } else if (command.getCommandStatus() === CommandStatus.UNDEFINED_COMMAND) {
             commandResponse = "ERREUR : Cette commande n'existe pas. Voir !aide";
         }
 

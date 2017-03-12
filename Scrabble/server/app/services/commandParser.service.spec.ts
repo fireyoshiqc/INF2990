@@ -6,7 +6,9 @@
  */
 
 import { CommandParser } from './commandParser.service';
-import { CommandStatus } from '../classes/command';
+import { Command, CommandStatus, CommandType } from '../classes/command';
+import { CommandPlaceLetter } from '../classes/commandPlaceLetter';
+import { CommandChangeLetter } from '../classes/commandChangeLetter';
 
 import { expect } from 'chai';
 
@@ -39,22 +41,22 @@ describe('CommandParser', () => {
     describe('createCommand() ', () => {
         it('should verify if a command exists.', done => {
             let command = commandParser.createCommand("!test test test    ");
-            expect(command.commandStatus).to.be.equal(CommandStatus.UNDEFINED_COMMAND);
+            expect(command.getCommandStatus()).to.be.equal(CommandStatus.UNDEFINED_COMMAND);
 
             command = commandParser.createCommand("!aider");
-            expect(command.commandStatus).to.be.equal(CommandStatus.UNDEFINED_COMMAND);
+            expect(command.getCommandStatus()).to.be.equal(CommandStatus.UNDEFINED_COMMAND);
 
             command = commandParser.createCommand("   !placer test ");
-            expect(command.commandStatus).to.not.be.equal(CommandStatus.UNDEFINED_COMMAND);
+            expect(command.getCommandStatus()).to.be.equal(CommandStatus.INVALID_COMMAND_SYNTAX);
 
             command = commandParser.createCommand(" !changer");
-            expect(command.commandStatus).to.not.be.equal(CommandStatus.UNDEFINED_COMMAND);
+            expect(command.getCommandStatus()).to.be.equal(CommandStatus.INVALID_COMMAND_SYNTAX);
 
             command = commandParser.createCommand("!passer");
-            expect(command.commandStatus).to.not.be.equal(CommandStatus.UNDEFINED_COMMAND);
+            expect(command.getCommandStatus()).to.be.equal(CommandStatus.VALID_COMMAND);
 
             command = commandParser.createCommand("!aide ");
-            expect(command.commandStatus).to.not.be.equal(CommandStatus.UNDEFINED_COMMAND);
+            expect(command.getCommandStatus()).to.be.equal(CommandStatus.VALID_COMMAND);
 
             done();
         });
@@ -62,37 +64,44 @@ describe('CommandParser', () => {
         it('should verify if the command for placing a letter has proper syntax.', done => {
             // Insufficient arguments
             let command = commandParser.createCommand("!placer");
-            expect(command.commandStatus).to.be.equal(CommandStatus.INVALID_COMMAND_SYNTAX);
+            expect(command.getCommandStatus()).to.be.equal(CommandStatus.INVALID_COMMAND_SYNTAX);
             command = commandParser.createCommand("!placer g15v");
-            expect(command.commandStatus).to.be.equal(CommandStatus.INVALID_COMMAND_SYNTAX);
+            expect(command.getCommandStatus()).to.be.equal(CommandStatus.INVALID_COMMAND_SYNTAX);
 
             // Invalid row identifier
             command = commandParser.createCommand("!placer z15v bonjour");
-            expect(command.commandStatus).to.be.equal(CommandStatus.INVALID_COMMAND_SYNTAX);
+            expect(command.getCommandStatus()).to.be.equal(CommandStatus.INVALID_COMMAND_SYNTAX);
 
             // Invalid column identifier
             command = commandParser.createCommand("!placer a16v bonjour");
-            expect(command.commandStatus).to.be.equal(CommandStatus.INVALID_COMMAND_SYNTAX);
+            expect(command.getCommandStatus()).to.be.equal(CommandStatus.INVALID_COMMAND_SYNTAX);
 
             // Invalid word orientation
             command = commandParser.createCommand("!placer a15y bonjour");
-            expect(command.commandStatus).to.be.equal(CommandStatus.INVALID_COMMAND_SYNTAX);
+            expect(command.getCommandStatus()).to.be.equal(CommandStatus.INVALID_COMMAND_SYNTAX);
 
             // Invalid word (contains number)
             command = commandParser.createCommand("!placer a15h bo2njour");
-            expect(command.commandStatus).to.be.equal(CommandStatus.INVALID_COMMAND_SYNTAX);
+            expect(command.getCommandStatus()).to.be.equal(CommandStatus.INVALID_COMMAND_SYNTAX);
 
             // Too many arguments
             command = commandParser.createCommand("!placer a15v bonjour Pierre");
-            expect(command.commandStatus).to.be.equal(CommandStatus.INVALID_COMMAND_SYNTAX);
+            expect(command.getCommandStatus()).to.be.equal(CommandStatus.INVALID_COMMAND_SYNTAX);
 
             // Invalid word (contains more than 7 letters)
             command = commandParser.createCommand("!placer a15v bonjourno");
-            expect(command.commandStatus).to.be.equal(CommandStatus.INVALID_COMMAND_SYNTAX);
+            expect(command.getCommandStatus()).to.be.equal(CommandStatus.INVALID_COMMAND_SYNTAX);
 
             // Valid command
-            command = commandParser.createCommand("!placer a15v boNJouR");
-            expect(command.commandStatus).to.be.equal(CommandStatus.VALID_COMMAND);
+            let commandPlaceLetter: CommandPlaceLetter;
+            commandPlaceLetter = commandParser.createCommand("!placer a15H boNJouR") as CommandPlaceLetter;
+            expect(commandPlaceLetter).is.an.instanceOf(CommandPlaceLetter);
+            expect(commandPlaceLetter.getCommandType()).to.be.equal(CommandType.PLACER);
+            expect(commandPlaceLetter.getCommandStatus()).to.be.equal(CommandStatus.VALID_COMMAND);
+            expect(commandPlaceLetter.getRow()).to.be.equal("a");
+            expect(commandPlaceLetter.getColumn()).to.be.equal(15);
+            expect(commandPlaceLetter.getOrientation()).to.be.equal("h");
+            expect(commandPlaceLetter.getWord()).to.be.equal("boNJouR");
 
             done();
         });
@@ -100,27 +109,31 @@ describe('CommandParser', () => {
         it('should verify if the command for changing one or multiple letters has proper syntax.', done => {
             // Insufficient arguments
             let command = commandParser.createCommand("!changer");
-            expect(command.commandStatus).to.be.equal(CommandStatus.INVALID_COMMAND_SYNTAX);
+            expect(command.getCommandStatus()).to.be.equal(CommandStatus.INVALID_COMMAND_SYNTAX);
 
             // Too many arguments
             command = commandParser.createCommand("!changer a b");
-            expect(command.commandStatus).to.be.equal(CommandStatus.INVALID_COMMAND_SYNTAX);
+            expect(command.getCommandStatus()).to.be.equal(CommandStatus.INVALID_COMMAND_SYNTAX);
 
             // Too many letters to change
             command = commandParser.createCommand("!changer abcdefgh");
-            expect(command.commandStatus).to.be.equal(CommandStatus.INVALID_COMMAND_SYNTAX);
+            expect(command.getCommandStatus()).to.be.equal(CommandStatus.INVALID_COMMAND_SYNTAX);
 
             // Invalid letter sequence
             command = commandParser.createCommand("!changer ab3cde");
-            expect(command.commandStatus).to.be.equal(CommandStatus.INVALID_COMMAND_SYNTAX);
+            expect(command.getCommandStatus()).to.be.equal(CommandStatus.INVALID_COMMAND_SYNTAX);
 
             // Contains upscale letters
             command = commandParser.createCommand("!changer abcDef");
-            expect(command.commandStatus).to.be.equal(CommandStatus.INVALID_COMMAND_SYNTAX);
+            expect(command.getCommandStatus()).to.be.equal(CommandStatus.INVALID_COMMAND_SYNTAX);
 
             // Valid command
-            command = commandParser.createCommand("!changer abcd**z");
-            expect(command.commandStatus).to.be.equal(CommandStatus.VALID_COMMAND);
+            let commandChangeLetter: CommandChangeLetter;
+            commandChangeLetter = commandParser.createCommand("!changer abcd**z") as CommandChangeLetter;
+            expect(commandChangeLetter).is.an.instanceOf(CommandChangeLetter);
+            expect(commandChangeLetter.getCommandType()).to.be.equal(CommandType.CHANGER);
+            expect(commandChangeLetter.getCommandStatus()).to.be.equal(CommandStatus.VALID_COMMAND);
+            expect(commandChangeLetter.getLetters()).to.be.equal("abcd**z");
 
             done();
         });
@@ -128,13 +141,15 @@ describe('CommandParser', () => {
         it('should verify if the command for skipping a turn has proper syntax.', done => {
             // Too many arguments
             let command = commandParser.createCommand("!passer a");
-            expect(command.commandStatus).to.be.equal(CommandStatus.INVALID_COMMAND_SYNTAX);
+            expect(command.getCommandStatus()).to.be.equal(CommandStatus.INVALID_COMMAND_SYNTAX);
             command = commandParser.createCommand("!passer 3 a");
-            expect(command.commandStatus).to.be.equal(CommandStatus.INVALID_COMMAND_SYNTAX);
+            expect(command.getCommandStatus()).to.be.equal(CommandStatus.INVALID_COMMAND_SYNTAX);
 
             // Valid command
             command = commandParser.createCommand("  !passer  ");
-            expect(command.commandStatus).to.be.equal(CommandStatus.VALID_COMMAND);
+            expect(command).is.an.instanceOf(Command);
+            expect(command.getCommandType()).to.be.equal(CommandType.PASSER);
+            expect(command.getCommandStatus()).to.be.equal(CommandStatus.VALID_COMMAND);
 
             done();
         });
@@ -142,13 +157,15 @@ describe('CommandParser', () => {
         it('should verify if the command for displaying a help menu has proper syntax.', done => {
             // Too many arguments
             let command = commandParser.createCommand("!aide a");
-            expect(command.commandStatus).to.be.equal(CommandStatus.INVALID_COMMAND_SYNTAX);
+            expect(command.getCommandStatus()).to.be.equal(CommandStatus.INVALID_COMMAND_SYNTAX);
             command = commandParser.createCommand("!aide 3 a");
-            expect(command.commandStatus).to.be.equal(CommandStatus.INVALID_COMMAND_SYNTAX);
+            expect(command.getCommandStatus()).to.be.equal(CommandStatus.INVALID_COMMAND_SYNTAX);
 
             // Valid command
             command = commandParser.createCommand("!aide");
-            expect(command.commandStatus).to.be.equal(CommandStatus.VALID_COMMAND);
+            expect(command).to.be.an.instanceOf(Command);
+            expect(command.getCommandType()).to.be.equal(CommandType.AIDE);
+            expect(command.getCommandStatus()).to.be.equal(CommandStatus.VALID_COMMAND);
 
             done();
         });

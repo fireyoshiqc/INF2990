@@ -19,36 +19,19 @@ export enum CommandStatus {
 }
 
 export class Command {
-    commandType: CommandType;
-    commandStatus: CommandStatus;
+    private commandType: CommandType;
+    private commandStatus: CommandStatus;
 
     constructor(commandType: CommandType, commandStatus: CommandStatus) {
         this.commandType = commandType;
         this.commandStatus = commandStatus;
     }
-}
 
-export class CommandPlaceLetter extends Command {
-    row: string;
-    column: number;
-    orientation: string;
-    word: string;
-
-    constructor(commandType: CommandType, commandStatus: CommandStatus,
-                row: string, column: number, orientation: string, word: string) {
-        super(commandType, commandStatus);
-        this.row = row;
-        this.column = column;
-        this.orientation = orientation;
-        this.word = word;
+    getCommandType(): CommandType {
+        return this.commandType;
     }
-}
 
-export class CommandChangeLetter extends Command {
-    letters: string;
-
-    constructor(commandType: CommandType, commandStatus: CommandStatus, letters: string) {
-        super(commandType, commandStatus);
-        this.letters = letters;
+    getCommandStatus(): CommandStatus {
+        return this.commandStatus;
     }
 }
