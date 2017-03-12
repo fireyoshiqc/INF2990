@@ -33,9 +33,8 @@ export class SocketManager {
         this.sio.on('connection', (socket) => {
 
             //TODO: Rework this whole thing.
-            console.log("User connected");
-            let connectMsg = "User has connected to chat.";
-            this.sio.emit('user connect', { username: socket.id, submessage: connectMsg });
+            // let connectMsg = "User has connected to chat.";
+            // this.sio.emit('user connect', { username: socket.id, submessage: connectMsg });
 
             socket.on('chat message', (msg: string) => {
                 let player = this.pmanager.getSocketName(socket.id);
@@ -46,7 +45,9 @@ export class SocketManager {
                     }
                     else {
                         // regular message
-                        this.sio.emit('message sent', { username: player.name, submessage: msg });
+                        this.sio.sockets
+                            .in(player.roomId.toString())
+                            .emit('message sent', { username: player.name, submessage: msg });
                     }
                 }
 
@@ -61,7 +62,9 @@ export class SocketManager {
                     this.pmanager.removePlayer(player.name);
                     this.rmanager.leaveRoom(player);
                     let disconnectMsg = "L'utilisateur a quitté la partie.";
-                    this.sio.emit('user disconnect', { username: player.name, submessage: disconnectMsg });
+                    this.sio.sockets
+                            .in(player.roomId.toString())
+                            .emit('user disconnect', { username: player.name, submessage: disconnectMsg });
                 }
                 console.log("User disconnected");
             });
@@ -125,6 +128,8 @@ export class SocketManager {
             commandResponse = "ERREUR : Cette commande n'existe pas. Voir !aide";
         }
 
-        this.sio.emit('command sent', { username: player.name, submessage: msg, commandResponse: commandResponse });
+        this.sio.sockets
+            .in(player.roomId.toString())
+            .emit('command sent', { username: player.name, submessage: msg, commandResponse: commandResponse });
     }
 }
