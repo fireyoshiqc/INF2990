@@ -79,6 +79,7 @@ export class SudokuService {
     getHighscores() {
         this.http.get('http://localhost:3002/getHighscores').toPromise().then(res => {
             // TODO: Everything
+            console.log(res.json());
         })
             .catch(() => console.log("Could not get highscores."));
     }

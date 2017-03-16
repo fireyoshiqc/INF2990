@@ -112,7 +112,9 @@ export class Application {
         });
 
         this.app.get('/getHighscores', function (req, res) {
-            database.getHighscores();
+            database.getHighscores().then((highscores) => {
+                res.send(highscores);
+            });
         });
 
         this.app.post('/validateSudoku', function (req, res) {

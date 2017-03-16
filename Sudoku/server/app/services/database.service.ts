@@ -60,22 +60,21 @@ export class DatabaseService {
 
     }
 
-    getHighscores(): JSON {
-        let scoreJSON: any = {
-            "easy": {},
-            "hard": {}
-        };
-
-        easyScore.find({}).sort('time').limit(3).lean().exec((err, scores) => {
-            console.log(JSON.stringify(scores));
-            scoreJSON.easy = JSON.stringify(scores);
+    getHighscores(): Promise<IHighscores> {
+        let scoreJSON: IHighscores = { easy: [], hard: [] };
+        let scorePromise = new Promise((resolve, reject) => {
+            easyScore.find({}).sort('time').limit(3).lean().exec((err, scores) => {
+                scoreJSON.easy = JSON.parse(JSON.stringify(scores));
+            }).then(() => hardScore.find({}).sort('time').limit(3).lean().exec((err, scores) => {
+                scoreJSON.hard = JSON.parse(JSON.stringify(scores));
+                resolve(scoreJSON);
+            }));
         });
-        hardScore.find({}).sort('time').limit(3).lean().exec((err, scores) => {
-            console.log(JSON.stringify(scores));
-            scoreJSON.hard = JSON.stringify(scores);
-        });
-
-        console.log(<JSON>scoreJSON);
-        return <JSON>scoreJSON;
+        return scorePromise;
     }
+}
+
+interface IHighscores {
+    easy: Array<string>;
+    hard: Array<string>;
 }
