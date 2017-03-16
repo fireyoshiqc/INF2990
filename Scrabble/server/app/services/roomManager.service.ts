@@ -36,7 +36,7 @@ export class RoomManager {
         let room = this.existingRooms.find(r => (r.getRoomInfo().roomID === player.roomID));
 
         if (room !== undefined) {
-            room.removePlayer(player.playerName);
+            room.removePlayer(player.name);
 
             if (room.isEmpty()) {
                 let index = this.existingRooms.indexOf(room);

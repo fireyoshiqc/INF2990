@@ -77,15 +77,15 @@ export class SocketManager {
             socket.on('cwAddPlayer', (player: any) => {
                 // Find (or create) a room in room manager service
                 let room = this.rmanager.joinRoom(player);
+
+                this.pmanager.addPlayer({ roomId: room.getRoomInfo().roomID, name: player.name, socketId: socket.id });
+
+                // Allows client to join a specific room
+                socket.join(room.getRoomInfo().roomID.toString());
+
                 setTimeout(() => {
                     this.sio.emit('wcFindRoom', room.getRoomInfo(), player.name);
                 }, 500);
-            });
-
-            // Allows client to join a specific room
-            socket.on('cwJoinRoom', (roomID: number, playerName: string) => {
-                this.pmanager.addPlayer({ roomId: roomID, name: playerName, socketId: socket.id });
-                socket.join(roomID.toString());
             });
 
             // Allows client to leave a specific room

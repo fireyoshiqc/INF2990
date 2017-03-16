@@ -32,8 +32,6 @@ export class RoomService {
                 // Set the information of the room
                 this.roomInfo = roomInfo;
                 this.playerName = playerName;
-
-                this.socket.emit('cwJoinRoom', this.roomInfo.roomID, playerName);
                 this.roomJoined = true;
             }
         });
