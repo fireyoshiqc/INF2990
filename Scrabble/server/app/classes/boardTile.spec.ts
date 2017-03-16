@@ -1,8 +1,8 @@
 /**
  * boardTile.spec.ts
  *
- * @authors Pierre To
- * @date 2017/02/22
+ * @authors Yawen Hou et Pierre To
+ * @date 2017/03/15
  */
 
 import { BoardTile } from './boardTile';
@@ -19,7 +19,7 @@ describe('BoardTile', () => {
             expect(boardTile).to.not.be.undefined;
             expect(boardTile).to.be.an.instanceOf(BoardTile);
             expect(boardTile.getTileType()).to.be.equal("Basic");
-            expect(boardTile.getTexture()).to.be.equal("../../assets/textures/board/Basic.png");
+            expect(boardTile.getIsEmpty()).to.be.true;
             done();
         });
     });
@@ -29,7 +29,7 @@ describe('BoardTile', () => {
             let letter = new Letter("A");
             boardTile.putLetter(letter);
 
-            expect(boardTile.getTexture()).to.equal(letter.getTexture());
+            expect(boardTile.getLetter()).to.equal(letter);
             done();
         });
     });

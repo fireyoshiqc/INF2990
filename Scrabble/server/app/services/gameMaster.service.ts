@@ -15,10 +15,6 @@ export enum CommandExecutionStatus {
     ERROR // command cannot be executed
 }
 
-class ScrabbleGame {
-    // TODO: Fill when we have actual gameplay
-}
-
 export class GameMaster {
     // games: Array<ScrabbleGame>;
 
