@@ -17,6 +17,7 @@ export class StopwatchService {
 
     getMinutes(): number { return this.minutes; }
     getSeconds(): number { return this.seconds; }
+    getTotalTimeSeconds(): number { return 60 * this.minutes + this.seconds; }
     isVisible(): boolean { return this.stopwatchIsVisible; }
 
     toggleVisibility() {

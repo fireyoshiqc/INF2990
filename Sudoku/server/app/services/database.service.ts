@@ -29,15 +29,33 @@ export class DatabaseService {
 
     addScore(name: string, time: number, difficulty: string) {
         if (difficulty === "facile") {
-            const newScore = new easyScore({ name: name, time: time });
-            newScore.save();
-
+            // Check if user already has a saved score for easy sudoku
+            easyScore.findOne({ name: name }, (err, score) => {
+                // If user has beaten their previous best time update their score
+                if (score && (score.time > time)) {
+                    score.time = time;
+                    score.save();  // TODO: Add error managing callback
+                } else if (score === null) {
+                    // If user never previously saved score then add entry
+                    const newScore = new easyScore({ name: name, time: time });
+                    newScore.save();
+                }
+            });
         } else if (difficulty === "difficile") {
-            const newScore = new hardScore({ name: name, time: time });
-            newScore.save();
-
+            hardScore.findOne({ name: name }, (err, score) => {
+                // Check if user already has a saved score for hard sudoku
+                if (score && (score.time > time)) {
+                    // If user has beaten their previous best time update their score
+                    score.time = time;
+                    score.save();  // TODO: Add error managing callback
+                } else if (score === null) {
+                    // If user never previously saved score then add entry
+                    const newScore = new hardScore({ name: name, time: time });
+                    newScore.save();
+                }
+            });
         } else {
-            console.log("YOU DUN GOOFED");
+            console.log("Invalid difficulty.");
         }
 
     }

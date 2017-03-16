@@ -57,6 +57,7 @@ export class SudokuGridComponent implements AfterViewInit {
         this.sudokuService.validateSudoku(() => {
             if (this.sudokuService.isValid) {
                 this.stopwatchService.stop();
+                this.sudokuService.addScore(this.stopwatchService.getTotalTimeSeconds());
             }
         });
     }

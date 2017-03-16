@@ -67,6 +67,15 @@ export class SudokuService {
             .catch(() => console.log("Could not validate sudoku."));
     }
 
+    addScore(timeTaken: number) {
+        this.http.put('http://localhost:3002/addScore',
+            { "name": this.playerName, "time": timeTaken, "difficulty": this.difficulty })
+            .toPromise().then(res => {
+            // TODO: Error management and show scores
+        })
+            .catch(() => console.log("Could not add score."));
+    }
+
     resetSudoku() {
         // Loop required for deep copy
         for (let i = 0; i < this.inputGrid.length; i++) {
