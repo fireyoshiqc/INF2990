@@ -76,6 +76,13 @@ export class SudokuService {
             .catch(() => console.log("Could not add score."));
     }
 
+    getHighscores() {
+        this.http.get('http://localhost:3002/getHighscores').toPromise().then(res => {
+            // TODO: Everything
+        })
+            .catch(() => console.log("Could not get highscores."));
+    }
+
     resetSudoku() {
         // Loop required for deep copy
         for (let i = 0; i < this.inputGrid.length; i++) {

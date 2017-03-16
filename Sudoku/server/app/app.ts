@@ -111,6 +111,10 @@ export class Application {
             res.send({ grid: hardSudoku.grid, difficulty: hardSudoku.difficulty });
         });
 
+        this.app.get('/getHighscores', function (req, res) {
+            database.getHighscores();
+        });
+
         this.app.post('/validateSudoku', function (req, res) {
             let result = sudokuManager.verifySudoku(req.body);
             res.send(result);

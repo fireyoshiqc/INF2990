@@ -59,4 +59,23 @@ export class DatabaseService {
         }
 
     }
+
+    getHighscores(): JSON {
+        let scoreJSON: any = {
+            "easy": {},
+            "hard": {}
+        };
+
+        easyScore.find({}).sort('time').limit(3).lean().exec((err, scores) => {
+            console.log(JSON.stringify(scores));
+            scoreJSON.easy = JSON.stringify(scores);
+        });
+        hardScore.find({}).sort('time').limit(3).lean().exec((err, scores) => {
+            console.log(JSON.stringify(scores));
+            scoreJSON.hard = JSON.stringify(scores);
+        });
+
+        console.log(<JSON>scoreJSON);
+        return <JSON>scoreJSON;
+    }
 }

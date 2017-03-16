@@ -26,7 +26,7 @@
                     <md-divider></md-divider>
                     <h3 md-subheader>Records</h3>
                     <md-list-item>
-                        <button md-button class="list-button" (click)="sidenav.toggle()"><md-icon id="easyIcon" color="accent">assessment</md-icon><strong>Afficher les records</strong></button>
+                        <button md-button class="list-button" (click)="sudokuGrid.getSudokuService().getHighscores(); sidenav.toggle()"><md-icon id="easyIcon" color="accent">assessment</md-icon><strong>Afficher les records</strong></button>
                     </md-list-item>
                     <md-divider></md-divider>
                 </md-list>
