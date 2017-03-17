@@ -41,7 +41,7 @@ export class SocketManager {
 
                 if (player !== undefined) {
                     if (this.cparser.isACommand(msg)) {
-                        this.parseCommand(msg, player);
+                        this.parseCommand(msg, player, socket);
                     }
                     else {
                         // regular message
@@ -128,7 +128,7 @@ export class SocketManager {
 
     }
 
-    private parseCommand(msg: string, player: Player): void {
+    private parseCommand(msg: string, player: Player, playerSocket: SocketIO.Socket): void {
         let command = this.cparser.createCommand(msg);
         let commandResponse = "";
 
@@ -153,6 +153,13 @@ export class SocketManager {
                                     row: placeCommand.getRow(), column: placeCommand.getColumn(),
                                     orientation: placeCommand.getOrientation(), word: placeCommand.getWord()
                                 });
+                            this.sio.sockets
+                                .in(player.getRoomId().toString())
+                                .emit('command sent', {
+                                    username: player.getName(), submessage: msg,
+                                    commandResponse: commandResponse
+                                });
+
                         }
                     }
                         break;
@@ -175,8 +182,12 @@ export class SocketManager {
             commandResponse = "ERREUR : Cette commande n'existe pas. Voir !aide";
         }
 
-        this.sio.sockets
-            .in(player.getRoomId().toString())
-            .emit('command sent', { username: player.getName(), submessage: msg, commandResponse: commandResponse });
+        if (commandResponse !== "SUCCÈS") {
+            playerSocket
+                .emit('command sent', {
+                    username: "GameMaster", submessage: msg,
+                    commandResponse: commandResponse
+                });
+        }
     }
 }
