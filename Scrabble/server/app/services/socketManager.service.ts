@@ -154,9 +154,8 @@ export class SocketManager {
                                     orientation: placeCommand.getOrientation(), word: placeCommand.getWord()
                                 });
                         }
-
-                        break;
                     }
+                        break;
 
                     case CommandExecutionStatus.ERROR:
                         commandResponse = "ERREUR : Cette commande n'est pas valide.";

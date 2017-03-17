@@ -56,4 +56,34 @@ describe('ScrabbleGame', () => {
             done();
         });
     });
+
+    describe('isWordCorrectlyOverlapping', () => {
+        it('should verify if the word is correctly overlapping the other words on the board.', done => {
+            let c1 = new CommandPlaceWord("a", 1, "v", "BAC");
+            expect(scrabbleGame.isWordCorrectlyOverlapping(c1)).to.be.true;
+            scrabbleGame.placeWord(c1);
+
+            let c2 = new CommandPlaceWord("c", 1, "h", "CHAT");
+            expect(scrabbleGame.isWordCorrectlyOverlapping(c2)).to.be.true;
+            scrabbleGame.placeWord(c2);
+
+            let c3 = new CommandPlaceWord("c", 4, "v", "TENNIS");
+            expect(scrabbleGame.isWordCorrectlyOverlapping(c3)).to.be.true;
+            scrabbleGame.placeWord(c3);
+
+            let c4 = new CommandPlaceWord("a", 1, "h", "TOMATE");
+            expect(scrabbleGame.isWordCorrectlyOverlapping(c4)).to.be.false;
+
+            let c5 = new CommandPlaceWord("c", 1, "h", "CHATTE");
+            expect(scrabbleGame.isWordCorrectlyOverlapping(c5)).to.be.true;
+            scrabbleGame.placeWord(c5);
+
+            expect(scrabbleGame.isWordCorrectlyOverlapping(c1)).to.be.false;
+            expect(scrabbleGame.isWordCorrectlyOverlapping(c2)).to.be.false;
+            expect(scrabbleGame.isWordCorrectlyOverlapping(c3)).to.be.false;
+            expect(scrabbleGame.isWordCorrectlyOverlapping(c5)).to.be.false;
+
+            done();
+        });
+    });
 });

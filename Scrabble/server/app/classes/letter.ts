@@ -6,16 +6,16 @@
  */
 
 export class Letter {
-    private readonly letter: string;
+    private readonly character: string;
     private readonly value: number;
 
     constructor(letter: string) {
-        this.letter = letter.toUpperCase();
+        this.character = letter.toUpperCase();
         this.value = this.getLetterValue();
     }
 
-    getLetter(): string {
-        return this.letter;
+    getCharacter(): string {
+        return this.character;
     }
 
     getValue(): number {
@@ -25,19 +25,19 @@ export class Letter {
     private getLetterValue(): number {
         let value: number;
 
-        if ("EAINORSTUL".includes(this.letter)) {
+        if ("EAINORSTUL".includes(this.character)) {
             value = 1;
-        } else if ("DMG".includes(this.letter)) {
+        } else if ("DMG".includes(this.character)) {
             value = 2;
-        } else if ("BCP".includes(this.letter)) {
+        } else if ("BCP".includes(this.character)) {
             value = 3;
-        } else if ("FHV".includes(this.letter)) {
+        } else if ("FHV".includes(this.character)) {
             value = 4;
-        } else if ("JQ".includes(this.letter)) {
+        } else if ("JQ".includes(this.character)) {
             value = 8;
-        } else if ("KWXYZ".includes(this.letter)) {
+        } else if ("KWXYZ".includes(this.character)) {
             value = 10;
-        } else if ("JOKER".includes(this.letter)) {
+        } else if ("JOKER".includes(this.character)) {
             value = 0;
         }
 

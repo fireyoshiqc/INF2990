@@ -10,7 +10,6 @@ import { CommandPlaceWord } from '../classes/commandPlaceWord';
 import { CommandChangeLetter } from '../classes/commandChangeLetter';
 import { Player } from '../classes/player';
 import { ScrabbleGame } from '../classes/scrabbleGame';
-import { Dictionary } from '../modules/dictionary.module';
 
 export enum CommandExecutionStatus {
     SUCCESS,
@@ -139,11 +138,22 @@ export class GameMaster {
 
     private canPlaceWord(command: CommandPlaceWord): boolean {
         // 1- Verify if word exists
-        let isWordValid = Dictionary.isWordValid(command.getWord());
 
         // 2- Verify if word can be physically placed on the board
-        let isWordInBounds = this.scrabbleGame.isWordInBounds(command);
+        if (!this.scrabbleGame.isWordInBounds(command)) {
+            return false;
+        }
 
-        return isWordValid && isWordInBounds;
+        // 3- Verify if word is correctly overlapping other words on the board
+        if (!this.scrabbleGame.isWordCorrectlyOverlapping(command)) {
+            return false;
+        }
+
+        // 4- Verify if the newly formed words are valid
+        // if (!this.scrabbleGame.areAllWordsValid(command)) {
+        //     return false;
+        // }
+
+        return true;
     }
 }

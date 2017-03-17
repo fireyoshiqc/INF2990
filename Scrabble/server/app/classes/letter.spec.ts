@@ -17,7 +17,7 @@ describe('Letter', () => {
         it('should construct a BoardTile object.', done => {
             expect(letter).to.not.be.undefined;
             expect(letter).to.be.an.instanceOf(Letter);
-            expect(letter.getLetter()).to.be.equal("A");
+            expect(letter.getCharacter()).to.be.equal("A");
             expect(letter.getValue()).to.be.equal(1);
             done();
         });
@@ -25,7 +25,7 @@ describe('Letter', () => {
         it('should return the right value of W.', done => {
             let B = new Letter("W");
             expect(B).to.be.an.instanceOf(Letter);
-            expect(B.getLetter()).to.be.equal("W");
+            expect(B.getCharacter()).to.be.equal("W");
             expect(B.getValue()).to.be.equal(10);
             done();
         });
@@ -33,7 +33,7 @@ describe('Letter', () => {
         it('should return the right value of J.', done => {
             let J = new Letter("J");
             expect(J).to.be.an.instanceOf(Letter);
-            expect(J.getLetter()).to.be.equal("J");
+            expect(J.getCharacter()).to.be.equal("J");
             expect(J.getValue()).to.be.equal(8);
             done();
         });

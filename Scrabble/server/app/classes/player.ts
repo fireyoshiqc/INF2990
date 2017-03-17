@@ -65,7 +65,7 @@ export class Player {
     }
 
     removeLetter(letter: Letter): boolean {
-        let letterIndex = this.lettersRack.findIndex( letterInRack => letterInRack.getLetter() === letter.getLetter());
+        let letterIndex = this.lettersRack.findIndex(l => l.getCharacter() === letter.getCharacter());
 
         if (letterIndex > -1) {
             this.lettersRack = this.lettersRack.splice(letterIndex, 1);
