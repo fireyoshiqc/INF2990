@@ -6,7 +6,7 @@
  */
 
 import { Command, CommandType, CommandStatus } from '../classes/command';
-import { CommandPlaceWord } from '../classes/commandPlaceLetter';
+import { CommandPlaceWord } from '../classes/commandPlaceWord';
 import { CommandChangeLetter } from '../classes/commandChangeLetter';
 
 export class CommandParser {
@@ -36,7 +36,7 @@ export class CommandParser {
         // create specific commands (with supplied parameters) if command is valid
         if (commandStatus === CommandStatus.VALID_COMMAND) {
             if (commandTypeIndex === CommandType.PLACER) {
-                return this.createCommandPlaceLetter(msg);
+                return this.createCommandPlaceWord(msg);
             } else if (commandTypeIndex === CommandType.CHANGER) {
                 return this.createCommandChangeLetter(msg);
             }
@@ -45,7 +45,7 @@ export class CommandParser {
         return new Command(commandTypeIndex, commandStatus);
     }
 
-    private createCommandPlaceLetter(msg: string): CommandPlaceWord {
+    private createCommandPlaceWord(msg: string): CommandPlaceWord {
         msg = msg.trim();
 
         // obtain command arguments with regex

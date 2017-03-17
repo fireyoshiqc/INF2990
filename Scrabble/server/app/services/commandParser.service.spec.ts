@@ -7,7 +7,7 @@
 
 import { CommandParser } from './commandParser.service';
 import { Command, CommandStatus, CommandType } from '../classes/command';
-import { CommandPlaceWord } from '../classes/commandPlaceLetter';
+import { CommandPlaceWord } from '../classes/commandPlaceWord';
 import { CommandChangeLetter } from '../classes/commandChangeLetter';
 
 import { expect } from 'chai';
@@ -93,15 +93,15 @@ describe('CommandParser', () => {
             expect(command.getCommandStatus()).to.be.equal(CommandStatus.INVALID_COMMAND_SYNTAX);
 
             // Valid command
-            let commandPlaceLetter: CommandPlaceWord;
-            commandPlaceLetter = commandParser.createCommand("!placer a15H boNJouR") as CommandPlaceWord;
-            expect(commandPlaceLetter).is.an.instanceOf(CommandPlaceWord);
-            expect(commandPlaceLetter.getCommandType()).to.be.equal(CommandType.PLACER);
-            expect(commandPlaceLetter.getCommandStatus()).to.be.equal(CommandStatus.VALID_COMMAND);
-            expect(commandPlaceLetter.getRow()).to.be.equal("a");
-            expect(commandPlaceLetter.getColumn()).to.be.equal(15);
-            expect(commandPlaceLetter.getOrientation()).to.be.equal("h");
-            expect(commandPlaceLetter.getWord()).to.be.equal("boNJouR");
+            let commandPlaceWord: CommandPlaceWord;
+            commandPlaceWord = commandParser.createCommand("!placer a15H boNJouR") as CommandPlaceWord;
+            expect(commandPlaceWord).is.an.instanceOf(CommandPlaceWord);
+            expect(commandPlaceWord.getCommandType()).to.be.equal(CommandType.PLACER);
+            expect(commandPlaceWord.getCommandStatus()).to.be.equal(CommandStatus.VALID_COMMAND);
+            expect(commandPlaceWord.getRow()).to.be.equal(0);
+            expect(commandPlaceWord.getColumn()).to.be.equal(14);
+            expect(commandPlaceWord.getOrientation()).to.be.equal("h");
+            expect(commandPlaceWord.getWord()).to.be.equal("boNJouR");
 
             done();
         });

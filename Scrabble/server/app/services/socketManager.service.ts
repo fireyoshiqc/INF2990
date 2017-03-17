@@ -115,11 +115,11 @@ export class SocketManager {
                 // TODO mettre un message d'aide pertinent
                 commandResponse = "Voici l'aide...";
             } else {
-                // Command is valid, execute it
-                let executionStatus = this.gmaster.handleCommand(command, player);
-                commandResponse = (executionStatus === CommandExecutionStatus.SUCCESS) ?
+                // Command is valid, execute it -- CHANGER PLAYER INTERFACE EN PLAYER (CLASSE) !!!
+                //let executionStatus = this.gmaster.handleCommand(command, player); <===================
+                //commandResponse = (executionStatus === CommandExecutionStatus.SUCCESS) ?
                     // TODO changer le message d'erreur lorsque les commandes sont implémentées
-                    "" : "ERREUR : Cette commande n'est pas encore implémentée. TODO changer le msg.";
+                    //"" : "ERREUR : Cette commande n'est pas encore implémentée. TODO changer le msg.";
             }
 
         } else if (command.getCommandStatus() === CommandStatus.INVALID_COMMAND_SYNTAX) {

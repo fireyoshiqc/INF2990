@@ -6,11 +6,11 @@
  */
 
 import { Command, CommandType, CommandStatus } from './command';
-import { CommandPlaceWord } from './commandPlaceLetter';
+import { CommandPlaceWord } from './commandPlaceWord';
 
 import { expect } from 'chai';
 
-describe('CommandPlaceLetter', () => {
+describe('commandPlaceWord', () => {
 
     let command = new CommandPlaceWord("a", 1, "v", "bonjour");
 
@@ -22,8 +22,8 @@ describe('CommandPlaceLetter', () => {
 
             expect(command.getCommandType()).to.be.equal(CommandType.PLACER);
             expect(command.getCommandStatus()).to.be.equal(CommandStatus.VALID_COMMAND);
-            expect(command.getRow()).to.be.equal("a");
-            expect(command.getColumn()).to.be.equal(1);
+            expect(command.getRow()).to.be.equal(0);
+            expect(command.getColumn()).to.be.equal(0);
             expect(command.getOrientation()).to.be.equal("v");
             expect(command.getWord()).to.be.equal("bonjour");
             done();

@@ -21,5 +21,22 @@ describe('Letter', () => {
             expect(letter.getValue()).to.be.equal(1);
             done();
         });
+
+        it('should return the right value of W.', done => {
+            let B = new Letter("W");
+            expect(B).to.be.an.instanceOf(Letter);
+            expect(B.getLetter()).to.be.equal("W");
+            expect(B.getValue()).to.be.equal(10);
+            done();
+        });
+
+        it('should return the right value of J.', done => {
+            let J = new Letter("J");
+            expect(J).to.be.an.instanceOf(Letter);
+            expect(J.getLetter()).to.be.equal("J");
+            expect(J.getValue()).to.be.equal(8);
+            done();
+        });
     });
 });
+

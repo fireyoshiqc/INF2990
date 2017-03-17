@@ -12,20 +12,21 @@ import { expect } from 'chai';
 
 describe('BoardTile', () => {
 
-    let boardTile = new BoardTile("Basic");
 
     describe('Default constructor', () => {
         it('should construct a BoardTile object.', done => {
+            let boardTile = new BoardTile("Basic");
             expect(boardTile).to.not.be.undefined;
             expect(boardTile).to.be.an.instanceOf(BoardTile);
             expect(boardTile.getTileType()).to.be.equal("Basic");
-            expect(boardTile.getIsEmpty()).to.be.true;
+            expect(boardTile.isEmpty()).to.be.true;
             done();
         });
     });
 
     describe('putLetter()', () => {
         it('should put a Letter on a BoardTile object.', done => {
+            let boardTile = new BoardTile("Basic");
             let letter = new Letter("A");
             boardTile.putLetter(letter);
 
@@ -40,7 +41,9 @@ describe('BoardTile', () => {
             let letter = new Letter("A");
             boardTile.putLetter(letter);
 
-            expect(boardTile.countPoint()).to.equal(2);
+            expect(boardTile.countTilePoint()).to.equal(2);
+            // Bonus desactive
+            expect(boardTile.countTilePoint()).to.equal(1);
             done();
         });
         it('should return three times the value of the letter on a TripleLetter tile.', done => {
@@ -48,7 +51,9 @@ describe('BoardTile', () => {
             let boardTile = new BoardTile("TripleLetter");
             boardTile.putLetter(letter);
 
-            expect(boardTile.countPoint()).to.equal(3);
+            expect(boardTile.countTilePoint()).to.equal(3);
+            // Bonus desactive
+            expect(boardTile.countTilePoint()).to.equal(1);
             done();
         });
     });

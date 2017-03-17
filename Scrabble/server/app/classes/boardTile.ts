@@ -18,36 +18,45 @@ export type TileType =
 export class BoardTile {
     private readonly tileType: TileType;
     private letter: Letter;
-    private isEmpty: boolean;
+    private empty: boolean;
+    private bonusActive: boolean;
 
     constructor(tileType: TileType = "Basic") {
         this.tileType = tileType;
-        this.isEmpty = true;
+        this.empty = true;
+        this.bonusActive = true;
     }
 
     getTileType(): TileType {
-        return this.tileType;
+        // Pour ne pas compter DoubleWord/TripleWord plus qu'une fois
+        if (this.bonusActive === true) {
+            return this.tileType;
+        }
+        return "Basic";
     }
 
     getLetter(): Letter {
         return this.letter;
     }
 
-    getIsEmpty(): boolean {
-        return this.isEmpty;
+    isEmpty(): boolean {
+        return this.empty;
     }
 
     putLetter(letter: Letter): void {
         this.letter = letter;
-        this.isEmpty = false;
+        this.empty = false;
     }
 
-    countPoint(): number {
-        if (this.tileType === "DoubleLetter") {
-            this.letter.getValue() * 2;
-        } else if (this.tileType === "TripleLetter") {
-            this.letter.getValue() * 3;
+    countTilePoint(): number {
+        let point = this.letter.getValue();
+        if (this.tileType === "DoubleLetter" && this.bonusActive === true) {
+            point *= 2;
+        } else if (this.tileType === "TripleLetter" && this.bonusActive === true) {
+            point *= 3;
         }
-        return this.letter.getValue();
+
+        this.bonusActive = false;
+        return point;
     }
 }

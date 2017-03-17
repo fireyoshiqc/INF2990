@@ -5,6 +5,8 @@
  * @date 2017/02/18
  */
 
+import { Player } from './Player';
+
 export interface RoomInfo {
     roomID: number;
     capacity: number;
@@ -13,11 +15,13 @@ export interface RoomInfo {
 
 export class Room {
     private roomInfo : RoomInfo = { roomID: -1, capacity: 0, playerList: new Array<string>() };
+    private presentPlayers: Player[];
 
     constructor(roomID: number, capacity : number) {
         this.roomInfo.roomID = roomID;
         this.roomInfo.capacity = capacity;
         this.roomInfo.playerList = new Array<string>();
+        this.presentPlayers = new Array<Player>();
     }
 
     getRoomInfo(): RoomInfo {
@@ -27,6 +31,7 @@ export class Room {
     addPlayer(playerName : string) {
         if (!this.isFull()) {
             this.roomInfo.playerList.push(playerName);
+            // TODO: ADD PLAYER TO presentPlayers
         }
     }
 
@@ -34,6 +39,7 @@ export class Room {
         if (this.roomInfo.playerList.length > 0) {
             let index = this.roomInfo.playerList.indexOf(playerName);
             this.roomInfo.playerList.splice(index, 1);
+            // TODO: REMOVE PLAYER TO presentPlayers
         }
     }
 

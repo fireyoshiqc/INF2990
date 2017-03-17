@@ -47,9 +47,16 @@ export class Player {
         return this.lettersRack;
     }
 
+    isRackEmpty(): boolean {
+        return this.lettersRack.length === 0;
+    }
+
+    getMaxRackSize(): number {
+        return this.LETTERS_RACK_SIZE;
+    }
+
     addLetter(letter: Letter): boolean {
         if (this.lettersRack.length < this.LETTERS_RACK_SIZE) {
-            console.log(this.lettersRack.length);
             this.lettersRack.push(letter);
             return true;
         }

@@ -6,9 +6,10 @@
  */
 
 import { Command, CommandType } from '../classes/command';
-import { CommandPlaceWord } from '../classes/commandPlaceLetter';
+import { CommandPlaceWord } from '../classes/commandPlaceWord';
 import { CommandChangeLetter } from '../classes/commandChangeLetter';
-import { Player } from './playerManager.service';
+import { Player } from '../classes/player';
+import { ScrabbleGame } from '../classes/scrabbleGame';
 
 export enum CommandExecutionStatus {
     SUCCESS,
@@ -16,25 +17,44 @@ export enum CommandExecutionStatus {
 }
 
 export class GameMaster {
-    // games: Array<ScrabbleGame>;
+    private scrabbleGame: ScrabbleGame;
+    private presentPlayers: Player[];
+    private activePlayer: Player;
+    private readonly BINGO_BONUS = 50;
 
-
+    constructor() {
+        this.scrabbleGame = new ScrabbleGame();
+        //TODO: liste des Players. Passer par parametres. Changer dans test aussi.
+        //TODO: activePlayer
+    }
 
     handleCommand(command: Command, player: Player): CommandExecutionStatus {
         switch (command.getCommandType()) {
-            case CommandType.PLACER :
+            case CommandType.PLACER:
                 return this.placeWord(command as CommandPlaceWord, player);
-            case CommandType.CHANGER :
+            case CommandType.CHANGER:
                 return this.changeLetter(command as CommandChangeLetter, player);
-            case CommandType.PASSER :
+            case CommandType.PASSER:
                 return this.skipTurn(player);
-            default :
+            default:
                 return CommandExecutionStatus.ERROR;
         }
     }
 
     private placeWord(command: CommandPlaceWord, player: Player): CommandExecutionStatus {
         // TODO : À implémenter le placement des lettres
+        // 1- Validation du placement du mot
+        // 2- Placer les lettres avec (putLetter de boardTile) & enlever le lettres du rack de joueur
+        //    REGARDER SI LES LETTRES PLACÉS FORME UN AUTRE MOT.
+        // 3- Appeler countWordPoint du ScrabbleGame pour compter les points du mot
+        let score = this.scrabbleGame.countWordPoint(command);
+        // Si le player réussit un "Bingo", on ajout un bonus de 50 points
+        if (player.isRackEmpty() === true) {
+            score += this.BINGO_BONUS;
+        }
+        // 4- Update le score du player
+        player.addPoints(score);
+        // 5- Redonner au joueur des lettres
 
         return CommandExecutionStatus.ERROR;
     }
@@ -48,4 +68,5 @@ export class GameMaster {
         // TODO : À implémenter le skip de tour
         return CommandExecutionStatus.ERROR;
     }
+
 }
