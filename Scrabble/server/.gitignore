@@ -19,6 +19,7 @@ coverage/
 
 
 # Garder les fichiers necessaires pour les tests
+!dictionary.js
 !systemjs.config.js
 !karma.conf.js
 !karma-test-shim.js

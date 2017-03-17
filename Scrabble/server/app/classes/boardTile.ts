@@ -49,6 +49,10 @@ export class BoardTile {
     }
 
     countTilePoint(): number {
+        if (this.empty) {
+            return 0;
+        }
+
         let point = this.letter.getValue();
         if (this.tileType === "DoubleLetter" && this.bonusActive === true) {
             point *= 2;

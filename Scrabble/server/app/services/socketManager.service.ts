@@ -103,6 +103,26 @@ export class SocketManager {
                     this.sio.sockets.in(id.toString()).emit('wcRefresh', room.getRoomInfo());
                 }
             }, 1000);
+
+            // Initializes the scrabble game in a specific room
+            socket.on('cwStartGame', (roomID: number) => {
+                let room = this.rmanager.findRoom(roomID);
+                let gameMaster = room.getGameMaster();
+
+                if (!gameMaster.isGameStarted()) {
+                    gameMaster.startGame();
+
+                    let msg = "Jeu initialisé. Ordre des joueurs :";
+                    gameMaster.getPlayers().forEach(player => {
+                        msg += " " + player.getName();
+                    });
+                    msg += ". Joueur actif : " + gameMaster.getActivePlayer().getName() + ".";
+
+                    this.sio.sockets
+                        .in(roomID.toString())
+                        .emit('message sent', { username: "GameMaster", submessage: msg });
+                }
+            });
         });
 
     }
@@ -120,11 +140,24 @@ export class SocketManager {
                 // Command is valid, execute it
                 let room = this.rmanager.findRoom(player.getRoomId());
                 let executionStatus = room.getGameMaster().handleCommand(command, player);
-                commandResponse = (executionStatus === CommandExecutionStatus.SUCCESS) ?
-                    // TODO changer le message d'erreur lorsque les commandes sont implémentées
-                    "" : "ERREUR : Cette commande n'est pas encore implémentée. TODO changer le msg.";
-            }
 
+                switch (executionStatus) {
+                    case CommandExecutionStatus.SUCCESS:
+                        commandResponse = "SUCCÈS";
+                        break;
+
+                    case CommandExecutionStatus.ERROR:
+                        commandResponse = "ERREUR : Cette commande n'est pas valide.";
+                        break;
+
+                    case CommandExecutionStatus.WAIT:
+                        commandResponse = "Veuillez attendre votre tour";
+                        break;
+
+                    default:
+                        break;
+                }
+            }
         } else if (command.getCommandStatus() === CommandStatus.INVALID_COMMAND_SYNTAX) {
             commandResponse = "ERREUR : Cette commande ne respecte pas la syntaxe. Voir !aide";
         } else if (command.getCommandStatus() === CommandStatus.UNDEFINED_COMMAND) {

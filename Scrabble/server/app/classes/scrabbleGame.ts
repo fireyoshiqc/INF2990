@@ -57,7 +57,6 @@ export class ScrabbleGame {
             }
 
             score += tile.countTilePoint();
-
         }
 
         // Traitement doubleWord / TripleWord
@@ -72,4 +71,8 @@ export class ScrabbleGame {
         return score;
     }
 
+    isWordInBounds(command: CommandPlaceWord): boolean {
+        return (((command.getOrientation() === "h") ?
+                  command.getColumn() : command.getRow()) + command.getWord().length) <= this.BOARD_LENGTH;
+    }
 }
