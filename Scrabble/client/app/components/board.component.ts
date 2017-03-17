@@ -24,14 +24,27 @@ export interface CommandPlaceWord {
 })
 
 export class BoardComponent implements OnInit {
-    board: BoardTile[][];
-    readonly BOARD_LENGTH = 15;
+    private board: BoardTile[][];
+    private readonly BOARD_LENGTH = 15;
 
-    constructor(private http: Http) { }
+    constructor(private http: Http) {
+        this.board = [];
+
+        for (let i = 0; i < this.BOARD_LENGTH; i++) {
+            this.board[i] = [];
+
+            for (let j = 0; j < this.BOARD_LENGTH; j++) {
+                this.board[i][j] = new BoardTile();
+            }
+        }
+    }
 
     ngOnInit() {
-        this.board = [];
         this.loadBoard();
+    }
+
+    getBoard(): BoardTile[][] {
+        return this.board;
     }
 
     private loadBoard() {
@@ -40,6 +53,7 @@ export class BoardComponent implements OnInit {
             .subscribe(res => {
                 for (let i = 0; i < this.BOARD_LENGTH; i++) {
                     this.board[i] = [];
+
                     for (let j = 0; j < this.BOARD_LENGTH; j++) {
                         this.board[i][j] = new BoardTile(<TileType>res.array[i][j]);
                     }
