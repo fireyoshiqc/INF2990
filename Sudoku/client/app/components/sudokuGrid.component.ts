@@ -1,8 +1,10 @@
-import { Component, AfterViewInit, Optional, HostListener } from '@angular/core';
+import { Component, AfterViewInit, HostListener } from '@angular/core';
 import { SudokuService } from '../services/sudoku.service';
 import { StopwatchService } from '../services/stopwatch.service';
 import { InputService } from '../services/input.service';
 import { MdDialog, MdDialogRef } from '@angular/material';
+import { NameDialogComponent } from './nameSelector.component';
+import { HighscoresPopupComponent } from './highscores.component';
 
 @Component({
     selector: 'sudoku-grid',
@@ -11,7 +13,7 @@ import { MdDialog, MdDialogRef } from '@angular/material';
 })
 export class SudokuGridComponent implements AfterViewInit {
     isDarkTheme = false;
-    private dialogRef: MdDialogRef<NameDialogComponent>;
+    private dialogRef: MdDialogRef<any>;
 
     constructor(public dialog: MdDialog, private sudokuService: SudokuService,
         private stopwatchService: StopwatchService,
@@ -57,8 +59,36 @@ export class SudokuGridComponent implements AfterViewInit {
         this.sudokuService.validateSudoku(() => {
             if (this.sudokuService.isValid) {
                 this.stopwatchService.stop();
-                this.sudokuService.addScore(this.stopwatchService.getTotalTimeSeconds());
+                this.sudokuService.addScore(this.stopwatchService.getTotalTimeSeconds())
+                    .then((resolve) => {
+                        if (resolve) {
+                            console.log("L'ajout du score a marché!");
+                            this.sudokuService.getHighscores()
+                                .then((scores) => {
+                                    if (scores !== undefined) {
+                                        //Pop the popup!
+                                        console.log("This should launch the popup!");
+                                        alert("You'Re a dumbass!!!");
+                                        this.showHighscoresDialog(scores);
+                                    } else {
+                                        // Don't pop the popup! Show a message to say you suck!
+                                        console.log("YOU SUCK AT CODING");
+                                    }
+                                })
+                                .catch((error) => {
+                                    console.log(error);
+                                });
+                        }
+                    })
+                    .catch((error) => console.log(error));
             }
+        });
+    }
+
+    showHighscoresDialog(data: JSON) {
+        setTimeout(() => {
+            this.dialogRef = this.dialog.open(HighscoresPopupComponent, {});
+            this.dialogRef.componentInstance.data = data;
         });
     }
 
@@ -139,12 +169,4 @@ interface EntryEvent {
     inputField: HTMLInputElement;
     row: number;
     column: number;
-}
-
-@Component({
-    template: `<name-selector-comp></name-selector-comp>`
-})
-
-export class NameDialogComponent {
-    constructor( @Optional() public dialogRef: MdDialogRef<any>) { }
 }

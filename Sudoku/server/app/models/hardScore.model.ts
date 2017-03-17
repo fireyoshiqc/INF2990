@@ -14,7 +14,7 @@ export interface IHardScore extends mongoose.Document {
 
 export const HARD_SCORE_SCHEMA = new mongoose.Schema(
     { name: { type: String, required: true }, time: { type: Number, required: true } },
-    { collection: 'hardScores' });
+    { collection: 'hardScores', timestamps: {} });
 
 const hardScore = mongoose.model<IHardScore>('HardScore', HARD_SCORE_SCHEMA);
 export default hardScore;

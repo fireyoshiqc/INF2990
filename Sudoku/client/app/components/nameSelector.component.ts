@@ -5,8 +5,7 @@
  * @date 2017/02/18
  */
 
-import { Component } from '@angular/core';
-//import { RoomService } from '../services/room.service';
+import { Component, Optional } from '@angular/core';
 import { MdDialogRef } from '@angular/material';
 import { NameService } from '../services/name.service';
 
@@ -53,4 +52,10 @@ export class NameSelectorComponent {
     }
 }
 
+@Component({
+    template: `<name-selector-comp></name-selector-comp>`
+})
 
+export class NameDialogComponent {
+    constructor( @Optional() public dialogRef: MdDialogRef<any>) { }
+}

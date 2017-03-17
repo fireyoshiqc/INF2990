@@ -112,9 +112,9 @@ export class Application {
         });
 
         this.app.get('/getHighscores', function (req, res) {
-            database.getHighscores().then((highscores) => {
-                res.send(highscores);
-            });
+            database.getHighscores()
+                .then((highscores) => res.send(highscores))
+                .catch((error) => res.send(error));
         });
 
         this.app.post('/validateSudoku', function (req, res) {
@@ -131,7 +131,9 @@ export class Application {
         });
 
         this.app.put('/addScore', function (req, res) {
-            database.addScore(req.body.name, req.body.time, req.body.difficulty);
+            database.addScore(req.body.name, req.body.time, req.body.difficulty)
+                .then((added) => res.send(added))
+                .catch((error) => res.send(error));
         });
 
         // TODO : Remove comment below when routers will be required

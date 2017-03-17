@@ -14,7 +14,7 @@ export interface IEasyScore extends mongoose.Document {
 
 export const EASY_SCORE_SCHEMA = new mongoose.Schema(
     { name: { type: String, required: true }, time: { type: Number, required: true } },
-    { collection: 'easyScores' });
+    { collection: 'easyScores', timestamps: {} });
 
 const easyScore = mongoose.model<IEasyScore>('EasyScore', EASY_SCORE_SCHEMA);
 export default easyScore;

@@ -15,7 +15,6 @@ export class DatabaseService {
     }
 
     connect() {
-        //TODO: Dummy host, need a provider
         mongoose.connect("mongodb://factory24:sudoku@ds125060.mlab.com:25060/sudokuscores").then(
             () => {
                 //Connected successfully to database.
@@ -27,45 +26,69 @@ export class DatabaseService {
             });
     }
 
-    addScore(name: string, time: number, difficulty: string) {
-        if (difficulty === "facile") {
-            // Check if user already has a saved score for easy sudoku
-            easyScore.findOne({ name: name }, (err, score) => {
-                // If user has beaten their previous best time update their score
-                if (score && (score.time > time)) {
-                    score.time = time;
-                    score.save();  // TODO: Add error managing callback
-                } else if (score === null) {
-                    // If user never previously saved score then add entry
-                    const newScore = new easyScore({ name: name, time: time });
-                    newScore.save();
-                }
-            });
-        } else if (difficulty === "difficile") {
-            hardScore.findOne({ name: name }, (err, score) => {
-                // Check if user already has a saved score for hard sudoku
-                if (score && (score.time > time)) {
-                    // If user has beaten their previous best time update their score
-                    score.time = time;
-                    score.save();  // TODO: Add error managing callback
-                } else if (score === null) {
-                    // If user never previously saved score then add entry
-                    const newScore = new hardScore({ name: name, time: time });
-                    newScore.save();
-                }
-            });
-        } else {
-            console.log("Invalid difficulty.");
-        }
+    addScore(name: string, time: number, difficulty: string): Promise<boolean> {
+        let addPromise = new Promise((resolve, reject) => {
+            if (difficulty === "facile") {
+                // Check if user already has a saved score for easy sudoku
+                easyScore.findOne({ name: name }, (err, score) => {
+                    if (err) {
+                        reject("Error adding score to database!");
+                    }
 
+                    // If user has beaten their previous best time update their score
+                    if (score && (score.time > time)) {
+                        score.time = time;
+                        score.save();  // TODO: Add error managing callback
+                        resolve(true);
+                    } else if (score === null) {
+                        // If user never previously saved score then add entry
+                        const newScore = new easyScore({ name: name, time: time });
+                        newScore.save();
+                        resolve(true);
+                    } else {
+                        resolve(false);
+                    }
+                });
+            } else if (difficulty === "difficile") {
+                hardScore.findOne({ name: name }, (err, score) => {
+                    if (err) {
+                        reject("Error adding score to database!");
+                    }
+
+                    // Check if user already has a saved score for hard sudoku
+                    if (score && (score.time > time)) {
+                        // If user has beaten their previous best time update their score
+                        score.time = time;
+                        score.save();  // TODO: Add error managing callback
+                        resolve(true);
+                    } else if (score === null) {
+                        // If user never previously saved score then add entry
+                        const newScore = new hardScore({ name: name, time: time });
+                        newScore.save();
+                        resolve(true);
+                    } else {
+                        resolve(false);
+                    }
+                });
+            } else {
+                reject("Error, invalid difficulty! Did you hack the game?");
+            }
+        });
+        return addPromise;
     }
 
     getHighscores(): Promise<IHighscores> {
         let scoreJSON: IHighscores = { easy: [], hard: [] };
         let scorePromise = new Promise((resolve, reject) => {
-            easyScore.find({}).sort('time').limit(3).lean().exec((err, scores) => {
+            easyScore.find({}).sort('time').sort('updatedAt').limit(3).lean().exec((err, scores) => {
+                if (err){
+                    reject("Error, could not get easy highscores!");
+                }
                 scoreJSON.easy = JSON.parse(JSON.stringify(scores));
-            }).then(() => hardScore.find({}).sort('time').limit(3).lean().exec((err, scores) => {
+            }).then(() => hardScore.find({}).sort('time').sort('updatedAt').limit(3).lean().exec((err, scores) => {
+                if (err){
+                    reject("Error, could not get hard highscores!");
+                }
                 scoreJSON.hard = JSON.parse(JSON.stringify(scores));
                 resolve(scoreJSON);
             }));

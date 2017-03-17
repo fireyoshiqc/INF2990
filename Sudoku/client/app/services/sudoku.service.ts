@@ -67,21 +67,47 @@ export class SudokuService {
             .catch(() => console.log("Could not validate sudoku."));
     }
 
-    addScore(timeTaken: number) {
-        this.http.put('http://localhost:3002/addScore',
-            { "name": this.playerName, "time": timeTaken, "difficulty": this.difficulty })
-            .toPromise().then(res => {
-            // TODO: Error management and show scores
-        })
-            .catch(() => console.log("Could not add score."));
+    addScore(timeTaken: number): Promise<boolean> {
+        let postPromise = new Promise((resolve, reject) => {
+            this.http.put('http://localhost:3002/addScore',
+                { "name": this.playerName, "time": timeTaken, "difficulty": this.difficulty }).toPromise()
+                .then(res => resolve(res.json()))
+                .catch((error) => reject());
+        });
+        return postPromise;
     }
 
-    getHighscores() {
-        this.http.get('http://localhost:3002/getHighscores').toPromise().then(res => {
-            // TODO: Everything
-            console.log(res.json());
-        })
-            .catch(() => console.log("Could not get highscores."));
+    getHighscores(): Promise<JSON> {
+        let getPromise = new Promise((resolve, reject) => {
+            this.http.get('http://localhost:3002/getHighscores').toPromise()
+                .then(res => {
+                    // TODO: Everything
+                    let highscores = res.json();
+                    console.log(highscores);
+                    if (highscores.easy === undefined || highscores.hard === undefined) {
+                        console.log("Highscores request failed.")
+                    } else {
+                        let easyScores: Array<any> = highscores.easy;
+                        console.log(easyScores);
+
+                        let hardScores: Array<any> = highscores.hard;
+                        console.log(hardScores);
+                        let isHighscore: boolean;
+                        // Trying to find the current player's name in the top 3 highscores for each difficulty
+                        if (this.difficulty === "facile") {
+                            isHighscore = easyScores.find(element => (element.name === this.playerName)) !== undefined;
+                        } else if (this.difficulty === "difficile") {
+                            isHighscore = hardScores.find(element => (element.name === this.playerName)) !== undefined;
+                        } else {
+                            reject("Sudoku difficulty not set or wrong value. Could not get highscores.");
+                        }
+                        isHighscore ? resolve(highscores) : resolve(undefined);
+                    }
+                })
+                .catch(() => reject("Could not get highscores."));
+        });
+        return getPromise;
+
     }
 
     resetSudoku() {
@@ -109,7 +135,7 @@ export class SudokuService {
 
     quitGame(): void {
         //Send beacon to server to signal name removal before page unload.
-        let blob = new Blob([JSON.stringify({"name": this.playerName})], {type: 'application/json; charset=UTF-8'});
+        let blob = new Blob([JSON.stringify({ "name": this.playerName })], { type: 'application/json; charset=UTF-8' });
         navigator.sendBeacon('http://localhost:3002/removeName', blob);
     }
 }
