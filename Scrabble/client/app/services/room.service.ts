@@ -42,7 +42,11 @@ export class RoomService {
         });
     }
 
-    leaveRoom() {
+    startGame(roomID: number): void {
+        this.socket.emit('cwStartGame', roomID);
+    }
+
+    leaveRoom(): void {
         this.socket.emit('cwLeaveRoom', { roomID: this.roomInfo.roomID, name: this.playerName });
 
         // reset all room info
