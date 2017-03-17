@@ -106,6 +106,7 @@ export class GameMaster {
         if (this.canPlaceWord(command)) {
             // 2- Placer les lettres avec (putLetter de boardTile) & enlever le lettres du rack de joueur
             //    REGARDER SI LES LETTRES PLACÉS FORME UN AUTRE MOT.
+            this.scrabbleGame.placeWord(command);
             // 3- Appeler countWordPoint du ScrabbleGame pour compter les points du mot
             let score = this.scrabbleGame.countWordPoint(command);
             // Si le player réussit un "Bingo", on ajout un bonus de 50 points
@@ -115,6 +116,9 @@ export class GameMaster {
             // 4- Update le score du player
             player.addPoints(score);
             // 5- Redonner au joueur des lettres
+
+            // 6- Passer au prochain joueur
+            this.skipTurn(this.activePlayer);
 
             return CommandExecutionStatus.SUCCESS;
         }

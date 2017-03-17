@@ -1,5 +1,8 @@
-import { Component, HostListener, ViewChild } from '@angular/core';
+import { Component, HostListener, ViewChild, OnInit } from '@angular/core';
 import { RackComponent } from './rack.component';
+import { BoardComponent, CommandPlaceWord } from './board.component';
+import { SocketHandler } from '../modules/socketHandler.module';
+
 //import { ChatComponent } from './chat.component';
 
 @Component({
@@ -7,13 +10,19 @@ import { RackComponent } from './rack.component';
     selector: 'game-comp',
     templateUrl: '/assets/templates/game.component.html'
 })
-export class GameComponent {
-
+export class GameComponent implements OnInit {
+    socket: any;
     rackActive = false;
-
     @ViewChild(RackComponent) rackChild: RackComponent;
-    // TODO : comprendre pourquoi ça plante les tests
-    // @ViewChild(ChatComponent) chatChild: ChatComponent;
+    @ViewChild(BoardComponent) boardChild: BoardComponent;
+
+    ngOnInit() {
+        this.socket = SocketHandler.requestSocket('http://localhost:3000');
+
+        this.socket.on("wcPlaceWord", (command: CommandPlaceWord) => {
+            this.boardChild.placeWord(command);
+        });
+    }
 
     @HostListener('window:keydown', ['$event'])
     keyboardInput(event: KeyboardEvent) {

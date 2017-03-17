@@ -13,6 +13,7 @@ import { RoomManager } from './roomManager.service';
 import { PlayerManager } from './playerManager.service';
 import { CommandParser } from './commandParser.service';
 import { CommandType, CommandStatus } from '../classes/command';
+import { CommandPlaceWord } from '../classes/commandPlaceWord';
 import { CommandExecutionStatus } from './gameMaster.service';
 
 export class SocketManager {
@@ -63,8 +64,8 @@ export class SocketManager {
                     this.pmanager.removePlayer(player.getName());
                     let disconnectMsg = "L'utilisateur a quitté la partie.";
                     this.sio.sockets
-                            .in(player.getRoomId().toString())
-                            .emit('user disconnect', { username: player.getName(), submessage: disconnectMsg });
+                        .in(player.getRoomId().toString())
+                        .emit('user disconnect', { username: player.getName(), submessage: disconnectMsg });
                 }
                 console.log("User disconnected");
             });
@@ -142,9 +143,20 @@ export class SocketManager {
                 let executionStatus = room.getGameMaster().handleCommand(command, player);
 
                 switch (executionStatus) {
-                    case CommandExecutionStatus.SUCCESS:
+                    case CommandExecutionStatus.SUCCESS: {
                         commandResponse = "SUCCÈS";
+                        if (command.getCommandType() === CommandType.PLACER) {
+                            let placeCommand = command as CommandPlaceWord;
+                            this.sio.sockets
+                                .in(player.getRoomId().toString())
+                                .emit('wcPlaceWord', {
+                                    row: placeCommand.getRow(), column: placeCommand.getColumn(),
+                                    orientation: placeCommand.getOrientation(), word: placeCommand.getWord()
+                                });
+                        }
+
                         break;
+                    }
 
                     case CommandExecutionStatus.ERROR:
                         commandResponse = "ERREUR : Cette commande n'est pas valide.";

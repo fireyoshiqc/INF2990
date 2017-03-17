@@ -8,6 +8,14 @@
 import { Component, OnInit } from '@angular/core';
 import { BoardTile, TileType } from '../classes/boardTile';
 import { Http } from '@angular/http';
+import { Letter } from '../classes/letter';
+
+export interface CommandPlaceWord {
+    row: number;
+    column: number;
+    orientation: string;
+    word: string;
+}
 
 @Component({
     moduleId: module.id,
@@ -37,5 +45,17 @@ export class BoardComponent implements OnInit {
                     }
                 }
             });
+    }
+
+     placeWord(command: CommandPlaceWord): void {
+        let word = command.word;
+
+         for (let i = 0; i < word.length; i++) {
+            if (command.orientation === "h") {
+                this.board[command.row][command.column + i].putLetter(new Letter(word[i]));
+            } else {
+                this.board[command.row + i][command.column].putLetter(new Letter(word[i]));
+            }
+         }
     }
 }

@@ -7,6 +7,7 @@
 
 import { BoardTile, TileType } from './boardTile';
 import { CommandPlaceWord } from './commandPlaceWord';
+import { Letter } from './letter';
 import * as data from '../../assets/objects/scrabbleBoard.json';
 
 export class ScrabbleGame {
@@ -37,6 +38,18 @@ export class ScrabbleGame {
         }
     }
 
+    placeWord(command: CommandPlaceWord): void {
+        let word = command.getWord();
+
+         for (let i = 0; i < word.length; i++) {
+            if (command.getOrientation() === "h") {
+                this.board[command.getRow()][command.getColumn() + i].putLetter(new Letter(word[i]));
+            } else {
+                this.board[command.getRow() + i][command.getColumn()].putLetter(new Letter(word[i]));
+            }
+         }
+    }
+
     // the word point is counted before the word is placed
     countWordPoint(command: CommandPlaceWord): number {
         let score = 0;
@@ -44,7 +57,7 @@ export class ScrabbleGame {
         let doubleWord = false, tripleWord = false;
 
         for (let i = 0; i < command.getWord().length; i++) {
-            if (command.getOrientation() === "v") {
+            if (command.getOrientation() === "h") {
                 tile = this.board[command.getRow()][command.getColumn() + i];
             } else {
                 tile = this.board[command.getRow() + i][command.getColumn()];
