@@ -140,8 +140,6 @@ export class PhysicsManager {
         this.decayedSpots = [];
     }
 
-
-
     getOutOfBoundsStones(): CurlingStone[] {
         let outOfBoundsStones: CurlingStone[] = [];
 
@@ -158,6 +156,15 @@ export class PhysicsManager {
         });
 
         return outOfBoundsStones;
+    }
+
+    sortStonesByDistance(): void {
+        if (this.curlingStones.length > 1) {
+            this.curlingStones.sort((stone1: CurlingStone, stone2: CurlingStone) => {
+                // if stone1 is closer to the rings than stone 2, it should be placed before stone 2
+                return stone1.position.distanceTo(Rink.RINGS_CENTER) - stone2.position.distanceTo(Rink.RINGS_CENTER);
+            });
+        }
     }
 
     allStonesHaveStopped(): boolean {

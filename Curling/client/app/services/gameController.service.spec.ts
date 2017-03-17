@@ -81,7 +81,8 @@ describe('GameController', () => {
 
         describe('sortStonesByDistance()', () => {
             it('should sort stones by distance to center of the rings.', done => {
-                let sortStones = gameController.sortStonesByDistance();
+                gameController.getGameRenderer().physicsManager.sortStonesByDistance();
+                let sortStones = gameController.getCurlingStones();
 
                 expect(sortStones.length).to.be.equal(9);
                 expect(sortStones[0].getTeam()).to.be.equal(Team.AI);

@@ -23,6 +23,7 @@ export class Rink extends THREE.Group {
     private static readonly MIDDLE_RADIUS = 1.2;
     static readonly OUTER_RADIUS = 1.8;
     static readonly RINGS_OFFSET = 17.37; //By how much the ring set is off from the center of the rink.
+    static readonly RINGS_CENTER = new THREE.Vector3(0, 0, -Rink.RINK_LENGTH / 2 - Rink.RINGS_OFFSET);
 
     private sweptSpotsBuffer: THREE.Mesh[] = [];
     private sweptBufferIndex = 0;

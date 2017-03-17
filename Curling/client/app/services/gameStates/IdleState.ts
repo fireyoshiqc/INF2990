@@ -20,5 +20,4 @@ export class IdleState implements GameState{
     onMouseMove(event: any): void {
         //Do nothing
     }
-
 }

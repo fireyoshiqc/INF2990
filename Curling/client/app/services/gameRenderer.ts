@@ -12,6 +12,7 @@ import { Rink } from '../entities/rink';
 import { LightManager } from './lightManager';
 import { PhysicsManager } from './physicsManager';
 import { CameraManager } from './cameraManager.service';
+import { GameController } from './gameController.service';
 
 @Injectable()
 export class GameRenderer {
@@ -34,6 +35,8 @@ export class GameRenderer {
     curlingStones: CurlingStone[] = [];
     curveGeometry: THREE.Geometry;
     curveObject: THREE.Line;
+
+    private gameController: GameController;
     private totalTranslateOffset = 0;
     private curveAngle = 0;
     private rink: Rink;
@@ -41,8 +44,9 @@ export class GameRenderer {
     // TODO : Remove when experimental test is done
     activeStone: CurlingStone;
 
-    constructor(curlingStones: CurlingStone[]) {
+    constructor(curlingStones: CurlingStone[], gameController: GameController) {
         this.curlingStones = curlingStones;
+        this.gameController = gameController;
     }
 
     public init(container?: HTMLElement): void {
@@ -182,6 +186,23 @@ export class GameRenderer {
         });
     }
 
+    highlightStonesWorthPoints() {
+        let teamClosestStone = this.curlingStones[0].getTeam();
+        let index = 0;
+
+        while (this.curlingStones.length > index &&
+               this.curlingStones[index].getTeam() === teamClosestStone &&
+               this.curlingStones[index].position.distanceTo(Rink.RINGS_CENTER) < Rink.OUTER_RADIUS) {
+            this.curlingStones[index++].highlightOn();
+        }
+    }
+
+    removeHighlightFromStones() {
+        this.curlingStones.forEach(stone => {
+            stone.highlightOff();
+        });
+    }
+
     private getFurthestCollisionPoint(): THREE.Vector3 {
         let x = 0, z = 0;
         // Bordure
@@ -243,5 +264,11 @@ export class GameRenderer {
         //Render scene using camera that is following the stone
         this.cameraManager.followStone(this.activeStone.position);
         this.renderer.render(this.scene, this.cameraManager.getCamera());
+
+        if (this.physicsManager.allStonesHaveStopped() && this.gameController.isInSweepingState()) {
+            this.physicsManager.sortStonesByDistance();
+            this.highlightStonesWorthPoints();
+            this.gameController.enterIdleState();
+        }
     }
 }
