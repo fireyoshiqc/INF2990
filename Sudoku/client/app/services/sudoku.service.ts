@@ -77,21 +77,17 @@ export class SudokuService {
         return postPromise;
     }
 
-    getHighscores(): Promise<JSON> {
+    getHighscores(): Promise<any> {
         let getPromise = new Promise((resolve, reject) => {
             this.http.get('http://localhost:3002/getHighscores').toPromise()
                 .then(res => {
                     // TODO: Everything
                     let highscores = res.json();
-                    console.log(highscores);
                     if (highscores.easy === undefined || highscores.hard === undefined) {
-                        console.log("Highscores request failed.")
+                        reject("Highscores request failed.");
                     } else {
                         let easyScores: Array<any> = highscores.easy;
-                        console.log(easyScores);
-
                         let hardScores: Array<any> = highscores.hard;
-                        console.log(hardScores);
                         let isHighscore: boolean;
                         // Trying to find the current player's name in the top 3 highscores for each difficulty
                         if (this.difficulty === "facile") {

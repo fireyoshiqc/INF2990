@@ -14,14 +14,8 @@ import { MdDialogRef } from '@angular/material';
     templateUrl: '/assets/templates/highscores.component.html',
 })
 export class HighscoresComponent {
-    data: JSON;
-
+    highscores: IHighscores = { easy: [], hard: [] };
     constructor(public dialogRef: MdDialogRef<HighscoresComponent>) {
-    }
-
-    onStart() {
-        console.log("Highscore dialog opened!");
-        console.log(JSON.stringify(this.data));
     }
 }
 
@@ -32,3 +26,9 @@ export class HighscoresComponent {
 export class HighscoresPopupComponent {
     constructor( @Optional() public dialogRef: MdDialogRef<any>) { }
 }
+
+interface IHighscores {
+    easy: Array<string>;
+    hard: Array<string>;
+}
+

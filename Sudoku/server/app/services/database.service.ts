@@ -10,11 +10,13 @@ import easyScore from '../models/easyScore.model';
 import hardScore from '../models/hardScore.model';
 
 export class DatabaseService {
+    connection: any;
     constructor() {
         (<any>mongoose).Promise = global.Promise;
     }
 
     connect() {
+        let self = this;
         mongoose.connect("mongodb://factory24:sudoku@ds125060.mlab.com:25060/sudokuscores").then(
             () => {
                 //Connected successfully to database.
@@ -24,6 +26,11 @@ export class DatabaseService {
                 //Could not connect to database.
                 console.log("Error connecting to database!");
             });
+        this.connection = mongoose.connection;
+        this.connection.on('disconnected', () => {
+            //Reconnect on timeout
+            self.connect();
+        });
     }
 
     addScore(name: string, time: number, difficulty: string): Promise<boolean> {
@@ -81,12 +88,12 @@ export class DatabaseService {
         let scoreJSON: IHighscores = { easy: [], hard: [] };
         let scorePromise = new Promise((resolve, reject) => {
             easyScore.find({}).sort('time').sort('updatedAt').limit(3).lean().exec((err, scores) => {
-                if (err){
+                if (err) {
                     reject("Error, could not get easy highscores!");
                 }
                 scoreJSON.easy = JSON.parse(JSON.stringify(scores));
             }).then(() => hardScore.find({}).sort('time').sort('updatedAt').limit(3).lean().exec((err, scores) => {
-                if (err){
+                if (err) {
                     reject("Error, could not get hard highscores!");
                 }
                 scoreJSON.hard = JSON.parse(JSON.stringify(scores));
