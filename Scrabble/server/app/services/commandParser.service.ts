@@ -6,7 +6,7 @@
  */
 
 import { Command, CommandType, CommandStatus } from '../classes/command';
-import { CommandPlaceLetter } from '../classes/commandPlaceLetter';
+import { CommandPlaceWord } from '../classes/commandPlaceLetter';
 import { CommandChangeLetter } from '../classes/commandChangeLetter';
 
 export class CommandParser {
@@ -45,7 +45,7 @@ export class CommandParser {
         return new Command(commandTypeIndex, commandStatus);
     }
 
-    private createCommandPlaceLetter(msg: string): CommandPlaceLetter {
+    private createCommandPlaceLetter(msg: string): CommandPlaceWord {
         msg = msg.trim();
 
         // obtain command arguments with regex
@@ -55,7 +55,7 @@ export class CommandParser {
         let orientation = placeLetterArgs[4].toLowerCase();
         let word = placeLetterArgs[5];
 
-        return new CommandPlaceLetter(row, column, orientation, word);
+        return new CommandPlaceWord(row, column, orientation, word);
     }
 
     private createCommandChangeLetter(msg: string): CommandChangeLetter {

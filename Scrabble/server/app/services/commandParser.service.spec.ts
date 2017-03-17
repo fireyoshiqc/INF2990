@@ -7,7 +7,7 @@
 
 import { CommandParser } from './commandParser.service';
 import { Command, CommandStatus, CommandType } from '../classes/command';
-import { CommandPlaceLetter } from '../classes/commandPlaceLetter';
+import { CommandPlaceWord } from '../classes/commandPlaceLetter';
 import { CommandChangeLetter } from '../classes/commandChangeLetter';
 
 import { expect } from 'chai';
@@ -93,9 +93,9 @@ describe('CommandParser', () => {
             expect(command.getCommandStatus()).to.be.equal(CommandStatus.INVALID_COMMAND_SYNTAX);
 
             // Valid command
-            let commandPlaceLetter: CommandPlaceLetter;
-            commandPlaceLetter = commandParser.createCommand("!placer a15H boNJouR") as CommandPlaceLetter;
-            expect(commandPlaceLetter).is.an.instanceOf(CommandPlaceLetter);
+            let commandPlaceLetter: CommandPlaceWord;
+            commandPlaceLetter = commandParser.createCommand("!placer a15H boNJouR") as CommandPlaceWord;
+            expect(commandPlaceLetter).is.an.instanceOf(CommandPlaceWord);
             expect(commandPlaceLetter.getCommandType()).to.be.equal(CommandType.PLACER);
             expect(commandPlaceLetter.getCommandStatus()).to.be.equal(CommandStatus.VALID_COMMAND);
             expect(commandPlaceLetter.getRow()).to.be.equal("a");

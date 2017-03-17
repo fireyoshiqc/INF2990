@@ -7,7 +7,7 @@
 
 import { Command, CommandType, CommandStatus } from '../classes/command';
 
-export class CommandPlaceLetter extends Command {
+export class CommandPlaceWord extends Command {
     private row: string;
     private column: number;
     private orientation: string;

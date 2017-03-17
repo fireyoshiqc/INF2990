@@ -33,4 +33,23 @@ describe('BoardTile', () => {
             done();
         });
     });
+
+    describe('countPoint()', () => {
+        it('should return twice the value of the letter on a DoubleLetter tile.', done => {
+            let boardTile = new BoardTile("DoubleLetter");
+            let letter = new Letter("A");
+            boardTile.putLetter(letter);
+
+            expect(boardTile.countPoint()).to.equal(2);
+            done();
+        });
+        it('should return three times the value of the letter on a TripleLetter tile.', done => {
+            let letter = new Letter("A");
+            let boardTile = new BoardTile("TripleLetter");
+            boardTile.putLetter(letter);
+
+            expect(boardTile.countPoint()).to.equal(3);
+            done();
+        });
+    });
 });

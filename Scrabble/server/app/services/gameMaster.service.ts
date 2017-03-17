@@ -6,7 +6,7 @@
  */
 
 import { Command, CommandType } from '../classes/command';
-import { CommandPlaceLetter } from '../classes/commandPlaceLetter';
+import { CommandPlaceWord } from '../classes/commandPlaceLetter';
 import { CommandChangeLetter } from '../classes/commandChangeLetter';
 import { Player } from './playerManager.service';
 
@@ -18,10 +18,12 @@ export enum CommandExecutionStatus {
 export class GameMaster {
     // games: Array<ScrabbleGame>;
 
+
+
     handleCommand(command: Command, player: Player): CommandExecutionStatus {
         switch (command.getCommandType()) {
             case CommandType.PLACER :
-                return this.placeLetter(command as CommandPlaceLetter, player);
+                return this.placeWord(command as CommandPlaceWord, player);
             case CommandType.CHANGER :
                 return this.changeLetter(command as CommandChangeLetter, player);
             case CommandType.PASSER :
@@ -31,8 +33,9 @@ export class GameMaster {
         }
     }
 
-    private placeLetter(command: CommandPlaceLetter, player: Player): CommandExecutionStatus {
+    private placeWord(command: CommandPlaceWord, player: Player): CommandExecutionStatus {
         // TODO : À implémenter le placement des lettres
+
         return CommandExecutionStatus.ERROR;
     }
 

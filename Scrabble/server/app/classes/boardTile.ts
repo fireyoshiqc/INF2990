@@ -42,11 +42,12 @@ export class BoardTile {
         this.isEmpty = false;
     }
 
-    // TODO : Add method to count point form a single tile
-    /*countPoint() : number {
-        if (this.tileType.type === Type.DoubleLetter || this.tileType.type === Type.TripleLetter) {
-
+    countPoint(): number {
+        if (this.tileType === "DoubleLetter") {
+            this.letter.getValue() * 2;
+        } else if (this.tileType === "TripleLetter") {
+            this.letter.getValue() * 3;
         }
-        return this.letter.value;
-    }*/
+        return this.letter.getValue();
+    }
 }

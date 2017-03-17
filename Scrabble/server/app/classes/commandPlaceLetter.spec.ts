@@ -6,19 +6,19 @@
  */
 
 import { Command, CommandType, CommandStatus } from './command';
-import { CommandPlaceLetter } from './commandPlaceLetter';
+import { CommandPlaceWord } from './commandPlaceLetter';
 
 import { expect } from 'chai';
 
 describe('CommandPlaceLetter', () => {
 
-    let command = new CommandPlaceLetter("a", 1, "v", "bonjour");
+    let command = new CommandPlaceWord("a", 1, "v", "bonjour");
 
     describe('Default constructor', () => {
         it('should construct a CommandPlaceLetter object with the supplied parameters.', done => {
             expect(command).to.not.be.undefined;
             expect(command).to.be.an.instanceOf(Command);
-            expect(command).to.be.an.instanceOf(CommandPlaceLetter);
+            expect(command).to.be.an.instanceOf(CommandPlaceWord);
 
             expect(command.getCommandType()).to.be.equal(CommandType.PLACER);
             expect(command.getCommandStatus()).to.be.equal(CommandStatus.VALID_COMMAND);
