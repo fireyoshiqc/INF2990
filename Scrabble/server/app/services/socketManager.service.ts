@@ -147,7 +147,7 @@ export class SocketManager {
                         break;
 
                     case CommandExecutionStatus.ERROR:
-                        commandResponse = "ERREUR : Cette commande n'est pas encore implémentée. TODO changer le msg.";
+                        commandResponse = "ERREUR : Cette commande n'est pas valide.";
                         break;
 
                     case CommandExecutionStatus.WAIT:
@@ -158,7 +158,6 @@ export class SocketManager {
                         break;
                 }
             }
-
         } else if (command.getCommandStatus() === CommandStatus.INVALID_COMMAND_SYNTAX) {
             commandResponse = "ERREUR : Cette commande ne respecte pas la syntaxe. Voir !aide";
         } else if (command.getCommandStatus() === CommandStatus.UNDEFINED_COMMAND) {

@@ -7,6 +7,7 @@
 
 import { ScrabbleGame } from './scrabbleGame';
 import { TileType } from './boardTile';
+import { CommandPlaceWord } from './commandPlaceWord';
 
 import { expect } from 'chai';
 
@@ -37,6 +38,21 @@ describe('ScrabbleGame', () => {
             expect(scrabbleGame.getBoard()[0][12].getTileType()).to.be.equal(<TileType>"Basic");
             expect(scrabbleGame.getBoard()[0][13].getTileType()).to.be.equal(<TileType>"Basic");
             expect(scrabbleGame.getBoard()[0][14].getTileType()).to.be.equal(<TileType>"TripleWord");
+            done();
+        });
+    });
+
+    describe('isWordInBounds', () => {
+        it('should determine if a word to place fits in the board.', done => {
+            let c1 = new CommandPlaceWord("a", 13, "h", "TEST");
+            let c2 = new CommandPlaceWord("n", 1, "v", "TEST");
+            let c3 = new CommandPlaceWord("a", 1, "h", "TRIDIMENSIONNEL");
+            let c4 = new CommandPlaceWord("a", 1, "v", "TRIDIMENSIONNEL");
+
+            expect(scrabbleGame.isWordInBounds(c1)).to.be.false;
+            expect(scrabbleGame.isWordInBounds(c2)).to.be.false;
+            expect(scrabbleGame.isWordInBounds(c3)).to.be.true;
+            expect(scrabbleGame.isWordInBounds(c4)).to.be.true;
             done();
         });
     });
