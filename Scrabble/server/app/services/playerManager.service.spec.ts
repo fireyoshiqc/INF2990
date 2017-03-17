@@ -9,12 +9,6 @@ import { PlayerManager } from './playerManager.service';
 
 import { expect } from 'chai';
 
-interface Player {
-    roomId: number;
-    name: string;
-    socketId: string;
-}
-
 describe('PlayerManager', () => {
 
     let testPlayerManager = new PlayerManager();
@@ -29,16 +23,15 @@ describe('PlayerManager', () => {
 
     describe('validateName ', () => {
         it('should return true when the name does not exist in the playerNames array', done => {
-            let testPlayer = {roomId: 0, name: "Lala"};
-            expect(testPlayerManager.validateName(testPlayer.name)).to.be.true;
+            expect(testPlayerManager.validateName("player1")).to.be.true;
             done();
         });
     });
 
     describe('addPlayer ', () => {
         it('should add a player to playerNames array', done => {
-            let testPlayer = {roomId: 0, name: "Lala", socketId: "123"};
-            testPlayerManager.addPlayer(testPlayer);
+            let testPlayer = testPlayerManager.addPlayer("player1", "1", 1);
+            expect(testPlayer.getName()).to.be.equal("player1");
             expect(testPlayerManager.players.length).to.equal(1);
             done();
         });
@@ -46,38 +39,34 @@ describe('PlayerManager', () => {
 
     describe('validateName ', () => {
         it('should return false when the name exists in the playerNames array', done => {
-            let testPlayer = {roomId: 0, name: "Lala"};
-            expect(testPlayerManager.validateName(testPlayer.name)).to.be.false;
+            expect(testPlayerManager.validateName("player1")).to.be.false;
             done();
         });
     });
 
     describe('removePlayer ', () => {
         it('should not remove a player that does not exist in the player name array', done => {
-            let testPlayer = {roomId: 0, name: "Mimi"};
-            testPlayerManager.removePlayer(testPlayer.name);
+            testPlayerManager.removePlayer("Mimi");
             expect(testPlayerManager.players.length).to.equal(1);
             done();
         });
 
         it('should remove a player that exists in the player name array', done => {
-            let testPlayer = {roomId: 0, name: "Lala"};
-            testPlayerManager.removePlayer(testPlayer.name);
+            testPlayerManager.removePlayer("player1");
             expect(testPlayerManager.players).to.be.empty;
             done();
         });
     });
 
-    describe('getSocketName', () => {
-        it('should return the player based on the socketId ', done => {
-            let testPlayer = {roomId: 0, name: "Lilo", socketId: "123"};
-            testPlayerManager.addPlayer(testPlayer);
-            expect(testPlayerManager.getSocketName("123")).to.equal(testPlayer);
+    describe('getPlayerFromSocketID', () => {
+        it('should return the player based on the socketID', done => {
+            testPlayerManager.addPlayer("Lilo", "123", 1);
+            expect(testPlayerManager.getPlayerFromSocketID("123").getName()).to.equal("Lilo");
             done();
         });
 
         it('should return undefined when the socketId doesn\'t exist', done => {
-            expect(testPlayerManager.getSocketName("333")).to.be.undefined;
+            expect(testPlayerManager.getPlayerFromSocketID("333")).to.be.undefined;
             done();
         });
     });

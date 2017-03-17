@@ -18,14 +18,23 @@ export enum CommandExecutionStatus {
 
 export class GameMaster {
     private scrabbleGame: ScrabbleGame;
-    private presentPlayers: Player[];
-    private activePlayer: Player;
+    private players: Player[];
+    //private activePlayer: Player;
     private readonly BINGO_BONUS = 50;
 
-    constructor() {
+    constructor(players: Player[]) {
         this.scrabbleGame = new ScrabbleGame();
-        //TODO: liste des Players. Passer par parametres. Changer dans test aussi.
+        this.players = players;
+
         //TODO: activePlayer
+    }
+
+    getScrabbleGame(): ScrabbleGame {
+        return this.scrabbleGame;
+    }
+
+    getPlayers(): Player[] {
+        return this.players;
     }
 
     handleCommand(command: Command, player: Player): CommandExecutionStatus {
@@ -68,5 +77,4 @@ export class GameMaster {
         // TODO : À implémenter le skip de tour
         return CommandExecutionStatus.ERROR;
     }
-
 }

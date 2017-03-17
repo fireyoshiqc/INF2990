@@ -5,11 +5,7 @@
  * @date 2017/02/17
  */
 
-export interface Player {
-    roomId: number;
-    name: string;
-    socketId: string;
-}
+import { Player } from '../classes/player';
 
 export class PlayerManager {
 
@@ -20,27 +16,29 @@ export class PlayerManager {
     }
 
     validateName(name: string): boolean {
-
-        let validity = this.players.find(p => (p.name === name)) === undefined;
+        let validity = this.players.find(p => (p.getName() === name)) === undefined;
         validity = validity && name.length > 3 && name.charAt(0) !== " " && name.charAt(name.length - 1) !== " ";
         console.log("The name " + name + " is" + (validity ? "" : " not") + " valid");
         return validity;
     }
 
-    addPlayer(player: Player) {
-        console.log("Name added : " + player.name);
-        this.players.push(player);
+    addPlayer(playerName: string, socketId: string, roomID: number): Player {
+        console.log("Player added to the playerManager : " + playerName);
+        let newPlayer = new Player(playerName, socketId, roomID);
+        this.players.push(newPlayer);
+        return newPlayer;
     }
 
-    removePlayer(name: string) {
-        console.log("Removing player: " + name);
-        let player = this.players.find(p => (p.name === name));
+    removePlayer(playerName: string): void {
+        console.log("Removing player from playerManager : " + playerName);
+        let player = this.players.find(p => (p.getName() === playerName));
+
         if (player !== undefined) {
-            this.players.splice(this.players.indexOf(player));
+            this.players.splice(this.players.indexOf(player), 1);
         }
     }
 
-    getSocketName(socketId: string): Player {
-        return this.players.find(p => (p.socketId === socketId));
+    getPlayerFromSocketID(socketId: string): Player {
+        return this.players.find(p => (p.getSocketId() === socketId));
     }
 }
