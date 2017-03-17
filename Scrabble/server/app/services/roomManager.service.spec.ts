@@ -38,14 +38,18 @@ describe('RoomManager', () => {
 
     describe('addRoom()', () => {
         it('should create a room.', done => {
-            expect(roomManager.addRoom(2).getRoomInfo().roomID).to.be.equal(0);
-            expect(roomManager.findRoom(2).getRoomInfo().capacity).to.be.equal(2);
+            let newRoom1 = roomManager.addRoom(2);
+            let newRoom2 = roomManager.addRoom(3);
+            let newRoom3 = roomManager.addRoom(4);
 
-            expect(roomManager.addRoom(3).getRoomInfo().roomID).to.be.equal(1);
-            expect(roomManager.findRoom(3).getRoomInfo().capacity).to.be.equal(3);
+            expect(newRoom1.getRoomInfo().roomID).to.be.equal(0);
+            expect(roomManager.findRoom(newRoom1.getRoomInfo().roomID).getRoomInfo().capacity).to.be.equal(2);
 
-            expect(roomManager.addRoom(4).getRoomInfo().roomID).to.be.equal(2);
-            expect(roomManager.findRoom(4).getRoomInfo().capacity).to.be.equal(4);
+            expect(newRoom2.getRoomInfo().roomID).to.be.equal(1);
+            expect(roomManager.findRoom(newRoom2.getRoomInfo().roomID).getRoomInfo().capacity).to.be.equal(3);
+
+            expect(newRoom3.getRoomInfo().roomID).to.be.equal(2);
+            expect(roomManager.findRoom(newRoom3.getRoomInfo().roomID).getRoomInfo().capacity).to.be.equal(4);
             done();
         });
 
@@ -57,9 +61,9 @@ describe('RoomManager', () => {
 
     describe('joinRoom()', () => {
          it('should locate and return an existing room with the given capacity.', done => {
-             expect(roomManager.joinRoom({name: "Joueur1", capacity: 2}).getRoomInfo().roomID).to.be.equal(0);
-             expect(roomManager.joinRoom({name: "Joueur2", capacity: 3}).getRoomInfo().roomID).to.be.equal(1);
-             expect(roomManager.joinRoom({name: "Joueur3", capacity: 4}).getRoomInfo().roomID).to.be.equal(2);
+             expect(roomManager.createRoom(2).getRoomInfo().roomID).to.be.equal(0);
+             expect(roomManager.createRoom(3).getRoomInfo().roomID).to.be.equal(1);
+             expect(roomManager.createRoom(4).getRoomInfo().roomID).to.be.equal(2);
              done();
          });
      });

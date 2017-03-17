@@ -8,25 +8,24 @@
 
 import * as io from 'socket.io';
 import * as http from 'http';
+import { Player } from '../classes/player';
 import { RoomManager } from './roomManager.service';
-import { PlayerManager, Player } from './playerManager.service';
+import { PlayerManager } from './playerManager.service';
 import { CommandParser } from './commandParser.service';
 import { CommandType, CommandStatus } from '../classes/command';
-import { GameMaster, CommandExecutionStatus } from './gameMaster.service';
+import { CommandExecutionStatus } from './gameMaster.service';
 
 export class SocketManager {
     sio: SocketIO.Server;
     rmanager: RoomManager;
     pmanager: PlayerManager;
     cparser: CommandParser;
-    gmaster: GameMaster;
 
     constructor(server: http.Server) {
         this.sio = io.listen(server);
         this.rmanager = new RoomManager();
         this.pmanager = new PlayerManager();
         this.cparser = new CommandParser();
-        this.gmaster = new GameMaster();
     }
 
     handleSockets() {
@@ -37,7 +36,7 @@ export class SocketManager {
             // this.sio.emit('user connect', { username: socket.id, submessage: connectMsg });
 
             socket.on('chat message', (msg: string) => {
-                let player = this.pmanager.getSocketName(socket.id);
+                let player = this.pmanager.getPlayerFromSocketID(socket.id);
 
                 if (player !== undefined) {
                     if (this.cparser.isACommand(msg)) {
@@ -46,8 +45,8 @@ export class SocketManager {
                     else {
                         // regular message
                         this.sio.sockets
-                            .in(player.roomId.toString())
-                            .emit('message sent', { username: player.name, submessage: msg });
+                            .in(player.getRoomId().toString())
+                            .emit('message sent', { username: player.getName(), submessage: msg });
                     }
                 }
 
@@ -57,14 +56,15 @@ export class SocketManager {
 
             //TODO: Rework the whole thing above.
             socket.on('disconnect', (msg: any) => {
-                let player = this.pmanager.getSocketName(socket.id);
+                let player = this.pmanager.getPlayerFromSocketID(socket.id);
+
                 if (player !== undefined) {
-                    this.pmanager.removePlayer(player.name);
-                    this.rmanager.leaveRoom(player);
+                    this.rmanager.leaveRoom(player.getName(), player.getRoomId());
+                    this.pmanager.removePlayer(player.getName());
                     let disconnectMsg = "L'utilisateur a quitté la partie.";
                     this.sio.sockets
-                            .in(player.roomId.toString())
-                            .emit('user disconnect', { username: player.name, submessage: disconnectMsg });
+                            .in(player.getRoomId().toString())
+                            .emit('user disconnect', { username: player.getName(), submessage: disconnectMsg });
                 }
                 console.log("User disconnected");
             });
@@ -76,11 +76,13 @@ export class SocketManager {
 
             socket.on('cwAddPlayer', (player: any) => {
                 // Find (or create) a room in room manager service
-                let room = this.rmanager.joinRoom(player);
+                let room = this.rmanager.createRoom(player.capacity);
 
-                this.pmanager.addPlayer({ roomId: room.getRoomInfo().roomID, name: player.name, socketId: socket.id });
+                // Create a new player in the playerManager
+                let newPlayer = this.pmanager.addPlayer(player.name, socket.id, room.getRoomInfo().roomID);
 
                 // Allows client to join a specific room
+                room.addPlayer(newPlayer);
                 socket.join(room.getRoomInfo().roomID.toString());
 
                 setTimeout(() => {
@@ -90,7 +92,7 @@ export class SocketManager {
 
             // Allows client to leave a specific room
             socket.on('cwLeaveRoom', (player: any) => {
-                this.rmanager.leaveRoom(player);
+                this.rmanager.leaveRoom(player.name, player.roomID);
                 this.pmanager.removePlayer(player.name);
                 socket.leave(player.roomID.toString());
             });
@@ -115,11 +117,12 @@ export class SocketManager {
                 // TODO mettre un message d'aide pertinent
                 commandResponse = "Voici l'aide...";
             } else {
-                // Command is valid, execute it -- CHANGER PLAYER INTERFACE EN PLAYER (CLASSE) !!!
-                //let executionStatus = this.gmaster.handleCommand(command, player); <===================
-                //commandResponse = (executionStatus === CommandExecutionStatus.SUCCESS) ?
+                // Command is valid, execute it
+                let room = this.rmanager.findRoom(player.getRoomId());
+                let executionStatus = room.getGameMaster().handleCommand(command, player);
+                commandResponse = (executionStatus === CommandExecutionStatus.SUCCESS) ?
                     // TODO changer le message d'erreur lorsque les commandes sont implémentées
-                    //"" : "ERREUR : Cette commande n'est pas encore implémentée. TODO changer le msg.";
+                    "" : "ERREUR : Cette commande n'est pas encore implémentée. TODO changer le msg.";
             }
 
         } else if (command.getCommandStatus() === CommandStatus.INVALID_COMMAND_SYNTAX) {
@@ -129,7 +132,7 @@ export class SocketManager {
         }
 
         this.sio.sockets
-            .in(player.roomId.toString())
-            .emit('command sent', { username: player.name, submessage: msg, commandResponse: commandResponse });
+            .in(player.getRoomId().toString())
+            .emit('command sent', { username: player.getName(), submessage: msg, commandResponse: commandResponse });
     }
 }

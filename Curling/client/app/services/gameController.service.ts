@@ -28,7 +28,6 @@ export class GameController {
 
     private gameRenderer: GameRenderer;
     private curlingStones: CurlingStone[] = [];
-    readonly RINGS_CENTER = new THREE.Vector3(0, 0, -Rink.RINK_LENGTH / 2 - Rink.RINGS_OFFSET);
     private playerScore = 0;
     private aiScore = 0;
     private shootingAngle: number;
@@ -43,7 +42,7 @@ export class GameController {
     private forceValue = 0;
 
     public init(container?: HTMLElement): void {
-        this.gameRenderer = new GameRenderer(this.curlingStones);
+        this.gameRenderer = new GameRenderer(this.curlingStones, this);
         this.gameRenderer.init(container);
 
         CurlingStone.setPlayerStoneColor("#FFFFFF");
@@ -113,27 +112,16 @@ export class GameController {
         this.gameRenderer.switchCamera();
     }
 
-    sortStonesByDistance(): CurlingStone[] {
-        // deep copy
-        let sortStones = this.curlingStones.slice();
-
-        return sortStones.sort((stone1: CurlingStone, stone2: CurlingStone) => {
-            // if stone1 is closer to the rings than stone 2, it should be placed before stone 2
-            return stone1.position.distanceTo(this.RINGS_CENTER) - stone2.position.distanceTo(this.RINGS_CENTER);
-        });
-    }
-
     updateScore(): void {
-        let sortStones = this.sortStonesByDistance();
-
-        let teamClosestStone = sortStones[0].getTeam();
+        let teamClosestStone = this.curlingStones[0].getTeam();
         let index = 0;
         let score = 0;
 
         // add points to the closest team for each stone that is inside of the rings
         // and closer to the closest stone from the opposing team (in respect to the curling rules)
-        while (sortStones[index].getTeam() === teamClosestStone &&
-            sortStones[index].position.distanceTo(this.RINGS_CENTER) < Rink.OUTER_RADIUS) {
+        while (this.curlingStones.length > index &&
+               this.curlingStones[index].getTeam() === teamClosestStone &&
+               this.curlingStones[index].position.distanceTo(Rink.RINGS_CENTER) < Rink.OUTER_RADIUS) {
             score++;
             index++;
         }
@@ -172,8 +160,13 @@ export class GameController {
 
     enterSweepingState() {
         document.body.style.cursor = "default";
+        this.gameRenderer.removeHighlightFromStones();
         this.gameRenderer.hideDirectionCurve();
         this.gameState = this.sweepingState;
+    }
+
+    isInSweepingState() {
+        return this.gameState === this.sweepingState;
     }
 
     enterIdleState() {
@@ -215,20 +208,20 @@ export class GameController {
 
     setStonesForScoringTests(): void {
         this.addStone(Team.Player,
-            new THREE.Vector3(this.RINGS_CENTER.x, this.RINGS_CENTER.y, this.RINGS_CENTER.z + 3));
+            new THREE.Vector3(Rink.RINGS_CENTER.x, Rink.RINGS_CENTER.y, Rink.RINGS_CENTER.z + 3));
         this.addStone(Team.Player,
-            new THREE.Vector3(this.RINGS_CENTER.x, this.RINGS_CENTER.y, this.RINGS_CENTER.z + 2.5));
+            new THREE.Vector3(Rink.RINGS_CENTER.x, Rink.RINGS_CENTER.y, Rink.RINGS_CENTER.z + 2.5));
         this.addStone(Team.Player,
-            new THREE.Vector3(this.RINGS_CENTER.x, this.RINGS_CENTER.y, this.RINGS_CENTER.z + 2));
+            new THREE.Vector3(Rink.RINGS_CENTER.x, Rink.RINGS_CENTER.y, Rink.RINGS_CENTER.z + 2));
         this.addStone(Team.Player,
-            new THREE.Vector3(this.RINGS_CENTER.x, this.RINGS_CENTER.y, this.RINGS_CENTER.z + 1));
+            new THREE.Vector3(Rink.RINGS_CENTER.x, Rink.RINGS_CENTER.y, Rink.RINGS_CENTER.z + 1));
         this.addStone(Team.AI,
-            new THREE.Vector3(this.RINGS_CENTER.x, this.RINGS_CENTER.y, this.RINGS_CENTER.z + 3.5));
+            new THREE.Vector3(Rink.RINGS_CENTER.x, Rink.RINGS_CENTER.y, Rink.RINGS_CENTER.z + 3.5));
         this.addStone(Team.AI,
-            new THREE.Vector3(this.RINGS_CENTER.x, this.RINGS_CENTER.y, this.RINGS_CENTER.z + 1.5));
+            new THREE.Vector3(Rink.RINGS_CENTER.x, Rink.RINGS_CENTER.y, Rink.RINGS_CENTER.z + 1.5));
         this.addStone(Team.AI,
-            new THREE.Vector3(this.RINGS_CENTER.x, this.RINGS_CENTER.y, this.RINGS_CENTER.z + 0.5));
-        this.addStone(Team.AI, this.RINGS_CENTER);
+            new THREE.Vector3(Rink.RINGS_CENTER.x, Rink.RINGS_CENTER.y, Rink.RINGS_CENTER.z + 0.5));
+        this.addStone(Team.AI, Rink.RINGS_CENTER);
     }
 
     resetStones(): void {

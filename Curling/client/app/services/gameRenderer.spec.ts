@@ -6,17 +6,19 @@
  */
 
 import { GameRenderer } from './gameRenderer';
+import { GameController } from './gameController.service';
 import { CurlingStone, Team } from '../entities/curlingStone';
 
 import { expect } from 'chai';
 
 describe('GameRenderer', () => {
     let testCurlingStones = new Array<CurlingStone>();
-    let testRenderer = new GameRenderer(testCurlingStones);
+    let dummyGameController = new GameController();
+    let testRenderer = new GameRenderer(testCurlingStones, dummyGameController);
 
     describe('Default constructor ', () => {
         it('should construct an empty GameRenderer object.', done => {
-            testRenderer = new GameRenderer(testCurlingStones);
+            testRenderer = new GameRenderer(testCurlingStones, dummyGameController);
             expect(testRenderer).to.be.an.instanceof(GameRenderer);
             done();
         });

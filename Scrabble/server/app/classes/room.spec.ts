@@ -6,6 +6,8 @@
  */
 
 import { Room } from './room';
+import { Player } from './player';
+import { GameMaster } from '../services/gameMaster.service';
 
 import { expect } from 'chai';
 
@@ -16,6 +18,8 @@ describe('Room', () => {
     describe('Default constructor', () => {
         it('should construct a Room object.', done => {
             expect(room).to.not.be.undefined;
+            expect(room.getPlayers()).to.be.empty;
+            expect(room.getGameMaster()).to.be.an.instanceof(GameMaster);
             done();
         });
     });
@@ -31,15 +35,21 @@ describe('Room', () => {
 
     describe('addPlayer()', () => {
         it('should increment the number of players in the room.', done => {
+            let player1 = new Player("Joueur1", "1", room.getRoomInfo().roomID);
+            let player2 = new Player("Joueur2", "2", room.getRoomInfo().roomID);
+            let player3 = new Player("Joueur3", "3", room.getRoomInfo().roomID);
+            let player4 = new Player("Joueur4", "4", room.getRoomInfo().roomID);
+            let player5 = new Player("Joueur5", "5", 9);
+
             // Try adding five players in a room of 4
-            room.addPlayer("Joueur1");
+            room.addPlayer(player1);
             expect(room.getRoomInfo().playerList.find(playerName => playerName === "Joueur1")).to.be.equal("Joueur1");
             expect(room.getRoomInfo().playerList.length).to.be.equal(1);
-            room.addPlayer("Joueur2");
-            room.addPlayer("Joueur3");
-            room.addPlayer("Joueur4");
+            room.addPlayer(player2);
+            room.addPlayer(player3);
+            room.addPlayer(player4);
             expect(room.getRoomInfo().playerList.length).to.be.equal(4);
-            room.addPlayer("Joueur5"); // shouldn't do anything
+            room.addPlayer(player5); // shouldn't do anything
             expect(room.getRoomInfo().playerList.length).to.be.equal(4);
             done();
         });

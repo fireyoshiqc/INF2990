@@ -21,37 +21,36 @@ export class RoomManager {
         return this.existingRooms;
     }
 
-    joinRoom(player: any): Room {
-        let room = this.findRoom(player.capacity);
+    createRoom(roomCapacity: number): Room {
+        let room = this.existingRooms.find(r => (!r.isFull() && r.getRoomInfo().capacity === roomCapacity));
 
         if (room === undefined) {
-            room = this.addRoom(player.capacity);
+            room = this.addRoom(roomCapacity);
         }
 
-        room.addPlayer(player.name);
         return room;
-    }
-
-    leaveRoom(player: any) {
-        let room = this.existingRooms.find(r => (r.getRoomInfo().roomID === player.roomID));
-
-        if (room !== undefined) {
-            room.removePlayer(player.name);
-
-            if (room.isEmpty()) {
-                let index = this.existingRooms.indexOf(room);
-                this.existingRooms.splice(index, 1);
-            }
-        }
-    }
-
-    findRoom(roomCapacity: number): Room {
-        return this.existingRooms.find(r => (!r.isFull() && r.getRoomInfo().capacity === roomCapacity));
     }
 
     addRoom(roomCapacity: number): Room {
         let newRoom = new Room(this.currentRoomID++, roomCapacity);
         this.existingRooms.push(newRoom);
         return newRoom;
+    }
+
+    findRoom(roomID: number): Room {
+        return this.existingRooms.find(r => r.getRoomInfo().roomID === roomID);
+    }
+
+    leaveRoom(playerName: string, roomID: number) {
+        let room = this.existingRooms.find(r => (r.getRoomInfo().roomID === roomID));
+
+        if (room !== undefined) {
+            room.removePlayer(playerName);
+
+            if (room.isEmpty()) {
+                let index = this.existingRooms.indexOf(room);
+                this.existingRooms.splice(index, 1);
+            }
+        }
     }
 }
