@@ -77,6 +77,9 @@ export class Application {
         this.app.use(express.static(path.join(__dirname, '../client')));
         this.app.use(cors());
         this.database.connect();
+
+        this.app.set("view engine", "pug");
+        this.app.set("views", path.join(__dirname, '../app/views'));
     }
 
     /**
@@ -101,13 +104,27 @@ export class Application {
         //home page
         //router.get('/', index.index.bind(index.index));
 
+        this.app.get('/', function (req, res) {
+            console.log(sudokuManager.getNumberOfEasySudokus() + " " + sudokuManager.getNumberOfHardSudokus())
+            res.render("log",
+                {
+                    easy: sudokuManager.getNumberOfEasySudokus(),
+                    hard: sudokuManager.getNumberOfHardSudokus(),
+                    list: sudokuManager.getLogger().getLog()
+                });
+        });
+
         this.app.get('/getSudoku/easy', function (req, res) {
             let easySudoku = sudokuManager.getSudoku(Difficulty.Easy);
+            sudokuManager.getLogger()
+                .logEvent("DEMANDE", req.connection.remoteAddress + ":" + req.connection.remotePort);
             res.send({ grid: easySudoku.grid, difficulty: easySudoku.difficulty });
         });
 
         this.app.get('/getSudoku/hard', function (req, res) {
             let hardSudoku = sudokuManager.getSudoku(Difficulty.Hard);
+            sudokuManager.getLogger()
+                .logEvent("DEMANDE", req.connection.remoteAddress + ":" + req.connection.remotePort);
             res.send({ grid: hardSudoku.grid, difficulty: hardSudoku.difficulty });
         });
 
@@ -179,4 +196,5 @@ export class Application {
     getDatabaseService(): DatabaseService {
         return this.database;
     }
+
 }

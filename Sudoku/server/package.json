@@ -34,8 +34,10 @@
     "express": "^4.14.1",
     "mongoose": "^4.8.4",
     "morgan": "^1.8.1",
+    "pug": "^2.0.0-beta11",
     "serve-favicon": "^2.4.0",
-    "systemjs": "^0.20.9"
+    "systemjs": "^0.20.9",
+    "typescript-collections": "^1.2.3"
   },
   "devDependencies": {
     "@types/body-parser": "0.0.34",

@@ -1,0 +1,8 @@
+h1 Tableau de bord du serveur de Sudoku
+h3= 'Nombre de sudokus faciles disponibles : ' + easy
+h3= 'Nombre de sudokus difficiles disponibles : ' + hard
+ul
+  each entry in list
+    li= entry
+  else
+    p Il n'y a pas encore d'entrées dans le tableau de bord!
