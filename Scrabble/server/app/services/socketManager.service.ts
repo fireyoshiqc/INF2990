@@ -161,8 +161,7 @@ export class SocketManager {
                                     commandResponse: commandResponse
                                 });
                             
-                            //TODO: SEND THE ARRAY OF LETTERS TO REMOVE TO SOCKET MANAGER SO THAT THE CLIENT RECEIVES IT
-                            //TODO: SEND THE ARRAY OF LETTERS TO ADD TO RACK TO SOCKET MANAGER SO THAT THE CLIENT RECEIVES IT
+                            //TODO: SEND THE ARRAY OF LETTERS THAT THE PLAYER HAS ON HIS RACK
                         }
                     }
                         break;

@@ -25,7 +25,7 @@ export class RackComponent {
         this.rackManager.handleInput(event);
     }
 
-    removeRackLetters(letters: string[]) {
-        this.rackManager.removeRackLetters(letters);
+    updateRack(letters: string[]) {
+        this.rackManager.updateRack(letters);
     }
 }

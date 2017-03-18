@@ -34,16 +34,19 @@ describe('RackManager', function () {
         });
     });
 
-    describe('removeRackLetters()', function () {
-        it('should remove letters from rack.', done => {
+    describe('updateRack()', function () {
+        it('should update the rack with new letters.', done => {
+            let letters = ["A", "B", "C", "D", "E", "F", "G"];
+
+            rackManager.updateRack(letters);
             expect(rackManager.getRackLetters().length).to.equal(RackManager.RACK_LENGTH);
-
-            let letters = [rackManager.getRackLetters()[0].getCharacter(),
-                           rackManager.getRackLetters()[1].getCharacter().toLowerCase(),
-                           rackManager.getRackLetters()[2].getCharacter()];
-
-            rackManager.removeRackLetters(letters);
-            expect(rackManager.getRackLetters().length).to.equal(RackManager.RACK_LENGTH - 3);
+            expect(rackManager.getRackLetters()[0].getCharacter()).to.equal("A");
+            expect(rackManager.getRackLetters()[1].getCharacter()).to.equal("B");
+            expect(rackManager.getRackLetters()[2].getCharacter()).to.equal("C");
+            expect(rackManager.getRackLetters()[3].getCharacter()).to.equal("D");
+            expect(rackManager.getRackLetters()[4].getCharacter()).to.equal("E");
+            expect(rackManager.getRackLetters()[5].getCharacter()).to.equal("F");
+            expect(rackManager.getRackLetters()[6].getCharacter()).to.equal("G");
             done();
         });
     });

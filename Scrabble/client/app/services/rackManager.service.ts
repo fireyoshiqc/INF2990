@@ -68,13 +68,12 @@ export class RackManager {
         return this.rack;
     }
 
-    removeRackLetters(letters: string[]): void {
+    updateRack(letters: string[]): void {
+        let newRack = new Array<Letter>();
         letters.forEach(letter => {
-            let letterIndex = this.rack.findIndex(l => l.getCharacter() === letter.toUpperCase());
-            if (letterIndex > -1) {
-                this.rack.splice(letterIndex, 1);
-            }
+            newRack.push(new Letter(letter));
         });
+        this.rack = newRack;
     }
 
     private isArrowKey(event: KeyboardEvent): boolean {

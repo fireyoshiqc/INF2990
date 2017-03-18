@@ -23,8 +23,8 @@ export class GameComponent implements OnInit {
             this.boardChild.placeWord(command);
         });
 
-        this.socket.on("wcRemoveLetter", (letters: string[]) => {
-            this.rackChild.removeRackLetters(letters);
+        this.socket.on("wcUpdateRack", (letters: string[]) => {
+            this.rackChild.updateRack(letters);
         });
 
         //TODO: GET LETTERS FROM STASH
