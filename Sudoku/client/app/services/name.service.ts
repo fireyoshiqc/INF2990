@@ -7,7 +7,7 @@ import 'rxjs/add/operator/toPromise';
 export class NameService {
     constructor(private http: Http) { }
 
-    validateName(name: string): Promise<boolean> {
+    public validateName(name: string): Promise<boolean> {
         let validName = false;
         let postPromise = new Promise((resolve, reject) => {
             this.http.post('http://localhost:3002/validateName', { "name": name })

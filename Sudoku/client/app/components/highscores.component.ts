@@ -14,7 +14,7 @@ import { MdDialogRef } from '@angular/material';
     templateUrl: '/assets/templates/highscores.component.html',
 })
 export class HighscoresComponent {
-    highscores: IHighscores = { easy: [], hard: [] };
+    public highscores: IHighscores = { easy: [], hard: [] };
     constructor(public dialogRef: MdDialogRef<HighscoresComponent>) {
     }
 }

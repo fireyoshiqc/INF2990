@@ -9,16 +9,16 @@ import { Sudoku, Difficulty, getRandomInt } from './sudoku.service';
 
 export class TileRemover {
 
-    readonly SQUARE_SIZE = 3;
-    readonly NUM_EMPTY_TILES_EASY = 30;
-    readonly NUM_EMPTY_TILES_HARD = 50;
+    private readonly SQUARE_SIZE = 3;
+    public readonly NUM_EMPTY_TILES_EASY = 30;
+    public readonly NUM_EMPTY_TILES_HARD = 50;
     private sudoku: Sudoku;
 
-    setSudoku(sudoku: Sudoku): void {
+    public setSudoku(sudoku: Sudoku): void {
         this.sudoku = sudoku;
     }
 
-    getUniqueSolutionSudoku(sudoku: Sudoku): Sudoku {
+    public getUniqueSolutionSudoku(sudoku: Sudoku): Sudoku {
         this.sudoku = sudoku;
         let tilesToRemove = (this.sudoku.difficulty === Difficulty.Easy) ?
             this.NUM_EMPTY_TILES_EASY : this.NUM_EMPTY_TILES_HARD;
@@ -56,7 +56,7 @@ export class TileRemover {
         return this.sudoku;
     }
 
-    tileCanBeRemoved(row: number, column: number): boolean {
+    public tileCanBeRemoved(row: number, column: number): boolean {
         let oldValue = this.sudoku.grid[row][column];
 
         for (let testValue = 1; testValue <= 9; testValue++) {
@@ -72,7 +72,7 @@ export class TileRemover {
         return true;
     }
 
-    isSolvable(): boolean {
+    public isSolvable(): boolean {
         let zerosIndexes = new Array<number>();
 
         for (let index = 0; index < this.sudoku.size * this.sudoku.size; index++) {
@@ -111,7 +111,7 @@ export class TileRemover {
         return false;
     }
 
-    valueIsLegal(entry: number, row: number, column: number): boolean {
+    public valueIsLegal(entry: number, row: number, column: number): boolean {
         return this.validateRow(entry, row) &&
             this.validateColumn(entry, column) &&
             this.validateSquare(entry, row, column);
@@ -127,7 +127,7 @@ export class TileRemover {
 
     private validateSquare(entry: number, row: number, column: number) {
         let x: number, y: number;
-        // coordinates for upper left corner of each square
+        // Coordinates for upper left corner of each square
         x = this.SQUARE_SIZE * Math.floor(row / this.SQUARE_SIZE);
         y = this.SQUARE_SIZE * Math.floor(column / this.SQUARE_SIZE);
 

@@ -47,27 +47,27 @@ describe('InputService', () => {
 
     describe('validate()', () => {
         it('should return false when the row already contains the entered number', () => {
-            //3 is already in the first row
+            // 3 is already in the first row
             expect(inputService.validate({ value: 3, grid: testGrid, row: 0, column: 0 })).to.be.false;
         });
 
         it('should return false when the column already contains the entered number', () => {
-            //2 is already in the first column
+            // 2 is already in the first column
             expect(inputService.validate({ value: 2, grid: testGrid, row: 0, column: 0 })).to.be.false;
         });
 
         it('should return false when the square already contains the entered number', () => {
-            //9 is already in the first square
+            // 9 is already in the first square
             expect(inputService.validate({ value: 9, grid: testGrid, row: 0, column: 0 })).to.be.false;
         });
 
         it('should return false when the square already contains the entered number (non-trivial position)', () => {
-            //9 is already in the last square (bottom-right, row is 8th, column is 8th)
+            // 9 is already in the last square (bottom-right, row is 8th, column is 8th)
             expect(inputService.validate({ value: 9, grid: testGrid, row: 8, column: 8 })).to.be.false;
         });
 
         it('should return true when the entry is not in the row, column or square', () => {
-            //1 is the right number to enter
+            // 1 is the right number to enter
             expect(inputService.validate({ value: 1, grid: testGrid, row: 0, column: 0 })).to.be.true;
         });
     });

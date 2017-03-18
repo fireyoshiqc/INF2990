@@ -10,34 +10,36 @@ import easyScore from '../models/easyScore.model';
 import hardScore from '../models/hardScore.model';
 
 export class DatabaseService {
-    connection: any;
+    private readonly DUMMIES_PER_DIFFICULTY = 3;
+    private connection: any;
     constructor() {
         (<any>mongoose).Promise = global.Promise;
     }
 
-    connect() {
+    public connect() {
         let self = this;
         mongoose.connect("mongodb://factory24:sudoku@ds125060.mlab.com:25060/sudokuscores").then(
             () => {
-                //Connected successfully to database.
+                // Connected successfully to database.
+                this.addDummyScores();
                 console.log("Connected to database successfully.");
             },
             err => {
-                //Could not connect to database.
+                // Could not connect to database.
                 console.log("Error connecting to database!");
             });
         this.connection = mongoose.connection;
         this.connection.on('disconnected', () => {
-            //Reconnect on timeout
+            // Reconnect on timeout
             self.connect();
         });
     }
 
-    addScore(name: string, time: number, difficulty: string): Promise<boolean> {
+    public addScore(name: string, time: number, difficulty: string): Promise<boolean> {
         let addPromise = new Promise((resolve, reject) => {
             if (difficulty === "facile") {
                 // Check if user already has a saved score for easy sudoku
-                easyScore.findOne({ name: name }, (err, score) => {
+                easyScore.findOne({ name }, (err, score) => {
                     if (err) {
                         reject("Error adding score to database!");
                     }
@@ -49,7 +51,7 @@ export class DatabaseService {
                         resolve(true);
                     } else if (score === null) {
                         // If user never previously saved score then add entry
-                        const newScore = new easyScore({ name: name, time: time });
+                        const newScore = new easyScore({ name, time });
                         newScore.save();
                         resolve(true);
                     } else {
@@ -57,7 +59,7 @@ export class DatabaseService {
                     }
                 });
             } else if (difficulty === "difficile") {
-                hardScore.findOne({ name: name }, (err, score) => {
+                hardScore.findOne({ name }, (err, score) => {
                     if (err) {
                         reject("Error adding score to database!");
                     }
@@ -70,7 +72,7 @@ export class DatabaseService {
                         resolve(true);
                     } else if (score === null) {
                         // If user never previously saved score then add entry
-                        const newScore = new hardScore({ name: name, time: time });
+                        const newScore = new hardScore({ name, time });
                         newScore.save();
                         resolve(true);
                     } else {
@@ -84,7 +86,7 @@ export class DatabaseService {
         return addPromise;
     }
 
-    getHighscores(): Promise<IHighscores> {
+    public getHighscores(): Promise<IHighscores> {
         let scoreJSON: IHighscores = { easy: [], hard: [] };
         let scorePromise = new Promise((resolve, reject) => {
             easyScore.find({}).sort('time').sort('updatedAt').limit(3).lean().exec((err, scores) => {
@@ -101,6 +103,20 @@ export class DatabaseService {
             }));
         });
         return scorePromise;
+    }
+
+    private addDummyScores() {
+        const EASY_NAMES = ["Toto", "Snoop Dogg", "Michel Gagnon"];
+        const HARD_NAMES = ["Doom Marine", "John Doe", "Joe Blo"];
+        const AVG_EASY_TIME = 7 * 60;
+        const AVG_HARD_TIME = 15 * 60;
+        for (let i = 0; i < this.DUMMIES_PER_DIFFICULTY; i++) {
+            this.addScore(EASY_NAMES[i], AVG_EASY_TIME + i, "facile");
+        }
+        for (let j = 0; j < this.DUMMIES_PER_DIFFICULTY; j++) {
+            this.addScore(HARD_NAMES[j], AVG_HARD_TIME + j, "difficile");
+        }
+
     }
 }
 

@@ -15,31 +15,31 @@ export class StopwatchService {
     private stopwatch: any;
     private stopwatchIsVisible = true;
 
-    getMinutes(): number { return this.minutes; }
-    getSeconds(): number { return this.seconds; }
-    getTotalTimeSeconds(): number { return 60 * this.minutes + this.seconds; }
-    isVisible(): boolean { return this.stopwatchIsVisible; }
+    public getMinutes(): number { return this.minutes; }
+    public getSeconds(): number { return this.seconds; }
+    public getTotalTimeSeconds(): number { return 60 * this.minutes + this.seconds; }
+    public isVisible(): boolean { return this.stopwatchIsVisible; }
 
-    toggleVisibility() {
+    public toggleVisibility() {
         this.stopwatchIsVisible = !this.stopwatchIsVisible;
     }
 
-    start() {
+    private start() {
         this.stopwatch = setInterval(() => {
             this.minutes = Math.floor(++this.totalSeconds / 60);
             this.seconds = this.totalSeconds - this.minutes * 60;
         }, 1000);
     }
 
-    stop() {
+    public stop() {
         clearInterval(this.stopwatch);
     }
 
-    reset() {
+    private reset() {
         this.totalSeconds = this.minutes = this.seconds = 0;
     }
 
-    restart() {
+    public restart() {
         this.stop();
         this.reset();
         this.start();

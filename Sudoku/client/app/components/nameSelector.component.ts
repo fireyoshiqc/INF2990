@@ -16,15 +16,15 @@ import { NameService } from '../services/name.service';
     providers: [NameService]
 })
 export class NameSelectorComponent {
-    difficulty: string;
-    playerName: string;
-    error = false;
-    errorMessage: string;
+    private difficulty: string;
+    private playerName: string;
+    private error = false;
+    private errorMessage: string;
 
     constructor(public dialogRef: MdDialogRef<NameSelectorComponent>, private nameService: NameService) {
     }
 
-    onStart() {
+    public onStart() {
 
         this.error = false;
 

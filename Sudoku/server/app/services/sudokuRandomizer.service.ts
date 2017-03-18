@@ -7,7 +7,7 @@
 
 import { Sudoku, getRandomInt } from './sudoku.service';
 
-interface ArrayCoordinates {
+interface IArrayCoordinates {
         x: number;
         y: number;
 }
@@ -51,7 +51,7 @@ export class SudokuRandomizer {
         let randomInt: number;
         let numberOfOperations = this.EXCHANGE_OPERATIONS_TABLE.length + this.FLIP_OPERATIONS_TABLE.length;
 
-        // perform RANDOM_OP_COUNT operations on sudoku grid
+        // Perform RANDOM_OP_COUNT operations on sudoku grid
         // Each operation (echange and flip) has equal chances to happen
         for (let i = 0; i < this.RANDOM_OP_COUNT; i++) {
             randomInt = getRandomInt(1, numberOfOperations);
@@ -66,7 +66,7 @@ export class SudokuRandomizer {
         return this.sudoku;
     }
 
-    swap(coordinates1: ArrayCoordinates, coordinates2: ArrayCoordinates) {
+    swap(coordinates1: IArrayCoordinates, coordinates2: IArrayCoordinates) {
         let temporary: number;
 
         temporary = this.sudoku.grid[coordinates1.x][coordinates1.y];

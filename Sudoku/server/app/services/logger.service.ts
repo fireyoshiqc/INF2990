@@ -1,7 +1,7 @@
 import * as Collections from 'typescript-collections';
 
 export class LoggerService {
-    private LOG_QUEUE_MAX_SIZE = 100;
+    private readonly LOG_QUEUE_MAX_SIZE = 100;
     private logList: Collections.LinkedList<string>;
     constructor() {
         this.logList = new Collections.LinkedList<string>();
@@ -19,5 +19,9 @@ export class LoggerService {
 
     public getLog(): Array<String> {
         return this.logList.toArray();
+    }
+
+    public getMaxLogSize(): number {
+        return this.LOG_QUEUE_MAX_SIZE;
     }
 }

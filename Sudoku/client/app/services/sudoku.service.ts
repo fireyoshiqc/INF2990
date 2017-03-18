@@ -7,7 +7,7 @@ import 'rxjs/add/operator/toPromise';
 export class SudokuService {
     private readonly minIndex = 0;
     private readonly maxIndex = 8;
-    initialGrid = [
+    public initialGrid = [
         [0, 2, 3, 4, 5, 0, 7, 8, 9],
         [4, 0, 6, 7, 8, 9, 0, 0, 0],
         [0, 8, 0, 1, 0, 3, 0, 5, 6],
@@ -18,7 +18,7 @@ export class SudokuService {
         [0, 7, 8, 9, 1, 2, 3, 4, 5],
         [9, 1, 2, 3, 0, 5, 6, 0, 8]
     ];
-    inputGrid = [
+    public inputGrid = [
         [0, 2, 3, 4, 5, 0, 7, 8, 9],
         [4, 0, 6, 7, 8, 9, 0, 0, 0],
         [0, 8, 0, 1, 0, 3, 0, 5, 6],
@@ -29,13 +29,13 @@ export class SudokuService {
         [0, 7, 8, 9, 1, 2, 3, 4, 5],
         [9, 1, 2, 3, 0, 5, 6, 0, 8]
     ];
-    difficulty: string;
-    playerName = "";
-    isValid = false;
+    public difficulty: string;
+    public playerName = "";
+    public isValid = false;
 
     constructor(private http: Http) { }
 
-    getEasySudoku() {
+    public getEasySudoku() {
         this.http.get('http://localhost:3002/getSudoku/easy')
             .toPromise()
             .then(reponse => {
@@ -47,7 +47,7 @@ export class SudokuService {
             .catch(() => console.log("Could not get a easy sudoku."));
     }
 
-    getHardSudoku() {
+    public getHardSudoku() {
         this.http.get('http://localhost:3002/getSudoku/hard')
             .toPromise()
             .then(reponse => {
@@ -59,7 +59,7 @@ export class SudokuService {
             .catch(() => console.log("Could not get a hard sudoku."));
     }
 
-    validateSudoku(callback: () => void) {
+    public validateSudoku(callback: () => void) {
         this.http.post('http://localhost:3002/validateSudoku', this.inputGrid).toPromise().then(res => {
             this.isValid = (res.text() === "true");
             callback(); // Must be called after the Sudoku is validated (to end the timer, for example).
@@ -67,7 +67,7 @@ export class SudokuService {
             .catch(() => console.log("Could not validate sudoku."));
     }
 
-    addScore(timeTaken: number): Promise<boolean> {
+    public addScore(timeTaken: number): Promise<boolean> {
         let postPromise = new Promise((resolve, reject) => {
             this.http.put('http://localhost:3002/addScore',
                 { "name": this.playerName, "time": timeTaken, "difficulty": this.difficulty }).toPromise()
@@ -77,7 +77,7 @@ export class SudokuService {
         return postPromise;
     }
 
-    getHighscores(): Promise<any> {
+    public getHighscores(): Promise<any> {
         let getPromise = new Promise((resolve, reject) => {
             this.http.get('http://localhost:3002/getHighscores').toPromise()
                 .then(res => {
@@ -106,7 +106,7 @@ export class SudokuService {
 
     }
 
-    resetSudoku() {
+    public resetSudoku() {
         // Loop required for deep copy
         for (let i = 0; i < this.inputGrid.length; i++) {
             for (let j = 0; j < this.inputGrid[i].length; j++) {
@@ -116,27 +116,27 @@ export class SudokuService {
         }
     }
 
-    putEntry(entry: EntryNumber) {
+    public putEntry(entry: IEntryNumber) {
         if (entry.row >= this.minIndex && entry.column >= this.minIndex &&
             entry.row <= this.maxIndex && entry.row <= this.maxIndex) {
             this.inputGrid[entry.row][entry.column] = entry.value;
         }
     }
 
-    isGridFull(): boolean {
+    public isGridFull(): boolean {
         return this.inputGrid.find(row =>
             (row.find(column =>
                 (column === 0)) === 0)) === undefined;
     }
 
-    quitGame(): void {
-        //Send beacon to server to signal name removal before page unload.
+    public quitGame(): void {
+        // Send beacon to server to signal name removal before page unload.
         let blob = new Blob([JSON.stringify({ "name": this.playerName })], { type: 'application/json; charset=UTF-8' });
         navigator.sendBeacon('http://localhost:3002/removeName', blob);
     }
 }
 
-interface EntryNumber {
+interface IEntryNumber {
     value: number;
     row: number;
     column: number;

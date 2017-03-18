@@ -12,7 +12,7 @@ import { HighscoresPopupComponent, HighscoresComponent } from './highscores.comp
     providers: [SudokuService, StopwatchService, InputService]
 })
 export class SudokuGridComponent implements AfterViewInit {
-    isDarkTheme = false;
+    private isDarkTheme = false;
     private nameDialogRef: MdDialogRef<NameDialogComponent>;
     private scoreDialogRef: MdDialogRef<HighscoresPopupComponent>;
 
@@ -22,7 +22,7 @@ export class SudokuGridComponent implements AfterViewInit {
         this.sudokuService = sudokuService;
     }
 
-    ngAfterViewInit() {
+    public ngAfterViewInit() {
         // Necessary to fix prodmode exclusive error (data binding changed on init)
         setTimeout(() => {
             this.nameDialogRef = this.dialog.open(NameDialogComponent, {
@@ -42,21 +42,21 @@ export class SudokuGridComponent implements AfterViewInit {
 
     }
 
-    getSudokuService() {
+    public getSudokuService() {
         return this.sudokuService;
     }
 
-    getEasySudoku() {
+    public getEasySudoku() {
         this.stopwatchService.restart();
         this.sudokuService.getEasySudoku();
     }
 
-    getHardSudoku() {
+    public getHardSudoku() {
         this.stopwatchService.restart();
         this.sudokuService.getHardSudoku();
     }
 
-    validateSudoku() {
+    public validateSudoku() {
         this.sudokuService.validateSudoku(() => {
             if (this.sudokuService.isValid) {
                 this.stopwatchService.stop();
@@ -66,7 +66,7 @@ export class SudokuGridComponent implements AfterViewInit {
                             this.sudokuService.getHighscores()
                                 .then((scores) => {
                                     if (scores !== undefined) {
-                                        //Pop the popup!
+                                        // Pop the popup!
                                         this.showHighscoresDialog(scores);
                                     } else {
                                         // Don't pop the popup! Show a message to say you didn't get a highscore!
@@ -82,7 +82,7 @@ export class SudokuGridComponent implements AfterViewInit {
         });
     }
 
-    showHighscoresDialog(highscores: any) {
+    public showHighscoresDialog(highscores: any) {
         setTimeout(() => {
             this.scoreDialogRef = this.dialog.open(HighscoresPopupComponent);
             (this.scoreDialogRef.componentInstance.dialogRef.componentInstance as HighscoresComponent)
@@ -90,21 +90,21 @@ export class SudokuGridComponent implements AfterViewInit {
         });
     }
 
-    resetSudoku() {
+    public resetSudoku() {
         document.forms['gridForm'].reset();
         this.sudokuService.resetSudoku();
         this.stopwatchService.restart();
     }
 
-    getStopwatchVisibility(): boolean {
+    public getStopwatchVisibility(): boolean {
         return this.stopwatchService.isVisible();
     }
 
-    toggleStopwatch() {
+    public toggleStopwatch() {
         this.stopwatchService.toggleVisibility();
     }
 
-    putEntry(entry: EntryEvent) {
+    public putEntry(entry: IEntryEvent) {
 
         let entryValidation = {
             value: Number.parseInt(entry.keyEvent.key),
@@ -120,14 +120,13 @@ export class SudokuGridComponent implements AfterViewInit {
         }
         // 2- Arrow key entered
         else if (this.inputService.isArrowKey(entry.keyEvent)) {
-            //alert(entry.inputField.parentElement.parentElement.parentElement.parentElement.parentElement.className);
             entryValidation.grid = this.sudokuService.initialGrid;
             entryValidation.value = entry.keyEvent.keyCode;
             this.inputService.handleArrowKey(entryValidation, entry.inputField);
         }
         // 3- Number entered
         else if (this.inputService.isNumber(entry.keyEvent.key)) {
-            // "!" permis?
+            // "!" permitted?
             if (!this.inputService.validate(entryValidation)) {
                 this.inputService.putInvalidField(entry.inputField);
             }
@@ -143,26 +142,26 @@ export class SudokuGridComponent implements AfterViewInit {
         }
     }
 
-    formatSelectedTableCell(input: HTMLInputElement) {
+    public formatSelectedTableCell(input: HTMLInputElement) {
         this.inputService.formatSelectedTableCell(input);
     }
 
-    unformatSelectedTableCell(input: HTMLInputElement) {
+    public unformatSelectedTableCell(input: HTMLInputElement) {
         this.inputService.unformatSelectedTableCell(input);
     }
 
-    toggleTheme() {
+    public toggleTheme() {
         this.isDarkTheme = !this.isDarkTheme;
     }
 
     @HostListener('window:beforeunload', ['$event'])
-    onBeforeUnload(event: any): any {
+    public onBeforeUnload(event: any): any {
         this.sudokuService.quitGame();
         return;
     }
 }
 
-interface EntryEvent {
+interface IEntryEvent {
     keyEvent: KeyboardEvent;
     inputField: HTMLInputElement;
     row: number;
