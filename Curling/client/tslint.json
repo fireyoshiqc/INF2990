@@ -10,7 +10,7 @@
       "spaces"
     ],
     "label-position": true,
-    "member-access": false,
+    "member-access": true,
     "member-ordering": [
       true,
       "static-before-instance",
@@ -131,6 +131,29 @@
     "import-destructuring-spacing": true,
     "templates-use-public": true,
     "no-access-missing-member": true,
-    "invoke-injectable": true
+    "invoke-injectable": true,
+
+    // Rules Sprint 3 added :
+    "arrow-return-shorthand" : [true],
+    "await-promise": true,
+    "comment-format": [
+      true,
+      "check-space",
+      "check-uppercase",
+      {"ignore-words": ["TODO", "IDEA", "HACK"]}
+    ],
+    "interface-name": [true, "always-prefix"],
+    "new-parens": true,
+    "no-boolean-literal-compare" : true,
+    "no-duplicate-super": true,
+    "no-empty-interface": true,
+    "no-floating-promises": true,
+    "no-invalid-this": true,
+    "no-misused-new": true,
+    "no-require-imports": true,
+    "no-unnecessary-qualifier": true,
+    "object-literal-shorthand": true,
+    "promise-function-async": true,
+    "switch-default": true
   }
 }

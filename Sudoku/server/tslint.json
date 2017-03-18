@@ -1,5 +1,7 @@
 {
-  "rulesDirectory":["node_modules/tslint-eslint-rules/dist/rules"],
+  "rulesDirectory": [
+    "node_modules/tslint-eslint-rules/dist/rules"
+  ],
   "rules": {
     "class-name": true,
     "curly": true,
@@ -10,7 +12,8 @@
       "spaces"
     ],
     "label-position": true,
-    "member-access": false,
+    // Rules Sprint 3 modified: false -> true
+    "member-access": true,
     "member-ordering": [
       true,
       "static-before-instance",
@@ -31,7 +34,9 @@
     "no-duplicate-variable": true,
     "no-empty": true,
     "no-eval": true,
-    "no-inferrable-types": [true],
+    "no-inferrable-types": [
+      true
+    ],
     "no-shadowed-variable": true,
     "no-string-literal": false,
     "no-switch-case-fall-through": true,
@@ -41,12 +46,19 @@
     "no-use-before-declare": true,
     "no-var-keyword": true,
     "object-literal-sort-keys": false,
-    
-    "cyclomatic-complexity": [ true, 20],
-    "max-classes-per-file": [true, 2],
-    "max-line-length": [true, 120],
+    "cyclomatic-complexity": [
+      true,
+      20
+    ],
+    "max-classes-per-file": [
+      true,
+      2
+    ],
+    "max-line-length": [
+      true,
+      120
+    ],
     "no-unsafe-finally": true,
-    
     "one-line": [
       false,
       "check-open-brace",
@@ -54,7 +66,6 @@
       "check-catch",
       "check-else"
     ],
-      
     "quotemark": [
       false,
       "single"
@@ -78,11 +89,11 @@
       }
     ],
     "variable-name": [
-        true,
-        "ban-keywords",
-        "check-format",
-        "allow-leading-underscore",
-        "allow-trailing-underscore"
+      true,
+      "ban-keywords",
+      "check-format",
+      "allow-leading-underscore",
+      "allow-trailing-underscore"
     ],
     "whitespace": [
       true,
@@ -93,9 +104,11 @@
       "check-type",
       "check-operator"
     ],
-    
     // ESLint added by Emilio
-    "no-inner-declarations": [true,"functions"],
+    "no-inner-declarations": [
+      true,
+      "functions"
+    ],
     "no-constant-condition": true,
     "no-sparse-arrays": true,
     "no-ex-assign": true,
@@ -105,6 +118,34 @@
     "no-duplicate-case": true,
     "no-invalid-regexp": true,
     "no-multi-spaces": true,
-    "no-irregular-whitespace": [true, {"skipComments":true}]
+    "no-irregular-whitespace": [
+      true,
+      {
+        "skipComments": true
+      }
+    ],
+
+    // Rules Sprint 3 added :
+    "arrow-return-shorthand" : [true],
+    "await-promise": true,
+    "comment-format": [
+      true,
+      "check-space",
+      "check-uppercase",
+      {"ignore-words": ["TODO", "IDEA", "HACK"]}
+    ],
+    "interface-name": [true, "always-prefix"],
+    "new-parens": true,
+    "no-boolean-literal-compare" : true,
+    "no-duplicate-super": true,
+    "no-empty-interface": true,
+    "no-floating-promises": true,
+    "no-invalid-this": true,
+    "no-misused-new": true,
+    "no-require-imports": true,
+    "no-unnecessary-qualifier": true,
+    "object-literal-shorthand": true,
+    "promise-function-async": true,
+    "switch-default": true
   }
 }
