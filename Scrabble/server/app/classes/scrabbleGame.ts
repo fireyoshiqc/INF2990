@@ -39,25 +39,47 @@ export class ScrabbleGame {
         }
     }
 
-    placeWord(command: CommandPlaceWord): string[] {
+    private getTile(command: CommandPlaceWord, offset: number): BoardTile {
+        if (command.getOrientation() === "h") {
+                return this.board[command.getRow()][command.getColumn() + offset];
+            } else {
+                return this.board[command.getRow() + offset][command.getColumn()];
+            }
+    }
+
+    findLettersToRemove(command: CommandPlaceWord): string[] {
         let word = command.getWord();
-        let tile;
+        let tile: BoardTile;
         let lettersToRemove = new Array<string>();
 
         for (let i = 0; i < word.length; i++) {
-            if (command.getOrientation() === "h") {
-                tile = this.board[command.getRow()][command.getColumn() + i];
-            } else {
-                tile = this.board[command.getRow() + i][command.getColumn()];
-            }
+            tile = this.getTile(command, i);
 
             if (tile.isEmpty()) {
-                lettersToRemove.push(word[i]); // For client side
-                tile.putLetter(new Letter(word[i]));
+                (word[i] === word[i].toUpperCase()) ?
+                    lettersToRemove.push("JOKER") : // JOKER
+                    lettersToRemove.push(word[i]);  // REGULAR LETTERS
             }
         }
 
         return lettersToRemove;
+    }
+
+    placeWord(command: CommandPlaceWord): void {
+        let word = command.getWord();
+        let tile;
+
+        for (let i = 0; i < word.length; i++) {
+            tile = this.getTile(command, i);
+
+            if (tile.isEmpty()) {
+                // JOKER
+                (word[i] === word[i].toUpperCase()) ?
+                    // TODO : Change texture of JOKER used as LETTER (still worth 0 points)
+                    tile.putLetter(new Letter(word[i], true)) :
+                    tile.putLetter(new Letter(word[i]));
+            }
+        }
     }
 
     // the word point is counted before the word is placed
@@ -112,8 +134,7 @@ export class ScrabbleGame {
 
             if (tile.isEmpty()) {
                 isNewWord = true;
-            }
-            else if (tile.getLetter().getCharacter() !== command.getWord().charAt(i).toUpperCase()) {
+            } else if (tile.getLetter().getCharacter() !== command.getWord().charAt(i).toUpperCase()) {
                 console.log(tile.getLetter().getCharacter());
                 console.log(command.getWord().charAt(i));
                 return false;

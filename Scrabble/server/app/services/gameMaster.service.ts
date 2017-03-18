@@ -10,6 +10,7 @@ import { CommandPlaceWord } from '../classes/commandPlaceWord';
 import { CommandChangeLetter } from '../classes/commandChangeLetter';
 import { Player } from '../classes/player';
 import { ScrabbleGame } from '../classes/scrabbleGame';
+import { Letter } from '../classes/letter';
 
 export enum CommandExecutionStatus {
     SUCCESS,
@@ -57,6 +58,22 @@ export class GameMaster {
             this.activePlayer = this.players[0];
 
             // Give seven letters to each player from stash
+            // TODO : Randomize letters and pick from stash
+            this.players[0].addLetter(new Letter("JOKER"));
+            this.players[0].addLetter(new Letter("o"));
+            this.players[0].addLetter(new Letter("n"));
+            this.players[0].addLetter(new Letter("j"));
+            this.players[0].addLetter(new Letter("o"));
+            this.players[0].addLetter(new Letter("u"));
+            this.players[0].addLetter(new Letter("r"));
+
+            this.players[1].addLetter(new Letter("b"));
+            this.players[1].addLetter(new Letter("o"));
+            this.players[1].addLetter(new Letter("n"));
+            this.players[1].addLetter(new Letter("n"));
+            this.players[1].addLetter(new Letter("e"));
+            this.players[1].addLetter(new Letter("t"));
+            this.players[1].addLetter(new Letter("s"));
 
             this.gameStarted = true;
         }
@@ -79,6 +96,11 @@ export class GameMaster {
     }
 
     handleCommand(command: Command, player: Player): CommandExecutionStatus {
+        // the command !aide is always successful
+        if (command.getCommandType() === CommandType.AIDE) {
+            return CommandExecutionStatus.SUCCESS;
+        }
+
         if (player.getSocketId() === this.activePlayer.getSocketId()) {
             switch (command.getCommandType()) {
                 case CommandType.PLACER:
@@ -97,30 +119,35 @@ export class GameMaster {
     }
 
     private placeWord(command: CommandPlaceWord): CommandExecutionStatus {
-        // TODO : À implémenter le placement des lettres
-
         // 1- Validation du placement du mot
         if (this.canPlaceWord(command)) {
-            // 2- Placer les lettres avec (putLetter de boardTile) & enlever le lettres du rack de joueur
-            let lettersToRemove = this.scrabbleGame.placeWord(command);
-            this.activePlayer.removeLetters(lettersToRemove); 
-            //TODO: SEND THE ARRAY OF STRING TO SOCKET MANAGER SO THAT THE CLIENT RECEIVES IT <===
 
-            // 3- Appeler countWordPoint du ScrabbleGame pour compter les points du mot
-            //    REGARDER SI LES LETTRES PLACÉS FORME UN AUTRE MOT ET COMPTER CES POINTS AUSSI
-            let score = this.scrabbleGame.countWordPoint(command);
-            // Si le player réussit un "Bingo", on ajout un bonus de 50 points
-            if (this.activePlayer.isRackEmpty() === true) {
-                score += this.BINGO_BONUS;
+            let lettersToRemove = this.scrabbleGame.findLettersToRemove(command);
+            // 2- Vérifier s'il est possible d'enlever les lettres manquantes du plateau de jeu du rack du joueur
+            if (this.activePlayer.removeLetters(lettersToRemove)) {
+                // 3- Placer les lettres sur le plateau de jeu
+                this.scrabbleGame.placeWord(command);
+
+                // 4- Appeler countWordPoint du ScrabbleGame pour compter les points du mot
+                //    REGARDER SI LES LETTRES PLACÉS FORME UN AUTRE MOT ET COMPTER CES POINTS AUSSI
+                let score = this.scrabbleGame.countWordPoint(command);
+                // Si le player réussit un "Bingo", on ajout un bonus de 50 points
+                if (this.activePlayer.isRackEmpty() === true) {
+                    score += this.BINGO_BONUS;
+                }
+                // 5- Update le score du player
+                this.activePlayer.addPoints(score);
+                console.log("Point pour " + this.activePlayer.getName() + " : " + this.activePlayer.getPoints());
+
+                // 6- Redonner au joueur des lettres
+                // TODO : Prendre les lettres du stash
+                lettersToRemove.forEach(() => this.activePlayer.addLetter(new Letter("a")));
+
+                // 7- Passer au prochain joueur
+                this.skipTurn();
+
+                return CommandExecutionStatus.SUCCESS;
             }
-            // 4- Update le score du player
-            this.activePlayer.addPoints(score);
-            // 5- Redonner au joueur des lettres
-
-            // 6- Passer au prochain joueur
-            this.skipTurn();
-
-            return CommandExecutionStatus.SUCCESS;
         }
 
         return CommandExecutionStatus.ERROR;

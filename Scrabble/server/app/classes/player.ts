@@ -43,8 +43,10 @@ export class Player {
         this.points += points;
     }
 
-    getLettersRack(): Letter[] {
-        return this.lettersRack;
+    getLettersRack(): string[] {
+        let lettersRackString = new Array<string>();
+        this.lettersRack.forEach(letter => lettersRackString.push(letter.getCharacter()));
+        return lettersRackString;
     }
 
     isRackEmpty(): boolean {
@@ -55,28 +57,31 @@ export class Player {
         return this.LETTERS_RACK_SIZE;
     }
 
-    addLetter(letter: Letter): boolean {
+    addLetter(letter: Letter): void {
         if (this.lettersRack.length < this.LETTERS_RACK_SIZE) {
             this.lettersRack.push(letter);
-            return true;
         }
-
-        return false;
     }
 
+    // try to remove the letters from the player's rack
+    // return false if a letter could not be removed from the rack
     removeLetters(letters: string[]): boolean {
-        let lettersRemoved = true;
+        // save the old rack (deep copy)
+        let oldRack = new Array<Letter>();
+        this.lettersRack.forEach(letter => oldRack.push(new Letter(letter.getCharacter())));
+        let lettersCanBeRemoved = true;
+
         letters.forEach(letter => {
-            let letterIndex = this.lettersRack.findIndex(l => l.getCharacter() === letter);
+            let letterIndex = this.lettersRack.findIndex(l => l.getCharacter() === letter.toUpperCase());
 
-            if (letterIndex === -1) {
-
-                lettersRemoved = false;
-            } else {
+            if (letterIndex > -1) {
                 this.lettersRack.splice(letterIndex, 1);
+            } else {
+                this.lettersRack = oldRack;
+                lettersCanBeRemoved = false;
             }
         });
 
-        return lettersRemoved;
+        return lettersCanBeRemoved;
     }
 }

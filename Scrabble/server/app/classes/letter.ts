@@ -8,9 +8,14 @@
 export class Letter {
     private readonly character: string;
     private readonly value: number;
+    private jokerUsedAsLetter: boolean;
 
-    constructor(letter: string) {
+    // For JOKER :
+    // - in player's rack : new Letter("JOKER")
+    // - in scrabble board : new Letter("A", true)
+    constructor(letter: string, jokerUsedAsLetter = false) {
         this.character = letter.toUpperCase();
+        this.jokerUsedAsLetter = jokerUsedAsLetter;
         this.value = this.getLetterValue();
     }
 
@@ -22,10 +27,16 @@ export class Letter {
         return this.value;
     }
 
+    isJokerUsedAsLetter(): boolean {
+        return this.jokerUsedAsLetter;
+    }
+
     private getLetterValue(): number {
         let value: number;
 
-        if ("EAINORSTUL".includes(this.character)) {
+        if (this.jokerUsedAsLetter === true || this.character === "JOKER") {
+            value = 0;
+        } else if ("EAINORSTUL".includes(this.character)) {
             value = 1;
         } else if ("DMG".includes(this.character)) {
             value = 2;
@@ -37,8 +48,6 @@ export class Letter {
             value = 8;
         } else if ("KWXYZ".includes(this.character)) {
             value = 10;
-        } else if ("JOKER".includes(this.character)) {
-            value = 0;
         }
 
         return value;

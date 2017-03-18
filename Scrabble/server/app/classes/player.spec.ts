@@ -36,31 +36,34 @@ describe('Player', () => {
 
     describe('addLetter()', () => {
         it('should add 7 letters to the letters rack of the player.', done => {
-            expect(player.addLetter(new Letter("a"))).to.be.true;
-            expect(player.addLetter(new Letter("b"))).to.be.true;
-            expect(player.addLetter(new Letter("c"))).to.be.true;
-            expect(player.addLetter(new Letter("d"))).to.be.true;
-            expect(player.addLetter(new Letter("e"))).to.be.true;
-            expect(player.addLetter(new Letter("f"))).to.be.true;
-            expect(player.addLetter(new Letter("g"))).to.be.true;
-
+            player.addLetter(new Letter("JOKER"));
+            player.addLetter(new Letter("b"));
+            player.addLetter(new Letter("c"));
+            player.addLetter(new Letter("d"));
+            player.addLetter(new Letter("e"));
+            player.addLetter(new Letter("f"));
+            player.addLetter(new Letter("g"));
+            expect(player.getLettersRack()).to.eql(["JOKER", "B", "C", "D", "E", "F", "G"]);
             done();
         });
 
         it('should not add a 8th letter to the letters rack of the player.', done => {
-            expect(player.addLetter(new Letter("x"))).to.be.false;
+            player.addLetter(new Letter("x"));
+            expect(player.getLettersRack()).to.eql(["JOKER", "B", "C", "D", "E", "F", "G"]);
             done();
         });
     });
 
-    describe('removeLetter()', () => {
+    describe('removeLetters()', () => {
         it('should remove a letter from the letters rack of the player.', done => {
-            expect(player.removeLetters(["c"])).to.be.true;
+            expect(player.removeLetters(["JOKER", "B"])).to.be.true;
+            expect(player.getLettersRack()).to.eql(["C", "D", "E", "F", "G"]);
             done();
         });
 
         it('should not remove a letter from the letters rack of the player.', done => {
-            expect(player.removeLetters(["z"])).to.be.false;
+            expect(player.removeLetters(["C", "D", "Z"])).to.be.false;
+            expect(player.getLettersRack()).to.eql(["C", "D", "E", "F", "G"]);
             done();
         });
     });

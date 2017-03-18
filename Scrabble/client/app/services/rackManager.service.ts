@@ -16,15 +16,14 @@ export class RackManager {
     private selectedIndex: number;
 
     constructor() {
-        //TODO: Modify this so it picks letters from the letter stash
         this.rack = [
-            new Letter("I"),
-            new Letter("R"),
-            new Letter("E"),
-            new Letter("P"),
             new Letter("JOKER"),
-            new Letter("R"),
-            new Letter("E")];
+            new Letter("JOKER"),
+            new Letter("JOKER"),
+            new Letter("JOKER"),
+            new Letter("JOKER"),
+            new Letter("JOKER"),
+            new Letter("JOKER")];
         this.selectedIndex = null;
     }
 

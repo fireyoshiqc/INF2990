@@ -88,8 +88,8 @@ describe('CommandParser', () => {
             command = commandParser.createCommand("!placer a15v bonjour Pierre");
             expect(command.getCommandStatus()).to.be.equal(CommandStatus.INVALID_COMMAND_SYNTAX);
 
-            // Invalid word (contains more than 7 letters)
-            command = commandParser.createCommand("!placer a15v bonjourno");
+            // Invalid word (contains less than 2 letters)
+            command = commandParser.createCommand("!placer a15v a");
             expect(command.getCommandStatus()).to.be.equal(CommandStatus.INVALID_COMMAND_SYNTAX);
 
             // Valid command

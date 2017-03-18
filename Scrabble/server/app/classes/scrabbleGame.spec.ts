@@ -59,28 +59,39 @@ describe('ScrabbleGame', () => {
 
     describe('isWordCorrectlyOverlapping and placeWord', () => {
         it('should verify if the word is correctly overlapping the other words on the board.', done => {
-            let c1 = new CommandPlaceWord("a", 1, "v", "BAC");
+            let c1 = new CommandPlaceWord("a", 1, "v", "Bac"); // B is a JOKER
             expect(scrabbleGame.isWordCorrectlyOverlapping(c1)).to.be.true;
-            let l1 = scrabbleGame.placeWord(c1);
-            expect(l1).to.eql(['B', 'A', 'C']);
+            let l1 = scrabbleGame.findLettersToRemove(c1);
+            expect(l1).to.eql(["JOKER", 'a', 'c']);
+            scrabbleGame.placeWord(c1);
+            // verify board
+            expect(scrabbleGame.getBoard()[0][0].getLetter().getCharacter()).to.be.equal("B");
+            expect(scrabbleGame.getBoard()[0][0].getLetter().isJokerUsedAsLetter()).to.be.true;
+            expect(scrabbleGame.getBoard()[1][0].getLetter().getCharacter()).to.be.equal("A");
+            expect(scrabbleGame.getBoard()[1][0].getLetter().isJokerUsedAsLetter()).to.be.false;
+            expect(scrabbleGame.getBoard()[2][0].getLetter().getCharacter()).to.be.equal("C");
+            expect(scrabbleGame.getBoard()[2][0].getLetter().isJokerUsedAsLetter()).to.be.false;
 
-            let c2 = new CommandPlaceWord("c", 1, "h", "CHAT");
+            let c2 = new CommandPlaceWord("c", 1, "h", "chat");
             expect(scrabbleGame.isWordCorrectlyOverlapping(c2)).to.be.true;
-            let l2 = scrabbleGame.placeWord(c2);
-            expect(l2).to.eql(['H', 'A', 'T']);
+            let l2 = scrabbleGame.findLettersToRemove(c2);
+            expect(l2).to.eql(['h', 'a', 't']);
+            scrabbleGame.placeWord(c2);
 
-            let c3 = new CommandPlaceWord("c", 4, "v", "TENNIS");
+            let c3 = new CommandPlaceWord("c", 4, "v", "tennis");
             expect(scrabbleGame.isWordCorrectlyOverlapping(c3)).to.be.true;
-            let l3 = scrabbleGame.placeWord(c3);
-            expect(l3).to.eql(['E', 'N', 'N', 'I', 'S']);
+            let l3 = scrabbleGame.findLettersToRemove(c3);
+            expect(l3).to.eql(['e', 'n', 'n', 'i', 's']);
+            scrabbleGame.placeWord(c3);
 
-            let c4 = new CommandPlaceWord("a", 1, "h", "TOMATE");
+            let c4 = new CommandPlaceWord("a", 1, "h", "tomate");
             expect(scrabbleGame.isWordCorrectlyOverlapping(c4)).to.be.false;
 
-            let c5 = new CommandPlaceWord("c", 1, "h", "CHATTE");
+            let c5 = new CommandPlaceWord("c", 1, "h", "chatte");
             expect(scrabbleGame.isWordCorrectlyOverlapping(c5)).to.be.true;
-            let l5 = scrabbleGame.placeWord(c5);
-            expect(l5).to.eql(['T', 'E']);
+            let l5 = scrabbleGame.findLettersToRemove(c5);
+            expect(l5).to.eql(['t', 'e']);
+            scrabbleGame.placeWord(c5);
 
             expect(scrabbleGame.isWordCorrectlyOverlapping(c1)).to.be.false;
             expect(scrabbleGame.isWordCorrectlyOverlapping(c2)).to.be.false;

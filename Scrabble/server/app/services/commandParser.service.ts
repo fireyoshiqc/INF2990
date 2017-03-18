@@ -12,7 +12,7 @@ import { CommandChangeLetter } from '../classes/commandChangeLetter';
 export class CommandParser {
     private readonly EXISTING_COMMANDS = ["!placer", "!changer", "!passer", "!aide"];
     private readonly PLACE_LETTER_REGEX =
-        /^(!placer)\s([a-oA-O])(10|11|12|13|14|15|[1-9])([h|H|v|V])\s([a-zA-Z]{1,7})$/;
+        /^(!placer)\s([a-oA-O])(10|11|12|13|14|15|[1-9])([h|H|v|V])\s([a-zA-Z]{2,15})$/;
     private readonly CHANGE_LETTER_REGEX = /^(!changer)\s([a-z*]{1,7})$/;
     private readonly SKIP_TURN_REGEX = /^(!passer)$/;
     private readonly HELP_REGEX = /^(!aide)$/;

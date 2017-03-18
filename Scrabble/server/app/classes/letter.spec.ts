@@ -37,6 +37,23 @@ describe('Letter', () => {
             expect(J.getValue()).to.be.equal(8);
             done();
         });
+
+        it('should return the right value of a joker in a rack.', done => {
+            let joker = new Letter("JOKER");
+            expect(joker).to.be.an.instanceOf(Letter);
+            expect(joker.getCharacter()).to.be.equal("JOKER");
+            expect(joker.getValue()).to.be.equal(0);
+            done();
+        });
+
+        it('should return the right value of joker used as a letter in the board.', done => {
+            let jokerUsedAsA = new Letter("A", true);
+            expect(jokerUsedAsA).to.be.an.instanceOf(Letter);
+            expect(jokerUsedAsA.getCharacter()).to.be.equal("A");
+            expect(jokerUsedAsA.isJokerUsedAsLetter()).to.be.true;
+            expect(jokerUsedAsA.getValue()).to.be.equal(0);
+            done();
+        });
     });
 });
 
