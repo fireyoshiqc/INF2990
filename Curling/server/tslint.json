@@ -124,36 +124,25 @@
       }
     ],
     // Rules Sprint 3 added :
-    "arrow-return-shorthand": [
-      true
-    ],
-    "await-promise": true,
+    "arrow-return-shorthand" : [true],
+    //"await-promise": true, => REQUIRES TYPE CHECKING
     "comment-format": [
       true,
       "check-space",
       "check-uppercase",
-      {
-        "ignore-words": [
-          "TODO",
-          "IDEA",
-          "HACK"
-        ]
-      }
+      {"ignore-words": ["TODO", "IDEA", "HACK"]}
     ],
-    "interface-name": [
-      true,
-      "always-prefix"
-    ],
+    "interface-name": [true, "always-prefix"],
     "new-parens": true,
-    "no-boolean-literal-compare": true,
+    //"no-boolean-literal-compare" : true, => REQUIRES TYPE CHECKING
     "no-empty-interface": true,
-    "no-floating-promises": true,
+    //"no-floating-promises": true, => REQUIRES TYPE CHECKING
     "no-invalid-this": true,
     "no-misused-new": true,
     "no-require-imports": true,
-    "no-unnecessary-qualifier": true,
+    //"no-unnecessary-qualifier": true, => REQUIRES TYPE CHECKING
     "object-literal-shorthand": true,
-    "promise-function-async": true,
+    //"promise-function-async": true, => REQUIRES TYPE CHECKING
     "switch-default": true
   }
 }
