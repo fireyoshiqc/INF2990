@@ -24,4 +24,8 @@ export class RackComponent {
     keyboardInput(event: KeyboardEvent) {
         this.rackManager.handleInput(event);
     }
+
+    removeRackLetters(letters: string[]) {
+        this.rackManager.removeRackLetters(letters);
+    }
 }

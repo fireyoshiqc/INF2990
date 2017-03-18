@@ -16,7 +16,7 @@ export class Letter {
         this.texture = "../../assets/textures/letters/" + this.letter + ".png";
     }
 
-    getLetter(): string {
+    getCharacter(): string {
         return this.letter;
     }
 

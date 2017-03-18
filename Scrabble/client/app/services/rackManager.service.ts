@@ -31,7 +31,7 @@ export class RackManager {
     handleInput(event: KeyboardEvent): void {
         if (this.isArrowKey(event) && this.selectedIndex !== null) {
             let nextIndex = ((this.selectedIndex + ((event.key === "ArrowLeft") ? -1 : 1))
-                            + RackManager.RACK_LENGTH) % RackManager.RACK_LENGTH;
+                + RackManager.RACK_LENGTH) % RackManager.RACK_LENGTH;
 
             let temp = this.rack[nextIndex];
             this.rack[nextIndex] = this.rack[this.selectedIndex];
@@ -45,10 +45,11 @@ export class RackManager {
             }
 
             if (this.isLetterInRack(letter)) {
-                let nextIndex = (this.selectedIndex !== null && this.rack[this.selectedIndex].getLetter() === letter) ?
-                                (this.selectedIndex + 1) % RackManager.RACK_LENGTH : 0;
+                let nextIndex = (this.selectedIndex !== null &&
+                    this.rack[this.selectedIndex].getCharacter() === letter) ?
+                    (this.selectedIndex + 1) % RackManager.RACK_LENGTH : 0;
 
-                while (this.rack[nextIndex].getLetter() !== letter) {
+                while (this.rack[nextIndex].getCharacter() !== letter) {
                     nextIndex = (nextIndex + 1) % RackManager.RACK_LENGTH;
                 }
 
@@ -67,11 +68,20 @@ export class RackManager {
         return this.rack;
     }
 
+    removeRackLetters(letters: string[]): void {
+        letters.forEach(letter => {
+            let letterIndex = this.rack.findIndex(l => l.getCharacter() === letter.toUpperCase());
+            if (letterIndex > -1) {
+                this.rack.splice(letterIndex, 1);
+            }
+        });
+    }
+
     private isArrowKey(event: KeyboardEvent): boolean {
         return event.key === "ArrowLeft" || event.key === "ArrowRight";
     }
 
     private isLetterInRack(letter: string): boolean {
-        return (this.rack.findIndex(r => r.getLetter() === letter) !== -1);
+        return (this.rack.findIndex(r => r.getCharacter() === letter) !== -1);
     }
 }

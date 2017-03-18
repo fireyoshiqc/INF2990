@@ -33,4 +33,18 @@ describe('RackManager', function () {
             done();
         });
     });
+
+    describe('removeRackLetters()', function () {
+        it('should remove letters from rack.', done => {
+            expect(rackManager.getRackLetters().length).to.equal(RackManager.RACK_LENGTH);
+
+            let letters = [rackManager.getRackLetters()[0].getCharacter(),
+                           rackManager.getRackLetters()[1].getCharacter().toLowerCase(),
+                           rackManager.getRackLetters()[2].getCharacter()];
+
+            rackManager.removeRackLetters(letters);
+            expect(rackManager.getRackLetters().length).to.equal(RackManager.RACK_LENGTH - 3);
+            done();
+        });
+    });
 });

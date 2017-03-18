@@ -30,8 +30,6 @@ export class GameMaster {
         this.scrabbleGame = new ScrabbleGame();
         this.players = players;
         this.gameStarted = false;
-
-        //TODO: activePlayer
     }
 
     getScrabbleGame(): ScrabbleGame {
@@ -84,11 +82,11 @@ export class GameMaster {
         if (player.getSocketId() === this.activePlayer.getSocketId()) {
             switch (command.getCommandType()) {
                 case CommandType.PLACER:
-                    return this.placeWord(command as CommandPlaceWord, player);
+                    return this.placeWord(command as CommandPlaceWord);
                 case CommandType.CHANGER:
-                    return this.changeLetter(command as CommandChangeLetter, player);
+                    return this.changeLetter(command as CommandChangeLetter);
                 case CommandType.PASSER:
-                    return this.skipTurn(player);
+                    return this.skipTurn();
                 default:
                     return CommandExecutionStatus.ERROR;
             }
@@ -98,26 +96,29 @@ export class GameMaster {
         }
     }
 
-    private placeWord(command: CommandPlaceWord, player: Player): CommandExecutionStatus {
+    private placeWord(command: CommandPlaceWord): CommandExecutionStatus {
         // TODO : À implémenter le placement des lettres
 
         // 1- Validation du placement du mot
         if (this.canPlaceWord(command)) {
             // 2- Placer les lettres avec (putLetter de boardTile) & enlever le lettres du rack de joueur
-            //    REGARDER SI LES LETTRES PLACÉS FORME UN AUTRE MOT.
-            this.scrabbleGame.placeWord(command);
+            let lettersToRemove = this.scrabbleGame.placeWord(command);
+            this.activePlayer.removeLetters(lettersToRemove); 
+            //TODO: SEND THE ARRAY OF STRING TO SOCKET MANAGER SO THAT THE CLIENT RECEIVES IT <===
+
             // 3- Appeler countWordPoint du ScrabbleGame pour compter les points du mot
+            //    REGARDER SI LES LETTRES PLACÉS FORME UN AUTRE MOT ET COMPTER CES POINTS AUSSI
             let score = this.scrabbleGame.countWordPoint(command);
             // Si le player réussit un "Bingo", on ajout un bonus de 50 points
-            if (player.isRackEmpty() === true) {
+            if (this.activePlayer.isRackEmpty() === true) {
                 score += this.BINGO_BONUS;
             }
             // 4- Update le score du player
-            player.addPoints(score);
+            this.activePlayer.addPoints(score);
             // 5- Redonner au joueur des lettres
 
             // 6- Passer au prochain joueur
-            this.skipTurn(this.activePlayer);
+            this.skipTurn();
 
             return CommandExecutionStatus.SUCCESS;
         }
@@ -125,13 +126,13 @@ export class GameMaster {
         return CommandExecutionStatus.ERROR;
     }
 
-    private changeLetter(command: CommandChangeLetter, player: Player): CommandExecutionStatus {
+    private changeLetter(command: CommandChangeLetter): CommandExecutionStatus {
         // TODO : À implémenter le changement des lettres
         return CommandExecutionStatus.ERROR;
     }
 
-    private skipTurn(player: Player): CommandExecutionStatus {
-        let playerIndex = this.players.findIndex(p => p.getSocketId() === player.getSocketId());
+    private skipTurn(): CommandExecutionStatus {
+        let playerIndex = this.players.findIndex(p => p.getSocketId() === this.activePlayer.getSocketId());
         this.activePlayer = this.players[(playerIndex + 1) % this.players.length];
         return CommandExecutionStatus.SUCCESS;
     }

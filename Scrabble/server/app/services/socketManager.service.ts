@@ -153,13 +153,16 @@ export class SocketManager {
                                     row: placeCommand.getRow(), column: placeCommand.getColumn(),
                                     orientation: placeCommand.getOrientation(), word: placeCommand.getWord()
                                 });
+
                             this.sio.sockets
                                 .in(player.getRoomId().toString())
                                 .emit('command sent', {
                                     username: player.getName(), submessage: msg,
                                     commandResponse: commandResponse
                                 });
-
+                            
+                            //TODO: SEND THE ARRAY OF LETTERS TO REMOVE TO SOCKET MANAGER SO THAT THE CLIENT RECEIVES IT
+                            //TODO: SEND THE ARRAY OF LETTERS TO ADD TO RACK TO SOCKET MANAGER SO THAT THE CLIENT RECEIVES IT
                         }
                     }
                         break;

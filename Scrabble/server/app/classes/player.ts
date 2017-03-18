@@ -64,14 +64,19 @@ export class Player {
         return false;
     }
 
-    removeLetter(letter: Letter): boolean {
-        let letterIndex = this.lettersRack.findIndex(l => l.getCharacter() === letter.getCharacter());
+    removeLetters(letters: string[]): boolean {
+        let lettersRemoved = true;
+        letters.forEach(letter => {
+            let letterIndex = this.lettersRack.findIndex(l => l.getCharacter() === letter);
 
-        if (letterIndex > -1) {
-            this.lettersRack = this.lettersRack.splice(letterIndex, 1);
-            return true;
-        }
+            if (letterIndex === -1) {
 
-        return false;
+                lettersRemoved = false;
+            } else {
+                this.lettersRack.splice(letterIndex, 1);
+            }
+        });
+
+        return lettersRemoved;
     }
 }

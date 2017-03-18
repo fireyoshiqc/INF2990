@@ -55,12 +55,12 @@ describe('Player', () => {
 
     describe('removeLetter()', () => {
         it('should remove a letter from the letters rack of the player.', done => {
-            expect(player.removeLetter(new Letter("c"))).to.be.true;
+            expect(player.removeLetters(["c"])).to.be.true;
             done();
         });
 
         it('should not remove a letter from the letters rack of the player.', done => {
-            expect(player.removeLetter(new Letter("z"))).to.be.false;
+            expect(player.removeLetters(["z"])).to.be.false;
             done();
         });
     });

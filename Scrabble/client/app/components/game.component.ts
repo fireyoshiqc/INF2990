@@ -22,6 +22,12 @@ export class GameComponent implements OnInit {
         this.socket.on("wcPlaceWord", (command: CommandPlaceWord) => {
             this.boardChild.placeWord(command);
         });
+
+        this.socket.on("wcRemoveLetter", (letters: string[]) => {
+            this.rackChild.removeRackLetters(letters);
+        });
+
+        //TODO: GET LETTERS FROM STASH
     }
 
     @HostListener('window:keydown', ['$event'])

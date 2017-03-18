@@ -39,16 +39,25 @@ export class ScrabbleGame {
         }
     }
 
-    placeWord(command: CommandPlaceWord): void {
+    placeWord(command: CommandPlaceWord): string[] {
         let word = command.getWord();
+        let tile;
+        let lettersToRemove = new Array<string>();
 
         for (let i = 0; i < word.length; i++) {
             if (command.getOrientation() === "h") {
-                this.board[command.getRow()][command.getColumn() + i].putLetter(new Letter(word[i]));
+                tile = this.board[command.getRow()][command.getColumn() + i];
             } else {
-                this.board[command.getRow() + i][command.getColumn()].putLetter(new Letter(word[i]));
+                tile = this.board[command.getRow() + i][command.getColumn()];
+            }
+
+            if (tile.isEmpty()) {
+                lettersToRemove.push(word[i]); // For client side
+                tile.putLetter(new Letter(word[i]));
             }
         }
+
+        return lettersToRemove;
     }
 
     // the word point is counted before the word is placed
