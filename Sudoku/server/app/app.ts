@@ -117,8 +117,12 @@ export class Application {
 
         this.app.get('/getSudoku/easy', function (req, res) {
             let easySudoku = self.sudokuManager.getSudoku(Difficulty.Easy);
+            let clientIp = req.connection.remoteAddress + ":" + req.connection.remotePort;
+            if (clientIp.substr(0, 7) === "::ffff:") {
+                clientIp = clientIp.substr(7);
+            }
             self.sudokuManager.getLogger()
-                .logEvent("DEMANDE", req.connection.remoteAddress + ":" + req.connection.remotePort);
+                .logEvent("DEMANDE", clientIp);
             res.send({ grid: easySudoku.grid, difficulty: easySudoku.difficulty });
         });
 
