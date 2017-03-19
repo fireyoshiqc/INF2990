@@ -6,7 +6,6 @@
  */
 
 import { LoggerService } from './logger.service';
-
 import { expect } from 'chai';
 
 describe("LoggerService", () => {

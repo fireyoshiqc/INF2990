@@ -1,3 +1,10 @@
+/**
+ * logger.service.spec.ts - Logging service for server-side dashboard
+ *
+ * @authors Félix Boulet, Erica Bugden
+ * @date 2017/03/17
+ */
+
 import * as Collections from 'typescript-collections';
 
 export class LoggerService {

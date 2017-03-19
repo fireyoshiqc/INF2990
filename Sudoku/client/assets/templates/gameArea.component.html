@@ -12,7 +12,7 @@
                             <br> Utilisez l'icône d'ampoule dans le coin supérieur droit afin de changer le thème de clair
                             à sombre.<br>
                             <br> Utilisez les boutons ci-dessous pour générer une nouvelle grille de sudoku, de la difficulté
-                            de votre choix, ou encore pour afficher les records de temps pour chacune des difficultés.<br>
+                            de votre choix.<br>
                         </md-card-content>
                     </md-card>
 
@@ -22,11 +22,6 @@
                     </md-list-item>
                     <md-list-item>
                         <button md-button class="list-button" (click)="sudokuGrid.getHardSudoku(); sidenav.toggle()"><md-icon id="easyIcon" color="warn">whatshot</md-icon><strong>Difficile</strong></button>
-                    </md-list-item>
-                    <md-divider></md-divider>
-                    <h3 md-subheader>Records</h3>
-                    <md-list-item>
-                        <button md-button class="list-button" (click)="sudokuGrid.getSudokuService().getHighscores(); sidenav.toggle()"><md-icon id="easyIcon" color="accent">assessment</md-icon><strong>Afficher les records</strong></button>
                     </md-list-item>
                     <md-divider></md-divider>
                 </md-list>
