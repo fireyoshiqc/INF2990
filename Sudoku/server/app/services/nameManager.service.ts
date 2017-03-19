@@ -13,7 +13,7 @@ export class NameManagerService {
         this.names = new Array<string>();
     }
 
-    validateName(name: string): boolean {
+    public validateName(name: string): boolean {
         if (name.length > 3 && name.charAt(0) !== " " && name.charAt(name.length - 1) !== " "
             && this.names.findIndex(listedName => (listedName === name)) === -1) {
             this.names.push(name);
@@ -24,7 +24,7 @@ export class NameManagerService {
         }
     }
 
-    removeName(name: string): boolean {
+    public removeName(name: string): boolean {
         let index = this.names.findIndex(listedName => (listedName === name));
         if (index !== -1) {
             this.names.splice(index, 1);

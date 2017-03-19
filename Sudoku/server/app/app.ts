@@ -13,7 +13,7 @@ import * as bodyParser from 'body-parser';
 import * as cors from 'cors';
 
 // TODO : Remove comment below when routers will be required
-//import * as indexRoute from './routes';
+// IDEA: import * as indexRoute from './routes';
 
 import { SudokuManager } from './services/sudokuManager.service';
 import { Difficulty } from './services/sudoku.service';
@@ -55,10 +55,10 @@ export class Application {
         this.nameManager = new NameManagerService();
         this.database = new DatabaseService();
 
-        //configure this.application
+        // Configure this.application
         this.config();
 
-        //configure routes
+        // Configure routes
         this.routes();
     }
 
@@ -90,71 +90,72 @@ export class Application {
      */
     public routes() {
 
-        let sudokuManager = this.getSudokuManager();
-        let nameManager = this.getNameManager();
-        let database = this.getDatabaseService();
+        let self = this;
 
         // TODO : Remove comments below when routers will be required
-        //let router: express.Router;
-        //router = express.Router();
-
-        //create routes
-        //const index: indexRoute.Index = new indexRoute.Index();
-
-        //home page
-        //router.get('/', index.index.bind(index.index));
+        /*
+         * let router: express.Router;
+         * router = express.Router();
+         *
+         * create routes
+         * const index: indexRoute.Index = new indexRoute.Index();
+         *
+         * home page
+         * router.get('/', index.index.bind(index.index));
+         */
 
         this.app.get('/', function (req, res) {
-            console.log(sudokuManager.getNumberOfEasySudokus() + " " + sudokuManager.getNumberOfHardSudokus())
+            console.log(self.sudokuManager.getNumberOfEasySudokus() +
+                " " + self.sudokuManager.getNumberOfHardSudokus());
             res.render("log",
                 {
-                    easy: sudokuManager.getNumberOfEasySudokus(),
-                    hard: sudokuManager.getNumberOfHardSudokus(),
-                    list: sudokuManager.getLogger().getLog()
+                    easy: self.sudokuManager.getNumberOfEasySudokus(),
+                    hard: self.sudokuManager.getNumberOfHardSudokus(),
+                    list: self.sudokuManager.getLogger().getLog()
                 });
         });
 
         this.app.get('/getSudoku/easy', function (req, res) {
-            let easySudoku = sudokuManager.getSudoku(Difficulty.Easy);
-            sudokuManager.getLogger()
+            let easySudoku = self.sudokuManager.getSudoku(Difficulty.Easy);
+            self.sudokuManager.getLogger()
                 .logEvent("DEMANDE", req.connection.remoteAddress + ":" + req.connection.remotePort);
             res.send({ grid: easySudoku.grid, difficulty: easySudoku.difficulty });
         });
 
         this.app.get('/getSudoku/hard', function (req, res) {
-            let hardSudoku = sudokuManager.getSudoku(Difficulty.Hard);
-            sudokuManager.getLogger()
+            let hardSudoku = self.sudokuManager.getSudoku(Difficulty.Hard);
+            self.sudokuManager.getLogger()
                 .logEvent("DEMANDE", req.connection.remoteAddress + ":" + req.connection.remotePort);
             res.send({ grid: hardSudoku.grid, difficulty: hardSudoku.difficulty });
         });
 
         this.app.get('/getHighscores', function (req, res) {
-            database.getHighscores()
+            self.database.getHighscores()
                 .then((highscores) => res.send(highscores))
                 .catch((error) => res.send(error));
         });
 
         this.app.post('/validateSudoku', function (req, res) {
-            let result = sudokuManager.verifySudoku(req.body);
+            let result = self.sudokuManager.verifySudoku(req.body);
             res.send(result);
         });
 
         this.app.post('/validateName', function (req, res) {
-            res.send(nameManager.validateName(req.body.name));
+            res.send(self.nameManager.validateName(req.body.name));
         });
 
         this.app.post('/removeName', function (req, res) {
-            res.send(nameManager.removeName(req.body.name));
+            res.send(self.nameManager.removeName(req.body.name));
         });
 
         this.app.put('/addScore', function (req, res) {
-            database.addScore(req.body.name, req.body.time, req.body.difficulty)
+            self.database.addScore(req.body.name, req.body.time, req.body.difficulty)
                 .then((added) => res.send(added))
                 .catch((error) => res.send(error));
         });
 
         // TODO : Remove comment below when routers will be required
-        //this.app.use(router);
+        // IDEA : this.app.use(router);
 
         // Gestion des erreurs
         this.app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
@@ -162,8 +163,8 @@ export class Application {
             next(err);
         });
 
-        // development error handler
-        // will print stacktrace
+        // Development error handler
+        // Will print stacktrace
         if (this.app.get('env') === 'development') {
             this.app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
                 res.status(err.status || 500);
@@ -174,8 +175,8 @@ export class Application {
             });
         }
 
-        // production error handler
-        // no stacktraces leaked to user (in production env only)
+        // Production error handler
+        // No stacktraces leaked to user (in production env only)
         this.app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
             res.status(err.status || 500);
             res.render('error', {
@@ -184,17 +185,4 @@ export class Application {
             });
         });
     }
-
-    getSudokuManager(): SudokuManager {
-        return this.sudokuManager;
-    }
-
-    getNameManager(): NameManagerService {
-        return this.nameManager;
-    }
-
-    getDatabaseService(): DatabaseService {
-        return this.database;
-    }
-
 }

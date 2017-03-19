@@ -8,6 +8,7 @@
 import { SudokuManager } from './sudokuManager.service';
 import { Difficulty } from './sudoku.service';
 import { TileRemover } from './tileRemover.service';
+import { LoggerService } from './logger.service';
 
 import { expect } from 'chai';
 
@@ -21,23 +22,31 @@ describe('SudokuManager', () => {
             let numberOfSudokus = 3;
 
             for (let i = 0; i < numberOfSudokus; i++) {
-                let indexEasy = manager.sudokus.findIndex(s => s.difficulty === Difficulty.Easy);
-                let indexHard = manager.sudokus.findIndex(s => s.difficulty === Difficulty.Hard);
+                let indexEasy = manager.getAllSudokus().findIndex(s => s.difficulty === Difficulty.Easy);
+                let indexHard = manager.getAllSudokus().findIndex(s => s.difficulty === Difficulty.Hard);
 
-                if (manager.sudokus[indexEasy].difficulty !== Difficulty.Easy) {
-                    manager.sudokus.splice(indexEasy, 1);
+                if (manager.getAllSudokus()[indexEasy].difficulty !== Difficulty.Easy) {
+                    manager.getAllSudokus().splice(indexEasy, 1);
                     sudokusGenerated = false;
                     break;
                 }
 
-                if (manager.sudokus[indexHard].difficulty !== Difficulty.Hard) {
-                    manager.sudokus.splice(indexEasy, 1);
+                if (manager.getAllSudokus()[indexHard].difficulty !== Difficulty.Hard) {
+                    manager.getAllSudokus().splice(indexEasy, 1);
                     sudokusGenerated = false;
                     break;
                 }
             }
 
             expect(sudokusGenerated).to.be.true;
+            done();
+        });
+    });
+
+    describe('getAllSudokus() ', () => {
+        it('should return an array of sudokus', done => {
+            expect(manager.getAllSudokus()).to.exist;
+            expect(manager.getAllSudokus().length).to.be.greaterThan(0);
             done();
         });
     });
@@ -94,6 +103,28 @@ describe('SudokuManager', () => {
             ];
 
             expect(manager.verifySudoku(invalidTestGrid)).to.be.false;
+            done();
+        });
+    });
+
+    describe('getNumberOfEasySudokus() ', () => {
+        it('should return the number of easy sudokus', done => {
+            expect(manager.getNumberOfEasySudokus()).to.be.greaterThan(0);
+            done();
+        });
+    });
+
+    describe('getNumberOfHardSudokus() ', () => {
+        it('should return the number of hard sudokus', done => {
+            expect(manager.getNumberOfHardSudokus()).to.be.greaterThan(0);
+            done();
+        });
+    });
+
+    describe('getLogger() ', () => {
+        it('should return the logging service that is contained in the sudoku manager', done => {
+            expect(manager.getLogger()).exist;
+            expect(manager.getLogger()).to.be.an.instanceof(LoggerService);
             done();
         });
     });

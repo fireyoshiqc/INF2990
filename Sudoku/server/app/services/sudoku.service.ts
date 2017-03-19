@@ -5,15 +5,13 @@
  * @date 2017/01/20
  */
 
-//À déplacer dans une classe utility?
-
-//-------------------- HELPER FUNCTIONS --------------------------//
+// -------------------- HELPER FUNCTIONS -------------------------- //
 
 export function getRandomInt(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-//-------------------- END HELPER FUNCTIONS -----------------------//
+// -------------------- END HELPER FUNCTIONS ----------------------- //
 
 export enum Difficulty {
     Easy,
@@ -21,9 +19,9 @@ export enum Difficulty {
 }
 
 export class Sudoku {
-    size: number;
-    grid: number[][];
-    difficulty: Difficulty;
+    public size: number;
+    public grid: number[][];
+    public difficulty: Difficulty;
 
     constructor(difficulty?: Difficulty) {
         if (difficulty) {
@@ -46,7 +44,7 @@ export class Sudoku {
         ];
     }
 
-    equals(other: Sudoku): boolean {
+    public equals(other: Sudoku): boolean {
 
         if (this.size !== other.size) {
             return false;
@@ -63,11 +61,11 @@ export class Sudoku {
         return true;
     }
 
-    isValid(): boolean {
+    public isValid(): boolean {
         return this.areRowsColumnsValid() && this.areSquaresValid();
     }
 
-    areRowsColumnsValid(): boolean {
+    public areRowsColumnsValid(): boolean {
         let rowSet = new Set();
         let columnSet = new Set();
 
@@ -80,7 +78,7 @@ export class Sudoku {
                 columnSet.add(columnNumber);
             }
 
-            // check if a number is already in the same row or column, if yes, then the row/column cannot be valid.
+            // Check if a number is already in the same row or column, if yes, then the row/column cannot be valid.
             if (rowSet.size !== this.size || columnSet.size !== this.size) {
                 return false;
             }
@@ -90,13 +88,13 @@ export class Sudoku {
         return true;
     }
 
-    areSquaresValid(): boolean {
+    public areSquaresValid(): boolean {
         const SQUARE_SIZE = 3;
         let squareSet = new Set();
         let x: number, y: number;
 
         for (let square = 0; square < this.size; square++) {
-            // coordinates for upper left corner of each square
+            // Coordinates for upper left corner of each square
             x = SQUARE_SIZE * Math.floor(square / SQUARE_SIZE);
             y = SQUARE_SIZE * (square % SQUARE_SIZE);
 
@@ -110,7 +108,7 @@ export class Sudoku {
             squareSet.add(this.grid[x + 2][y + 1]);
             squareSet.add(this.grid[x + 2][y + 2]);
 
-            // check if a number is already in the same square, if yes, then the square cannot be valid.
+            // Check if a number is already in the same square, if yes, then the square cannot be valid.
             if (squareSet.size !== this.size) {
                 return false;
             }
@@ -119,7 +117,7 @@ export class Sudoku {
         return true;
     }
 
-    countZeros(): number {
+    public countZeros(): number {
         let countZeros = 0;
 
         this.grid.forEach(row => {
@@ -133,7 +131,7 @@ export class Sudoku {
         return countZeros;
     }
 
-    toString(): string {
+    public toString(): string {
         let str = "\n";
 
         this.grid.forEach(row => {

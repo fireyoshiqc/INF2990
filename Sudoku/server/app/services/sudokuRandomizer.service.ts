@@ -8,8 +8,8 @@
 import { Sudoku, getRandomInt } from './sudoku.service';
 
 interface IArrayCoordinates {
-        x: number;
-        y: number;
+    x: number;
+    y: number;
 }
 
 export class SudokuRandomizer {
@@ -27,7 +27,7 @@ export class SudokuRandomizer {
     ];
     private readonly RANDOM_OP_COUNT = 5000;
 
-    static generateRandomValidIndexes(): number[] {
+    public static generateRandomValidIndexes(): number[] {
         const SQUARE_SIZE = 3;
         let randomIndexes: number[] = [0, 0];
         let squareIndex = getRandomInt(0, 2);
@@ -38,15 +38,15 @@ export class SudokuRandomizer {
         return randomIndexes;
     }
 
-    getSudoku(): Sudoku {
+    public getSudoku(): Sudoku {
         return this.sudoku;
     }
 
-    setSudoku(sudoku: Sudoku): void {
+    public setSudoku(sudoku: Sudoku): void {
         this.sudoku = sudoku;
     }
 
-    getRandomizedSudoku(sudoku: Sudoku): Sudoku {
+    public getRandomizedSudoku(sudoku: Sudoku): Sudoku {
         this.sudoku = sudoku;
         let randomInt: number;
         let numberOfOperations = this.EXCHANGE_OPERATIONS_TABLE.length + this.FLIP_OPERATIONS_TABLE.length;
@@ -66,7 +66,7 @@ export class SudokuRandomizer {
         return this.sudoku;
     }
 
-    swap(coordinates1: IArrayCoordinates, coordinates2: IArrayCoordinates) {
+    public swap(coordinates1: IArrayCoordinates, coordinates2: IArrayCoordinates) {
         let temporary: number;
 
         temporary = this.sudoku.grid[coordinates1.x][coordinates1.y];
@@ -74,49 +74,49 @@ export class SudokuRandomizer {
         this.sudoku.grid[coordinates2.x][coordinates2.y] = temporary;
     }
 
-    exchangeColumns(column1: number, column2: number): void {
+    public exchangeColumns(column1: number, column2: number): void {
 
         for (let i = 0; i < this.sudoku.size; i++) {
-            this.swap({x: i, y: column1}, {x: i, y: column2});
+            this.swap({ x: i, y: column1 }, { x: i, y: column2 });
         }
     }
 
-    exchangeRows(row1: number, row2: number): void {
+    public exchangeRows(row1: number, row2: number): void {
 
         for (let i = 0; i < this.sudoku.size; i++) {
-            this.swap({x: row1, y: i}, {x: row2, y: i});
+            this.swap({ x: row1, y: i }, { x: row2, y: i });
         }
     }
 
-    flipHorizontally(): void {
+    public flipHorizontally(): void {
         for (let i = 0; i < this.sudoku.size; i++) {
             this.sudoku.grid[i].reverse();
         }
     }
 
-    flipVertically(): void {
+    public flipVertically(): void {
         for (let i = 0; i < this.sudoku.size / 2; i++) {
             this.exchangeRows(i, this.sudoku.size - i - 1);
         }
     }
 
-    flipAroundBackwardDiagonal(): void {
+    public flipAroundBackwardDiagonal(): void {
 
         for (let i = 0; i < this.sudoku.size; i++) {
-            // start condition is j = i + 1 : Ignore the elements on diagonal
+            // Start condition is j = i + 1 : Ignore the elements on diagonal
             for (let j = i + 1; j < this.sudoku.size; j++) {
-                this.swap({x: i, y: j}, {x: j, y: i});
+                this.swap({ x: i, y: j }, { x: j, y: i });
             }
         }
     }
 
-    flipAroundForwardDiagonal(): void {
+    public flipAroundForwardDiagonal(): void {
         let offset = this.sudoku.size - 1;
 
         for (let i = 0; i < this.sudoku.size; i++) {
-            // end condition is j < this.size - i - 1 : Ignore the elements on diagonal
+            // End condition is j < this.size - i - 1 : Ignore the elements on diagonal
             for (let j = 0; j < this.sudoku.size - i - 1; j++) {
-                this.swap({x: i, y: j}, {x: offset - j, y: offset - i});
+                this.swap({ x: i, y: j }, { x: offset - j, y: offset - i });
             }
         }
     }

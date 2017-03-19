@@ -11,7 +11,7 @@ import { TileRemover } from './tileRemover.service';
 import { LoggerService } from './logger.service';
 
 export class SudokuManager {
-    sudokus: Array<Sudoku>;
+    private sudokus: Array<Sudoku>;
     private sudokuRandomizer: SudokuRandomizer;
     private tileRemover: TileRemover;
     private logger: LoggerService;
@@ -34,13 +34,13 @@ export class SudokuManager {
         }
     }
 
-    getSudoku(difficulty: Difficulty): Sudoku {
+    public getSudoku(difficulty: Difficulty): Sudoku {
         let sudoku;
         let index = this.sudokus.findIndex(s => s.difficulty === difficulty);
 
         if (index === -1) {
             this.generateNewSudoku(difficulty);
-            sudoku = this.sudokus.pop(); // newly generated sudoku is necessarily at the end of the array
+            sudoku = this.sudokus.pop(); // Newly generated sudoku is necessarily at the end of the array
         }
         else {
             sudoku = this.sudokus[index];
@@ -53,7 +53,11 @@ export class SudokuManager {
         return sudoku;
     }
 
-    generateNewSudoku(difficulty: Difficulty): void {
+    public getAllSudokus(): Array<Sudoku> {
+        return this.sudokus;
+    }
+
+    private generateNewSudoku(difficulty: Difficulty): void {
         let sudoku = this.tileRemover.getUniqueSolutionSudoku(
             this.sudokuRandomizer.getRandomizedSudoku(new Sudoku(difficulty)));
         this.sudokus.push(sudoku);
@@ -64,26 +68,26 @@ export class SudokuManager {
         }
     }
 
-    verifySudoku(sudokuGrid: number[][]): boolean {
+    public verifySudoku(sudokuGrid: number[][]): boolean {
         let sudoku = new Sudoku();
         sudoku.grid = sudokuGrid;
 
         return sudoku.isValid();
     }
 
-    getNumberOfEasySudokus(): number {
+    public getNumberOfEasySudokus(): number {
         let amount = 0;
         this.sudokus.forEach(sudoku => { if (sudoku.difficulty === Difficulty.Easy) { amount++; } });
         return amount;
     }
 
-    getNumberOfHardSudokus(): number {
+    public getNumberOfHardSudokus(): number {
         let amount = 0;
         this.sudokus.forEach(sudoku => { if (sudoku.difficulty === Difficulty.Hard) { amount++; } });
         return amount;
     }
 
-    getLogger(): LoggerService {
+    public getLogger(): LoggerService {
         return this.logger;
     }
 }
