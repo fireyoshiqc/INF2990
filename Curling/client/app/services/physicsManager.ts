@@ -51,8 +51,8 @@ export class PhysicsManager {
     }
 
     private calculateCollision(idStone1: number, idStone2: number, normalCollisionPlane: THREE.Vector3) {
-        let speedStonei = this.curlingStones[idStone1].velocity.clone();
-        let speedStonej = this.curlingStones[idStone2].velocity.clone();
+        let speedStonei = this.curlingStones[idStone1].getVelocity().clone();
+        let speedStonej = this.curlingStones[idStone2].getVelocity().clone();
 
         //Use vector calculations to determine the velocity of each stone
         //on the tangent and normal axis to the collision plane.
@@ -60,8 +60,8 @@ export class PhysicsManager {
         let normalj = speedStonej.clone().projectOnVector(normalCollisionPlane);
         let tangenti = speedStonei.clone().sub(normali);
         let tangentj = speedStonej.clone().sub(normalj);
-        this.curlingStones[idStone1].velocity = tangenti.clone().add(normalj);
-        this.curlingStones[idStone2].velocity = tangentj.clone().add(normali);
+        this.curlingStones[idStone1].setVelocity(tangenti.clone().add(normalj));
+        this.curlingStones[idStone2].setVelocity(tangentj.clone().add(normali));
     }
 
     private separateStones(idStone1: number, idStone2: number) {
@@ -91,23 +91,23 @@ export class PhysicsManager {
 
             if (stone.isBeingPlayed()) {
                 //Curve calculation only for the stone that was thrown
-                let curvedVelocity = stone.velocity.clone();
+                let curvedVelocity = stone.getVelocity().clone();
                 let curveFactor = multiplier / 1.5 * this.delta * stone.getSpinOrientation() * this.CURVE_ANGLE;
-                curvedVelocity.x = Math.cos(curveFactor) * stone.velocity.x
-                    + Math.sin(curveFactor) * stone.velocity.z;
-                curvedVelocity.z = -Math.sin(curveFactor) * stone.velocity.x
-                    + Math.cos(curveFactor) * stone.velocity.z;
-                stone.velocity = curvedVelocity.clone();
+                curvedVelocity.x = Math.cos(curveFactor) * stone.getVelocity().x
+                    + Math.sin(curveFactor) * stone.getVelocity().z;
+                curvedVelocity.z = -Math.sin(curveFactor) * stone.getVelocity().x
+                    + Math.cos(curveFactor) * stone.getVelocity().z;
+                stone.setVelocity(curvedVelocity.clone());
             }
 
-            stone.velocity.sub((stone.velocity.clone().normalize()
+            stone.getVelocity().sub((stone.getVelocity().clone().normalize()
                 .multiplyScalar(multiplier * this.FRICTION_MAGNITUDE * this.delta)));
-            stone.position.add((stone.velocity.clone().multiplyScalar(this.delta)));
+            stone.position.add((stone.getVelocity().clone().multiplyScalar(this.delta)));
 
         }
         else {
             //For stone separation
-            stone.position.add(stone.velocity.clone().multiplyScalar(separationCorrection * this.delta));
+            stone.position.add(stone.getVelocity().clone().multiplyScalar(separationCorrection * this.delta));
         }
     }
 
@@ -147,7 +147,8 @@ export class PhysicsManager {
             if (stone.getHasBeenShot()) {
                 let isPastBackLine = stone.position.z < -(Rink.RINK_LENGTH + CurlingStone.MAX_RADIUS);
                 let isPastRinkSides = Math.abs(stone.position.x) > (Rink.RINK_WIDTH / 2 - CurlingStone.MAX_RADIUS);
-                let hasStoppedBeforeGameLine = stone.velocity.length() < 0.01 && (stone.position.z > Rink.HOG_LINE);
+                let hasStoppedBeforeGameLine = stone.getVelocity().length() < 0.01 &&
+                                              (stone.position.z > Rink.HOG_LINE);
 
                 if (isPastBackLine || isPastRinkSides || hasStoppedBeforeGameLine) {
                     outOfBoundsStones.push(stone);
@@ -171,7 +172,7 @@ export class PhysicsManager {
         let allStonesHaveStopped = true;
 
         this.curlingStones.forEach(stone => {
-            if (stone.velocity.length() > 0.01) {
+            if (stone.getVelocity().length() > 0.01) {
                 allStonesHaveStopped = false;
             }
         });

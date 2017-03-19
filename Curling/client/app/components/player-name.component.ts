@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-//Unused variable Input, might be useful later...
 import { Player } from '../classes/player';
 
 @Component({
@@ -14,18 +13,18 @@ import { Player } from '../classes/player';
 })
 
 export class PlayerNameComponent implements OnInit {
-    player: Player;
+    private player: Player;
 
-    constructor() {
-        //We hate empty blocks
-    }
-
-    ngOnInit(): void {
+    public ngOnInit(): void {
         this.player = new Player();
         this.player.name = "";
     }
 
-    validatePlayerName(): boolean {
+    public getPlayer(): Player {
+        return this.player;
+    }
+
+    public validatePlayerName(): boolean {
         if (this.player.name === "") {
             return false;
         }

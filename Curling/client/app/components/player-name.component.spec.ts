@@ -3,11 +3,7 @@ import { PlayerNameComponent } from './player-name.component';
 
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-//import { DebugElement } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-// Un peu plus de recherche est nécessaire pour comprendre cette
-// ligne suivante
-//import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { expect } from 'chai';
 describe('PlayerNameComponent', function() {
@@ -29,17 +25,16 @@ describe('PlayerNameComponent', function() {
         expect(comp).to.not.be.undefined;
     }
     );
-    // A test that checks a synchronous value doesn't need
-    // a 'done' parameter
+    // A test that checks a synchronous value doesn't need a 'done' parameter
     it('player name should not be valid on init', () => {
-        // Since player is bound to an input, changes
-        // need to be  detected. Prior to this, comp.player
-        // is undefined
+        /* Since player is bound to an input, changes
+           need to be  detected. Prior to this, comp.player
+           is undefined */
         fixture.detectChanges();
         // Change the player name to be something
-        comp.player.name = "";
-        // Since we directly modify the component property,
-        // no change detection is needed for a method
+        comp.getPlayer().name = "";
+        /* Since we directly modify the component property,
+           no change detection is needed for a method */
         expect(comp.validatePlayerName()).to.be.false;
     });
 
@@ -47,14 +42,14 @@ describe('PlayerNameComponent', function() {
         const expectedName = "Igor";
 
         fixture.detectChanges();
-        // We know that input is an input element, so it is safe
-        // to cast it as such, instead of a traditionnal HTMLElement
+        /* We know that input is an input element, so it is safe
+           to cast it as such, instead of a traditionnal HTMLElement */
         let name = <HTMLInputElement>fixture.debugElement
             .query(By.css('input')).nativeElement;
         name.value = expectedName;
         name.dispatchEvent(new Event('input'));
         fixture.detectChanges();
-        expect(comp.player.name).to.equal(expectedName);
+        expect(comp.getPlayer().name).to.equal(expectedName);
     });
 
 });

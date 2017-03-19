@@ -12,9 +12,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
     private canPlay: boolean;
-    constructor() { //ANGRY EMPTY BLOCK!
-    }
-    ngOnInit(): void {
+
+    public ngOnInit(): void {
         this.canPlay = true;
     }
 }

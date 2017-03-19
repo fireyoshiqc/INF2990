@@ -13,11 +13,9 @@ export class GlComponent implements AfterViewInit {
     private isDarkTheme = false;
     private dialogRef: MdDialogRef<NameDialogComponent>;
 
-    constructor(public dialog: MdDialog, private gameController: GameController) {
-        // Empty constructor necessary for Angular
-    }
+    constructor(public dialog: MdDialog, private gameController: GameController) { }
 
-    ngAfterViewInit() {
+    public ngAfterViewInit() {
         // Necessary to fix prodmode exclusive error (data binding changed on init)
         setTimeout(() => {
             this.dialogRef = this.dialog.open(NameDialogComponent, {
@@ -29,75 +27,75 @@ export class GlComponent implements AfterViewInit {
 
                 if (result.difficulty === "facile") {
                     this.gameController.setAIDifficulty(AIDifficulty.Easy);
-                    //this.gameController.startAIEasy();
+                    // TODO : this.gameController.startAIEasy();
                 }
                 else if (result.difficulty === "difficile") {
                     this.gameController.setAIDifficulty(AIDifficulty.Hard);
-                    //this.gameController.startAIHard();
+                    // TODO : this.gameController.startAIHard();
                 }
             });
         });
     }
 
-    getGameController(): GameController {
+    public getGameController(): GameController {
         return this.gameController;
     }
 
-    getTheme(): boolean {
+    public getTheme(): boolean {
         return this.isDarkTheme;
     }
 
-    toggleTheme() {
+    public toggleTheme() {
         this.isDarkTheme = !this.isDarkTheme;
     }
 
-    onResize(event: any) {
+    public onResize(event: any) {
         this.gameController.onResize(event);
     }
 
     // Player can switch camera view
     @HostListener('window:keydown', ['$event'])
-    keyboardInput(event: KeyboardEvent) {
+    public keyboardInput(event: KeyboardEvent) {
         if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
             this.switchCamera();
         }
     }
 
     @HostListener('window:mousedown', ['$event'])
-    onMouseDown(event: any) {
+    public onMouseDown(event: any) {
         this.gameController.onMousedown(event);
     }
 
     @HostListener('window:mouseup', ['$event'])
-    onMouseUp(event: any) {
+    public onMouseUp(event: any) {
         this.gameController.onMouseUp(event);
     }
 
     @HostListener('window:mousemove', ['$event'])
-    onMouseMove(event: any) {
+    public onMouseMove(event: any) {
         this.gameController.onMouseMove(event);
     }
 
     @HostListener('window:beforeunload', ['$event'])
-    onBeforeUnload(event: any): any {
+    public onBeforeUnload(event: any): any {
         this.gameController.quitGame();
         return;
     }
 
-    resetGame(): void {
+    public resetGame(): void {
         // TODO
         alert("reset");
     }
 
-    switchCamera(): void {
+    public switchCamera(): void {
         this.gameController.switchCamera();
     }
 
-    nextRound(): void {
+    public nextRound(): void {
         this.gameController.updateScore();
     }
 
-    startThrowStone(event: any): void {
+    public startThrowStone(event: any): void {
         this.gameController.startThrowStone(event);
     }
 }

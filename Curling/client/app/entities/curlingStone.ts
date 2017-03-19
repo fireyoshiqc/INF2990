@@ -22,27 +22,27 @@ export class CurlingStone extends THREE.Group {
     private static playerStoneColor = "#66B2FF";
     private static aiStoneColor = "#FF6666";
 
-    static readonly MAX_RADIUS = 0.145; //* 2; //External radius of the stone
-    private readonly RADIUS = 0.145 / 2; //Radius of stone (torus)
-    private readonly HEIGHT = 0.290 / 2; //Height of stone (base).
-    private readonly SFACES = 25; //Amount of faces for stone rendering.
-    private readonly HRADIUS = 0.025 / 2; //Radius of handle tube.
-    private readonly HFACES = 6; //Amount of faces for handle rendering.
-    private readonly COVER_CONE = 0.0275; //By how much the cover should extend from the inner radius of the stone.
-    private readonly HANDLE_HEIGHT = 0.04; //Height of the handle.
-    private readonly HANDLE_SHIFT = 0.025; //By how much the handle is tilting towards the center.
-    private readonly HANDLE_LENGTH = 0.13; //How long the top part of the handle is.
-    private readonly HANDLE_MELD = 0.005; //By how much the handle sinks into the cover.
+    public static readonly MAX_RADIUS = 0.145; // External radius of the stone
+    private readonly RADIUS = 0.145 / 2; // Radius of stone (torus)
+    private readonly HEIGHT = 0.290 / 2; // Height of stone (base).
+    private readonly SFACES = 25; // Amount of faces for stone rendering.
+    private readonly HRADIUS = 0.025 / 2; // Radius of handle tube.
+    private readonly HFACES = 6; // Amount of faces for handle rendering.
+    private readonly COVER_CONE = 0.0275; // By how much the cover should extend from the inner radius of the stone.
+    private readonly HANDLE_HEIGHT = 0.04; // Height of the handle.
+    private readonly HANDLE_SHIFT = 0.025; // By how much the handle is tilting towards the center.
+    private readonly HANDLE_LENGTH = 0.13; // How long the top part of the handle is.
+    private readonly HANDLE_MELD = 0.005; // By how much the handle sinks into the cover.
 
-    stoneColor: string;
-    velocity: THREE.Vector3;
+    private stoneColor: string;
+    private velocity: THREE.Vector3;
     private beingPlayed = false;
     private hasBeenShot = false;
     private spinOrientation: SpinOrientation;
     private team: Team;
 
-    // must be set before init()
-    static setPlayerStoneColor(aColor: string) {
+    // Must be set before init()
+    public static setPlayerStoneColor(aColor: string) {
         let regex = new RegExp('#[0-9a-fA-F]{6}');
 
         if (regex.test(aColor)) {
@@ -67,22 +67,25 @@ export class CurlingStone extends THREE.Group {
         this.beingPlayed = true;
     }
 
-    getTeam(): Team {
+    public getTeam(): Team {
         return this.team;
     }
 
-    //Function for random stone color
-    getRandomColor(): string {
-        let letters = '0123456789ABCDEF';
-        let color = '#';
-        for (let i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
+    public getColor(): string {
+        return this.stoneColor;
     }
 
-    init(): void {
-        //Stone base
+    public getVelocity(): THREE.Vector3 {
+        return this.velocity;
+    }
+
+    public setVelocity(velocity: THREE.Vector3): void {
+        this.velocity = velocity;
+    }
+
+    public init(): void {
+        /*-------------------- CURLING BASE ------------------------------------------*/
+        // Stone base
         let torusGeometry: THREE.TorusGeometry;
         torusGeometry = new THREE.TorusGeometry(this.RADIUS, this.RADIUS, this.SFACES, this.SFACES);
         let cylinderGeometry: THREE.CylinderGeometry;
@@ -93,7 +96,7 @@ export class CurlingStone extends THREE.Group {
         let cylinder: THREE.Mesh = new THREE.Mesh(cylinderGeometry);
         cylinder.rotation.x = Math.PI / 2;
 
-        //Merge base geometry
+        // Merge base geometry
         let stoneGeometry: THREE.Geometry = new THREE.Geometry();
 
         torus.updateMatrix();
@@ -114,9 +117,9 @@ export class CurlingStone extends THREE.Group {
         });
 
         let stoneMesh: THREE.Mesh = new THREE.Mesh(stoneGeometry, material);
-        //-------------------- END CURLING BASE------------------------------------------ //
+        /*-------------------- END CURLING BASE ------------------------------------------*/
 
-        /*-------------------- CURLING HANDLE------------------------------------------ */
+        /*-------------------- CURLING HANDLE ------------------------------------------*/
         // Material for cover and tube
         let handleMaterial: THREE.MeshStandardMaterial = new THREE.MeshStandardMaterial({
             metalness: 0.5,
@@ -125,32 +128,32 @@ export class CurlingStone extends THREE.Group {
             transparent: true
         });
 
-        //Cover
+        // Cover
         let coverGeometry: THREE.CylinderGeometry = new THREE.CylinderGeometry(
             this.RADIUS, this.RADIUS + this.COVER_CONE, 0.01, this.SFACES);
         let cover: THREE.Mesh = new THREE.Mesh(coverGeometry);
         cover.position.y = this.RADIUS;
 
-        //Curve for handle, 3D Spline curve
+        // Curve for handle, 3D Spline curve
         let curve: THREE.CatmullRomCurve3 = new THREE.CatmullRomCurve3([
             new THREE.Vector3(0, 0, 0),
             new THREE.Vector3(this.HANDLE_SHIFT, this.HANDLE_HEIGHT, 0),
             new THREE.Vector3(this.HANDLE_LENGTH, this.HANDLE_HEIGHT, 0)
         ]);
 
-        //Tube
+        // Tube
         let tubeGeometry: THREE.TubeGeometry = new THREE.TubeGeometry(curve, 10, this.HRADIUS, this.HFACES, false);
         let tube: THREE.Mesh = new THREE.Mesh(tubeGeometry);
         tube.position.y = this.RADIUS - this.HANDLE_MELD;
         tube.position.x = -this.RADIUS;
 
-        //End of tube
+        // End of tube
         let sphereGeometry: THREE.SphereGeometry = new THREE.SphereGeometry(this.HRADIUS, this.HFACES, this.HFACES);
         let sphere: THREE.Mesh = new THREE.Mesh(sphereGeometry);
         sphere.position.y = this.RADIUS + this.HANDLE_HEIGHT - this.HANDLE_MELD;
         sphere.position.x = -this.RADIUS + this.HANDLE_LENGTH;
 
-        //Merge handle geometry
+        // Merge handle geometry
         let handleGeometry: THREE.Geometry = new THREE.Geometry();
 
         cover.updateMatrix();

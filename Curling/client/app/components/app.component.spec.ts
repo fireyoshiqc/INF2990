@@ -3,14 +3,13 @@ import { AppComponent } from './app.component';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-// Un peu plus de recherche est nécessaire pour comprendre cette
-// ligne suivante
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { expect } from 'chai';
 
+// TODO : what is this for?
 class RouterStub {
-    navigateByUrl(url: string) { return url; }
+    public navigateByUrl(url: string) { return url; }
 }
 
 describe('AppComponent', function() {
@@ -33,11 +32,4 @@ describe('AppComponent', function() {
     });
 
     it('should create component', () => expect(comp).to.not.be.undefined);
-
-    // it('should have expected <h1> text', () => {
-    //   fixture.detectChanges();
-    //   const h1 = de.nativeElement;
-    //   expect(h1.innerText).to.match(/cube/i,
-    //     '<h1> should say something about "a cube"');
-    // });
 });

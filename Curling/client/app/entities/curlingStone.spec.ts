@@ -27,7 +27,7 @@ describe('CurlingStone', () => {
         it('should make a CurlingStone object.', done => {
             testStone = new CurlingStone(Team.Player);
 
-            expect(testStone.stoneColor).to.equal("#66B2FF");
+            expect(testStone.getColor()).to.equal("#66B2FF");
             done();
         });
 
@@ -35,7 +35,7 @@ describe('CurlingStone', () => {
             CurlingStone.setPlayerStoneColor("#FF0000");
             testStone = new CurlingStone(Team.Player, null, null);
 
-            expect(testStone.stoneColor).to.equal("#FF0000");
+            expect(testStone.getColor()).to.equal("#FF0000");
             done();
         });
 
@@ -43,8 +43,8 @@ describe('CurlingStone', () => {
             CurlingStone.setPlayerStoneColor("DEADBEEF");
             testStone = new CurlingStone(Team.Player, null, null);
 
-            expect(testStone.stoneColor).to.not.equal("DEADBEEF");
-            expect(testStone.stoneColor).to.equal("#FF0000");
+            expect(testStone.getColor()).to.not.equal("DEADBEEF");
+            expect(testStone.getColor()).to.equal("#FF0000");
             done();
         });
     });

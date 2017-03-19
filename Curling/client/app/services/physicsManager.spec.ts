@@ -50,8 +50,8 @@ describe('PhysicsManager', () => {
 
             //A COLLISION SHOULD HAVE HAPPENED
 
-            expect(testPhysicsManager.getStones()[0].velocity.z).to.be.below(0);
-            expect(testPhysicsManager.getStones()[1].velocity.z).to.be.above(0);
+            expect(testPhysicsManager.getStones()[0].getVelocity().z).to.be.below(0);
+            expect(testPhysicsManager.getStones()[1].getVelocity().z).to.be.above(0);
             done();
         });
     });
@@ -109,7 +109,7 @@ describe('PhysicsManager', () => {
         });
 
         it('should return false when some stones stones are still moving.', done => {
-            testPhysicsManager.getStones()[1].velocity.z = -100;  // Give one stone speed
+            testPhysicsManager.getStones()[1].getVelocity().add(new THREE.Vector3(0, 0, -100));  // Give one stone speed
 
             expect(testPhysicsManager.allStonesHaveStopped()).to.be.false;
             done();

@@ -33,8 +33,8 @@ export class ShootingState implements GameState {
 
             let stone = this.gameController.getCurlingStones()[this.gameController.getCurlingStones().length - 1];
             stone.setHasBeenShot();
-            stone.velocity.add(new THREE.Vector3(this.initialSpeedCounter * Math.sin(angleInRad), 0,
-                -this.initialSpeedCounter * Math.cos(angleInRad)));
+            stone.getVelocity().add(new THREE.Vector3(this.initialSpeedCounter * Math.sin(angleInRad),
+                                    0, -this.initialSpeedCounter * Math.cos(angleInRad)));
             this.initialSpeedCounter = 0;
 
             this.gameController.enterSweepingState();

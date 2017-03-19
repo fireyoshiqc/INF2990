@@ -257,7 +257,7 @@ export class GameRenderer {
         }
 
         // Rotate the active stone
-        if (this.activeStone.velocity.length() > 0.1) {
+        if (this.activeStone.getVelocity().length() > 0.1) {
             this.activeStone.rotateY(this.activeStone.getSpinOrientation() * delta * this.SPIN_SPEED);
         }
 
