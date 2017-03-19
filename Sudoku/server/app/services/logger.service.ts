@@ -19,7 +19,7 @@ export class LoggerService {
             this.logList.remove(this.logList.first());
         }
         let date = new Date();
-        let day = date.getDay() + "/" + date.getMonth() + "/" + date.getFullYear();
+        let day = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
         let time = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
         this.logList.add(day + " -- " + time + " : " + type + " : " + description);
     }
