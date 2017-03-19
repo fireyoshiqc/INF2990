@@ -12,7 +12,7 @@
                             <div *ngIf="element==0">
                                 <input class="inputField" #inputField size="1" maxlength="1" (keydown)="putEntry({keyEvent:$event, inputField:inputField, row:i, column:j})"
                                     (focus)="formatSelectedTableCell(inputField)" (focusout)="unformatSelectedTableCell(inputField)"
-                                    [style.color]="isDarkTheme ? 'limegreen' : 'seagreen'" [disabled]="sudokuService.isValid">
+                                    [style.color]="isDarkTheme ? 'limegreen' : 'seagreen'" [disabled]="sudokuService.isValid" (paste) = "verifyPaste($event, {keyEvent:null, inputField:inputField, row:i, column:j})">
                             </div>
                             <div *ngIf="element!=0">
                                 {{element}}

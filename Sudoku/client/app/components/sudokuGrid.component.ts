@@ -104,13 +104,57 @@ export class SudokuGridComponent implements AfterViewInit {
         this.stopwatchService.toggleVisibility();
     }
 
+    public verifyPaste(event: any, entry: IEntryEvent): void {
+
+        // Pick the field that's receiving the paste
+        let input = event.target;
+
+        // Get what's being pasted from the browser
+        let pastedData: string = event.clipboardData.getData("text/plain");
+        if (pastedData.length === 1 && pastedData.match(/[1-9]{1}/)) {
+
+            input.value = pastedData;
+
+            // Do as if a number key had been pressed, since the data matches the single digit 1-9
+            let entryValidation = this.convertToValidation(entry, pastedData);
+
+            if (!this.inputService.validate(entryValidation)) {
+                this.inputService.putInvalidField(entry.inputField);
+            }
+
+            this.sudokuService.putEntry(entryValidation);
+
+            if (this.sudokuService.isGridFull()) {
+                this.validateSudoku();
+            }
+
+        } else {
+            // Don't let the pasted value appear or do anything if it's not a single digit 1-9
+            event.stopPropagation();
+            event.preventDefault();
+        }
+    }
+
+    private convertToValidation(entry: IEntryEvent, key?: string): IEntryValidation {
+        // Check if it's a key passed by value instead of an event (in case of paste for example)
+        return key === undefined ?
+            {
+                // Parse the keyEvent key value
+                value: Number.parseInt(entry.keyEvent.key),
+                grid: this.sudokuService.inputGrid,
+                row: entry.row, column: entry.column
+            } :
+            {
+                // Just parse the value that's passed as a parameter
+                value: Number.parseInt(key),
+                grid: this.sudokuService.inputGrid,
+                row: entry.row, column: entry.column
+            };
+    }
+
     public putEntry(entry: IEntryEvent) {
 
-        let entryValidation = {
-            value: Number.parseInt(entry.keyEvent.key),
-            grid: this.sudokuService.inputGrid,
-            row: entry.row, column: entry.column
-        };
+        let entryValidation = this.convertToValidation(entry);
 
         // 1- Delete/Backspace entered
         if (this.inputService.isDelete(entry.keyEvent)) {
@@ -164,6 +208,13 @@ export class SudokuGridComponent implements AfterViewInit {
 interface IEntryEvent {
     keyEvent: KeyboardEvent;
     inputField: HTMLInputElement;
+    row: number;
+    column: number;
+}
+
+interface IEntryValidation {
+    value: number;
+    grid: any;
     row: number;
     column: number;
 }
