@@ -39,7 +39,7 @@ export class SudokuService {
     constructor(private http: Http) { }
 
     public getEasySudoku() {
-        this.http.get(this.HOST_NAME + this.SERVER_PORT + '/getSudoku/easy')
+        this.http.get(this.HOST_NAME + this.SERVER_PORT + '/api/getSudoku/easy')
             .toPromise()
             .then(reponse => {
                 this.initialGrid = reponse.json().grid;
@@ -51,7 +51,7 @@ export class SudokuService {
     }
 
     public getHardSudoku() {
-        this.http.get(this.HOST_NAME + this.SERVER_PORT + '/getSudoku/hard')
+        this.http.get(this.HOST_NAME + this.SERVER_PORT + '/api/getSudoku/hard')
             .toPromise()
             .then(reponse => {
                 this.initialGrid = reponse.json().grid;
@@ -63,16 +63,18 @@ export class SudokuService {
     }
 
     public validateSudoku(callback: () => void) {
-        this.http.post(this.HOST_NAME + this.SERVER_PORT + '/validateSudoku', this.inputGrid).toPromise().then(res => {
-            this.isValid = (res.text() === "true");
-            callback(); // Must be called after the Sudoku is validated (to end the timer, for example).
-        })
+        this.http.post(this.HOST_NAME + this.SERVER_PORT + '/api/validateSudoku', this.inputGrid)
+            .toPromise()
+            .then(res => {
+                this.isValid = (res.text() === "true");
+                callback(); // Must be called after the Sudoku is validated (to end the timer, for example).
+            })
             .catch(() => console.log("Could not validate sudoku."));
     }
 
     public addScore(timeTaken: number): Promise<boolean> {
         let postPromise = new Promise((resolve, reject) => {
-            this.http.put(this.HOST_NAME + this.SERVER_PORT + '/addScore',
+            this.http.put(this.HOST_NAME + this.SERVER_PORT + '/api/addScore',
                 { "name": this.playerName, "time": timeTaken, "difficulty": this.difficulty }).toPromise()
                 .then(res => resolve(res.json()))
                 .catch((error) => reject());
@@ -82,7 +84,7 @@ export class SudokuService {
 
     public getHighscores(): Promise<any> {
         let getPromise = new Promise((resolve, reject) => {
-            this.http.get(this.HOST_NAME + this.SERVER_PORT + '/getHighscores').toPromise()
+            this.http.get(this.HOST_NAME + this.SERVER_PORT + '/api/getHighscores').toPromise()
                 .then(res => {
                     // TODO: Everything
                     let highscores = res.json();
@@ -135,7 +137,7 @@ export class SudokuService {
     public quitGame(): void {
         // Send beacon to server to signal name removal before page unload.
         let blob = new Blob([JSON.stringify({ "name": this.playerName })], { type: 'application/json; charset=UTF-8' });
-        navigator.sendBeacon(this.HOST_NAME + this.SERVER_PORT + '/removeName', blob);
+        navigator.sendBeacon(this.HOST_NAME + this.SERVER_PORT + '/api/removeName', blob);
     }
 }
 
