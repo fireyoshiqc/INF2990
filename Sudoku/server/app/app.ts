@@ -118,7 +118,7 @@ export class Application {
         this.app.get('/getSudoku/easy', function (req, res) {
             let easySudoku = self.sudokuManager.getSudoku(Difficulty.Easy);
             let clientIp = req.connection.remoteAddress + ":" + req.connection.remotePort;
-            if (clientIp.substr(0, 7) === "::ffff:") {
+            if (clientIp.includes("ffff")) {
                 clientIp = clientIp.substr(7);
             }
             self.sudokuManager.getLogger()
