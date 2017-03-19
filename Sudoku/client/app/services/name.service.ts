@@ -5,12 +5,14 @@ import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class NameService {
+    private readonly HOST_NAME = "http://" + window.location.hostname;
+    private readonly SERVER_PORT = ":3002";
     constructor(private http: Http) { }
 
     public validateName(name: string): Promise<boolean> {
         let validName = false;
         let postPromise = new Promise((resolve, reject) => {
-            this.http.post('http://localhost:3002/validateName', { "name": name })
+            this.http.post(this.HOST_NAME + this.SERVER_PORT + '/validateName', { "name": name })
                 .toPromise()
                 .then(res => {
                     if (res.text() === "true") {

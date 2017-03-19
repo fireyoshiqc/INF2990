@@ -5,6 +5,9 @@ import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class SudokuService {
+
+    private readonly HOST_NAME = "http://" + window.location.hostname;
+    private readonly SERVER_PORT = ":3002";
     private readonly minIndex = 0;
     private readonly maxIndex = 8;
     public initialGrid = [
@@ -36,7 +39,7 @@ export class SudokuService {
     constructor(private http: Http) { }
 
     public getEasySudoku() {
-        this.http.get('http://localhost:3002/getSudoku/easy')
+        this.http.get(this.HOST_NAME + this.SERVER_PORT + '/getSudoku/easy')
             .toPromise()
             .then(reponse => {
                 this.initialGrid = reponse.json().grid;
@@ -48,7 +51,7 @@ export class SudokuService {
     }
 
     public getHardSudoku() {
-        this.http.get('http://localhost:3002/getSudoku/hard')
+        this.http.get(this.HOST_NAME + this.SERVER_PORT + '/getSudoku/hard')
             .toPromise()
             .then(reponse => {
                 this.initialGrid = reponse.json().grid;
@@ -60,7 +63,7 @@ export class SudokuService {
     }
 
     public validateSudoku(callback: () => void) {
-        this.http.post('http://localhost:3002/validateSudoku', this.inputGrid).toPromise().then(res => {
+        this.http.post(this.HOST_NAME + this.SERVER_PORT + '/validateSudoku', this.inputGrid).toPromise().then(res => {
             this.isValid = (res.text() === "true");
             callback(); // Must be called after the Sudoku is validated (to end the timer, for example).
         })
@@ -69,7 +72,7 @@ export class SudokuService {
 
     public addScore(timeTaken: number): Promise<boolean> {
         let postPromise = new Promise((resolve, reject) => {
-            this.http.put('http://localhost:3002/addScore',
+            this.http.put(this.HOST_NAME + this.SERVER_PORT + '/addScore',
                 { "name": this.playerName, "time": timeTaken, "difficulty": this.difficulty }).toPromise()
                 .then(res => resolve(res.json()))
                 .catch((error) => reject());
@@ -79,7 +82,7 @@ export class SudokuService {
 
     public getHighscores(): Promise<any> {
         let getPromise = new Promise((resolve, reject) => {
-            this.http.get('http://localhost:3002/getHighscores').toPromise()
+            this.http.get(this.HOST_NAME + this.SERVER_PORT + '/getHighscores').toPromise()
                 .then(res => {
                     // TODO: Everything
                     let highscores = res.json();
@@ -132,7 +135,7 @@ export class SudokuService {
     public quitGame(): void {
         // Send beacon to server to signal name removal before page unload.
         let blob = new Blob([JSON.stringify({ "name": this.playerName })], { type: 'application/json; charset=UTF-8' });
-        navigator.sendBeacon('http://localhost:3002/removeName', blob);
+        navigator.sendBeacon(this.HOST_NAME + this.SERVER_PORT + '/removeName', blob);
     }
 }
 
