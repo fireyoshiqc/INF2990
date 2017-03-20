@@ -17,14 +17,14 @@ export class CommandParser {
     private readonly SKIP_TURN_REGEX = /^(!passer)$/;
     private readonly HELP_REGEX = /^(!aide)$/;
 
-    isACommand(msg: string): boolean {
+    public isACommand(msg: string): boolean {
         let trimMsg = msg.trim();
 
         // A command should always start with "!"
         return (trimMsg[0] === '!');
     }
 
-    createCommand(msg: string): Command {
+    public createCommand(msg: string): Command {
         // A command contains a message, a type and a status
         msg = msg.trim();
 
@@ -33,7 +33,7 @@ export class CommandParser {
 
         let commandStatus = this.validateCommand(msg, commandTypeIndex);
 
-        // create specific commands (with supplied parameters) if command is valid
+        // Create specific commands (with supplied parameters) if command is valid
         if (commandStatus === CommandStatus.VALID_COMMAND) {
             if (commandTypeIndex === CommandType.PLACER) {
                 return this.createCommandPlaceWord(msg);
@@ -48,7 +48,7 @@ export class CommandParser {
     private createCommandPlaceWord(msg: string): CommandPlaceWord {
         msg = msg.trim();
 
-        // obtain command arguments with regex
+        // Obtain command arguments with regex
         let placeLetterArgs = msg.match(this.PLACE_LETTER_REGEX);
         let row = placeLetterArgs[2].toLowerCase();
         let column = Number.parseInt(placeLetterArgs[3]);
@@ -61,7 +61,7 @@ export class CommandParser {
     private createCommandChangeLetter(msg: string): CommandChangeLetter {
         msg = msg.trim();
 
-        // obtain command arguments with regex
+        // Obtain command arguments with regex
         let changeLetterArgs = msg.match(this.CHANGE_LETTER_REGEX);
         let letters = changeLetterArgs[2];
 
@@ -84,7 +84,7 @@ export class CommandParser {
             case CommandType.AIDE :
                 validSyntax = this.validateHelpSyntax(msg);
                 break;
-            default : // command was not found
+            default : // Command was not found
                 return CommandStatus.UNDEFINED_COMMAND;
         }
 

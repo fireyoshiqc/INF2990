@@ -10,7 +10,7 @@ import { Command, CommandType, CommandStatus } from '../classes/command';
 export class CommandPlaceWord extends Command {
     private row: number;
     private column: number;
-    private orientation: string; // v: Vertical, h: Horizontal
+    private orientation: string; // Orientations => v: Vertical, h: Horizontal
     private word: string;
 
     constructor(row: string, column: number, orientation: string, word: string) {
@@ -21,19 +21,19 @@ export class CommandPlaceWord extends Command {
         this.word = word;
     }
 
-    getRow(): number {
+    public getRow(): number {
         return this.row;
     }
 
-    getColumn(): number {
+    public getColumn(): number {
         return this.column;
     }
 
-    getOrientation(): string {
+    public getOrientation(): string {
         return this.orientation;
     }
 
-    getWord(): string {
+    public getWord(): string {
         return this.word;
     }
 }

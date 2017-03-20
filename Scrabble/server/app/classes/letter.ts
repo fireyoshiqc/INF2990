@@ -19,15 +19,15 @@ export class Letter {
         this.value = this.getLetterValue();
     }
 
-    getCharacter(): string {
+    public getCharacter(): string {
         return this.character;
     }
 
-    getValue(): number {
+    public getValue(): number {
         return this.value;
     }
 
-    isJokerUsedAsLetter(): boolean {
+    public isJokerUsedAsLetter(): boolean {
         return this.jokerUsedAsLetter;
     }
 

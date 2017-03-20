@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { SocketHandler } from '../modules/socketHandler.module';
 
-export interface Player {
+export interface IPlayer {
     name: string;
     capacity: number;
 }
@@ -10,12 +10,14 @@ export interface Player {
 @Injectable()
 export class PlayerManagerService {
 
-    socket: any;
+    private readonly HOST_NAME = "http://" + window.location.hostname;
+    private readonly SERVER_PORT = ":3000";
+    private socket: any;
     private nameValid: boolean;
     private player = { name: "", capacity: 0 };
 
     constructor(private http: Http) {
-        this.socket = SocketHandler.requestSocket('http://localhost:3000');
+        this.socket = SocketHandler.requestSocket(this.HOST_NAME + this.SERVER_PORT);
 
         this.socket.on('wcNameValidated', (validity: boolean) => {
             this.nameValid = validity;
@@ -50,7 +52,7 @@ export class PlayerManagerService {
         return this.nameValid;
     }
 
-    saveSocket(){
-        SocketHandler.requestSocket('http://localhost:3000');
+    saveSocket() {
+        SocketHandler.requestSocket(this.HOST_NAME + this.SERVER_PORT);
     }
 }

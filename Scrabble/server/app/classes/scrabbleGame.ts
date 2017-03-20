@@ -15,15 +15,12 @@ export class ScrabbleGame {
     private board: BoardTile[][];
     private readonly BOARD_LENGTH = 15;
 
-    // TODO : letterStash
-    // private letterStash: Letter[];
-
     constructor() {
         this.board = [];
         this.loadBoard();
     }
 
-    getBoard(): BoardTile[][] {
+    public getBoard(): BoardTile[][] {
         return this.board;
     }
 
@@ -47,7 +44,7 @@ export class ScrabbleGame {
             }
     }
 
-    findLettersToRemove(command: CommandPlaceWord): string[] {
+    public findLettersToRemove(command: CommandPlaceWord): string[] {
         let word = command.getWord();
         let tile: BoardTile;
         let lettersToRemove = new Array<string>();
@@ -65,7 +62,7 @@ export class ScrabbleGame {
         return lettersToRemove;
     }
 
-    placeWord(command: CommandPlaceWord): void {
+    public placeWord(command: CommandPlaceWord): void {
         let word = command.getWord();
         let tile;
 
@@ -82,8 +79,8 @@ export class ScrabbleGame {
         }
     }
 
-    // the word point is counted before the word is placed
-    countWordPoint(command: CommandPlaceWord): number {
+    // The word point is counted before the word is placed
+    public countWordPoint(command: CommandPlaceWord): number {
         let score = 0;
         let tile;
         let doubleWord = false, tripleWord = false;
@@ -116,12 +113,12 @@ export class ScrabbleGame {
         return score;
     }
 
-    isWordInBounds(command: CommandPlaceWord): boolean {
+    public isWordInBounds(command: CommandPlaceWord): boolean {
         return (((command.getOrientation() === "h") ?
             command.getColumn() : command.getRow()) + command.getWord().length) <= this.BOARD_LENGTH;
     }
 
-    isWordCorrectlyOverlapping(command: CommandPlaceWord): boolean {
+    public isWordCorrectlyOverlapping(command: CommandPlaceWord): boolean {
         let tile;
         let isNewWord = false;
 
@@ -144,7 +141,7 @@ export class ScrabbleGame {
         return isNewWord;
     }
 
-    areAllWordsValid(command: CommandPlaceWord): boolean {
+    public areAllWordsValid(command: CommandPlaceWord): boolean {
         for (let i = 0; i < this.BOARD_LENGTH; i++) {
             for (let j = 0; j < this.BOARD_LENGTH; j++) {
                 let tile = this.board[i][j];

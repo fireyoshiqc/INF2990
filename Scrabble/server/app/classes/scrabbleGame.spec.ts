@@ -64,7 +64,7 @@ describe('ScrabbleGame', () => {
             let l1 = scrabbleGame.findLettersToRemove(c1);
             expect(l1).to.eql(["JOKER", 'a', 'c']);
             scrabbleGame.placeWord(c1);
-            // verify board
+            // Verify board
             expect(scrabbleGame.getBoard()[0][0].getLetter().getCharacter()).to.be.equal("B");
             expect(scrabbleGame.getBoard()[0][0].getLetter().isJokerUsedAsLetter()).to.be.true;
             expect(scrabbleGame.getBoard()[1][0].getLetter().getCharacter()).to.be.equal("A");

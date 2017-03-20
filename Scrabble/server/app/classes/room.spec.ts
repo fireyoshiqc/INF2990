@@ -49,7 +49,7 @@ describe('Room', () => {
             room.addPlayer(player3);
             room.addPlayer(player4);
             expect(room.getRoomInfo().playerList.length).to.be.equal(4);
-            room.addPlayer(player5); // shouldn't do anything
+            room.addPlayer(player5); // Shouldn't do anything
             expect(room.getRoomInfo().playerList.length).to.be.equal(4);
             done();
         });
@@ -72,7 +72,7 @@ describe('Room', () => {
             room.removePlayer("Joueur3");
             room.removePlayer("Joueur4");
             expect(room.getRoomInfo().playerList.length).to.be.equal(0);
-            room.removePlayer("Joueur5"); // shouldn't do anything
+            room.removePlayer("Joueur5"); // Shouldn't do anything
             expect(room.getRoomInfo().playerList.length).to.be.equal(0);
             done();
         });

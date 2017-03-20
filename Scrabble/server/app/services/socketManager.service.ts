@@ -13,10 +13,10 @@ import { PlayerManager } from './playerManager.service';
 import { CommandHandler } from './commandHandler.service';
 
 export class SocketManager {
-    sio: SocketIO.Server;
-    roomManager: RoomManager;
-    playerManager: PlayerManager;
-    commandHandler: CommandHandler;
+    private sio: SocketIO.Server;
+    private roomManager: RoomManager;
+    private playerManager: PlayerManager;
+    private commandHandler: CommandHandler;
 
     constructor(server: http.Server) {
         this.sio = io.listen(server);
@@ -25,12 +25,8 @@ export class SocketManager {
         this.commandHandler = new CommandHandler(this.sio, this.roomManager);
     }
 
-    handleSockets() {
+    public handleSockets() {
         this.sio.on('connection', (socket) => {
-
-            //TODO: Rework this whole thing.
-            // let connectMsg = "User has connected to chat.";
-            // this.sio.emit('user connect', { username: socket.id, submessage: connectMsg });
 
             socket.on('chat message', (msg: string) => {
                 let player = this.playerManager.getPlayerFromSocketID(socket.id);
@@ -40,7 +36,7 @@ export class SocketManager {
                         this.commandHandler.handleCommand(msg, player);
                     }
                     else {
-                        // regular message
+                        // Regular message
                         this.sio.sockets
                             .in(player.getRoomId().toString())
                             .emit('message sent', { username: player.getName(), submessage: msg });

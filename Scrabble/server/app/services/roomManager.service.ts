@@ -17,11 +17,11 @@ export class RoomManager {
         this.currentRoomID = 0;
     }
 
-    getExistingRooms(): Array<Room> {
+    public getExistingRooms(): Array<Room> {
         return this.existingRooms;
     }
 
-    createRoom(roomCapacity: number): Room {
+    public createRoom(roomCapacity: number): Room {
         let room = this.existingRooms.find(r => (!r.isFull() && r.getRoomInfo().capacity === roomCapacity));
 
         if (room === undefined) {
@@ -31,17 +31,17 @@ export class RoomManager {
         return room;
     }
 
-    addRoom(roomCapacity: number): Room {
+    public addRoom(roomCapacity: number): Room {
         let newRoom = new Room(this.currentRoomID++, roomCapacity);
         this.existingRooms.push(newRoom);
         return newRoom;
     }
 
-    findRoom(roomID: number): Room {
+    public findRoom(roomID: number): Room {
         return this.existingRooms.find(r => r.getRoomInfo().roomID === roomID);
     }
 
-    leaveRoom(playerName: string, roomID: number) {
+    public leaveRoom(playerName: string, roomID: number) {
         let room = this.existingRooms.find(r => (r.getRoomInfo().roomID === roomID));
 
         if (room !== undefined) {

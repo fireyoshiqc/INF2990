@@ -23,50 +23,56 @@ export class Player {
         this.lettersRack = [];
     }
 
-    getName(): string {
+    public getName(): string {
         return this.name;
     }
 
-    getSocketId(): string {
+    public getSocketId(): string {
         return this.socketId;
     }
 
-    getRoomId(): number {
+    public getRoomId(): number {
         return this.roomId;
     }
 
-    getPoints(): number {
+    public getPoints(): number {
         return this.points;
     }
 
-    addPoints(points: number): void {
+    public addPoints(points: number): void {
         this.points += points;
     }
 
-    getLettersRack(): string[] {
+    public getLettersRack(): string[] {
         let lettersRackString = new Array<string>();
         this.lettersRack.forEach(letter => lettersRackString.push(letter.getCharacter()));
         return lettersRackString;
     }
 
-    isRackEmpty(): boolean {
+    public isRackEmpty(): boolean {
         return this.lettersRack.length === 0;
     }
 
-    getMaxRackSize(): number {
+    public getMaxRackSize(): number {
         return this.LETTERS_RACK_SIZE;
     }
 
-    addLetter(letter: Letter): void {
+    public addLetter(letter: Letter): void {
         if (this.lettersRack.length < this.LETTERS_RACK_SIZE) {
             this.lettersRack.push(letter);
         }
     }
 
-    // try to remove the letters from the player's rack
-    // return false if a letter could not be removed from the rack
-    removeLetters(letters: string[]): boolean {
-        // save the old rack (deep copy)
+    public addLetters(letters: Array<Letter>): void {
+        if (this.lettersRack.length + letters.length <= this.LETTERS_RACK_SIZE) {
+            this.lettersRack = this.lettersRack.concat(letters);
+        }
+    }
+
+    // Try to remove the letters from the player's rack
+    // Return false if a letter could not be removed from the rack
+    public removeLetters(letters: string[]): boolean {
+        // Save the old rack (deep copy)
         let oldRack = new Array<Letter>();
         this.lettersRack.forEach(letter => oldRack.push(new Letter(letter.getCharacter())));
         let lettersCanBeRemoved = true;

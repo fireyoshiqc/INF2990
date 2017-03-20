@@ -27,7 +27,7 @@ export class BoardTile {
         this.bonusActive = true;
     }
 
-    getTileType(): TileType {
+    public getTileType(): TileType {
         // Pour ne pas compter DoubleWord/TripleWord plus qu'une fois
         if (this.bonusActive === true) {
             return this.tileType;
@@ -35,20 +35,20 @@ export class BoardTile {
         return "Basic";
     }
 
-    getLetter(): Letter {
+    public getLetter(): Letter {
         return this.letter;
     }
 
-    isEmpty(): boolean {
+    public isEmpty(): boolean {
         return this.empty;
     }
 
-    putLetter(letter: Letter): void {
+    public putLetter(letter: Letter): void {
         this.letter = letter;
         this.empty = false;
     }
 
-    countTilePoint(): number {
+    public countTilePoint(): number {
         if (this.empty) {
             return 0;
         }

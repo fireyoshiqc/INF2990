@@ -10,13 +10,15 @@ import { SocketHandler } from '../modules/socketHandler.module';
 })
 
 export class GameComponent implements OnInit {
+    private readonly HOST_NAME = "http://" + window.location.hostname;
+    private readonly SERVER_PORT = ":3000";
     private socket: any;
     private rackActive = false;
     @ViewChild(RackComponent) private rackChild: RackComponent;
     @ViewChild(BoardComponent) private boardChild: BoardComponent;
 
     ngOnInit() {
-        this.socket = SocketHandler.requestSocket('http://localhost:3000');
+        this.socket = SocketHandler.requestSocket(this.HOST_NAME + this.SERVER_PORT);
 
         this.socket.on("wcPlaceWord", (command: CommandPlaceWord) => {
             this.boardChild.placeWord(command);

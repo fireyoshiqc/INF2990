@@ -9,7 +9,7 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { SocketHandler } from './../modules/socketHandler.module';
 
-export interface RoomInfo {
+export interface IRoomInfo {
     roomID: number;
     capacity: number;
     playerList: string[];
@@ -18,14 +18,16 @@ export interface RoomInfo {
 @Injectable()
 export class RoomService {
 
-    socket: SocketIOClient.Socket;
+    private readonly HOST_NAME = "http://" + window.location.hostname;
+    private readonly SERVER_PORT = ":3000";
+    private socket: SocketIOClient.Socket;
     private roomInfo = { roomID: -1, capacity: 0, playerList: new Array<string>() };
-    private roomJoined = false; // prevents wcFindRoom from being called multiple times
+    private roomJoined = false; // Prevents wcFindRoom from being called multiple times
     private playerName: string;
     private missingPlayers = -1;
 
     constructor(private http: Http) {
-        this.socket = SocketHandler.requestSocket('http://localhost:3000');
+        this.socket = SocketHandler.requestSocket(this.HOST_NAME + this.SERVER_PORT);
 
         this.socket.on('wcFindRoom', (roomInfo: any, playerName: string) => {
             if (!this.roomJoined) {
@@ -49,14 +51,14 @@ export class RoomService {
     leaveRoom(): void {
         this.socket.emit('cwLeaveRoom', { roomID: this.roomInfo.roomID, name: this.playerName });
 
-        // reset all room info
+        // Reset all room info
         this.roomJoined = false;
         this.playerName = "";
         this.missingPlayers = -1;
         this.roomInfo = { roomID: -1, capacity: 0, playerList: new Array<string>() };
     }
 
-    getRoomInfo(): RoomInfo {
+    getRoomInfo(): IRoomInfo {
         return this.roomInfo;
     }
 

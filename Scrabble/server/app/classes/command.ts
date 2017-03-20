@@ -13,8 +13,8 @@ export enum CommandType {
 }
 
 export enum CommandStatus {
-    UNDEFINED_COMMAND, // command does not exist (see EXISTING_COMMAND)
-    INVALID_COMMAND_SYNTAX, // command does not have proper syntax
+    UNDEFINED_COMMAND, // Command does not exist (see EXISTING_COMMAND)
+    INVALID_COMMAND_SYNTAX, // Command does not have proper syntax
     VALID_COMMAND
 }
 
@@ -27,11 +27,11 @@ export class Command {
         this.commandStatus = commandStatus;
     }
 
-    getCommandType(): CommandType {
+    public getCommandType(): CommandType {
         return this.commandType;
     }
 
-    getCommandStatus(): CommandStatus {
+    public getCommandStatus(): CommandStatus {
         return this.commandStatus;
     }
 }

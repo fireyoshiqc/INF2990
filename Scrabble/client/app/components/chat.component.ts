@@ -9,6 +9,8 @@ import { Message, MessageFromServer } from '../classes/message';
 })
 
 export class ChatComponent implements OnInit {
+    private readonly HOST_NAME = "http://" + window.location.hostname;
+    private readonly SERVER_PORT = ":3000";
     socket: any;
     msgFromClient: string;
     msgList = new Array<Message>();
@@ -16,7 +18,7 @@ export class ChatComponent implements OnInit {
     attemptingToConnect = false;
 
     ngOnInit() {
-        this.socket = SocketHandler.requestSocket('http://localhost:3000');
+        this.socket = SocketHandler.requestSocket(this.HOST_NAME + this.SERVER_PORT);
         console.log(this.socket);
 
         this.socket.on("connect_error", () => {

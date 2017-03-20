@@ -13,9 +13,9 @@ import { CommandPlaceWord } from '../classes/commandPlaceWord';
 import { CommandExecutionStatus } from './gameMaster.service';
 
 export class CommandHandler {
-    sio: SocketIO.Server;
-    roomManager: RoomManager;
-    commandParser: CommandParser;
+    private sio: SocketIO.Server;
+    private roomManager: RoomManager;
+    private commandParser: CommandParser;
 
     constructor(sio: SocketIO.Server, rmanager: RoomManager) {
         this.sio = sio;
@@ -23,11 +23,11 @@ export class CommandHandler {
         this.commandParser = new CommandParser();
     }
 
-    isACommand(msg: string): boolean {
+    public isACommand(msg: string): boolean {
         return this.commandParser.isACommand(msg);
     }
 
-    handleCommand(msg: string, player: Player): void {
+    public handleCommand(msg: string, player: Player): void {
         let command = this.commandParser.createCommand(msg);
         let commandResponse = "";
         let commandStatus = command.getCommandStatus();
@@ -42,7 +42,7 @@ export class CommandHandler {
 
         if (commandStatus !== CommandStatus.VALID_COMMAND) {
             this.sio.sockets.connected[player.getSocketId()]
-                .emit('command sent', { username: "Scrabble Game", submessage: msg, commandResponse: commandResponse });
+                .emit('command sent', { username: "Scrabble Game", submessage: msg, commandResponse });
         }
     }
 
@@ -71,7 +71,7 @@ export class CommandHandler {
 
         if (executionStatus !== CommandExecutionStatus.SUCCESS) {
             this.sio.sockets.connected[player.getSocketId()]
-                .emit('command sent', { username: "Scrabble Game", submessage: msg, commandResponse: commandResponse });
+                .emit('command sent', { username: "Scrabble Game", submessage: msg, commandResponse });
         }
     }
 
@@ -82,7 +82,7 @@ export class CommandHandler {
                 break;
 
             case CommandType.CHANGER:
-                // TODO : Si vous avez une fonction pour avertir le client d'un changement, faites-le ici
+                this.onChangeLetterSuccessful(player, command);
                 break;
 
             case CommandType.PASSER:
@@ -119,12 +119,18 @@ export class CommandHandler {
             .emit('wcUpdateRack', player.getLettersRack());
     }
 
+    private onChangeLetterSuccessful(player: Player, command: Command): void {
+        // Updates rack (to active player only)
+        this.sio.sockets.connected[player.getSocketId()]
+            .emit('wcUpdateRack', player.getLettersRack());
+    }
+
     private onHelpSuccessful(msg: string, player: Player): void {
         // TODO mettre un message d'aide pertinent
         let helpMessage = "Voici l'aide...";
         // VOIR LES REGEX (ex. pour placer un mot, le mot doit être en 2 à 15 lettres (requis)
         // AUSSI, le mot doit être formé avec des lettres du rack,
-        // mais aussi TENIR compte des lettres qui sont sur le plateau, d'où jusqu'à 15 lettres)
+        // Mais aussi TENIR compte des lettres qui sont sur le plateau, d'où jusqu'à 15 lettres)
 
         this.sio.sockets.connected[player.getSocketId()]
             .emit('command sent', { username: "Scrabble Game", submessage: msg, commandResponse: helpMessage });

@@ -10,18 +10,19 @@ import { CommandPlaceWord } from '../classes/commandPlaceWord';
 import { CommandChangeLetter } from '../classes/commandChangeLetter';
 import { Player } from '../classes/player';
 import { ScrabbleGame } from '../classes/scrabbleGame';
-import { Letter } from '../classes/letter';
+import { LetterStash } from './letterStash.service';
 
 export enum CommandExecutionStatus {
     SUCCESS,
-    ERROR, // command cannot be executed
-    WAIT // a player is trying to play when it's not his turn
+    ERROR, // Command cannot be executed
+    WAIT // A player is trying to play when it's not his turn
 }
 
 export class GameMaster {
     private scrabbleGame: ScrabbleGame;
     private players: Player[];
     private activePlayer: Player;
+    private stash: LetterStash;
     private gameStarted: boolean;
 
     private readonly BINGO_BONUS = 50;
@@ -30,26 +31,27 @@ export class GameMaster {
     constructor(players: Player[]) {
         this.scrabbleGame = new ScrabbleGame();
         this.players = players;
+        this.stash = new LetterStash();
         this.gameStarted = false;
     }
 
-    getScrabbleGame(): ScrabbleGame {
+    public getScrabbleGame(): ScrabbleGame {
         return this.scrabbleGame;
     }
 
-    getPlayers(): Player[] {
+    public getPlayers(): Player[] {
         return this.players;
     }
 
-    getActivePlayer(): Player {
+    public getActivePlayer(): Player {
         return this.activePlayer;
     }
 
-    isGameStarted(): boolean {
+    public isGameStarted(): boolean {
         return this.gameStarted;
     }
 
-    startGame(): void {
+    public startGame(): void {
         if (!this.gameStarted) {
             // Order of players
             this.randomizePlayersOrder();
@@ -59,27 +61,16 @@ export class GameMaster {
 
             // Give seven letters to each player from stash
             // TODO : Randomize letters and pick from stash
-            this.players[0].addLetter(new Letter("JOKER"));
-            this.players[0].addLetter(new Letter("o"));
-            this.players[0].addLetter(new Letter("n"));
-            this.players[0].addLetter(new Letter("j"));
-            this.players[0].addLetter(new Letter("o"));
-            this.players[0].addLetter(new Letter("u"));
-            this.players[0].addLetter(new Letter("r"));
-
-            this.players[1].addLetter(new Letter("b"));
-            this.players[1].addLetter(new Letter("o"));
-            this.players[1].addLetter(new Letter("n"));
-            this.players[1].addLetter(new Letter("n"));
-            this.players[1].addLetter(new Letter("e"));
-            this.players[1].addLetter(new Letter("t"));
-            this.players[1].addLetter(new Letter("s"));
+            for (let player of this.players) {
+                player.addLetters(this.stash.pickLetters(7));
+                console.log(player.getLettersRack());
+            }
 
             this.gameStarted = true;
         }
     }
 
-    randomizePlayersOrder(): void {
+    private randomizePlayersOrder(): void {
         for (let i = 0; i < this.RANDOMIZE_SWAP_COUNT; i++) {
             let playerIndex1 = Math.floor(Math.random() * (this.players.length));
             let playerIndex2 = Math.floor(Math.random() * (this.players.length));
@@ -87,7 +78,7 @@ export class GameMaster {
         }
     }
 
-    swapPlayer(playerIndex1: number, playerIndex2: number): void {
+    public swapPlayer(playerIndex1: number, playerIndex2: number): void {
         let temporaryPlayer: Player;
 
         temporaryPlayer = this.players[playerIndex1];
@@ -95,8 +86,8 @@ export class GameMaster {
         this.players[playerIndex2] = temporaryPlayer;
     }
 
-    handleCommand(command: Command, player: Player): CommandExecutionStatus {
-        // the command !aide is always successful
+    public handleCommand(command: Command, player: Player): CommandExecutionStatus {
+        // The command !aide is always successful
         if (command.getCommandType() === CommandType.AIDE) {
             return CommandExecutionStatus.SUCCESS;
         }
@@ -108,7 +99,7 @@ export class GameMaster {
                 case CommandType.CHANGER:
                     return this.changeLetter(command as CommandChangeLetter);
                 case CommandType.PASSER:
-                    return this.skipTurn();
+                    return this.endTurn();
                 default:
                     return CommandExecutionStatus.ERROR;
             }
@@ -141,10 +132,10 @@ export class GameMaster {
 
                 // 6- Redonner au joueur des lettres
                 // TODO : Prendre les lettres du stash
-                lettersToRemove.forEach(() => this.activePlayer.addLetter(new Letter("a")));
+                this.activePlayer.addLetters(this.stash.pickLetters(lettersToRemove.length));
 
                 // 7- Passer au prochain joueur
-                this.skipTurn();
+                this.endTurn();
 
                 return CommandExecutionStatus.SUCCESS;
             }
@@ -154,11 +145,23 @@ export class GameMaster {
     }
 
     private changeLetter(command: CommandChangeLetter): CommandExecutionStatus {
-        // TODO : À implémenter le changement des lettres
+        const lettersToExchange = command.getLetters().split('');
+
+        // Verify that there are enough letters left in the stash
+        if (this.stash.getAmountLeft() >= lettersToExchange.length){
+
+            // Verifiy that the player has the letters he/she wants to exchange (refer to removeLetters())
+            if (this.activePlayer.removeLetters(lettersToExchange)) {
+                let exchangedLetters = this.stash.exchangeLetters(lettersToExchange);
+                this.activePlayer.addLetters(exchangedLetters);
+                this.endTurn();
+                return CommandExecutionStatus.SUCCESS;
+            }
+        }
         return CommandExecutionStatus.ERROR;
     }
 
-    private skipTurn(): CommandExecutionStatus {
+    private endTurn(): CommandExecutionStatus {
         let playerIndex = this.players.findIndex(p => p.getSocketId() === this.activePlayer.getSocketId());
         this.activePlayer = this.players[(playerIndex + 1) % this.players.length];
         return CommandExecutionStatus.SUCCESS;
@@ -176,12 +179,12 @@ export class GameMaster {
         if (!this.scrabbleGame.isWordCorrectlyOverlapping(command)) {
             return false;
         }
-
+        /*
         // 4- Verify if the newly formed words are valid
         // if (!this.scrabbleGame.areAllWordsValid(command)) {
         //     return false;
         // }
-
+        */
         return true;
     }
 }

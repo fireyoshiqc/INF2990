@@ -8,14 +8,14 @@
 import { Player } from './player';
 import { GameMaster } from '../services/gameMaster.service';
 
-export interface RoomInfo {
+export interface IRoomInfo {
     roomID: number;
     capacity: number;
     playerList: string[];
 }
 
 export class Room {
-    private roomInfo : RoomInfo = { roomID: -1, capacity: 0, playerList: new Array<string>() };
+    private roomInfo : IRoomInfo = { roomID: -1, capacity: 0, playerList: new Array<string>() };
     private players: Player[];
     private gameMaster: GameMaster;
 
@@ -27,26 +27,26 @@ export class Room {
         this.gameMaster = new GameMaster(this.players);
     }
 
-    getRoomInfo(): RoomInfo {
+    public getRoomInfo(): IRoomInfo {
         return this.roomInfo;
     }
 
-    getPlayers(): Player[] {
+    public getPlayers(): Player[] {
         return this.players;
     }
 
-    getGameMaster(): GameMaster {
+    public getGameMaster(): GameMaster {
         return this.gameMaster;
     }
 
-    addPlayer(player : Player): void {
+    public addPlayer(player : Player): void {
         if (!this.isFull()) {
             this.roomInfo.playerList.push(player.getName());
             this.players.push(player);
         }
     }
 
-    removePlayer(playerName : string): void {
+    public removePlayer(playerName : string): void {
         if (this.players.length > 0) {
             let indexPlayerList = this.roomInfo.playerList.indexOf(playerName);
             this.roomInfo.playerList.splice(indexPlayerList, 1);
@@ -59,11 +59,11 @@ export class Room {
         }
     }
 
-    isFull() : boolean {
+    public isFull() : boolean {
         return this.roomInfo.playerList.length >= this.roomInfo.capacity;
     }
 
-    isEmpty() : boolean {
+    public isEmpty() : boolean {
         return this.roomInfo.playerList.length === 0;
     }
 }

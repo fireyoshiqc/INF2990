@@ -15,7 +15,7 @@ export class CommandChangeLetter extends Command {
         this.letters = letters;
     }
 
-    getLetters(): string {
+    public getLetters(): string {
         return this.letters;
     }
 }
