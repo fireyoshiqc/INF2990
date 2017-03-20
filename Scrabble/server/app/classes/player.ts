@@ -77,6 +77,10 @@ export class Player {
         this.lettersRack.forEach(letter => oldRack.push(new Letter(letter.getCharacter())));
         let lettersCanBeRemoved = true;
 
+        letters = letters.map(letter => {
+            return letter === "*" ? "JOKER" : letter;
+        });
+
         letters.forEach(letter => {
             let letterIndex = this.lettersRack.findIndex(l => l.getCharacter() === letter.toUpperCase());
 
