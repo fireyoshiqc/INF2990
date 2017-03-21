@@ -114,7 +114,6 @@ export class HUDComponent {
     }
 
     public removePlayerCurlingStone(): void {
-        this.sliderDisabled = false;
         this.sendThrowStoneEvent(this.selectedSpin);
         this.playerCurlingStones.pop();
     }
@@ -124,6 +123,7 @@ export class HUDComponent {
     }
 
     public removeAICurlingStone(): void {
+        this.sendThrowStoneEvent(this.selectedSpin);
         this.aiCurlingStones.pop();
     }
 }

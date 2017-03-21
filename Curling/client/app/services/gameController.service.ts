@@ -149,14 +149,17 @@ export class GameController {
     public onMouseMove(event: any) {
         this.gameState.onMouseMove(event);
     }
-
+    
     public enterIdleState() {
-        // Déterminer le tour
+        // Generer la pierre
         if (this.isPlayerTurn) {
             this.addStone(Team.Player, new THREE.Vector3(0, 0, 0));
         } else {
             this.addStone(Team.AI, new THREE.Vector3(0, 0, 0));
         }
+
+        // Changer de tour
+        this.isPlayerTurn = !this.isPlayerTurn;
 
         this.gameState = this.idleState;
         this.forceVisible = false;
