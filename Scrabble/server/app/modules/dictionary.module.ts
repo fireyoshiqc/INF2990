@@ -6,7 +6,6 @@
  */
 
 export module Dictionary {
-
     let wordList = require('../../dictionary.js') as string[];
 
     export function isWordValid(word: string): boolean {

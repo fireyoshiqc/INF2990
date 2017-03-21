@@ -142,6 +142,13 @@ export class ScrabbleGame {
     }
 
     public areAllWordsValid(command: CommandPlaceWord): boolean {
+        // TODO : return the list of new words to help point calculation
+
+        /* Temporarily add the word to the current board to verify
+           if all words are valid. */
+        let oldBoard = this.copyBoard(this.board);
+        this.placeWord(command);
+
         for (let i = 0; i < this.BOARD_LENGTH; i++) {
             for (let j = 0; j < this.BOARD_LENGTH; j++) {
                 let tile = this.board[i][j];
@@ -160,6 +167,7 @@ export class ScrabbleGame {
                         }
 
                         if (!Dictionary.isWordValid(word)) {
+                            this.board = oldBoard;
                             return false;
                         }
                     }
@@ -176,12 +184,29 @@ export class ScrabbleGame {
                         }
 
                         if (!Dictionary.isWordValid(word)) {
+                            this.board = oldBoard;
                             return false;
                         }
                     }
                 }
             }
         }
+
+        this.board = oldBoard;
         return true;
+    }
+
+    public copyBoard(board: BoardTile[][]): BoardTile[][] {
+        let copyBoard: BoardTile[][] = [];
+
+        for (let i = 0; i < this.BOARD_LENGTH; i++) {
+            copyBoard[i] = [];
+
+            for (let j = 0; j < this.BOARD_LENGTH; j++) {
+                copyBoard[i][j] = this.board[i][j].copyBoardTile();
+            }
+        }
+
+        return copyBoard;
     }
 }

@@ -116,16 +116,19 @@ export class GameMaster {
             let lettersToRemove = this.scrabbleGame.findLettersToRemove(command);
             // 2- Vérifier s'il est possible d'enlever les lettres manquantes du plateau de jeu du rack du joueur
             if (this.activePlayer.removeLetters(lettersToRemove)) {
+
                 // 3- Placer les lettres sur le plateau de jeu
                 this.scrabbleGame.placeWord(command);
 
                 // 4- Appeler countWordPoint du ScrabbleGame pour compter les points du mot
                 //    REGARDER SI LES LETTRES PLACÉS FORME UN AUTRE MOT ET COMPTER CES POINTS AUSSI
                 let score = this.scrabbleGame.countWordPoint(command);
+
                 // Si le player réussit un "Bingo", on ajout un bonus de 50 points
                 if (this.activePlayer.isRackEmpty() === true) {
                     score += this.BINGO_BONUS;
                 }
+
                 // 5- Update le score du player
                 this.activePlayer.addPoints(score);
                 console.log("Point pour " + this.activePlayer.getName() + " : " + this.activePlayer.getPoints());
@@ -168,23 +171,21 @@ export class GameMaster {
     }
 
     private canPlaceWord(command: CommandPlaceWord): boolean {
-        // 1- Verify if word exists
-
-        // 2- Verify if word can be physically placed on the board
+        // 1- Verify if word can be physically placed on the board
         if (!this.scrabbleGame.isWordInBounds(command)) {
             return false;
         }
 
-        // 3- Verify if word is correctly overlapping other words on the board
+        // 2- Verify if word is correctly overlapping other words on the board
         if (!this.scrabbleGame.isWordCorrectlyOverlapping(command)) {
             return false;
         }
-        /*
-        // 4- Verify if the newly formed words are valid
-        // if (!this.scrabbleGame.areAllWordsValid(command)) {
-        //     return false;
-        // }
-        */
+
+        // 3- Verify if the newly formed words are valid
+        if (!this.scrabbleGame.areAllWordsValid(command)) {
+            return false;
+        }
+
         return true;
     }
 }

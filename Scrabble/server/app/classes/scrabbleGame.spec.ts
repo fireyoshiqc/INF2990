@@ -101,4 +101,51 @@ describe('ScrabbleGame', () => {
             done();
         });
     });
+
+    describe('copyBoard', () => {
+        it('should make a deep copy of the board.', done => {
+            let copyBoard = scrabbleGame.copyBoard(scrabbleGame.getBoard());
+
+            for (let i = 0; i < 15; i++) {
+                for (let j = 0; j < 15; j++) {
+                    expect(copyBoard[i][j].getTileType()).to.be.equal(scrabbleGame.getBoard()[i][j].getTileType());
+                    expect(copyBoard[i][j].getLetter()).to.be.equal(scrabbleGame.getBoard()[i][j].getLetter());
+                    expect(copyBoard[i][j].isEmpty()).to.be.equal(scrabbleGame.getBoard()[i][j].isEmpty());
+                    expect(copyBoard[i][j].isBonusActive()).to.be.equal(scrabbleGame.getBoard()[i][j].isBonusActive());
+                }
+            }
+
+            done();
+        });
+
+        it('should make a deep copy of the board.', done => {
+            let copyBoard = scrabbleGame.copyBoard(scrabbleGame.getBoard());
+            let c1 = new CommandPlaceWord("o", 1, "h", "sac");
+            scrabbleGame.placeWord(c1);
+
+            expect(scrabbleGame.getBoard()[14][0].getLetter().getCharacter()).to.be.equal("S");
+            expect(scrabbleGame.getBoard()[14][0].getLetter().isJokerUsedAsLetter()).to.be.false;
+            expect(scrabbleGame.getBoard()[14][1].getLetter().getCharacter()).to.be.equal("A");
+            expect(scrabbleGame.getBoard()[14][1].getLetter().isJokerUsedAsLetter()).to.be.false;
+            expect(scrabbleGame.getBoard()[14][2].getLetter().getCharacter()).to.be.equal("C");
+
+            expect(copyBoard[14][0].getTileType()).to.be.equal(scrabbleGame.getBoard()[14][0].getTileType());
+            expect(copyBoard[14][0].getLetter()).to.not.be.equal(scrabbleGame.getBoard()[14][0].getLetter());
+            expect(copyBoard[14][0].isEmpty()).to.not.be.equal(scrabbleGame.getBoard()[14][0].isEmpty());
+            expect(copyBoard[14][0].isBonusActive()).to.be.equal(scrabbleGame.getBoard()[14][0].isBonusActive());
+
+            expect(copyBoard[14][1].getTileType()).to.be.equal(scrabbleGame.getBoard()[14][1].getTileType());
+            expect(copyBoard[14][1].getLetter()).to.not.be.equal(scrabbleGame.getBoard()[14][1].getLetter());
+            expect(copyBoard[14][1].isEmpty()).to.not.be.equal(scrabbleGame.getBoard()[14][1].isEmpty());
+            expect(copyBoard[14][1].isBonusActive()).to.be.equal(scrabbleGame.getBoard()[14][1].isBonusActive());
+
+            expect(copyBoard[14][2].getTileType()).to.be.equal(scrabbleGame.getBoard()[14][2].getTileType());
+            expect(copyBoard[14][2].getLetter()).to.not.be.equal(scrabbleGame.getBoard()[14][2].getLetter());
+            expect(copyBoard[14][2].isEmpty()).to.not.be.equal(scrabbleGame.getBoard()[14][2].isEmpty());
+            expect(copyBoard[14][2].isBonusActive()).to.be.equal(scrabbleGame.getBoard()[14][2].isBonusActive());
+
+            done();
+        });
+    });
+
 });

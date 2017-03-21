@@ -75,23 +75,22 @@ export class Player {
         // Save the old rack (deep copy)
         let oldRack = new Array<Letter>();
         this.lettersRack.forEach(letter => oldRack.push(new Letter(letter.getCharacter())));
-        let lettersCanBeRemoved = true;
 
         letters = letters.map(letter => {
             return letter === "*" ? "JOKER" : letter;
         });
 
-        letters.forEach(letter => {
-            let letterIndex = this.lettersRack.findIndex(l => l.getCharacter() === letter.toUpperCase());
+        for (let i = 0; i < letters.length; i++) {
+            let letterIndex = this.lettersRack.findIndex(l => l.getCharacter() === letters[i].toUpperCase());
 
             if (letterIndex > -1) {
                 this.lettersRack.splice(letterIndex, 1);
             } else {
                 this.lettersRack = oldRack;
-                lettersCanBeRemoved = false;
+                return false;
             }
-        });
+        }
 
-        return lettersCanBeRemoved;
+        return true;
     }
 }

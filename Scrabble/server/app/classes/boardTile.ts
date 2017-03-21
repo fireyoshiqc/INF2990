@@ -27,6 +27,15 @@ export class BoardTile {
         this.bonusActive = true;
     }
 
+    public copyBoardTile(): BoardTile {
+        let copyBoardTile = new BoardTile(this.tileType);
+        copyBoardTile.letter = this.letter;
+        copyBoardTile.empty = this.empty;
+        copyBoardTile.bonusActive = this.bonusActive;
+
+        return copyBoardTile;
+    }
+
     public getTileType(): TileType {
         // Pour ne pas compter DoubleWord/TripleWord plus qu'une fois
         if (this.bonusActive === true) {
@@ -41,6 +50,10 @@ export class BoardTile {
 
     public isEmpty(): boolean {
         return this.empty;
+    }
+
+    public isBonusActive(): boolean {
+        return this.bonusActive;
     }
 
     public putLetter(letter: Letter): void {
