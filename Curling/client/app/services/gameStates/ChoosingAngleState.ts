@@ -1,12 +1,12 @@
-import { GameState } from './GameState';
+import { IGameState } from './GameState';
 import { GameController } from '../gameController.service';
 
-export class ChoosingAngleState implements GameState {
+export class ChoosingAngleState implements IGameState {
 
     private gameController: GameController;
-    mouse: THREE.Vector2;
-    waiting: boolean;
-    angle: number;
+    private mouse: THREE.Vector2;
+    private waiting: boolean;
+    private angle: number;
 
     constructor(gameController: GameController) {
         this.gameController = gameController;
@@ -14,18 +14,18 @@ export class ChoosingAngleState implements GameState {
         this.angle = null;
     }
 
-    onMouseDown(event: any): void {
-        //nothing
+    public onMouseDown(event: any): void {
+        // Nothing
     }
 
-    onMouseUp(event: any): void {
+    public onMouseUp(event: any): void {
         if (this.angle !== null) {
             this.gameController.setShootingAngle(this.angle);
             this.gameController.enterShootingState();
         }
     }
 
-    onMouseMove(event: any): void {
+    public onMouseMove(event: any): void {
         if (!this.waiting) {
             this.setMouse(event);
             let angle = this.gameController.getGameRenderer().calculateAngle(this.mouse);
@@ -40,7 +40,7 @@ export class ChoosingAngleState implements GameState {
         }
     }
 
-    setMouse(event: any): void {
+   public setMouse(event: any): void {
         this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
         this.mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
     }

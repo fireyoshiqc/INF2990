@@ -10,20 +10,20 @@ import { CurlingStone } from "./curlingStone";
 
 export class Rink extends THREE.Group {
 
-    //Rink
-    static readonly POS_RINK_Y = -0.145;
-    static readonly RINK_LENGTH = 46;
-    static readonly RINK_WIDTH = 4.4;
+    // Rink
+    public static readonly POS_RINK_Y = -0.145;
+    public static readonly RINK_LENGTH = 46;
+    public static readonly RINK_WIDTH = 4.4;
     private static readonly RINK_HEIGHT = 0.1;
-    static readonly HOG_LINE = -11.28;
+    public static readonly HOG_LINE = -11.28;
 
-    //Rings
+    // Rings
     private static readonly CENTER_RADIUS = 0.15;
     private static readonly INNER_RADIUS = 0.6;
     private static readonly MIDDLE_RADIUS = 1.2;
-    static readonly OUTER_RADIUS = 1.8;
-    static readonly RINGS_OFFSET = 17.37; //By how much the ring set is off from the center of the rink.
-    static readonly RINGS_CENTER = new THREE.Vector3(0, 0, -Rink.RINK_LENGTH / 2 - Rink.RINGS_OFFSET);
+    public static readonly OUTER_RADIUS = 1.8;
+    public static readonly RINGS_OFFSET = 17.37; // By how much the ring set is off from the center of the rink.
+    public static readonly RINGS_CENTER = new THREE.Vector3(0, 0, -Rink.RINK_LENGTH / 2 - Rink.RINGS_OFFSET);
 
     private sweptSpotsBuffer: THREE.Mesh[] = [];
     private sweptBufferIndex = 0;
@@ -197,6 +197,7 @@ export class Rink extends THREE.Group {
 
     public removeSpot(id: number) {
         this.sweptSpotsBuffer[id].position.z = 50;
+        /**
         //TODO: Make the spot fade out. This code works but is buggy with multiple spots at once.
 
         // let x = 0;
@@ -211,6 +212,8 @@ export class Rink extends THREE.Group {
         //         (<THREE.MeshStandardMaterial>self.sweptSpotsBuffer[id].material).roughness = 0.0;
         //     }
         // }, 10);
+         */
+
     }
 
     public getRinkLength(): number {

@@ -39,16 +39,15 @@ describe('PhysicsManager', () => {
             let stone1 = new CurlingStone(Team.AI, new THREE.Vector3(0, 0, 1), new THREE.Vector3(0, 0, 0));
             let stone2 = new CurlingStone(Team.AI, new THREE.Vector3(0, 0, -1), new THREE.Vector3(0, 0, 1));
 
-            //testPhysicsManager = new PhysicsManager();
             testPhysicsManager.getStones().push(stone1);
             testPhysicsManager.getStones().push(stone2);
 
-            //Tests 60 frames at 60 FPS, so 1 second.
+            // Tests 60 frames at 60 FPS, so 1 second.
             for (let i = 0; i < 60; i++) {
                 testPhysicsManager.update(1 / 60);
             }
 
-            //A COLLISION SHOULD HAVE HAPPENED
+            // A COLLISION SHOULD HAVE HAPPENED
 
             expect(testPhysicsManager.getStones()[0].getVelocity().z).to.be.below(0);
             expect(testPhysicsManager.getStones()[1].getVelocity().z).to.be.above(0);

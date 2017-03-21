@@ -1,5 +1,4 @@
 import { PlayerNameComponent } from './player-name.component';
-//import { Player } from '../classes/player';
 
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';

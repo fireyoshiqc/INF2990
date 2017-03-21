@@ -22,19 +22,18 @@ export class GameRenderer {
     private readonly TRANSLATE_OFFSET = 0.5;
     private readonly SPIN_SPEED = 2 * Math.PI / 3;
 
-    container: HTMLElement;
-    scene: THREE.Scene;
-    renderer: THREE.WebGLRenderer;
-    ambientLight: THREE.HemisphereLight;
-    isStarted = false;
-    lightManager: LightManager;
-    physicsManager: PhysicsManager;
-    cameraManager: CameraManager;
-    clock: THREE.Clock;
-    raycaster: THREE.Raycaster;
-    curlingStones: CurlingStone[] = [];
-    curveGeometry: THREE.Geometry;
-    curveObject: THREE.Line;
+    private container: HTMLElement;
+    public scene: THREE.Scene; // TODO: Make a getter and adapt tests.
+    private renderer: THREE.WebGLRenderer;
+    public isStarted = false; // TODO: Make a getter and adapt tests.
+    private lightManager: LightManager;
+    public physicsManager: PhysicsManager; // TODO: Make a getter and adapt tests.
+    private cameraManager: CameraManager;
+    private clock: THREE.Clock;
+    private raycaster: THREE.Raycaster;
+    private curlingStones: CurlingStone[] = [];
+    private curveGeometry: THREE.Geometry;
+    private curveObject: THREE.Line;
 
     private gameController: GameController;
     private totalTranslateOffset = 0;
@@ -42,7 +41,7 @@ export class GameRenderer {
     private rink: Rink;
 
     // TODO : Remove when experimental test is done
-    activeStone: CurlingStone;
+    private activeStone: CurlingStone;
 
     constructor(curlingStones: CurlingStone[], gameController: GameController) {
         this.curlingStones = curlingStones;
@@ -70,7 +69,7 @@ export class GameRenderer {
         }
 
         let containerRect = this.container.getBoundingClientRect();
-        //Adjust width and height to real container size
+        // Adjust width and height to real container size
         this.renderer.setSize(containerRect.width, containerRect.height);
 
         this.lightManager = new LightManager();
@@ -81,8 +80,7 @@ export class GameRenderer {
         skybox = new SkyBox();
         this.addToScene(skybox);
 
-        //TODO: Adjust rink to add play lines (home, throw line, etc.)
-        //TODO: Adjust ring positions on the rink (they're wrong right now)
+        // TODO: Adjust rink to add play lines (home, throw line, etc.)
         this.rink = new Rink(skybox.skyBoxImages);
         this.rink.position.z = -Rink.RINK_LENGTH / 2;
         this.rink.position.y = Rink.POS_RINK_Y;
@@ -110,39 +108,39 @@ export class GameRenderer {
         this.scene.add(this.lightManager.spawnAmbientLight(0xffffff, 0x000077));
         this.addToScene(this.lightManager.spawnSpotlights(-2.2, 0, 0, this.rink));
 
-        //------------------- END LIGHT------------------------------------------//
+        /*------------------ END LIGHT-----------------------------------------*/
 
-        //Start asynchronous render loop.
+        // Start asynchronous render loop.
         this.clock = new THREE.Clock();
         this.isStarted = true;
     }
 
-    addStone(stone: CurlingStone): void {
+    public addStone(stone: CurlingStone): void {
         this.addToScene(stone);
         this.activeStone = stone;
     }
 
-    onResize(event: any) {
+    public onResize(event: any) {
         this.renderer.setSize(event.target.innerWidth, event.target.innerHeight);
         let containerRect = this.container.getBoundingClientRect();
-        //Adjust width and height to real container size
+        // Adjust width and height to real container size
         this.renderer.setSize(containerRect.width, containerRect.height);
 
-        //Adjust camera FOV following aspect ratio
+        // Adjust camera FOV following aspect ratio
         this.cameraManager.onResize(this.container);
     }
 
-    addToScene(obj: THREE.Group | THREE.Mesh): void {
+    public addToScene(obj: THREE.Group | THREE.Mesh): void {
         this.scene.add(obj);
     }
 
-    switchCamera(): void {
+    public switchCamera(): void {
         (this.cameraManager.isUsingPerspectiveCamera()) ?
             this.cameraManager.useOrthographicCamera(this.container) :
             this.cameraManager.usePerspectiveCamera(this.container);
     }
 
-    calculateAngle(mouse: THREE.Vector2): number {
+    public calculateAngle(mouse: THREE.Vector2): number {
         let intersects = this.checkIfMouseOnIce(mouse);
         if (intersects.length > 0) {
             let intersectionPoint = intersects[0].point;
@@ -154,31 +152,31 @@ export class GameRenderer {
         return null;
     }
 
-    checkIfMouseOnIce(mouse: THREE.Vector2): THREE.Intersection[] {
+    public checkIfMouseOnIce(mouse: THREE.Vector2): THREE.Intersection[] {
         this.raycaster.setFromCamera(mouse, this.cameraManager.getCamera());
         let intersects = this.raycaster.intersectObject(this.scene.getObjectByName("rink"), true);
         return intersects;
     }
 
-    getRink(): Rink {
+    public getRink(): Rink {
         return this.rink;
     }
 
-    updateDirectionCurve(angleDifference: number): void {
+    public updateDirectionCurve(angleDifference: number): void {
         this.curveObject.geometry.rotateY(THREE.Math.degToRad(angleDifference));
         // Update end point of the directional line
         this.curveGeometry.vertices[1] = this.getFurthestCollisionPoint();
     }
 
-    showDirectionCurve(): void {
+    public showDirectionCurve(): void {
         this.scene.add(this.curveObject);
     }
 
-    hideDirectionCurve(): void {
+    public hideDirectionCurve(): void {
         this.scene.remove(this.curveObject);
     }
 
-    removeOutOfBoundsStones(outOfBoundsStones: CurlingStone[]) {
+    private removeOutOfBoundsStones(outOfBoundsStones: CurlingStone[]) {
         outOfBoundsStones.forEach(stone => {
             let index = this.curlingStones.indexOf(stone);
             this.curlingStones.splice(index, 1);
@@ -186,7 +184,7 @@ export class GameRenderer {
         });
     }
 
-    highlightStonesWorthPoints() {
+    private highlightStonesWorthPoints() {
         let teamClosestStone = this.curlingStones[0].getTeam();
         let index = 0;
 
@@ -197,7 +195,7 @@ export class GameRenderer {
         }
     }
 
-    removeHighlightFromStones() {
+    public removeHighlightFromStones() {
         this.curlingStones.forEach(stone => {
             stone.highlightOff();
         });
@@ -215,7 +213,6 @@ export class GameRenderer {
             x = -z * Math.tan(this.curveAngle);
         }
 
-        // curlingStones
         let shortestDistance = Rink.RINK_LENGTH;
         this.curlingStones.forEach(curlingStone => {
             let angle = -Math.atan(curlingStone.position.x / curlingStone.position.z);
@@ -231,7 +228,7 @@ export class GameRenderer {
         return new THREE.Vector3(x, 0, z);
     }
 
-    render(): void {
+    public render(): void {
         window.requestAnimationFrame(() => this.render());
 
         let delta = this.clock.getDelta();

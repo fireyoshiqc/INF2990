@@ -13,8 +13,8 @@ export class CameraManager {
     private cameraPerspective: THREE.PerspectiveCamera;
     private cameraOrthographic: THREE.OrthographicCamera;
     private currentCamera: THREE.Camera;
-    private usingPerspectiveCamera = true; // by default, use perspective camera
-    private readonly ORTHO_ZOOM_FACTOR = 75 / 1920; // determined experimentally
+    private usingPerspectiveCamera = true; // By default, use perspective camera
+    private readonly ORTHO_ZOOM_FACTOR = 75 / 1920; // Determined experimentally
     private readonly PERSPECTIVE_OFFSET = 5;
     private readonly PERSPECTIVE_FOV = 45;
     private readonly PERSPECTIVE_NEAR = 1;
@@ -36,7 +36,7 @@ export class CameraManager {
         this.initPerspectiveCamera(containerRect);
         this.initOrthographicCamera(containerRect);
 
-        // by default, use perspective camera
+        // By default, use perspective camera
         this.currentCamera = this.cameraPerspective;
     }
 
@@ -70,41 +70,41 @@ export class CameraManager {
         this.cameraOrthographic.position.z = this.ORTHO_Z_POS;
     }
 
-    isUsingPerspectiveCamera(): boolean {
+    public isUsingPerspectiveCamera(): boolean {
         return this.usingPerspectiveCamera;
     }
 
-    usePerspectiveCamera(container: HTMLElement): void {
+    public usePerspectiveCamera(container: HTMLElement): void {
         this.usingPerspectiveCamera = true;
         this.currentCamera = this.cameraPerspective;
         this.onResize(container);
     }
 
-    useOrthographicCamera(container: HTMLElement): void {
+    public useOrthographicCamera(container: HTMLElement): void {
         this.usingPerspectiveCamera = false;
         this.currentCamera = this.cameraOrthographic;
         this.onResize(container);
     }
 
-    getCamera(): THREE.Camera {
+    public getCamera(): THREE.Camera {
         return this.currentCamera;
     }
 
-    followStone(position: THREE.Vector3): void {
-        // only follow stone when using perspective camera
+    public followStone(position: THREE.Vector3): void {
+        // Only follow stone when using perspective camera
         if (this.usingPerspectiveCamera) {
             this.cameraPerspective.position.z = position.z + this.PERSPECTIVE_OFFSET;
         }
     }
 
-    // when window is resized, change camera aspects
-    onResize(container: HTMLElement) {
+    // When window is resized, change camera aspects
+    public onResize(container: HTMLElement) {
         let containerRect = container.getBoundingClientRect();
 
         if (this.usingPerspectiveCamera) {
             this.cameraPerspective.aspect = (containerRect.width / containerRect.height);
 
-            // update current camera aspect
+            // Update current camera aspect
             this.cameraPerspective.updateProjectionMatrix();
         }
         else {
@@ -114,7 +114,7 @@ export class CameraManager {
             this.cameraOrthographic.top = containerRect.height / zoomFactor;
             this.cameraOrthographic.bottom = containerRect.height / -zoomFactor;
 
-            // update current camera aspect
+            // Update current camera aspect
             this.cameraOrthographic.updateProjectionMatrix();
         }
     }

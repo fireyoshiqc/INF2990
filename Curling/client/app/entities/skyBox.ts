@@ -9,10 +9,10 @@ import { TextureCacher } from "../services/textureCacher";
 
 export class SkyBox extends THREE.Mesh {
     // Textures
-    imageName: string;
-    directions: Array<string>;
-    imageSuffix: string;
-    skyBoxImages: Array<string>;
+    public imageName: string;
+    public directions: Array<string>;
+    public imageSuffix: string;
+    public skyBoxImages: Array<string>;
 
     // The list contains the textures.jpg for the skybox in the same order as the attribute
     constructor(imageName?: string, directions?: Array<string>, imageSuffix?: string) {
@@ -46,15 +46,15 @@ export class SkyBox extends THREE.Mesh {
 
         this.skyBoxImages = skyBoxImages;
 
-        //Add material for the sides of the cube
+        // Add material for the sides of the cube
         this.material = new THREE.MultiMaterial(skyBoxMaterials);
 
-        //Set x scale to be -1 to turn the cube inside out
+        // Set x scale to be -1 to turn the cube inside out
         this.scale.set(-1, 1, 1);
 
     }
 
-    createMaterial(image: string): THREE.MeshBasicMaterial {
+    private createMaterial(image: string): THREE.MeshBasicMaterial {
         let texture = TextureCacher.load(image);
         let material = new THREE.MeshBasicMaterial({ color: 0xFFFFFF, map: texture, overdraw: 0.5 });
         return material;

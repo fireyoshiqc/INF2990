@@ -1,7 +1,7 @@
-import { GameState } from './GameState';
+import { IGameState } from './GameState';
 import { GameController } from '../gameController.service';
 
-export class IdleState implements GameState{
+export class IdleState implements IGameState{
 
     private gameController : GameController;
 
@@ -9,15 +9,15 @@ export class IdleState implements GameState{
         this.gameController = gameController;
     }
 
-    onMouseDown(event: any): void {
-        //Do nothing
+    public onMouseDown(event: any): void {
+        // Do nothing
     }
 
-    onMouseUp(event: any): void {
-         //Do nothing
+    public onMouseUp(event: any): void {
+         // Do nothing
     }
 
-    onMouseMove(event: any): void {
-        //Do nothing
+   public onMouseMove(event: any): void {
+        // Do nothing
     }
 }

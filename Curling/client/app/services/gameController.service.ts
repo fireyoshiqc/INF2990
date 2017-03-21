@@ -10,7 +10,7 @@ import { Injectable } from '@angular/core';
 import { CurlingStone, Team, SpinOrientation } from '../entities/curlingStone';
 import { GameRenderer } from './gameRenderer';
 import { Rink } from '../entities/rink';
-import { GameState } from './gameStates/GameState';
+import { IGameState } from './gameStates/GameState';
 import { ShootingState } from './gameStates/ShootingState';
 import { IdleState } from './gameStates/IdleState';
 import { ChoosingAngleState } from './gameStates/ChoosingAngleState';
@@ -36,7 +36,7 @@ export class GameController {
     private shootingState = new ShootingState(this);
     private choosingAngleState = new ChoosingAngleState(this);
     private sweepingState = new SweepingState(this);
-    private gameState: GameState = this.idleState;
+    private gameState: IGameState = this.idleState;
 
     private forceVisible = false;
     private forceValue = 0;
@@ -55,23 +55,23 @@ export class GameController {
         this.gameRenderer.render();
     }
 
-    getPlayerName(): string {
+    public getPlayerName(): string {
         return this.playerName;
     }
 
-    setPlayerName(name: string): void {
+    public setPlayerName(name: string): void {
         this.playerName = name;
     }
 
-    getAIDDifficulty(): AIDifficulty {
+    public getAIDDifficulty(): AIDifficulty {
         return (this.aiDifficulty === "CPU facile") ? AIDifficulty.Easy : AIDifficulty.Hard;
     }
 
-    setAIDifficulty(difficulty: AIDifficulty): void {
+    public setAIDifficulty(difficulty: AIDifficulty): void {
         this.aiDifficulty = (difficulty === AIDifficulty.Easy) ? "CPU facile" : "CPU difficile";
     }
 
-    addStone(team: Team, position: THREE.Vector3) {
+    public addStone(team: Team, position: THREE.Vector3) {
         let stone = new CurlingStone(team, new THREE.Vector3(0, 0, 0), position);
         stone.init();
 
@@ -79,57 +79,57 @@ export class GameController {
         this.gameRenderer.addStone(stone);
     }
 
-    getCurlingStones(): CurlingStone[] {
+    public getCurlingStones(): CurlingStone[] {
         return this.curlingStones;
     }
 
-    getGameRenderer(): GameRenderer {
+    public getGameRenderer(): GameRenderer {
         return this.gameRenderer;
     }
 
-    getPlayerScore(): number {
+    public getPlayerScore(): number {
         return this.playerScore;
     }
 
-    getAiScore(): number {
+    public getAiScore(): number {
         return this.aiScore;
     }
 
-    isForceVisible(): boolean {
+    public isForceVisible(): boolean {
         return this.forceVisible;
     }
 
-    getForceValue(): number {
+    public getForceValue(): number {
         return this.forceValue;
     }
 
-    setForceValue(newForceValue: number): void {
+    public setForceValue(newForceValue: number): void {
         this.forceValue = newForceValue;
     }
 
-    onResize(event: any): void {
+    public onResize(event: any): void {
         this.gameRenderer.onResize(event);
     }
 
-    switchCamera(): void {
+    public switchCamera(): void {
         this.gameRenderer.switchCamera();
     }
 
-    updateScore(): void {
+    public updateScore(): void {
         let teamClosestStone = this.curlingStones[0].getTeam();
         let index = 0;
         let score = 0;
 
-        // add points to the closest team for each stone that is inside of the rings
-        // and closer to the closest stone from the opposing team (in respect to the curling rules)
+        // Add points to the closest team for each stone that is inside of the rings
+        // And closer to the closest stone from the opposing team (in respect to the curling rules)
         while (this.curlingStones.length > index &&
-               this.curlingStones[index].getTeam() === teamClosestStone &&
-               this.curlingStones[index].position.distanceTo(Rink.RINGS_CENTER) < Rink.OUTER_RADIUS) {
+            this.curlingStones[index].getTeam() === teamClosestStone &&
+            this.curlingStones[index].position.distanceTo(Rink.RINGS_CENTER) < Rink.OUTER_RADIUS) {
             score++;
             index++;
         }
 
-        // update score of closest team
+        // Update score of closest team
         if (teamClosestStone === Team.Player) {
             this.playerScore += score;
         } else {
@@ -137,47 +137,47 @@ export class GameController {
         }
     }
 
-    onMousedown(event: any) {
+    public onMousedown(event: any) {
         this.gameState.onMouseDown(event);
     }
 
-    onMouseUp(event: any) {
+    public onMouseUp(event: any) {
         this.gameState.onMouseUp(event);
     }
 
-    onMouseMove(event: any) {
+    public onMouseMove(event: any) {
         this.gameState.onMouseMove(event);
     }
 
-    enterChoosingAngleState() {
+    public enterChoosingAngleState() {
         document.body.style.cursor = "none";
         this.gameRenderer.updateDirectionCurve(0);
         this.gameRenderer.showDirectionCurve();
         this.gameState = this.choosingAngleState;
     }
 
-    enterShootingState() {
+    public enterShootingState() {
         this.forceVisible = true;
         this.gameState = this.shootingState;
     }
 
-    enterSweepingState() {
+    public enterSweepingState() {
         document.body.style.cursor = "default";
         this.gameRenderer.removeHighlightFromStones();
         this.gameRenderer.hideDirectionCurve();
         this.gameState = this.sweepingState;
     }
 
-    isInSweepingState() {
+    public isInSweepingState() {
         return this.gameState === this.sweepingState;
     }
 
-    enterIdleState() {
+    public enterIdleState() {
         this.gameState = this.idleState;
         this.forceVisible = false;
     }
 
-    startThrowStone(event: any): void {
+    public startThrowStone(event: any): void {
         if (this.gameState === this.idleState) {
             if (this.isPlayerTurn) {
                 this.addStone(Team.Player, new THREE.Vector3(0, 0, 0));
@@ -195,27 +195,27 @@ export class GameController {
         }
     }
 
-    setShootingAngle(angle: number) {
+    public setShootingAngle(angle: number) {
         this.shootingAngle = angle;
     }
 
-    getShootingAngle(): number {
+    public getShootingAngle(): number {
         return this.shootingAngle;
     }
 
-    getCurrentState(): GameState {
+    public getCurrentState(): IGameState {
         return this.gameState;
     }
 
-    quitGame(): void {
-        //Send beacon to server to signal name removal before page unload.
-        let blob = new Blob([JSON.stringify({"name": this.playerName})], {type: 'application/json; charset=UTF-8'});
+    public quitGame(): void {
+        // Send beacon to server to signal name removal before page unload.
+        let blob = new Blob([JSON.stringify({ "name": this.playerName })], { type: 'application/json; charset=UTF-8' });
         navigator.sendBeacon('http://localhost:3002/removeName', blob);
     }
 
     /******************** TEST HELPER *******************/
 
-    setStonesForScoringTests(): void {
+    public setStonesForScoringTests(): void {
         this.addStone(Team.Player,
             new THREE.Vector3(Rink.RINGS_CENTER.x, Rink.RINGS_CENTER.y, Rink.RINGS_CENTER.z + 3));
         this.addStone(Team.Player,
@@ -233,7 +233,7 @@ export class GameController {
         this.addStone(Team.AI, Rink.RINGS_CENTER);
     }
 
-    resetStones(): void {
+    public resetStones(): void {
         this.curlingStones = [];
     }
 

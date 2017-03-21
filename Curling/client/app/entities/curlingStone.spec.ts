@@ -27,7 +27,7 @@ describe('CurlingStone', () => {
         it('should make a CurlingStone object.', done => {
             testStone = new CurlingStone(Team.Player);
 
-            expect(testStone.getColor()).to.equal("#66B2FF");
+            expect(testStone.getColor()).to.equal("#488957");
             done();
         });
 

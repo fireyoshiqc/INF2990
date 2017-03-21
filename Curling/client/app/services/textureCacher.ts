@@ -18,7 +18,7 @@ export module TextureCacher {
         return texCache[path];
     }
 
-    //Used for tests
+    // Used for tests
     export function getTexture(path: string): THREE.Texture {
         return texCache[path];
     }

@@ -1,26 +1,24 @@
 import { Component, OnInit } from '@angular/core';
-import { Player } from '../classes/player';
 
 @Component({
     selector: 'player-name',
     template: `
-    <div *ngIf="player">
+    <div *ngIf="getPlayer()">
       <label>name: </label>
-      <input [(ngModel)]="player.name" placeholder="name"/>
+      <input [(ngModel)]="getPlayer().name" placeholder="name"/>
       <button md-button color="primary" type="button" (click)="validatePlayerName()">Valider</button>
     </div>
   `
 })
 
 export class PlayerNameComponent implements OnInit {
-    private player: Player;
+    private player: IPlayer;
 
     public ngOnInit(): void {
-        this.player = new Player();
-        this.player.name = "";
+        this.player = { name: "", score: 0 };
     }
 
-    public getPlayer(): Player {
+    public getPlayer(): IPlayer {
         return this.player;
     }
 
@@ -30,4 +28,9 @@ export class PlayerNameComponent implements OnInit {
         }
         return true;
     }
+}
+
+export interface IPlayer {
+    name: string;
+    score: number;
 }
