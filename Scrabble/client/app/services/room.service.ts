@@ -44,11 +44,11 @@ export class RoomService {
         });
     }
 
-    startGame(roomID: number): void {
+    public startGame(roomID: number): void {
         this.socket.emit('cwStartGame', roomID);
     }
 
-    leaveRoom(): void {
+    public leaveRoom(): void {
         this.socket.emit('cwLeaveRoom', { roomID: this.roomInfo.roomID, name: this.playerName });
 
         // Reset all room info
@@ -58,15 +58,15 @@ export class RoomService {
         this.roomInfo = { roomID: -1, capacity: 0, playerList: new Array<string>() };
     }
 
-    getRoomInfo(): IRoomInfo {
+    public getRoomInfo(): IRoomInfo {
         return this.roomInfo;
     }
 
-    getPlayerName(): string {
+    public getPlayerName(): string {
         return this.playerName;
     }
 
-    getMissingPlayers(): number {
+    public getMissingPlayers(): number {
         return this.roomInfo.capacity > 0 ? this.roomInfo.capacity - this.roomInfo.playerList.length : -1;
     }
 

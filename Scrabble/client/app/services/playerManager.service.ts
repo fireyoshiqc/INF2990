@@ -17,42 +17,42 @@ export class PlayerManagerService {
     private player = { name: "", capacity: 0 };
 
     constructor(private http: Http) {
-        this.socket = SocketHandler.requestSocket(this.HOST_NAME + this.SERVER_PORT);
+        this.socket = this.saveSocket();
 
         this.socket.on('wcNameValidated', (validity: boolean) => {
             this.nameValid = validity;
         });
     }
 
-    validateName(name: string) {
+    public validateName(name: string) {
         this.socket.emit('cwValidateName', name);
     }
 
-    addPlayer() {
+    public addPlayer() {
         this.socket.emit('cwAddPlayer', this.player);
     }
 
-    getName(): string {
+    public getName(): string {
         return this.player.name;
     }
 
-    setName(name: string) {
+    public setName(name: string) {
         this.player.name = name;
     }
 
-    setCapacity(capacity: number) {
+    public setCapacity(capacity: number) {
         this.player.capacity = capacity;
     }
 
-    getCapacity(): number {
+    public getCapacity(): number {
         return this.player.capacity;
     }
 
-    isNameValid(): boolean {
+    public isNameValid(): boolean {
         return this.nameValid;
     }
 
-    saveSocket() {
-        SocketHandler.requestSocket(this.HOST_NAME + this.SERVER_PORT);
+    private saveSocket(): any {
+        return SocketHandler.requestSocket(this.HOST_NAME + this.SERVER_PORT);
     }
 }

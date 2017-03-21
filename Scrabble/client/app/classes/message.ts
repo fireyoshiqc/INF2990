@@ -5,7 +5,7 @@
  * @date 2017/03/11
  */
 
-export interface MessageFromServer {
+export interface IMessageFromServer {
     username: string;
     submessage: string;
     commandResponse?: string;
@@ -17,7 +17,7 @@ export class Message {
     private commandResponse = "";
     private isCommand = false;
 
-    constructor(message: MessageFromServer, isCommand = false) {
+    constructor(message: IMessageFromServer, isCommand = false) {
         this.username = message.username;
         this.submessage = message.submessage;
 
@@ -28,19 +28,19 @@ export class Message {
         this.isCommand = isCommand;
     }
 
-    getUsername(): string {
+    public getUsername(): string {
         return this.username;
     }
 
-    getSubmessage(): string {
+    public getSubmessage(): string {
         return this.submessage;
     }
 
-    getCommandResponse(): string {
+    public getCommandResponse(): string {
         return this.commandResponse;
     }
 
-    getIsCommand(): boolean {
+    public getIsCommand(): boolean {
         return this.isCommand;
     }
 }

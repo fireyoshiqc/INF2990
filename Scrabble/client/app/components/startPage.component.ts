@@ -16,14 +16,14 @@ import { MdDialog, MdDialogRef } from '@angular/material';
 })
 export class StartPageComponent {
 
-    capacity: number;
-    playerName: string;
+    private capacity: number;
+    private playerName: string;
 
     constructor(public dialog: MdDialog, private playerManagerService: PlayerManagerService) {
         this.playerManagerService = playerManagerService;
     }
 
-    onJoin() {
+    public onJoin() {
         if (this.playerManagerService.isNameValid()) {
             if (this.capacity > 1) {
                 this.playerManagerService.setName(this.playerName);
@@ -43,7 +43,7 @@ export class StartPageComponent {
         }
     }
 
-    validateName() {
+    public validateName() {
         this.playerManagerService.validateName(this.playerName);
     }
 }

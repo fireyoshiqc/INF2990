@@ -16,23 +16,23 @@ export class Letter {
         this.texture = "../../assets/textures/letters/" + this.letter + ".png";
     }
 
-    getCharacter(): string {
+    public getCharacter(): string {
         return this.letter;
     }
 
-    getTexture(): string {
+    public getTexture(): string {
         return this.texture;
     }
 
-    setTexture(texture: string): void {
+    public setTexture(texture: string): void {
         this.texture = texture;
     }
 
-    isSelected(): boolean {
+    public isSelected(): boolean {
         return this.selected;
     }
 
-    toggleSelect(): void {
+    public toggleSelect(): void {
         this.selected = !this.selected;
     }
 

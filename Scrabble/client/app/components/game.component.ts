@@ -1,6 +1,6 @@
 import { Component, HostListener, ViewChild, OnInit } from '@angular/core';
 import { RackComponent } from './rack.component';
-import { BoardComponent, CommandPlaceWord } from './board.component';
+import { BoardComponent, ICommandPlaceWord } from './board.component';
 import { InfoComponent, ITurnInfo } from './info.component';
 import { SocketHandler } from '../modules/socketHandler.module';
 
@@ -19,10 +19,10 @@ export class GameComponent implements OnInit {
     @ViewChild(BoardComponent) private boardChild: BoardComponent;
     @ViewChild(InfoComponent) private infoChild: InfoComponent;
 
-    ngOnInit() {
+    public ngOnInit() {
         this.socket = SocketHandler.requestSocket(this.HOST_NAME + this.SERVER_PORT);
 
-        this.socket.on("wcPlaceWord", (command: CommandPlaceWord) => {
+        this.socket.on("wcPlaceWord", (command: ICommandPlaceWord) => {
             this.boardChild.placeWord(command);
         });
 
@@ -36,7 +36,7 @@ export class GameComponent implements OnInit {
     }
 
     @HostListener('window:keydown', ['$event'])
-    keyboardInput(event: KeyboardEvent) {
+    public keyboardInput(event: KeyboardEvent) {
         console.log(event.key);
         if (event.key === "Tab") {
             this.rackActive = !this.rackActive;
@@ -44,7 +44,7 @@ export class GameComponent implements OnInit {
             if (this.rackActive) {
                 this.rackChild.keyboardInput(event);
             } else {
-                // this.chatChild.keyboardInput(event);
+                // A changer: this.chatChild.keyboardInput(event);
             }
         }
     }

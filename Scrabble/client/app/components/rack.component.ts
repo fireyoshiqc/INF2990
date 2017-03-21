@@ -21,11 +21,11 @@ export class RackComponent {
         this.rackManager = rackManager;
     }
 
-    keyboardInput(event: KeyboardEvent) {
+    public keyboardInput(event: KeyboardEvent) {
         this.rackManager.handleInput(event);
     }
 
-    updateRack(letters: string[]) {
+    public updateRack(letters: string[]) {
         this.rackManager.updateRack(letters);
     }
 }

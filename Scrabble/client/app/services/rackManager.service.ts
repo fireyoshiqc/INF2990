@@ -11,7 +11,7 @@ import { Letter } from '../classes/letter';
 @Injectable()
 export class RackManager {
 
-    static readonly RACK_LENGTH = 7;
+    public static readonly RACK_LENGTH = 7;
     private rack: Letter[];
     private selectedIndex: number;
 
@@ -27,7 +27,7 @@ export class RackManager {
         this.selectedIndex = null;
     }
 
-    handleInput(event: KeyboardEvent): void {
+   public handleInput(event: KeyboardEvent): void {
         if (this.isArrowKey(event) && this.selectedIndex !== null) {
             let nextIndex = ((this.selectedIndex + ((event.key === "ArrowLeft") ? -1 : 1))
                 + RackManager.RACK_LENGTH) % RackManager.RACK_LENGTH;
@@ -63,11 +63,11 @@ export class RackManager {
         }
     }
 
-    getRackLetters(): Letter[] {
+    public getRackLetters(): Letter[] {
         return this.rack;
     }
 
-    updateRack(letters: string[]): void {
+    public updateRack(letters: string[]): void {
         let newRack = new Array<Letter>();
         letters.forEach(letter => {
             newRack.push(new Letter(letter));

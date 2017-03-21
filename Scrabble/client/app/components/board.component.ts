@@ -10,7 +10,7 @@ import { BoardTile, TileType } from '../classes/boardTile';
 import { Http } from '@angular/http';
 import { Letter } from '../classes/letter';
 
-export interface CommandPlaceWord {
+export interface ICommandPlaceWord {
     row: number;
     column: number;
     orientation: string;
@@ -39,11 +39,11 @@ export class BoardComponent implements OnInit {
         }
     }
 
-    ngOnInit() {
+    public ngOnInit() {
         this.loadBoard();
     }
 
-    getBoard(): BoardTile[][] {
+    public getBoard(): BoardTile[][] {
         return this.board;
     }
 
@@ -61,7 +61,7 @@ export class BoardComponent implements OnInit {
             });
     }
 
-     placeWord(command: CommandPlaceWord): void {
+    public placeWord(command: ICommandPlaceWord): void {
         let word = command.word;
 
          for (let i = 0; i < word.length; i++) {

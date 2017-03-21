@@ -41,19 +41,19 @@ export class WaitingRoomComponent {
 
     // Player has pressed quit or esc to quit the room
     @HostListener('window:keydown', ['$event'])
-    keyboardInput(event: KeyboardEvent) {
+    public keyboardInput(event: KeyboardEvent) {
         if (event.key === "Escape") {
             this.leaveWaitingRoom();
         }
     }
 
-    leaveWaitingRoom() {
+    public leaveWaitingRoom() {
         clearInterval(this.timer);
         this.roomService.leaveRoom();
         this.dialogRef.close();
     }
 
-    startIfFull() {
+    public startIfFull() {
         if (this.missingPlayers === 0) {
             clearInterval(this.timer);
             setTimeout(() => {

@@ -24,19 +24,19 @@ export class BoardTile {
         this.texture = "../../assets/textures/board/" + this.tileType + ".png";
     }
 
-    getTileType(): TileType {
+    public getTileType(): TileType {
         return this.tileType;
     }
 
-    getTexture(): string {
+    public getTexture(): string {
         return this.texture;
     }
 
-    setTexture(texture: string) {
+    public setTexture(texture: string) {
         this.texture = texture;
     }
 
-    putLetter(letter: Letter): void {
+    public putLetter(letter: Letter): void {
         this.texture = letter.getTexture();
     }
 }
