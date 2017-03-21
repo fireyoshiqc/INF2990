@@ -11,6 +11,7 @@ import { CommandChangeLetter } from '../classes/commandChangeLetter';
 import { Player } from '../classes/player';
 import { ScrabbleGame } from '../classes/scrabbleGame';
 import { LetterStash } from './letterStash.service';
+import { StopwatchService } from './stopwatch.service';
 
 export enum CommandExecutionStatus {
     SUCCESS,
@@ -24,6 +25,7 @@ export class GameMaster {
     private activePlayer: Player;
     private stash: LetterStash;
     private gameStarted: boolean;
+    private stopwatch: StopwatchService;
 
     private readonly BINGO_BONUS = 50;
     private readonly RANDOMIZE_SWAP_COUNT = 20;
@@ -33,6 +35,7 @@ export class GameMaster {
         this.players = players;
         this.stash = new LetterStash();
         this.gameStarted = false;
+        this.stopwatch = new StopwatchService();
     }
 
     public getScrabbleGame(): ScrabbleGame {
@@ -65,6 +68,10 @@ export class GameMaster {
                 player.addLetters(this.stash.pickLetters(7));
                 console.log(player.getLettersRack());
             }
+
+            // Start the timer
+            this.stopwatch.start();
+            this.checkTurnOver();
 
             this.gameStarted = true;
         }
@@ -151,7 +158,7 @@ export class GameMaster {
         const lettersToExchange = command.getLetters().split('');
 
         // Verify that there are enough letters left in the stash
-        if (this.stash.getAmountLeft() >= lettersToExchange.length){
+        if (this.stash.getAmountLeft() >= lettersToExchange.length) {
 
             // Verifiy that the player has the letters he/she wants to exchange (refer to removeLetters())
             if (this.activePlayer.removeLetters(lettersToExchange)) {
@@ -164,9 +171,21 @@ export class GameMaster {
         return CommandExecutionStatus.ERROR;
     }
 
+    private checkTurnOver() {
+        setInterval(() => {
+            if (this.stopwatch.isTurnOver()) {
+                this.endTurn();
+            }
+        }, 1000);
+    }
+
     private endTurn(): CommandExecutionStatus {
         let playerIndex = this.players.findIndex(p => p.getSocketId() === this.activePlayer.getSocketId());
         this.activePlayer = this.players[(playerIndex + 1) % this.players.length];
+
+        // Reset the timer
+        this.stopwatch.restart();
+
         return CommandExecutionStatus.SUCCESS;
     }
 
