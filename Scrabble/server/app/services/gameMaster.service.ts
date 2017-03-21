@@ -19,6 +19,12 @@ export enum CommandExecutionStatus {
     WAIT // A player is trying to play when it's not his turn
 }
 
+export interface ITurnInfo {
+    minutes: number;
+    seconds: number;
+    activePlayerName: string;
+}
+
 export class GameMaster {
     private scrabbleGame: ScrabbleGame;
     private players: Player[];
@@ -26,6 +32,8 @@ export class GameMaster {
     private stash: LetterStash;
     private gameStarted: boolean;
     private stopwatch: StopwatchService;
+
+    private turnInfo = { minutes: 0, seconds: 0, activePlayerName: "" };
 
     private readonly BINGO_BONUS = 50;
     private readonly RANDOMIZE_SWAP_COUNT = 20;
@@ -54,6 +62,10 @@ export class GameMaster {
         return this.gameStarted;
     }
 
+    public getTurnInfo(): ITurnInfo {
+        return this.turnInfo;
+    }
+
     public startGame(): void {
         if (!this.gameStarted) {
             // Order of players
@@ -61,6 +73,7 @@ export class GameMaster {
 
             // Active player
             this.activePlayer = this.players[0];
+            this.turnInfo.activePlayerName = this.activePlayer.getName();
 
             // Give seven letters to each player from stash
             // TODO : Randomize letters and pick from stash
@@ -71,6 +84,8 @@ export class GameMaster {
 
             // Start the timer
             this.stopwatch.start();
+            this.turnInfo.minutes = this.stopwatch.getMinutesLeft();
+            this.turnInfo.seconds = this.stopwatch.getSecondsLeft();
             this.checkTurnOver();
 
             this.gameStarted = true;
@@ -141,7 +156,6 @@ export class GameMaster {
                 console.log("Point pour " + this.activePlayer.getName() + " : " + this.activePlayer.getPoints());
 
                 // 6- Redonner au joueur des lettres
-                // TODO : Prendre les lettres du stash
                 this.activePlayer.addLetters(this.stash.pickLetters(lettersToRemove.length));
 
                 // 7- Passer au prochain joueur
@@ -176,6 +190,12 @@ export class GameMaster {
             if (this.stopwatch.isTurnOver()) {
                 this.endTurn();
             }
+
+            // Update turnInfo
+            this.turnInfo.activePlayerName = this.activePlayer.getName();
+            this.turnInfo.minutes = this.stopwatch.getMinutesLeft();
+            this.turnInfo.seconds = this.stopwatch.getSecondsLeft();
+
         }, 1000);
     }
 

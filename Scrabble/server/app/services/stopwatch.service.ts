@@ -21,8 +21,8 @@ export class StopwatchService {
         this.totalSeconds = 0;
     }
 
-    public getMinutes(): number { return this.minutes; }
-    public getSeconds(): number { return this.seconds; }
+    public getMinutesLeft(): number { return Math.floor((this.MAX_TURN_LENGTH_SEC - this.getTotalTimeSeconds()) / 60); }
+    public getSecondsLeft(): number { return (this.MAX_TURN_LENGTH_SEC - this.getTotalTimeSeconds()) % 60; }
     public getTotalTimeSeconds(): number { return 60 * this.minutes + this.seconds; }
 
     public start(): void {

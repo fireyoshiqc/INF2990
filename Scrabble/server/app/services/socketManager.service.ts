@@ -89,6 +89,9 @@ export class SocketManager {
                 for (let room of this.roomManager.getExistingRooms()) {
                     let id = room.getRoomInfo().roomID as number;
                     this.sio.sockets.in(id.toString()).emit('wcRefresh', room.getRoomInfo());
+                    if (room.getGameMaster().isGameStarted() === true) {
+                        this.sio.sockets.in(id.toString()).emit('wcUpdateTurnInfo', room.getGameMaster().getTurnInfo());
+                    }
                 }
             }, 1000);
 

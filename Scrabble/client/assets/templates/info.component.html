@@ -2,13 +2,19 @@
 
     <div class="flex-item" fxFlex="20%" fxFlex.xs="20%">
         <div class="flex-container" fxLayout="column" fxLayout.xs="row" fxLayoutAlign="center center" fxLayoutAlign.xs="center center">
-        
-            <div class="flex-item" fxFlex="50%" fxFlex.xs="50%">
+
+            <div class="flex-item" fxFlex="33%" fxFlex.xs="33%">
                 <p>RESERVE</p>
             </div>
 
-            <div class="flex-item" fxFlex="50%" fxFlex.xs="50%">
-                <p>MINUTERIE</p>
+            <div class="flex-item" fxFlex="33%" fxFlex.xs="33%">
+                <p><b>Joueur Actif</b> </p>
+                <p>{{this.activePlayerName}}</p>
+            </div>
+
+            <div class="flex-item" fxFlex="33%" fxFlex.xs="33%">
+                <p><b>Temps Restant</b></p> 
+                <p>{{this.minutes}} : {{this.seconds}}</p>
             </div>
 
         </div>
@@ -16,7 +22,7 @@
 
     <div class="flex-item" fxFlex="20%" fxFlex.xs="20%">
         <div class="flex-container" fxLayout="column" fxLayout.xs="row" fxLayoutAlign="center center" fxLayoutAlign.xs="center center">
-        
+
             <div class="flex-item" fxFlex="25%" fxFlex.xs="25%">
                 <p>JOUEUR 1</p>
             </div>
@@ -35,7 +41,7 @@
 
     <div class="flex-item" fxFlex="20%" fxFlex.xs="20%">
         <div class="flex-container" fxLayout="column" fxLayout.xs="row" fxLayoutAlign="center center" fxLayoutAlign.xs="center center">
-        
+
             <div class="flex-item" fxFlex="25%" fxFlex.xs="25%">
                 <p>JOUEUR 2</p>
             </div>
@@ -54,7 +60,7 @@
 
     <div class="flex-item" fxFlex="20%" fxFlex.xs="20%">
         <div class="flex-container" fxLayout="column" fxLayout.xs="row" fxLayoutAlign="center center" fxLayoutAlign.xs="center center">
-        
+
             <div class="flex-item" fxFlex="25%" fxFlex.xs="25%">
                 <p>JOUEUR 3</p>
             </div>
@@ -73,7 +79,7 @@
 
     <div class="flex-item" fxFlex="20%" fxFlex.xs="20%">
         <div class="flex-container" fxLayout="column" fxLayout.xs="row" fxLayoutAlign="center center" fxLayoutAlign.xs="center center">
-        
+
             <div class="flex-item" fxFlex="25%" fxFlex.xs="25%">
                 <p>JOUEUR 4</p>
             </div>

@@ -1,6 +1,7 @@
 import { Component, HostListener, ViewChild, OnInit } from '@angular/core';
 import { RackComponent } from './rack.component';
 import { BoardComponent, CommandPlaceWord } from './board.component';
+import { InfoComponent, ITurnInfo } from './info.component';
 import { SocketHandler } from '../modules/socketHandler.module';
 
 @Component({
@@ -16,6 +17,7 @@ export class GameComponent implements OnInit {
     private rackActive = false;
     @ViewChild(RackComponent) private rackChild: RackComponent;
     @ViewChild(BoardComponent) private boardChild: BoardComponent;
+    @ViewChild(InfoComponent) private infoChild: InfoComponent;
 
     ngOnInit() {
         this.socket = SocketHandler.requestSocket(this.HOST_NAME + this.SERVER_PORT);
@@ -26,6 +28,10 @@ export class GameComponent implements OnInit {
 
         this.socket.on("wcUpdateRack", (letters: string[]) => {
             this.rackChild.updateRack(letters);
+        });
+
+        this.socket.on("wcUpdateTurnInfo", (turnInfo: ITurnInfo) => {
+            this.infoChild.updateTurnInfo(turnInfo);
         });
     }
 
