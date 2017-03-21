@@ -35,7 +35,7 @@ export class GlComponent implements AfterViewInit {
                 }
 
                 // Spin orientation is counter-clockwise by default (false)
-                this.gameController.startThrowStone("false");
+                this.gameController.enterIdleState();
             });
         });
     }

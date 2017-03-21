@@ -38,6 +38,7 @@ export class GameController {
     private sweepingState = new SweepingState(this);
     private gameState: IGameState = this.idleState;
 
+    private sliderDisabled = false;
     private forceVisible = false;
     private forceValue = 0;
 
@@ -149,6 +150,34 @@ export class GameController {
         this.gameState.onMouseMove(event);
     }
 
+    public enterIdleState() {
+        // Déterminer le tour
+        if (this.isPlayerTurn) {
+            this.addStone(Team.Player, new THREE.Vector3(0, 0, 0));
+        } else {
+            this.addStone(Team.AI, new THREE.Vector3(0, 0, 0));
+        }
+
+        this.gameState = this.idleState;
+        this.forceVisible = false;
+        this.forceValue = 0;
+        this.sliderDisabled = false;
+    }
+
+    public startThrowStone(event: any): void {
+        if (this.gameState === this.idleState) {
+            this.sliderDisabled = true; // Empecher la modification du spin
+
+            if (event === "true") { // Clockwise Spin
+                this.curlingStones[this.curlingStones.length - 1].setSpinOrientation(SpinOrientation.CLOCKWISE);
+            } else {
+                this.curlingStones[this.curlingStones.length - 1].setSpinOrientation(SpinOrientation.COUNTER_CLOCKWISE);
+            }
+
+            this.enterChoosingAngleState();
+        }
+    }
+
     public enterChoosingAngleState() {
         document.body.style.cursor = "none";
         this.gameRenderer.updateDirectionCurve(0);
@@ -170,29 +199,6 @@ export class GameController {
 
     public isInSweepingState() {
         return this.gameState === this.sweepingState;
-    }
-
-    public enterIdleState() {
-        this.gameState = this.idleState;
-        this.forceVisible = false;
-    }
-
-    public startThrowStone(event: any): void {
-        if (this.gameState === this.idleState) {
-            if (this.isPlayerTurn) {
-                this.addStone(Team.Player, new THREE.Vector3(0, 0, 0));
-            } else {
-                this.addStone(Team.AI, new THREE.Vector3(0, 0, 0));
-            }
-
-            if (event === "true") { // Clockwise Spin
-                this.curlingStones[this.curlingStones.length - 1].setSpinOrientation(SpinOrientation.CLOCKWISE);
-            } else {
-                this.curlingStones[this.curlingStones.length - 1].setSpinOrientation(SpinOrientation.COUNTER_CLOCKWISE);
-            }
-
-            this.enterChoosingAngleState();
-        }
     }
 
     public setShootingAngle(angle: number) {

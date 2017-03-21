@@ -119,8 +119,10 @@ describe('GameController', () => {
 
         describe('startThrowStone()', () => {
             it('should switch gameController to choosingAngleState with clockwise spin', done => {
+                gameController.enterIdleState();
                 gameController.startThrowStone("true");
-                expect(gameController.getCurlingStones()[0].getSpinOrientation()).to.be.equal(-1);
+                let index = gameController.getCurlingStones().length - 1;
+                expect(gameController.getCurlingStones()[index].getSpinOrientation()).to.be.equal(-1);
                 expect(gameController.getCurrentState()).to.be.instanceOf(ChoosingAngleState);
                 done();
             });
@@ -128,7 +130,8 @@ describe('GameController', () => {
             it('should switch gameController to choosingAngleState with counterClockwise spin', done => {
                 gameController.enterIdleState();
                 gameController.startThrowStone("false");
-                expect(gameController.getCurlingStones()[1].getSpinOrientation()).to.be.equal(1);
+                let index = gameController.getCurlingStones().length - 1;
+                expect(gameController.getCurlingStones()[index].getSpinOrientation()).to.be.equal(1);
                 expect(gameController.getCurrentState()).to.be.instanceOf(ChoosingAngleState);
                 done();
             });

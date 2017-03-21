@@ -16,9 +16,8 @@ export class HUDComponent {
     private isDarkTheme = false;
     private playerCurlingStones = new Array<number>(8); // Indicates the number of available curling stones for player
     private aiCurlingStones = new Array<number>(8); // Indicates the number of available curling stones for ai
-    private selectedSpin = false;
+    private selectedSpin = false; // False : spin counterclockwise, true : spin clockwise
     private rounds = [false, false, false]; // Indicates which rounds have been completed (true)
-    private sliderDisabled = false; // False : spin counterclockwise, true : spin clockwiser
 
     // Data modified in gameControler.service.ts
     @Input() private playerName: string;
@@ -27,6 +26,7 @@ export class HUDComponent {
     @Input() private aiScore = 0;
     @Input() private forceVisible = false;
     @Input() private forceValue = 0;
+    @Input() private sliderDisabled = false;
 
     @Output()
     private switchCameraEvent: EventEmitter<string> = new EventEmitter();
@@ -37,7 +37,7 @@ export class HUDComponent {
 
     @HostListener('window:keydown', ['$event'])
     public keyboardInput(event: KeyboardEvent) {
-        if (!this.sliderDisabled) {
+        if (this.sliderDisabled === false) {
 
             if (event.key === "a") {
                 this.selectedSpin = false; // Spin antihoraire
@@ -114,7 +114,7 @@ export class HUDComponent {
     }
 
     public removePlayerCurlingStone(): void {
-        this.sliderDisabled = true;
+        this.sliderDisabled = false;
         this.sendThrowStoneEvent(this.selectedSpin);
         this.playerCurlingStones.pop();
     }
