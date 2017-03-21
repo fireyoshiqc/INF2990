@@ -20,7 +20,7 @@ export class GameRenderer {
     private readonly DASH_SIZE = 0.1;
     private readonly GAP_SIZE = 0.1;
     private readonly TRANSLATE_OFFSET = 0.5;
-    private readonly SPIN_SPEED = 2 * Math.PI / 3;
+    private readonly SPIN_MULTIPLIER = 2;
 
     private container: HTMLElement;
     public scene: THREE.Scene; // TODO: Make a getter and adapt tests.
@@ -255,7 +255,8 @@ export class GameRenderer {
 
         // Rotate the active stone
         if (this.activeStone !== undefined && this.activeStone.getVelocity().length() > 0.1) {
-            this.activeStone.rotateY(this.activeStone.getSpinOrientation() * delta * this.SPIN_SPEED);
+            this.activeStone.rotateY(this.activeStone.getSpinOrientation() * delta *
+                this.activeStone.getVelocity().length() / this.SPIN_MULTIPLIER);
         }
 
         // Render scene using camera that is following the stone

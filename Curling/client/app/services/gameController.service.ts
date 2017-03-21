@@ -185,6 +185,7 @@ export class GameController {
         document.body.style.cursor = "none";
         this.gameRenderer.updateDirectionCurve(0);
         this.gameRenderer.showDirectionCurve();
+        this.forceVisible = false;
         this.gameState = this.choosingAngleState;
     }
 
