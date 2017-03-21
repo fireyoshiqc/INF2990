@@ -170,7 +170,7 @@ export class CurlingStone extends THREE.Group {
         this.add(handleMesh);
     }
 
-    fadeOut(): void {
+    public fadeOut(): void {
         let x = 0;
         let stone = this;
 
@@ -184,7 +184,7 @@ export class CurlingStone extends THREE.Group {
         }, 10);
     }
 
-    highlightOn(): void {
+    public highlightOn(): void {
         let outlineMaterial = new THREE.MeshBasicMaterial({color: 0x00ff00, side: THREE.BackSide});
 
         // Highlight stone
@@ -202,7 +202,7 @@ export class CurlingStone extends THREE.Group {
         handleMesh.add(outlineHandleMesh);
     }
 
-    highlightOff(): void {
+    public highlightOff(): void {
         // Remove stone highlight
         let stoneMesh = <THREE.Mesh>this.children[0];
         let outlineStoneMesh = stoneMesh.children[0];
@@ -214,23 +214,23 @@ export class CurlingStone extends THREE.Group {
         handleMesh.remove(outlineHandleMesh);
     }
 
-    isBeingPlayed(): boolean {
+    public isBeingPlayed(): boolean {
         return this.beingPlayed;
     }
 
-    getHasBeenShot(): boolean {
+    public getHasBeenShot(): boolean {
         return this.hasBeenShot;
     }
 
-    setHasBeenShot() {
+    public setHasBeenShot() {
         this.hasBeenShot = true;
     }
 
-    setSpinOrientation(orientation: SpinOrientation): void {
+    public setSpinOrientation(orientation: SpinOrientation): void {
         this.spinOrientation = orientation;
     }
 
-    getSpinOrientation(): SpinOrientation {
+    public getSpinOrientation(): SpinOrientation {
         return this.spinOrientation;
     }
 }

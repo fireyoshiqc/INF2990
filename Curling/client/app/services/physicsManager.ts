@@ -7,29 +7,28 @@ export class PhysicsManager {
 
     // Everything is in meters, meters per second, and m/s²
     // TODO use weight directly instead of mass?
-    readonly GRAVITY_N_PER_KG = 9.81;
-    readonly COEFFICIENT_OF_FRICTION = 0.0168;
-    readonly FRICTION_MAGNITUDE = this.GRAVITY_N_PER_KG * this.COEFFICIENT_OF_FRICTION;
-    readonly CURVE_ANGLE = Math.PI / 300;
+    private readonly GRAVITY_N_PER_KG = 9.81;
+    private readonly COEFFICIENT_OF_FRICTION = 0.0168;
+    private readonly FRICTION_MAGNITUDE = this.GRAVITY_N_PER_KG * this.COEFFICIENT_OF_FRICTION;
+    private readonly CURVE_ANGLE = Math.PI / 300;
     private curlingStones: CurlingStone[] = [];
-    private sweptSpots: SweptSpot[] = [];
-    private decayedSpots: SweptSpot[] = [];
+    private sweptSpots: ISweptSpot[] = [];
+    private decayedSpots: ISweptSpot[] = [];
     private delta: number;
 
     constructor(curlingStones: CurlingStone[]) {
-        //TODO: Make constructor related calls (create Curling stones?)
         this.curlingStones = curlingStones;
     }
 
-    clearStones() {
+    public clearStones() {
         this.curlingStones.splice(0, this.curlingStones.length);
     }
 
-    getStones(): Array<CurlingStone> {
+    public getStones(): Array<CurlingStone> {
         return this.curlingStones;
     }
 
-    update(delta: number): void {
+    public update(delta: number): void {
         this.delta = delta;
 
         // Collision
@@ -54,8 +53,8 @@ export class PhysicsManager {
         let speedStonei = this.curlingStones[idStone1].getVelocity().clone();
         let speedStonej = this.curlingStones[idStone2].getVelocity().clone();
 
-        //Use vector calculations to determine the velocity of each stone
-        //on the tangent and normal axis to the collision plane.
+        // Use vector calculations to determine the velocity of each stone
+        // On the tangent and normal axis to the collision plane.
         let normali = speedStonei.clone().projectOnVector(normalCollisionPlane);
         let normalj = speedStonej.clone().projectOnVector(normalCollisionPlane);
         let tangenti = speedStonei.clone().sub(normali);
@@ -90,7 +89,7 @@ export class PhysicsManager {
             this.checkforSweptSpots(stone) ? multiplier = 0.2 : multiplier = 1.5;
 
             if (stone.isBeingPlayed()) {
-                //Curve calculation only for the stone that was thrown
+                // Curve calculation only for the stone that was thrown
                 let curvedVelocity = stone.getVelocity().clone();
                 let curveFactor = multiplier / 1.5 * this.delta * stone.getSpinOrientation() * this.CURVE_ANGLE;
                 curvedVelocity.x = Math.cos(curveFactor) * stone.getVelocity().x
@@ -106,14 +105,14 @@ export class PhysicsManager {
 
         }
         else {
-            //For stone separation
+            // For stone separation
             stone.position.add(stone.getVelocity().clone().multiplyScalar(separationCorrection * this.delta));
         }
     }
 
     private checkforSweptSpots(stone: CurlingStone): boolean {
         let isOverSpot = false;
-        let spotsToDecay: SweptSpot[] = [];
+        let spotsToDecay: ISweptSpot[] = [];
         for (let spot of this.sweptSpots) {
             spot.ttl -= this.delta;
             if (stone.position.clone().sub(spot.position).length() <= CurlingStone.MAX_RADIUS) {
@@ -128,19 +127,19 @@ export class PhysicsManager {
         return isOverSpot;
     }
 
-    addSweptSpot(spot: THREE.Vector3, id: number): void {
-        this.sweptSpots.push({ position: spot, ttl: 1.0, id: id });
+    public addSweptSpot(spot: THREE.Vector3, id: number): void {
+        this.sweptSpots.push({ position: spot, ttl: 1.0, id });
     }
 
-    getDecayedSpots(): SweptSpot[] {
+    public getDecayedSpots(): ISweptSpot[] {
         return this.decayedSpots;
     }
 
-    cleanDecayedSpots(): void {
+    public cleanDecayedSpots(): void {
         this.decayedSpots = [];
     }
 
-    getOutOfBoundsStones(): CurlingStone[] {
+    public getOutOfBoundsStones(): CurlingStone[] {
         let outOfBoundsStones: CurlingStone[] = [];
 
         this.curlingStones.forEach(stone => {
@@ -159,16 +158,16 @@ export class PhysicsManager {
         return outOfBoundsStones;
     }
 
-    sortStonesByDistance(): void {
+    public sortStonesByDistance(): void {
         if (this.curlingStones.length > 1) {
             this.curlingStones.sort((stone1: CurlingStone, stone2: CurlingStone) => {
-                // if stone1 is closer to the rings than stone 2, it should be placed before stone 2
+                // If stone1 is closer to the rings than stone 2, it should be placed before stone 2
                 return stone1.position.distanceTo(Rink.RINGS_CENTER) - stone2.position.distanceTo(Rink.RINGS_CENTER);
             });
         }
     }
 
-    allStonesHaveStopped(): boolean {
+    public allStonesHaveStopped(): boolean {
         let allStonesHaveStopped = true;
 
         this.curlingStones.forEach(stone => {
@@ -182,7 +181,7 @@ export class PhysicsManager {
 
     /******************** TEST HELPER *******************/
 
-    setStonesForOutOfBoundsTests(): void {
+    public setStonesForOutOfBoundsTests(): void {
         this.clearStones();
 
         let speed = new THREE.Vector3(0, 0, 0);
@@ -206,7 +205,7 @@ export class PhysicsManager {
     /***************** END TEST HELPER *******************/
 }
 
-interface SweptSpot {
+interface ISweptSpot {
     position: THREE.Vector3;
     ttl: number;
     id: number;

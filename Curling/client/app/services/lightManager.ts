@@ -10,7 +10,7 @@ import { Rink } from '../entities/rink';
 
 export class LightManager {
 
-    spawnSpotlights(posX: number, posY: number, posZ: number, rink: Rink): SpotlightArray {
+    public spawnSpotlights(posX: number, posY: number, posZ: number, rink: Rink): SpotlightArray {
         let spotlights = new SpotlightArray(Rink.RINK_WIDTH, Rink.RINK_LENGTH, 2, 6);
         spotlights.position.x = posX;
         spotlights.position.y = posY;
@@ -18,7 +18,7 @@ export class LightManager {
         return spotlights;
     }
 
-    spawnAmbientLight(sunColor: number, shadowColor: number): THREE.HemisphereLight {
+    public spawnAmbientLight(sunColor: number, shadowColor: number): THREE.HemisphereLight {
         let ambilight = new THREE.HemisphereLight(sunColor, shadowColor, 1.0);
         return ambilight;
     }

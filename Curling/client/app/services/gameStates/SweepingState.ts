@@ -1,18 +1,18 @@
-import { GameState } from './GameState';
+import { IGameState } from './GameState';
 import { GameController } from '../gameController.service';
 
-export class SweepingState implements GameState {
+export class SweepingState implements IGameState {
 
     private gameController: GameController;
-    mouse: THREE.Vector2;
-    sweeping = false;
+    private mouse: THREE.Vector2;
+    private sweeping = false;
 
     constructor(gameController: GameController) {
         this.gameController = gameController;
         this.mouse = new THREE.Vector2();
     }
 
-    onMouseDown(event: any): void {
+    public onMouseDown(event: any): void {
         this.setMouse(event);
         let intersects = this.gameController.getGameRenderer().checkIfMouseOnIce(this.mouse);
         if (intersects.length > 0 && !this.sweeping) {
@@ -20,7 +20,7 @@ export class SweepingState implements GameState {
         }
     }
 
-    onMouseUp(event: any): void {
+    public onMouseUp(event: any): void {
         this.setMouse(event);
         let intersects = this.gameController.getGameRenderer().checkIfMouseOnIce(this.mouse);
         if (intersects.length > 0 && this.sweeping) {
@@ -33,11 +33,11 @@ export class SweepingState implements GameState {
         }
     }
 
-    onMouseMove(event: any): void {
-        //Do nothing
+    public onMouseMove(event: any): void {
+        // Do nothing
     }
 
-    setMouse(event: any): void {
+    public setMouse(event: any): void {
         this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
         this.mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
     }

@@ -1,7 +1,7 @@
-import { GameState } from './GameState';
+import { IGameState } from './GameState';
 import { GameController } from '../gameController.service';
 
-export class ShootingState implements GameState {
+export class ShootingState implements IGameState {
 
     private readonly MAX_INITIAL_SPEED = 5;
     private readonly MIN_INITIAL_SPEED = 1;
@@ -16,7 +16,7 @@ export class ShootingState implements GameState {
         this.gameController = gameController;
     }
 
-    onMouseDown(event: any): void {
+    public onMouseDown(event: any): void {
         this.timer = setInterval(() => {
             if (this.initialSpeedCounter < this.MAX_INITIAL_SPEED) {
                 this.initialSpeedCounter += this.MAX_INITIAL_SPEED / (this.MAX_HOLD_TIME_MS / this.INTERVAL_DELAY_MS);
@@ -25,7 +25,7 @@ export class ShootingState implements GameState {
         }, this.INTERVAL_DELAY_MS);
     }
 
-    onMouseUp(event: any): void {
+    public onMouseUp(event: any): void {
 
         if (this.initialSpeedCounter > this.MIN_INITIAL_SPEED) {
             let shootingAngle = this.gameController.getShootingAngle();
@@ -46,8 +46,8 @@ export class ShootingState implements GameState {
         clearInterval(this.timer);
     }
 
-    onMouseMove(event: any): void {
-        //Do nothing
+    public onMouseMove(event: any): void {
+        // Do nothing
     }
 
 }

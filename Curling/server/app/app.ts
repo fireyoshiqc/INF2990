@@ -47,10 +47,10 @@ export class Application {
         // Instantiate name manager
         this.nameManager = new NameManagerService();
 
-        //configure this.application
+        // Configure this.application
         this.config();
 
-        //configure routes
+        // Configure routes
         this.routes();
     }
 
@@ -82,13 +82,13 @@ export class Application {
 
         let nameManager = this.getNameManager();
 
-        //create routes
+        // Create routes
         const index: indexRoute.Index = new indexRoute.Index();
 
-        //home page
+        // Home page
         router.get('/', index.index.bind(index.index));
 
-        //use router middleware
+        // Use router middleware
         this.app.use(router);
 
         this.app.post('/validateName', function (req, res) {
@@ -105,8 +105,8 @@ export class Application {
             next(err);
         });
 
-        // development error handler
-        // will print stacktrace
+        // Development error handler
+        // Will print stacktrace
         if (this.app.get('env') === 'development') {
             this.app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
                 res.status(err.status || 500);
@@ -117,8 +117,8 @@ export class Application {
             });
         }
 
-        // production error handler
-        // no stacktraces leaked to user (in production env only)
+        // Production error handler
+        // No stacktraces leaked to user (in production env only)
         this.app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
             res.status(err.status || 500);
             res.send({
@@ -128,7 +128,7 @@ export class Application {
         });
     }
 
-    getNameManager(): NameManagerService {
+    public getNameManager(): NameManagerService {
         return this.nameManager;
     }
 

@@ -1,4 +1,4 @@
-export interface GameState {
+export interface IGameState {
 
     onMouseDown(event: any): void;
     onMouseUp(event: any): void;
