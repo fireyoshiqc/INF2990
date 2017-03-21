@@ -120,20 +120,18 @@ export class ScrabbleGame {
 
     public isWordCorrectlyOverlapping(command: CommandPlaceWord): boolean {
         let tile;
+        let rowIndex;
+        let columnIndex;
         let isNewWord = false;
 
         for (let i = 0; i < command.getWord().length; i++) {
-            if (command.getOrientation() === "h") {
-                tile = this.board[command.getRow()][command.getColumn() + i];
-            } else {
-                tile = this.board[command.getRow() + i][command.getColumn()];
-            }
+            rowIndex = (command.getOrientation() === "h") ? command.getRow() : (command.getRow() + i);
+            columnIndex = (command.getOrientation() === "h") ? (command.getColumn() + i) : command.getColumn();
+            tile = this.board[rowIndex][columnIndex];
 
             if (tile.isEmpty()) {
                 isNewWord = true;
             } else if (tile.getLetter().getCharacter() !== command.getWord().charAt(i).toUpperCase()) {
-                console.log(tile.getLetter().getCharacter());
-                console.log(command.getWord().charAt(i));
                 return false;
             }
         }
@@ -141,7 +139,87 @@ export class ScrabbleGame {
         return isNewWord;
     }
 
-    public areAllWordsValid(command: CommandPlaceWord): boolean {
+    public isWordOverlappingCentralTile(command: CommandPlaceWord): boolean {
+        let centralIndex = 7;
+        let rowIndex;
+        let columnIndex;
+
+        for (let i = 0; i < command.getWord().length; i++) {
+            rowIndex = (command.getOrientation() === "h") ? command.getRow() : (command.getRow() + i);
+            columnIndex = (command.getOrientation() === "h") ? (command.getColumn() + i) : command.getColumn();
+
+            if (rowIndex === centralIndex && columnIndex === centralIndex) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public isWordAdjacentToAnother(command: CommandPlaceWord): boolean {
+        let tile;
+        let rowIndex;
+        let columnIndex;
+
+        for (let i = 0; i < command.getWord().length; i++) {
+            rowIndex = (command.getOrientation() === "h") ? command.getRow() : (command.getRow() + i);
+            columnIndex = (command.getOrientation() === "h") ? (command.getColumn() + i) : command.getColumn();
+            tile = this.board[rowIndex][columnIndex];
+
+            if (tile.isEmpty() && this.isLetterAdjacentTo(rowIndex, columnIndex)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private isLetterAdjacentTo(rowIndex: number, columnIndex: number): boolean {
+        // Check upper tile
+        let upperRowIndex = rowIndex - 1;
+        let upperColumnIndex = columnIndex;
+
+        if (this.isTileInBounds(upperRowIndex, upperColumnIndex) &&
+           !this.board[upperRowIndex][upperColumnIndex].isEmpty()) {
+            return true;
+        }
+
+        // Check left tile
+        let leftRowIndex = rowIndex;
+        let leftColumnIndex = columnIndex - 1;
+
+        if (this.isTileInBounds(leftRowIndex, leftColumnIndex) &&
+           !this.board[leftRowIndex][leftColumnIndex].isEmpty()) {
+            return true;
+        }
+
+        // Check lower tile
+        let lowerRowIndex = rowIndex + 1;
+        let lowerColumnIndex = columnIndex;
+
+        if (this.isTileInBounds(lowerRowIndex, lowerColumnIndex) &&
+           !this.board[lowerRowIndex][lowerColumnIndex].isEmpty()) {
+            return true;
+        }
+
+        // Check right tile
+        let rightRowIndex = rowIndex;
+        let rightColumnIndex = columnIndex + 1;
+
+        if (this.isTileInBounds(rightRowIndex, rightColumnIndex) &&
+           !this.board[rightRowIndex][rightColumnIndex].isEmpty()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private isTileInBounds(rowIndex: number, columnIndex: number): boolean {
+        return rowIndex >= 0 && rowIndex < this.BOARD_LENGTH &&
+               columnIndex >= 0 && columnIndex < this.BOARD_LENGTH;
+    }
+
+    public areAllHorizontalWordsValid(command: CommandPlaceWord): boolean {
         // TODO : return the list of new words to help point calculation
 
         /* Temporarily add the word to the current board to verify
@@ -149,21 +227,29 @@ export class ScrabbleGame {
         let oldBoard = this.copyBoard(this.board);
         this.placeWord(command);
 
+        // Verify if every horizontal word is valid
+        // Horizontal words start from column 0 to column 13 (words have a minimum of two letters)
         for (let i = 0; i < this.BOARD_LENGTH; i++) {
-            for (let j = 0; j < this.BOARD_LENGTH; j++) {
+            for (let j = 0; j < (this.BOARD_LENGTH - 1); j++) {
                 let tile = this.board[i][j];
 
                 if (!tile.isEmpty()) {
 
-                    // Verify if the letter is the start of a vertically oriented word
-                    if (((i === 0) || this.board[i - 1][j].isEmpty()) && !this.board[i + 1][j].isEmpty()) {
-                        let word = "";
-                        let row = i;
+                    // Verify if the letter is the start of a horizontally oriented word
+                    if (((j === 0) || this.board[i][j - 1].isEmpty()) && !this.board[i][j + 1].isEmpty()) {
+                        let word = tile.getLetter().getCharacter();
+                        let column = j;
 
-                        // Retrieve the word
-                        while (!tile.isEmpty()) {
-                            word += tile.getLetter().getCharacter();
-                            tile = this.board[++row][j];
+                        // Retrieve the next tile (to form the word) if in bounds
+                        while ((column + 1) < this.BOARD_LENGTH) {
+                            column++;
+                            tile = this.board[i][column];
+
+                            if (!tile.isEmpty()) {
+                                word += tile.getLetter().getCharacter();
+                            } else {
+                                break;
+                            }
                         }
 
                         if (!Dictionary.isWordValid(word)) {
@@ -171,16 +257,45 @@ export class ScrabbleGame {
                             return false;
                         }
                     }
+                }
+            }
+        }
 
-                    // Verify if the letter is the start of a horizontally oriented word
-                    if (((j === 0) || this.board[i][j - 1].isEmpty()) && !this.board[i][j + 1].isEmpty()) {
-                        let word = "";
-                        let column = j;
+        this.board = oldBoard;
+        return true;
+    }
 
-                        // Retrieve the word
-                        while (!tile.isEmpty()) {
-                            word += tile.getLetter().getCharacter();
-                            tile = this.board[i][++column];
+    public areAllVerticalWordsValid(command: CommandPlaceWord): boolean {
+        // TODO : return the list of new words to help point calculation
+
+        /* Temporarily add the word to the current board to verify
+           if all words are valid. */
+        let oldBoard = this.copyBoard(this.board);
+        this.placeWord(command);
+
+        // Verify if every vertical word is valid
+        // Vertical words start from row 0 to row 13 (words have a minimum of two letters)
+        for (let i = 0; i < (this.BOARD_LENGTH - 1); i++) {
+            for (let j = 0; j < this.BOARD_LENGTH; j++) {
+                let tile = this.board[i][j];
+
+                if (!tile.isEmpty()) {
+
+                    // Verify if the letter is the start of a vertically oriented word
+                    if (((i === 0) || this.board[i - 1][j].isEmpty()) && !this.board[i + 1][j].isEmpty()) {
+                        let word = tile.getLetter().getCharacter();
+                        let row = i;
+
+                        // Retrieve the next tile (to form the word) if in bounds
+                        while ((row + 1) < this.BOARD_LENGTH) {
+                            row++;
+                            tile = this.board[row][j];
+
+                            if (!tile.isEmpty()) {
+                                word += tile.getLetter().getCharacter();
+                            } else {
+                                break;
+                            }
                         }
 
                         if (!Dictionary.isWordValid(word)) {

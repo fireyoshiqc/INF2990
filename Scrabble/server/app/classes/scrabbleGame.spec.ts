@@ -102,6 +102,182 @@ describe('ScrabbleGame', () => {
         });
     });
 
+     describe('isWordOverlappingCentralTile', () => {
+        it('should verify if the word is correctly overlapping the central tile.', done => {
+            let c1 = new CommandPlaceWord("a", 1, "v", "Bac"); // B is a JOKER
+            expect(scrabbleGame.isWordOverlappingCentralTile(c1)).to.be.false;
+
+            let c2 = new CommandPlaceWord("h", 1, "h", "abcdefghijklmno");
+            expect(scrabbleGame.isWordOverlappingCentralTile(c2)).to.be.true;
+
+            let c3 = new CommandPlaceWord("a", 8, "v", "abcdefghijklmno");
+            expect(scrabbleGame.isWordOverlappingCentralTile(c3)).to.be.true;
+
+            let c4 = new CommandPlaceWord("a", 1, "h", "abcdefgh");
+            expect(scrabbleGame.isWordOverlappingCentralTile(c4)).to.be.false;
+
+            let c5 = new CommandPlaceWord("a", 1, "v", "abcdefgh");
+            expect(scrabbleGame.isWordOverlappingCentralTile(c5)).to.be.false;
+
+            let c6 = new CommandPlaceWord("h", 8, "v", "a");
+            expect(scrabbleGame.isWordOverlappingCentralTile(c6)).to.be.true;
+
+            let c7 = new CommandPlaceWord("h", 8, "h", "a");
+            expect(scrabbleGame.isWordOverlappingCentralTile(c7)).to.be.true;
+
+            let c8 = new CommandPlaceWord("h", 1, "h", "abcdefgh");
+            expect(scrabbleGame.isWordOverlappingCentralTile(c8)).to.be.true;
+
+            let c9 = new CommandPlaceWord("h", 8, "h", "abcdefgh");
+            expect(scrabbleGame.isWordOverlappingCentralTile(c9)).to.be.true;
+
+            let c10 = new CommandPlaceWord("a", 8, "v", "abcdefgh");
+            expect(scrabbleGame.isWordOverlappingCentralTile(c10)).to.be.true;
+
+            let c11 = new CommandPlaceWord("h", 8, "v", "abcdefgh");
+            expect(scrabbleGame.isWordOverlappingCentralTile(c11)).to.be.true;
+
+            done();
+        });
+    });
+
+    describe('isWordAdjacentToAnother', () => {
+        it('should verify if a letter in the word is adjacent to another letter on the board.', done => {
+            let game = new ScrabbleGame();
+
+            let c1 = new CommandPlaceWord("a", 1, "h", "Bac");
+            game.placeWord(c1);
+
+            let c2 = new CommandPlaceWord("a", 5, "h", "abc");
+            expect(game.isWordAdjacentToAnother(c2)).to.be.false;
+
+            let c3 = new CommandPlaceWord("c", 1, "h", "abc");
+            expect(game.isWordAdjacentToAnother(c3)).to.be.false;
+
+            let c4 = new CommandPlaceWord("a", 1, "h", "bacs");
+            expect(game.isWordAdjacentToAnother(c4)).to.be.true;
+
+            let c5 = new CommandPlaceWord("a", 4, "v", "abc");
+            expect(game.isWordAdjacentToAnother(c5)).to.be.true;
+
+            let c6 = new CommandPlaceWord("h", 8, "h", "a");
+            game.placeWord(c6);
+
+            let c7 = new CommandPlaceWord("g", 7, "v", "d");
+            expect(game.isWordAdjacentToAnother(c7)).to.be.false;
+
+            let c8 = new CommandPlaceWord("g", 9, "h", "d");
+            expect(game.isWordAdjacentToAnother(c8)).to.be.false;
+
+            let c9 = new CommandPlaceWord("i", 7, "h", "d");
+            expect(game.isWordAdjacentToAnother(c9)).to.be.false;
+
+            let c10 = new CommandPlaceWord("i", 9, "v", "d");
+            expect(game.isWordAdjacentToAnother(c10)).to.be.false;
+
+            let c11 = new CommandPlaceWord("h", 8, "h", "c");
+            expect(game.isWordAdjacentToAnother(c11)).to.be.false;
+
+            let c12 = new CommandPlaceWord("g", 8, "v", "b");
+            expect(game.isWordAdjacentToAnother(c12)).to.be.true;
+
+            let c13 = new CommandPlaceWord("i", 8, "h", "b");
+            expect(game.isWordAdjacentToAnother(c13)).to.be.true;
+
+            let c14 = new CommandPlaceWord("h", 7, "h", "b");
+            expect(game.isWordAdjacentToAnother(c14)).to.be.true;
+
+            let c15 = new CommandPlaceWord("h", 9, "v", "b");
+            expect(game.isWordAdjacentToAnother(c15)).to.be.true;
+
+            done();
+        });
+    });
+
+    describe('areAllHorizontalWordsValid', () => {
+        it('should verify if every horizontal word is valid.', done => {
+            let game = new ScrabbleGame();
+
+            let c1 = new CommandPlaceWord("a", 1, "h", "Bac");
+            expect(game.areAllHorizontalWordsValid(c1)).to.be.true;
+            game.placeWord(c1);
+            expect(game.areAllHorizontalWordsValid(c1)).to.be.true;
+
+            let c2 = new CommandPlaceWord("a", 1, "h", "Bacz");
+            expect(game.areAllHorizontalWordsValid(c2)).to.be.false;
+
+            let c3 = new CommandPlaceWord("a", 1, "h", "Bacs");
+            expect(game.areAllHorizontalWordsValid(c3)).to.be.true;
+
+            let c4 = new CommandPlaceWord("a", 13, "h", "Bac");
+            expect(game.areAllHorizontalWordsValid(c4)).to.be.true;
+
+            let c5 = new CommandPlaceWord("o", 1, "h", "Bac");
+            expect(game.areAllHorizontalWordsValid(c5)).to.be.true;
+
+            let c6 = new CommandPlaceWord("o", 13, "h", "Bac");
+            expect(game.areAllHorizontalWordsValid(c6)).to.be.true;
+
+            let c7 = new CommandPlaceWord("a", 12, "h", "con");
+            expect(game.areAllHorizontalWordsValid(c7)).to.be.true;
+            game.placeWord(c7);
+
+            let c8 = new CommandPlaceWord("a", 15, "v", "sons");
+            expect(game.areAllHorizontalWordsValid(c8)).to.be.true;
+
+            let c9 = new CommandPlaceWord("o", 12, "h", "con");
+            expect(game.areAllHorizontalWordsValid(c9)).to.be.true;
+            game.placeWord(c9);
+
+            let c10 = new CommandPlaceWord("l", 15, "v", "sons");
+            expect(game.areAllHorizontalWordsValid(c10)).to.be.true;
+
+            done();
+        });
+    });
+
+    describe('areAllVerticalWordsValid', () => {
+        it('should verify if every vertical word is valid.', done => {
+            let game = new ScrabbleGame();
+
+            let c1 = new CommandPlaceWord("a", 1, "v", "Bac");
+            expect(game.areAllVerticalWordsValid(c1)).to.be.true;
+            game.placeWord(c1);
+            expect(game.areAllVerticalWordsValid(c1)).to.be.true;
+
+            let c2 = new CommandPlaceWord("a", 1, "v", "Bacz");
+            expect(game.areAllVerticalWordsValid(c2)).to.be.false;
+
+            let c3 = new CommandPlaceWord("a", 1, "v", "bacs");
+            expect(game.areAllVerticalWordsValid(c3)).to.be.true;
+
+            let c4 = new CommandPlaceWord("a", 14, "v", "Bac");
+            expect(game.areAllVerticalWordsValid(c4)).to.be.true;
+
+            let c5 = new CommandPlaceWord("m", 1, "v", "Bac");
+            expect(game.areAllVerticalWordsValid(c5)).to.be.true;
+
+            let c6 = new CommandPlaceWord("m", 14, "v", "bac");
+            expect(game.areAllVerticalWordsValid(c6)).to.be.true;
+
+            let c7 = new CommandPlaceWord("a", 14, "v", "con");
+            expect(game.areAllVerticalWordsValid(c7)).to.be.true;
+            game.placeWord(c7);
+
+            let c8 = new CommandPlaceWord("d", 11, "h", "sons");
+            expect(game.areAllVerticalWordsValid(c8)).to.be.true;
+
+            let c9 = new CommandPlaceWord("n", 14, "v", "on");
+            expect(game.areAllVerticalWordsValid(c9)).to.be.true;
+            game.placeWord(c9);
+
+            let c10 = new CommandPlaceWord("m", 12, "h", "cons");
+            expect(game.areAllVerticalWordsValid(c10)).to.be.true;
+
+            done();
+        });
+    });
+
     describe('copyBoard', () => {
         it('should make a deep copy of the board.', done => {
             let copyBoard = scrabbleGame.copyBoard(scrabbleGame.getBoard());

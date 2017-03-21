@@ -32,8 +32,8 @@ export class GameMaster {
     private stash: LetterStash;
     private gameStarted: boolean;
     private stopwatch: StopwatchService;
-
     private turnInfo = { minutes: 0, seconds: 0, activePlayerName: "" };
+    private isFirstTurn: boolean;
 
     private readonly BINGO_BONUS = 50;
     private readonly RANDOMIZE_SWAP_COUNT = 20;
@@ -44,6 +44,7 @@ export class GameMaster {
         this.stash = new LetterStash();
         this.gameStarted = false;
         this.stopwatch = new StopwatchService();
+        this.isFirstTurn = true;
     }
 
     public getScrabbleGame(): ScrabbleGame {
@@ -64,6 +65,10 @@ export class GameMaster {
 
     public getTurnInfo(): ITurnInfo {
         return this.turnInfo;
+    }
+
+    public getIsFirstTurn(): boolean {
+        return this.isFirstTurn;
     }
 
     public startGame(): void {
@@ -161,6 +166,11 @@ export class GameMaster {
                 // 7- Passer au prochain joueur
                 this.endTurn();
 
+                // 8- Le premier tour nécessite une vérification différente pour le placement des lettres
+                if (this.isFirstTurn) {
+                    this.isFirstTurn = false;
+                }
+
                 return CommandExecutionStatus.SUCCESS;
             }
         }
@@ -220,8 +230,17 @@ export class GameMaster {
             return false;
         }
 
-        // 3- Verify if the newly formed words are valid
-        if (!this.scrabbleGame.areAllWordsValid(command)) {
+        // 3a- During first turn, verify if a letter in the word is on the central tile H8
+        if (this.isFirstTurn && !this.scrabbleGame.isWordOverlappingCentralTile(command)) {
+            return false;
+        } else if (!this.isFirstTurn && !this.scrabbleGame.isWordAdjacentToAnother(command)) {
+            // 3b- Verify if a letter in the word is adjacent to another letter on the board
+            return false;
+        }
+
+        // 4- Verify if the newly formed words are valid
+        if (!this.scrabbleGame.areAllHorizontalWordsValid(command) ||
+            !this.scrabbleGame.areAllVerticalWordsValid(command)) {
             return false;
         }
 

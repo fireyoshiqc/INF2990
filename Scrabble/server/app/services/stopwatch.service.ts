@@ -7,8 +7,8 @@
  */
 
 export class StopwatchService {
-    // Each turn is at most 3 minutes
-    private readonly MAX_TURN_LENGTH_SEC = 180;
+    // Each turn is at most 5 minutes
+    private readonly MAX_TURN_LENGTH_SEC = 300;
 
     private minutes: number;
     private seconds: number;
