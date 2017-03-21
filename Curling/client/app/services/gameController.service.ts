@@ -149,7 +149,7 @@ export class GameController {
     public onMouseMove(event: any) {
         this.gameState.onMouseMove(event);
     }
-    
+
     public enterIdleState() {
         // Generer la pierre
         if (this.isPlayerTurn) {
