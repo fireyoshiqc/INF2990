@@ -56,9 +56,10 @@ describe('HUDComponent', () => {
 
     describe('removePlayerCurlingStone()', () => {
         it('should remove one stone from the player\'s available curling stones.', done => {
+            expect(hudComponent.getPlayerCurlingStones().length).to.be.equal(8);
+            hudComponent.removePlayerCurlingStone();
             expect(hudComponent.getPlayerCurlingStones().length).to.be.equal(7);
             hudComponent.removePlayerCurlingStone();
-            expect(hudComponent.getPlayerCurlingStones().length).to.be.equal(6);
             hudComponent.removePlayerCurlingStone();
             hudComponent.removePlayerCurlingStone();
             hudComponent.removePlayerCurlingStone();
@@ -74,9 +75,9 @@ describe('HUDComponent', () => {
 
     describe('removeAICurlingStone()', () => {
         it('should remove one stone from the AI\'s available curling stones.', done => {
-            expect(hudComponent.getAICurlingStones().length).to.be.equal(7);
+            expect(hudComponent.getAICurlingStones().length).to.be.equal(8);
             hudComponent.removeAICurlingStone();
-            expect(hudComponent.getAICurlingStones().length).to.be.equal(6);
+            expect(hudComponent.getAICurlingStones().length).to.be.equal(7);
             done();
         });
     });

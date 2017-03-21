@@ -14,8 +14,8 @@ import { Component, Input, Output, EventEmitter, HostListener } from '@angular/c
 
 export class HUDComponent {
     private isDarkTheme = false;
-    private playerCurlingStones = new Array<number>(7); // Indicates the number of available curling stones for player
-    private aiCurlingStones = new Array<number>(7); // Indicates the number of available curling stones for ai
+    private playerCurlingStones = new Array<number>(8); // Indicates the number of available curling stones for player
+    private aiCurlingStones = new Array<number>(8); // Indicates the number of available curling stones for ai
     private selectedSpin = false;
     private rounds = [false, false, false]; // Indicates which rounds have been completed (true)
     private sliderDisabled = false; // False : spin counterclockwise, true : spin clockwiser

@@ -41,14 +41,17 @@ export class GameController {
     private forceVisible = false;
     private forceValue = 0;
 
+    private isPlayerTurn = false;
+
     public init(container?: HTMLElement): void {
         this.gameRenderer = new GameRenderer(this.curlingStones, this);
         this.gameRenderer.init(container);
 
-        CurlingStone.setPlayerStoneColor("#FFFFFF");
+        // Choose first player randomly
+        if (Math.random() > 0.5) {
+            this.isPlayerTurn = true;
+        }
 
-        // TODO : Lancement des pierres de curling
-        this.addStone(Team.Player, new THREE.Vector3(0, 0, 0));
         this.gameRenderer.render();
     }
 
@@ -176,7 +179,13 @@ export class GameController {
 
     startThrowStone(event: any): void {
         if (this.gameState === this.idleState) {
-            if (event === "true") { //Clockwise Spin
+            if (this.isPlayerTurn) {
+                this.addStone(Team.Player, new THREE.Vector3(0, 0, 0));
+            } else {
+                this.addStone(Team.AI, new THREE.Vector3(0, 0, 0));
+            }
+
+            if (event === "true") { // Clockwise Spin
                 this.curlingStones[this.curlingStones.length - 1].setSpinOrientation(SpinOrientation.CLOCKWISE);
             } else {
                 this.curlingStones[this.curlingStones.length - 1].setSpinOrientation(SpinOrientation.COUNTER_CLOCKWISE);
@@ -225,7 +234,7 @@ export class GameController {
     }
 
     resetStones(): void {
-        this.curlingStones = this.curlingStones.slice(0, 1);
+        this.curlingStones = [];
     }
 
     /***************** END TEST HELPER *******************/

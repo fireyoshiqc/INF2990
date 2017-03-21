@@ -19,8 +19,8 @@ export enum SpinOrientation {
 
 export class CurlingStone extends THREE.Group {
 
-    private static playerStoneColor = "#66B2FF";
-    private static aiStoneColor = "#FF6666";
+    private static playerStoneColor = "#488957";
+    private static aiStoneColor = "#FF6060";
 
     public static readonly MAX_RADIUS = 0.145; // External radius of the stone
     private readonly RADIUS = 0.145 / 2; // Radius of stone (torus)

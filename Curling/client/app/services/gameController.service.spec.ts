@@ -29,8 +29,6 @@ describe('GameController', () => {
         it('should start the game controller with a game renderer', done => {
             gameController.init();
 
-            expect(gameController.getCurlingStones().length).to.be.equal(1);
-            expect(gameController.getCurlingStones()[0].getTeam()).to.be.equal(Team.Player);
             expect(gameController.getCurrentState()).to.be.instanceOf(IdleState);
             expect(gameController.getGameRenderer().isStarted).to.be.true;
 
@@ -65,15 +63,15 @@ describe('GameController', () => {
             it('should add 8 curling stones to the game controller', done => {
                 gameController.setStonesForScoringTests();
 
-                expect(gameController.getCurlingStones().length).to.be.equal(9);
+                expect(gameController.getCurlingStones().length).to.be.equal(8);
+                expect(gameController.getCurlingStones()[0].getTeam()).to.be.equal(Team.Player);
                 expect(gameController.getCurlingStones()[1].getTeam()).to.be.equal(Team.Player);
                 expect(gameController.getCurlingStones()[2].getTeam()).to.be.equal(Team.Player);
                 expect(gameController.getCurlingStones()[3].getTeam()).to.be.equal(Team.Player);
-                expect(gameController.getCurlingStones()[4].getTeam()).to.be.equal(Team.Player);
+                expect(gameController.getCurlingStones()[4].getTeam()).to.be.equal(Team.AI);
                 expect(gameController.getCurlingStones()[5].getTeam()).to.be.equal(Team.AI);
                 expect(gameController.getCurlingStones()[6].getTeam()).to.be.equal(Team.AI);
                 expect(gameController.getCurlingStones()[7].getTeam()).to.be.equal(Team.AI);
-                expect(gameController.getCurlingStones()[8].getTeam()).to.be.equal(Team.AI);
 
                 done();
             });
@@ -84,7 +82,7 @@ describe('GameController', () => {
                 gameController.getGameRenderer().physicsManager.sortStonesByDistance();
                 let sortStones = gameController.getCurlingStones();
 
-                expect(sortStones.length).to.be.equal(9);
+                expect(sortStones.length).to.be.equal(8);
                 expect(sortStones[0].getTeam()).to.be.equal(Team.AI);
                 expect(sortStones[1].getTeam()).to.be.equal(Team.AI);
                 expect(sortStones[2].getTeam()).to.be.equal(Team.Player);
@@ -110,10 +108,10 @@ describe('GameController', () => {
         });
 
         describe('resetStones()', () => {
-            it('should remove 8 curling stones form game controller', done => {
+            it('should remove 8 curling stones from game controller', done => {
                 gameController.resetStones();
 
-                expect(gameController.getCurlingStones().length).to.be.equal(1);
+                expect(gameController.getCurlingStones().length).to.be.equal(0);
 
                 done();
             });
@@ -130,7 +128,7 @@ describe('GameController', () => {
             it('should switch gameController to choosingAngleState with counterClockwise spin', done => {
                 gameController.enterIdleState();
                 gameController.startThrowStone("false");
-                expect(gameController.getCurlingStones()[0].getSpinOrientation()).to.be.equal(1);
+                expect(gameController.getCurlingStones()[1].getSpinOrientation()).to.be.equal(1);
                 expect(gameController.getCurrentState()).to.be.instanceOf(ChoosingAngleState);
                 done();
             });

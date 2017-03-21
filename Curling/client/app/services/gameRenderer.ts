@@ -257,12 +257,15 @@ export class GameRenderer {
         }
 
         // Rotate the active stone
-        if (this.activeStone.getVelocity().length() > 0.1) {
+        if (this.activeStone !== undefined && this.activeStone.getVelocity().length() > 0.1) {
             this.activeStone.rotateY(this.activeStone.getSpinOrientation() * delta * this.SPIN_SPEED);
         }
 
-        //Render scene using camera that is following the stone
-        this.cameraManager.followStone(this.activeStone.position);
+        // Render scene using camera that is following the stone
+        if (this.activeStone !== undefined) {
+            this.cameraManager.followStone(this.activeStone.position);
+        }
+
         this.renderer.render(this.scene, this.cameraManager.getCamera());
 
         if (this.physicsManager.allStonesHaveStopped() && this.gameController.isInSweepingState()) {

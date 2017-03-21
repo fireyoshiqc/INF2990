@@ -33,6 +33,9 @@ export class GlComponent implements AfterViewInit {
                     this.gameController.setAIDifficulty(AIDifficulty.Hard);
                     // TODO : this.gameController.startAIHard();
                 }
+
+                // Spin orientation is counter-clockwise by default (false)
+                this.gameController.startThrowStone("false");
             });
         });
     }
