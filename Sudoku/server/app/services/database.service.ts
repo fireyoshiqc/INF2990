@@ -11,7 +11,8 @@ import hardScore from '../models/hardScore.model';
 
 export class DatabaseService {
     private readonly DUMMIES_PER_DIFFICULTY = 3;
-    private connection: any;
+    private readonly MAX_RETRIES = 30;
+    private tries = 0;
     constructor() {
         (<any>mongoose).Promise = global.Promise;
     }
@@ -26,13 +27,16 @@ export class DatabaseService {
             },
             err => {
                 // Could not connect to database.
-                console.log("Error connecting to database!");
+                console.log("Error connecting to database! Retrying...");
+                self.tries++;
+                mongoose.disconnect();
+                if (self.tries < self.MAX_RETRIES) {
+                    self.connect();
+                }
+                else {
+                    console.log(this.MAX_RETRIES + " attempts were made to connect without success! Disconnecting...");
+                }
             });
-        this.connection = mongoose.connection;
-        this.connection.on('disconnected', () => {
-            // Reconnect on timeout
-            self.connect();
-        });
     }
 
     public addScore(name: string, time: number, difficulty: string): Promise<boolean> {
