@@ -180,14 +180,4 @@ describe('PhysicsManager', () => {
             done();
         });
     });
-
-    describe('allStonesHaveStopped()', () => {
-        it('should return true if no stones are moving, and false if some stones are still moving.', done => {
-            expect(testPhysicsManager.allStonesHaveStopped()).to.be.true;
-            testPhysicsManager.getStones()[0].setVelocity(new THREE.Vector3(0, 0, 1));
-            expect(testPhysicsManager.allStonesHaveStopped()).to.be.false;
-            done();
-        });
-    });
-
 });
