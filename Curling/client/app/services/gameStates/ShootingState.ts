@@ -3,7 +3,7 @@ import { GameController } from '../gameController.service';
 
 export class ShootingState implements IGameState {
 
-    private readonly MAX_INITIAL_SPEED = 5;
+    private readonly MAX_INITIAL_SPEED = 4;
     private readonly MIN_INITIAL_SPEED = 1;
     private readonly MAX_HOLD_TIME_MS = 2000;
     private readonly INTERVAL_DELAY_MS = 100;

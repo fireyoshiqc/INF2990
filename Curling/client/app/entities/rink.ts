@@ -16,6 +16,7 @@ export class Rink extends THREE.Group {
     public static readonly RINK_WIDTH = 4.4;
     private static readonly RINK_HEIGHT = 0.1;
     public static readonly HOG_LINE = -11.28;
+    public static readonly BACK_LINE = -3.80;
 
     // Rings
     private static readonly CENTER_RADIUS = 0.15;
@@ -174,7 +175,7 @@ export class Rink extends THREE.Group {
 
         for (let i = 0; i < this.SWEPT_BUFFER_MAX; i++) {
             let disc: THREE.Mesh = new THREE.Mesh(sweptDiscGeometry, discMaterial);
-            disc.position.y = 0.0001;
+            disc.position.y = 0.00005;
             disc.position.z = 50;
             disc.rotation.x = -Math.PI / 2;
             this.sweptSpotsBuffer.push(disc);
@@ -230,14 +231,14 @@ export class Rink extends THREE.Group {
         let backLine = new THREE.Mesh(backLineGeometry, centerLineMaterial);
         backLine.position.x = 0;
         backLine.position.y = 0.0002;
-        backLine.position.z = - (Rink.RINGS_OFFSET + Rink.OUTER_RADIUS);
+        backLine.position.z = (Rink.RINK_LENGTH / 2) + Rink.BACK_LINE;
         backLine.rotation.x = -Math.PI / 2;
         this.add(backLine);
 
         let backLineDeco = new THREE.Mesh(backLineGeometry, centerLineMaterial);
         backLineDeco.position.x = 0;
         backLineDeco.position.y = 0.0002;
-        backLineDeco.position.z = Rink.RINGS_OFFSET + Rink.OUTER_RADIUS;
+        backLineDeco.position.z = -(Rink.RINK_LENGTH / 2) - Rink.BACK_LINE;
         backLineDeco.rotation.x = -Math.PI / 2;
         this.add(backLineDeco);
 

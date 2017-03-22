@@ -82,7 +82,8 @@ export class GameController {
     }
 
     public addStone(team: Team, position: THREE.Vector3): void {
-        let stone = new CurlingStone(team, new THREE.Vector3(0, 0, 0), position);
+        let stone = new CurlingStone(team, new THREE.Vector3(0, 0, 0),
+            position.sub(new THREE.Vector3(0, CurlingStone.MAX_RADIUS / 2, 0)));
         stone.init();
 
         this.curlingStones.push(stone);

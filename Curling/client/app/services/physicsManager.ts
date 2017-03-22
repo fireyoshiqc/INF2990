@@ -144,10 +144,11 @@ export class PhysicsManager {
 
         this.curlingStones.forEach(stone => {
             if (stone.getHasBeenShot()) {
-                let isPastBackLine = stone.position.z < -(Rink.RINK_LENGTH + CurlingStone.MAX_RADIUS);
+                let isPastBackLine = stone.position.z < -(Rink.RINK_LENGTH + Rink.BACK_LINE + CurlingStone.MAX_RADIUS);
                 let isPastRinkSides = Math.abs(stone.position.x) > (Rink.RINK_WIDTH / 2 - CurlingStone.MAX_RADIUS);
                 let hasStoppedBeforeGameLine = stone.getVelocity().length() < 0.01 &&
-                                              (stone.position.z > Rink.HOG_LINE);
+                    (stone.position.z > -(Rink.RINK_LENGTH + Rink.HOG_LINE + CurlingStone.MAX_RADIUS) &&
+                        stone.isBeingPlayed);
 
                 if (isPastBackLine || isPastRinkSides || hasStoppedBeforeGameLine) {
                     outOfBoundsStones.push(stone);
