@@ -114,4 +114,80 @@ describe('PhysicsManager', () => {
             done();
         });
     });
+
+    describe('getStones()', () => {
+        it('should return the array of curling stones.', done => {
+            let stones = testPhysicsManager.getStones();
+            expect(stones.length).to.be.greaterThan(0);
+            for (let stone of stones) {
+                expect(stone).to.be.an.instanceof(CurlingStone);
+            }
+            done();
+        });
+    });
+
+    describe('clearStones()', () => {
+        it('should empty the array of curling stones.', done => {
+            testPhysicsManager.clearStones();
+            expect(testPhysicsManager.getStones().length).to.eql(0);
+            done();
+        });
+    });
+
+    describe('addSweptSpot()', () => {
+        it('should add a single, standard swept spot to the spot array.', done => {
+            testPhysicsManager.addSweptSpot(new THREE.Vector3(0, 0, 0), 0);
+            let sweptSpots = testPhysicsManager.getSweptSpots();
+            expect(sweptSpots.length).to.eql(1);
+            expect(sweptSpots[0].id).to.eql(0);
+            expect(sweptSpots[0].position).to.eql(new THREE.Vector3(0, 0, 0));
+            expect(sweptSpots[0].ttl).to.eql(1.0);
+            done();
+        });
+    });
+
+    describe('cleanSweptSpots()', () => {
+        it('should empty the array of swept spots.', done => {
+            testPhysicsManager.cleanSweptSpots();
+            expect(testPhysicsManager.getSweptSpots().length).to.eql(0);
+            done();
+        });
+    });
+
+
+    describe('cleanDecayedSpots()', () => {
+        it('should empty the array of swept spots.', done => {
+            testPhysicsManager.cleanDecayedSpots();
+            expect(testPhysicsManager.getDecayedSpots().length).to.eql(0);
+            done();
+        });
+    });
+
+    describe('sortStonesByDistance()', () => {
+        it('should sort the array of stones by distance to the game rings.', done => {
+            testPhysicsManager.clearStones();
+            let position1 = new THREE.Vector3(0, 0, 0);
+            let position2 = new THREE.Vector3(0, 0, -1);
+            let velocity = new THREE.Vector3(0, 0, 0);
+
+            testPhysicsManager.getStones().push(new CurlingStone(null, velocity, position1));
+            testPhysicsManager.getStones().push(new CurlingStone(null, velocity, position2));
+            testPhysicsManager.sortStonesByDistance();
+
+            // The closest stone (the second one) should now be the first in the array
+            expect(testPhysicsManager.getStones()[0].position.z).to.eql(-1);
+            expect(testPhysicsManager.getStones()[1].position.z).to.eql(0);
+            done();
+        });
+    });
+
+    describe('allStonesHaveStopped()', () => {
+        it('should return true if no stones are moving, and false if some stones are still moving.', done => {
+            expect(testPhysicsManager.allStonesHaveStopped()).to.be.true;
+            testPhysicsManager.getStones()[0].setVelocity(new THREE.Vector3(0, 0, 1));
+            expect(testPhysicsManager.allStonesHaveStopped()).to.be.false;
+            done();
+        });
+    });
+
 });

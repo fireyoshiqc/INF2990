@@ -131,6 +131,10 @@ export class PhysicsManager {
         this.sweptSpots.push({ position: spot, ttl: 1.0, id });
     }
 
+    public getSweptSpots() {
+        return this.sweptSpots;
+    }
+
     public cleanSweptSpots() {
         this.sweptSpots = [];
     }
