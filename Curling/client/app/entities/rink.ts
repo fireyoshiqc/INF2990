@@ -117,12 +117,26 @@ export class Rink extends THREE.Group {
         rings.add(blueRing);
         rings.add(redRing);
 
-        rings.position.y = Rink.RINK_HEIGHT / 2 + 0.0005;
+        rings.position.y = 0.0001;
         rings.rotation.x = -Math.PI / 2;
 
         rings.position.z = -(Rink.RINGS_OFFSET);
 
         this.add(rings);
+
+        let blueRingDeco: THREE.Mesh = new THREE.Mesh(blueRingGeometry, blueRingMaterial);
+        let redRingDeco: THREE.Mesh = new THREE.Mesh(redRingGeometry, redRingMaterial);
+
+        let ringsDeco: THREE.Group = new THREE.Group();
+        ringsDeco.add(blueRingDeco);
+        ringsDeco.add(redRingDeco);
+
+        ringsDeco.position.y = 0.0001;
+        ringsDeco.rotation.x = -Math.PI / 2;
+
+        ringsDeco.position.z = Rink.RINGS_OFFSET;
+
+        this.add(ringsDeco);
     }
 
     private buildIce(): void {
@@ -140,6 +154,7 @@ export class Rink extends THREE.Group {
 
         let rink: THREE.Mesh = new THREE.Mesh(rinkGeometry, rinkMaterial);
         rink.name = "whiteice";
+        rink.position.y = - Rink.RINK_HEIGHT / 2;
 
         this.add(rink);
 
@@ -159,7 +174,7 @@ export class Rink extends THREE.Group {
 
         for (let i = 0; i < this.SWEPT_BUFFER_MAX; i++) {
             let disc: THREE.Mesh = new THREE.Mesh(sweptDiscGeometry, discMaterial);
-            disc.position.y = Rink.RINK_HEIGHT / 2 + 0.0001;
+            disc.position.y = 0.0001;
             disc.position.z = 50;
             disc.rotation.x = -Math.PI / 2;
             this.sweptSpotsBuffer.push(disc);
@@ -169,19 +184,77 @@ export class Rink extends THREE.Group {
     }
 
     private buildGameLines(): void {
-        let gameLineMaterial = new THREE.LineBasicMaterial({
-            color: 0xff0000
+
+        let centerLineMaterial = new THREE.MeshStandardMaterial({
+            color: 0x333355,
+            metalness: 0.6,
+            roughness: 0.2,
+            envMap: this.reflectTexture,
+            envMapIntensity: 1.0,
         });
 
-        let gameLineGeometry = new THREE.Geometry();
-        gameLineGeometry.vertices.push(
-            new THREE.Vector3(-Rink.RINK_WIDTH / 2 + 0.05,
-                Rink.RINK_HEIGHT, (Rink.RINK_LENGTH / 2) + Rink.HOG_LINE),
-            new THREE.Vector3(Rink.RINK_WIDTH / 2 - 0.05, Rink.RINK_HEIGHT, (Rink.RINK_LENGTH / 2) + Rink.HOG_LINE)
-        );
+        let centerLineGeometry = new THREE.PlaneGeometry(0.03, Rink.RINK_LENGTH);
+        let centerLine = new THREE.Mesh(centerLineGeometry, centerLineMaterial);
+        centerLine.position.x = 0;
+        centerLine.position.y = 0.0002;
+        centerLine.position.z = 0;
+        centerLine.rotation.x = -Math.PI / 2;
+        this.add(centerLine);
 
-        let gameLine = new THREE.Line(gameLineGeometry, gameLineMaterial);
-        this.add(gameLine);
+        let hogLineMaterial = new THREE.MeshStandardMaterial({
+            color: 0xff0000,
+            metalness: 0.6,
+            roughness: 0.2,
+            envMap: this.reflectTexture,
+            envMapIntensity: 1.0,
+        });
+
+        let hogLineGeometry = new THREE.PlaneGeometry(Rink.RINK_WIDTH, 0.08);
+
+        let hogLine = new THREE.Mesh(hogLineGeometry, hogLineMaterial);
+        hogLine.position.x = 0;
+        hogLine.position.y = 0.0003;
+        hogLine.position.z = (Rink.RINK_LENGTH / 2) + Rink.HOG_LINE;
+        hogLine.rotation.x = -Math.PI / 2;
+        this.add(hogLine);
+
+        let hogLineDeco = new THREE.Mesh(hogLineGeometry, hogLineMaterial);
+        hogLineDeco.position.x = 0;
+        hogLineDeco.position.y = 0.0003;
+        hogLineDeco.position.z = -(Rink.RINK_LENGTH / 2) - Rink.HOG_LINE;
+        hogLineDeco.rotation.x = -Math.PI / 2;
+        this.add(hogLineDeco);
+
+        let backLineGeometry = new THREE.PlaneGeometry(Rink.RINK_WIDTH, 0.03);
+
+        let backLine = new THREE.Mesh(backLineGeometry, centerLineMaterial);
+        backLine.position.x = 0;
+        backLine.position.y = 0.0002;
+        backLine.position.z = - (Rink.RINGS_OFFSET + Rink.OUTER_RADIUS);
+        backLine.rotation.x = -Math.PI / 2;
+        this.add(backLine);
+
+        let backLineDeco = new THREE.Mesh(backLineGeometry, centerLineMaterial);
+        backLineDeco.position.x = 0;
+        backLineDeco.position.y = 0.0002;
+        backLineDeco.position.z = Rink.RINGS_OFFSET + Rink.OUTER_RADIUS;
+        backLineDeco.rotation.x = -Math.PI / 2;
+        this.add(backLineDeco);
+
+
+        let teeLine = new THREE.Mesh(backLineGeometry, centerLineMaterial);
+        teeLine.position.x = 0;
+        teeLine.position.y = 0.0002;
+        teeLine.position.z = - Rink.RINGS_OFFSET;
+        teeLine.rotation.x = -Math.PI / 2;
+        this.add(teeLine);
+
+        let teeLineDeco = new THREE.Mesh(backLineGeometry, centerLineMaterial);
+        teeLineDeco.position.x = 0;
+        teeLineDeco.position.y = 0.0002;
+        teeLineDeco.position.z = Rink.RINGS_OFFSET;
+        teeLineDeco.rotation.x = -Math.PI / 2;
+        this.add(teeLineDeco);
     }
 
     public isLoadingDone(): boolean {
