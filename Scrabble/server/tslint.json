@@ -123,7 +123,6 @@
     //"no-floating-promises": true, => REQUIRES TYPE CHECKING
     "no-invalid-this": true,
     "no-misused-new": true,
-    "no-require-imports": true,
     //"no-unnecessary-qualifier": true, => REQUIRES TYPE CHECKING
     "object-literal-shorthand": true,
     //"promise-function-async": true, => REQUIRES TYPE CHECKING

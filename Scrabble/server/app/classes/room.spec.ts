@@ -33,6 +33,13 @@ describe('Room', () => {
         });
     });
 
+    describe('isEmpty()', () => {
+        it('should return true when a room is empty.', done => {
+            expect(room.isEmpty()).to.be.true;
+            done();
+        });
+    });
+
     describe('addPlayer()', () => {
         it('should increment the number of players in the room.', done => {
             let player1 = new Player("Joueur1", "1", room.getRoomInfo().roomID);
