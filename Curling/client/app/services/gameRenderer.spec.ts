@@ -27,7 +27,7 @@ describe('GameRenderer', () => {
     describe('init()', () => {
         it('should start the game renderer without a provided HTMLElement (that cannot be tested).', done => {
             testRenderer.init();
-            expect(testRenderer.isStarted).to.be.true;
+            expect(testRenderer.getIsStarted()).to.be.true;
             done();
         });
     });
@@ -36,7 +36,7 @@ describe('GameRenderer', () => {
         it('should add a Group object (like a Curling Stone) to its contained Scene.', done => {
             let testStone : CurlingStone = new CurlingStone(Team.Player);
             testRenderer.addToScene(testStone);
-            expect(testRenderer.scene.children).to.be.ok;
+            expect(testRenderer.getScene().children).to.be.ok;
             done();
         });
     });
@@ -44,7 +44,7 @@ describe('GameRenderer', () => {
     describe('showDirectionCurve()', () => {
         it ('should add a curveObject to the scene', done => {
             testRenderer.showDirectionCurve();
-            expect(testRenderer.scene.getObjectByName("directionalCurve")).to.exist;
+            expect(testRenderer.getScene().getObjectByName("directionalCurve")).to.exist;
             done();
         });
     });
@@ -52,7 +52,7 @@ describe('GameRenderer', () => {
     describe('hideDirectionCurve()', () => {
         it ('should remove a curveObject from the scene', done => {
             testRenderer.hideDirectionCurve();
-            expect(testRenderer.scene.getObjectByName("directionalCurve")).to.not.exist;
+            expect(testRenderer.getScene().getObjectByName("directionalCurve")).to.not.exist;
             done();
         });
     });

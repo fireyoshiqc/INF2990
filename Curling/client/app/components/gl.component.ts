@@ -34,7 +34,6 @@ export class GlComponent implements AfterViewInit {
                     // TODO : this.gameController.startAIHard();
                 }
 
-                // Spin orientation is counter-clockwise by default (false)
                 this.gameController.enterIdleState();
             });
         });
@@ -56,12 +55,15 @@ export class GlComponent implements AfterViewInit {
         this.gameController.onResize(event);
     }
 
-    // Player can switch camera view
     @HostListener('window:keydown', ['$event'])
     public keyboardInput(event: KeyboardEvent) {
+        // Player can switch camera view
         if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
             this.switchCamera();
         }
+
+        // Player can go to next throw or round
+        this.gameController.onKeyboardDown(event);
     }
 
     @HostListener('window:mousedown', ['$event'])
@@ -92,10 +94,6 @@ export class GlComponent implements AfterViewInit {
 
     public switchCamera(): void {
         this.gameController.switchCamera();
-    }
-
-    public nextRound(): void {
-        this.gameController.updateScore();
     }
 
     public startThrowStone(event: any): void {

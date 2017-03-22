@@ -30,7 +30,7 @@ describe('GameController', () => {
             gameController.init();
 
             expect(gameController.getCurrentState()).to.be.instanceOf(IdleState);
-            expect(gameController.getGameRenderer().isStarted).to.be.true;
+            expect(gameController.getGameRenderer().getIsStarted()).to.be.true;
 
             done();
         });
@@ -58,9 +58,48 @@ describe('GameController', () => {
         });
     });
 
+    describe('startNextRound()', () => {
+        it('should start a new round.', done => {
+            let rounds = gameController.getRoundsCompleted();
+            expect(rounds.findIndex(nextRound => nextRound === true)).to.be.equal(-1);
+            gameController.startNextRound();
+            expect(rounds.findIndex(nextRound => nextRound === true)).to.be.equal(0);
+            expect(gameController.getShowNextRoundMessage()).to.be.false;
+            expect(gameController.getStonesThrown()).to.be.equal(0);
+            done();
+        });
+    });
+
+    describe('startNextThrow()', () => {
+        it('should start a new throw.', done => {
+            gameController.startNextThrow();
+            expect(gameController.getShowNextThrowMessage()).to.be.false;
+            done();
+        });
+    });
+
+    describe('chooseNextFirstPlayer()', () => {
+        it('should choose the first player of the next round.', done => {
+            gameController.setPlayerScore(10);
+            gameController.setAiScore(5);
+            gameController.chooseNextFirstPlayer();
+            expect(gameController.getIsPlayerTurn()).to.be.true;
+
+            gameController.setPlayerScore(5);
+            gameController.setAiScore(10);
+            gameController.chooseNextFirstPlayer();
+            expect(gameController.getIsPlayerTurn()).to.be.false;
+
+            gameController.setPlayerScore(0);
+            gameController.setAiScore(0);
+            done();
+        });
+    });
+
     describe('scoring tests', () => {
         describe('setStonesForScoringTests()', () => {
             it('should add 8 curling stones to the game controller', done => {
+                gameController.resetStones();
                 gameController.setStonesForScoringTests();
 
                 expect(gameController.getCurlingStones().length).to.be.equal(8);
@@ -79,7 +118,7 @@ describe('GameController', () => {
 
         describe('sortStonesByDistance()', () => {
             it('should sort stones by distance to center of the rings.', done => {
-                gameController.getGameRenderer().physicsManager.sortStonesByDistance();
+                gameController.getGameRenderer().getPhysicsManager().sortStonesByDistance();
                 let sortStones = gameController.getCurlingStones();
 
                 expect(sortStones.length).to.be.equal(8);
@@ -116,58 +155,93 @@ describe('GameController', () => {
                 done();
             });
         });
+    });
 
-        describe('startThrowStone()', () => {
-            it('should switch gameController to choosingAngleState with clockwise spin', done => {
-                gameController.enterIdleState();
-                gameController.startThrowStone("true");
-                let index = gameController.getCurlingStones().length - 1;
-                expect(gameController.getCurlingStones()[index].getSpinOrientation()).to.be.equal(-1);
-                expect(gameController.getCurrentState()).to.be.instanceOf(ChoosingAngleState);
-                done();
-            });
-
-            it('should switch gameController to choosingAngleState with counterClockwise spin', done => {
-                gameController.enterIdleState();
-                gameController.startThrowStone("false");
-                let index = gameController.getCurlingStones().length - 1;
-                expect(gameController.getCurlingStones()[index].getSpinOrientation()).to.be.equal(1);
-                expect(gameController.getCurrentState()).to.be.instanceOf(ChoosingAngleState);
-                done();
-            });
+    describe('startThrowStone()', () => {
+        it('should switch gameController to choosingAngleState with clockwise spin', done => {
+            gameController.enterIdleState();
+            gameController.startThrowStone("true");
+            let index = gameController.getCurlingStones().length - 1;
+            expect(gameController.getCurlingStones()[index].getSpinOrientation()).to.be.equal(-1);
+            expect(gameController.getCurrentState()).to.be.instanceOf(ChoosingAngleState);
+            done();
         });
 
-        describe('enterShootingState()', () => {
-            it('should switch gameController to shootingState with the force bar visible', done => {
-                gameController.enterShootingState();
-                expect(gameController.isForceVisible()).to.be.true;
-                expect(gameController.getCurrentState()).to.be.instanceOf(ShootingState);
-                done();
-            });
+        it('should switch gameController to choosingAngleState with counterClockwise spin', done => {
+            gameController.enterIdleState();
+            gameController.startThrowStone("false");
+            let index = gameController.getCurlingStones().length - 1;
+            expect(gameController.getCurlingStones()[index].getSpinOrientation()).to.be.equal(1);
+            expect(gameController.getCurrentState()).to.be.instanceOf(ChoosingAngleState);
+            done();
         });
+    });
 
-        describe('enterSweepingState()', () => {
-            it('should switch gameController to sweepingState with the force bar visible', done => {
-                gameController.enterSweepingState();
-                expect(gameController.getCurrentState()).to.be.instanceOf(SweepingState);
-                done();
-            });
+    describe('enterShootingState()', () => {
+        it('should switch gameController to shootingState with the force bar visible', done => {
+            gameController.enterShootingState();
+            expect(gameController.isForceVisible()).to.be.true;
+            expect(gameController.getCurrentState()).to.be.instanceOf(ShootingState);
+            done();
         });
+    });
 
-         describe('enterIdleState()', () => {
-            it('should switch gameController to idleState with the force bar visible', done => {
-                gameController.enterIdleState();
-                expect(gameController.getCurrentState()).to.be.instanceOf(IdleState);
-                done();
-            });
+    describe('enterSweepingState()', () => {
+        it('should switch gameController to sweepingState with the force bar visible', done => {
+            gameController.enterSweepingState();
+            expect(gameController.getCurrentState()).to.be.instanceOf(SweepingState);
+            done();
         });
+    });
 
-        describe('enterChoosingAngleState()', () => {
-            it('should switch gameController to enterChoosingAngleState', done => {
-                gameController.enterChoosingAngleState();
-                expect(gameController.getCurrentState()).to.be.instanceOf(ChoosingAngleState);
-                done();
-            });
+    describe('enterIdleState()', () => {
+        it('should switch gameController to idleState with the force bar visible', done => {
+            gameController.enterIdleState();
+            expect(gameController.getCurrentState()).to.be.instanceOf(IdleState);
+            done();
+        });
+    });
+
+    describe('enterChoosingAngleState()', () => {
+        it('should switch gameController to enterChoosingAngleState', done => {
+            gameController.enterChoosingAngleState();
+            expect(gameController.getCurrentState()).to.be.instanceOf(ChoosingAngleState);
+            done();
+        });
+    });
+
+    describe('removeThrownStoneFromHUD()', () => {
+        it('should remove one stone from the active player\'s available curling stones.', done => {
+            expect(gameController.getPlayerCurlingStones().length).to.be.equal(8);
+            gameController.setIsPlayerTurn(true);
+            gameController.removeThrownStoneFromHUD();
+            expect(gameController.getPlayerCurlingStones().length).to.be.equal(7);
+            gameController.removeThrownStoneFromHUD();
+            gameController.removeThrownStoneFromHUD();
+            gameController.removeThrownStoneFromHUD();
+            gameController.removeThrownStoneFromHUD();
+            gameController.removeThrownStoneFromHUD();
+            gameController.removeThrownStoneFromHUD();
+            gameController.removeThrownStoneFromHUD();
+            expect(gameController.getPlayerCurlingStones().length).to.be.equal(0);
+            gameController.removeThrownStoneFromHUD();
+            expect(gameController.getPlayerCurlingStones().length).to.be.equal(0);
+
+            expect(gameController.getAICurlingStones().length).to.be.equal(8);
+            gameController.setIsPlayerTurn(false);
+            gameController.removeThrownStoneFromHUD();
+            expect(gameController.getAICurlingStones().length).to.be.equal(7);
+            gameController.removeThrownStoneFromHUD();
+            gameController.removeThrownStoneFromHUD();
+            gameController.removeThrownStoneFromHUD();
+            gameController.removeThrownStoneFromHUD();
+            gameController.removeThrownStoneFromHUD();
+            gameController.removeThrownStoneFromHUD();
+            gameController.removeThrownStoneFromHUD();
+            expect(gameController.getAICurlingStones().length).to.be.equal(0);
+            gameController.removeThrownStoneFromHUD();
+            expect(gameController.getAICurlingStones().length).to.be.equal(0);
+            done();
         });
     });
 });

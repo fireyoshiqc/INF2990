@@ -29,10 +29,12 @@ export class ChoosingAngleState implements IGameState {
         if (!this.waiting) {
             this.setMouse(event);
             let angle = this.gameController.getGameRenderer().calculateAngle(this.mouse);
+
             if (angle !== null) {
                 this.gameController.getGameRenderer().updateDirectionCurve(this.angle - angle);
                 this.angle = angle;
             }
+
             this.waiting = true;
             setTimeout(() => {
                 this.waiting = false;
@@ -40,7 +42,11 @@ export class ChoosingAngleState implements IGameState {
         }
     }
 
-   public setMouse(event: any): void {
+    public onKeyboardDown(event: KeyboardEvent): void {
+        // Do nothing
+    }
+
+    public setMouse(event: any): void {
         this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
         this.mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
     }

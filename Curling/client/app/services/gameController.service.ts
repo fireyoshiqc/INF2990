@@ -15,6 +15,7 @@ import { ShootingState } from './gameStates/ShootingState';
 import { IdleState } from './gameStates/IdleState';
 import { ChoosingAngleState } from './gameStates/ChoosingAngleState';
 import { SweepingState } from './gameStates/SweepingState';
+import { EndThrowState } from './gameStates/EndThrowState';
 
 export enum AIDifficulty {
     Easy,
@@ -25,24 +26,32 @@ export enum AIDifficulty {
 export class GameController {
     private playerName: string;
     private aiDifficulty: string;
+    private playerScore = 0;
+    private aiScore = 0;
+    private readonly MAX_THROWS = 16;
+    private playerCurlingStones = new Array<number>(this.MAX_THROWS / 2); // Number of available stones for player
+    private aiCurlingStones = new Array<number>(this.MAX_THROWS / 2); // Number of available stones for ai
 
     private gameRenderer: GameRenderer;
     private curlingStones: CurlingStone[] = [];
-    private playerScore = 0;
-    private aiScore = 0;
-    private shootingAngle: number;
 
     private idleState = new IdleState(this);
     private shootingState = new ShootingState(this);
     private choosingAngleState = new ChoosingAngleState(this);
     private sweepingState = new SweepingState(this);
+    private endThrowState = new EndThrowState(this);
     private gameState: IGameState = this.idleState;
 
+    private shootingAngle: number;
     private sliderDisabled = false;
     private forceVisible = false;
     private forceValue = 0;
 
     private isPlayerTurn = false;
+    private stonesThrown = 0;
+    private roundsCompleted = [false, false, false];
+    private showNextThrowMessage = false;
+    private showNextRoundMessage = false;
 
     public init(container?: HTMLElement): void {
         this.gameRenderer = new GameRenderer(this.curlingStones, this);
@@ -72,7 +81,7 @@ export class GameController {
         this.aiDifficulty = (difficulty === AIDifficulty.Easy) ? "CPU facile" : "CPU difficile";
     }
 
-    public addStone(team: Team, position: THREE.Vector3) {
+    public addStone(team: Team, position: THREE.Vector3): void {
         let stone = new CurlingStone(team, new THREE.Vector3(0, 0, 0), position);
         stone.init();
 
@@ -92,8 +101,24 @@ export class GameController {
         return this.playerScore;
     }
 
+    public setPlayerScore(score: number): void {
+        this.playerScore = score;
+    }
+
     public getAiScore(): number {
         return this.aiScore;
+    }
+
+    public setAiScore(score: number): void {
+        this.aiScore = score;
+    }
+
+    public getPlayerCurlingStones(): number[] {
+        return this.playerCurlingStones;
+    }
+
+    public getAICurlingStones(): number[] {
+        return this.aiCurlingStones;
     }
 
     public isForceVisible(): boolean {
@@ -108,6 +133,30 @@ export class GameController {
         this.forceValue = newForceValue;
     }
 
+    public getIsPlayerTurn(): boolean {
+        return this.isPlayerTurn;
+    }
+
+    public setIsPlayerTurn(isPlayerTurn: boolean): void {
+        this.isPlayerTurn = isPlayerTurn;
+    }
+
+    public getStonesThrown(): number {
+        return this.stonesThrown;
+    }
+
+    public getShowNextRoundMessage(): boolean {
+        return this.showNextRoundMessage;
+    }
+
+    public getShowNextThrowMessage(): boolean {
+        return this.showNextThrowMessage;
+    }
+
+    public getRoundsCompleted(): boolean[] {
+        return this.roundsCompleted;
+    }
+
     public onResize(event: any): void {
         this.gameRenderer.onResize(event);
     }
@@ -117,49 +166,52 @@ export class GameController {
     }
 
     public updateScore(): void {
-        let teamClosestStone = this.curlingStones[0].getTeam();
-        let index = 0;
-        let score = 0;
+        if (this.curlingStones.length > 0) {
+            let teamClosestStone = this.curlingStones[0].getTeam();
+            let index = 0;
+            let score = 0;
 
-        // Add points to the closest team for each stone that is inside of the rings
-        // And closer to the closest stone from the opposing team (in respect to the curling rules)
-        while (this.curlingStones.length > index &&
-            this.curlingStones[index].getTeam() === teamClosestStone &&
-            this.curlingStones[index].position.distanceTo(Rink.RINGS_CENTER) < Rink.OUTER_RADIUS) {
-            score++;
-            index++;
-        }
+            // Add points to the closest team for each stone that is inside of the rings
+            // And closer to the closest stone from the opposing team (in respect to the curling rules)
+            while (this.curlingStones.length > index &&
+                this.curlingStones[index].getTeam() === teamClosestStone &&
+                this.curlingStones[index].position.distanceTo(Rink.RINGS_CENTER) < Rink.OUTER_RADIUS) {
+                score++;
+                index++;
+            }
 
-        // Update score of closest team
-        if (teamClosestStone === Team.Player) {
-            this.playerScore += score;
-        } else {
-            this.aiScore += score;
+            // Update score of closest team
+            if (teamClosestStone === Team.Player) {
+                this.playerScore += score;
+            } else {
+                this.aiScore += score;
+            }
         }
     }
 
-    public onMousedown(event: any) {
+    public onMousedown(event: any): void {
         this.gameState.onMouseDown(event);
     }
 
-    public onMouseUp(event: any) {
+    public onMouseUp(event: any): void {
         this.gameState.onMouseUp(event);
     }
 
-    public onMouseMove(event: any) {
+    public onMouseMove(event: any): void {
         this.gameState.onMouseMove(event);
     }
 
-    public enterIdleState() {
-        // Generer la pierre
+    public onKeyboardDown(event: KeyboardEvent): void {
+        this.gameState.onKeyboardDown(event);
+    }
+
+    public enterIdleState(): void {
+        // Create stone for active player
         if (this.isPlayerTurn) {
             this.addStone(Team.Player, new THREE.Vector3(0, 0, 0));
         } else {
             this.addStone(Team.AI, new THREE.Vector3(0, 0, 0));
         }
-
-        // Changer de tour
-        this.isPlayerTurn = !this.isPlayerTurn;
 
         this.gameState = this.idleState;
         this.forceVisible = false;
@@ -181,7 +233,7 @@ export class GameController {
         }
     }
 
-    public enterChoosingAngleState() {
+    public enterChoosingAngleState(): void {
         document.body.style.cursor = "none";
         this.gameRenderer.updateDirectionCurve(0);
         this.gameRenderer.showDirectionCurve();
@@ -189,23 +241,83 @@ export class GameController {
         this.gameState = this.choosingAngleState;
     }
 
-    public enterShootingState() {
+    public enterShootingState(): void {
         this.forceVisible = true;
         this.gameState = this.shootingState;
     }
 
-    public enterSweepingState() {
+    public removeThrownStoneFromHUD(): void {
+        (this.isPlayerTurn) ? this.playerCurlingStones.pop() : this.aiCurlingStones.pop();
+    }
+
+    public enterSweepingState(): void {
         document.body.style.cursor = "default";
         this.gameRenderer.removeHighlightFromStones();
         this.gameRenderer.hideDirectionCurve();
         this.gameState = this.sweepingState;
     }
 
-    public isInSweepingState() {
+    public enterEndThrowState(): void {
+        this.gameState = this.endThrowState;
+        this.stonesThrown++;
+        this.forceVisible = false;
+
+        // Choose player for next throw
+        this.isPlayerTurn = !this.isPlayerTurn;
+
+        // Go to next round
+        if (this.stonesThrown === this.MAX_THROWS) {
+            this.updateScore();
+            this.showNextRoundMessage = true;
+            this.chooseNextFirstPlayer();
+        } else if (this.stonesThrown > 0) { // Go to next throw
+            this.showNextThrowMessage = true;
+        }
+    }
+
+    public chooseNextFirstPlayer(): void {
+        // If scores are equal, no changes required (first player for next round is already determined)
+        if (this.playerScore > this.aiScore) {
+            this.isPlayerTurn = true;
+        } else if (this.playerScore < this.aiScore) {
+            this.isPlayerTurn = false;
+        }
+    }
+
+    public startNextThrow(): void {
+        this.showNextThrowMessage = false;
+
+        this.enterIdleState();
+    }
+
+    public startNextRound(): void {
+        // Remove stones from rink
+        this.curlingStones.forEach(stone => {
+            stone.highlightOff();
+            stone.fadeOut();
+        });
+        this.curlingStones.splice(0);
+        this.stonesThrown = 0;
+
+        this.playerCurlingStones = new Array<number>(this.MAX_THROWS / 2);
+        this.aiCurlingStones = new Array<number>(this.MAX_THROWS / 2);
+
+        this.showNextRoundMessage = false;
+
+        let roundInProgress = this.roundsCompleted.findIndex(nextRound => nextRound === false);
+
+        if (roundInProgress !== -1) {
+            this.roundsCompleted[roundInProgress] = true;
+        }
+
+        this.enterIdleState();
+    }
+
+    public isInSweepingState(): boolean {
         return this.gameState === this.sweepingState;
     }
 
-    public setShootingAngle(angle: number) {
+    public setShootingAngle(angle: number): void {
         this.shootingAngle = angle;
     }
 
@@ -244,7 +356,7 @@ export class GameController {
     }
 
     public resetStones(): void {
-        this.curlingStones = [];
+        this.curlingStones.splice(0);
     }
 
     /***************** END TEST HELPER *******************/

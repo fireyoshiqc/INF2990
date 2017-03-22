@@ -72,15 +72,19 @@
             <div class="flex-item" id="hudContainer" fxFlex="90%" fxFlexFill>
                 <my-hud #hud 
                     (switchCameraEvent)="switchCamera()"
-                    (nextRoundEvent)="nextRound()"
                     (startThrowStoneEvent)="startThrowStone($event)"
                     [playerName]="getGameController().playerName"
                     [aiDifficulty]="getGameController().aiDifficulty"
                     [aiScore]="getGameController().aiScore"
                     [playerScore]="getGameController().playerScore"
+                    [playerCurlingStones]="getGameController().playerCurlingStones"
+                    [aiCurlingStones]="getGameController().aiCurlingStones"
                     [sliderDisabled]="getGameController().sliderDisabled"
                     [forceVisible]="getGameController().forceVisible"
-                    [forceValue]="getGameController().forceValue"></my-hud>
+                    [forceValue]="getGameController().forceValue"
+                    [roundsCompleted]="getGameController().roundsCompleted"
+                    [showNextThrowMessage]="getGameController().showNextThrowMessage"
+                    [showNextRoundMessage]="getGameController().showNextRoundMessage"></my-hud>
             </div>
 
         </div>

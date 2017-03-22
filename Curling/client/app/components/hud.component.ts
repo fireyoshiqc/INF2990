@@ -14,26 +14,38 @@ import { Component, Input, Output, EventEmitter, HostListener } from '@angular/c
 
 export class HUDComponent {
     private isDarkTheme = false;
-    private playerCurlingStones = new Array<number>(8); // Indicates the number of available curling stones for player
-    private aiCurlingStones = new Array<number>(8); // Indicates the number of available curling stones for ai
     private selectedSpin = false; // False : spin counterclockwise, true : spin clockwise
-    private rounds = [false, false, false]; // Indicates which rounds have been completed (true)
 
-    // Data modified in gameControler.service.ts
+    // Data modified in gameController.service.ts
     @Input() private playerName: string;
     @Input() private aiDifficulty: string;
-    @Input() private playerScore = 0;
-    @Input() private aiScore = 0;
+    @Input() private playerScore: number;
+    @Input() private aiScore: number;
+    @Input() private playerCurlingStones: number[]; // Indicates the number of available stones for player
+    @Input() private aiCurlingStones: number[]; // Indicates the number of available stones for ai
     @Input() private forceVisible = false;
     @Input() private forceValue = 0;
     @Input() private sliderDisabled = false;
+    @Input() private roundsCompleted: boolean[]; // Indicates which rounds have been completed (true)
+    @Input() private showNextThrowMessage: boolean;
+    @Input() private showNextRoundMessage: boolean;
 
     @Output()
     private switchCameraEvent: EventEmitter<string> = new EventEmitter();
     @Output()
-    private nextRoundEvent: EventEmitter<string> = new EventEmitter();
-    @Output()
     private startThrowStoneEvent: EventEmitter<string> = new EventEmitter();
+
+    constructor() {
+        this.playerName = "";
+        this.aiDifficulty = "";
+        this.playerScore = 0;
+        this.aiScore = 0;
+        this.playerCurlingStones = [];
+        this.aiCurlingStones = [];
+        this.roundsCompleted = [false, false, false];
+        this.showNextThrowMessage = false;
+        this.showNextRoundMessage = false;
+    }
 
     @HostListener('window:keydown', ['$event'])
     public keyboardInput(event: KeyboardEvent) {
@@ -53,12 +65,8 @@ export class HUDComponent {
         this.switchCameraEvent.emit('camera change');
     }
 
-    public sendNextRoundEvent(): void {
-        this.nextRoundEvent.emit('next round + calculate scores');
-    }
-
-    public sendThrowStoneEvent(selectedSpin: boolean): void {
-        this.startThrowStoneEvent.emit(selectedSpin + "");
+    public sendThrowStoneEvent(): void {
+        this.startThrowStoneEvent.emit(this.selectedSpin + "");
     }
 
     public getTheme(): boolean {
@@ -67,22 +75,6 @@ export class HUDComponent {
 
     public toggleTheme(): void {
         this.isDarkTheme = !this.isDarkTheme;
-    }
-
-    public getPlayerName(): string {
-        return this.playerName;
-    }
-
-    public getAIDDifficulty(): string {
-        return this.aiDifficulty;
-    }
-
-    public getPlayerScore(): number {
-        return this.playerScore;
-    }
-
-    public getAIScore(): number {
-        return this.aiScore;
     }
 
     public getForceValue(): number {
@@ -95,35 +87,5 @@ export class HUDComponent {
 
     public setForceVisibility(newForceVisibility: boolean): void {
         this.forceVisible = newForceVisibility;
-    }
-
-    public getRounds(): boolean[] {
-        return this.rounds;
-    }
-
-    public startNextRound(): void {
-        let roundInProgress = this.rounds.findIndex(nextRound => nextRound === false);
-
-        if (roundInProgress !== -1) {
-            this.rounds[roundInProgress] = true;
-        }
-    }
-
-    public getPlayerCurlingStones(): number[] {
-        return this.playerCurlingStones;
-    }
-
-    public removePlayerCurlingStone(): void {
-        this.sendThrowStoneEvent(this.selectedSpin);
-        this.playerCurlingStones.pop();
-    }
-
-    public getAICurlingStones(): number[] {
-        return this.aiCurlingStones;
-    }
-
-    public removeAICurlingStone(): void {
-        this.sendThrowStoneEvent(this.selectedSpin);
-        this.aiCurlingStones.pop();
     }
 }

@@ -23,11 +23,11 @@ export class GameRenderer {
     private readonly SPIN_MULTIPLIER = 2;
 
     private container: HTMLElement;
-    public scene: THREE.Scene; // TODO: Make a getter and adapt tests.
+    private scene: THREE.Scene;
     private renderer: THREE.WebGLRenderer;
-    public isStarted = false; // TODO: Make a getter and adapt tests.
+    private isStarted = false;
     private lightManager: LightManager;
-    public physicsManager: PhysicsManager; // TODO: Make a getter and adapt tests.
+    private physicsManager: PhysicsManager;
     private cameraManager: CameraManager;
     private clock: THREE.Clock;
     private raycaster: THREE.Raycaster;
@@ -40,12 +40,23 @@ export class GameRenderer {
     private curveAngle = 0;
     private rink: Rink;
 
-    // TODO : Remove when experimental test is done
     private activeStone: CurlingStone;
 
     constructor(curlingStones: CurlingStone[], gameController: GameController) {
         this.curlingStones = curlingStones;
         this.gameController = gameController;
+    }
+
+    public getScene(): THREE.Scene {
+        return this.scene;
+    }
+
+    public getIsStarted(): boolean {
+        return this.isStarted;
+    }
+
+    public getPhysicsManager(): PhysicsManager {
+        return this.physicsManager;
     }
 
     public init(container?: HTMLElement): void {
@@ -185,13 +196,15 @@ export class GameRenderer {
     }
 
     private highlightStonesWorthPoints() {
-        let teamClosestStone = this.curlingStones[0].getTeam();
-        let index = 0;
+        if (this.curlingStones.length > 0) {
+            let teamClosestStone = this.curlingStones[0].getTeam();
+            let index = 0;
 
-        while (this.curlingStones.length > index &&
-               this.curlingStones[index].getTeam() === teamClosestStone &&
-               this.curlingStones[index].position.distanceTo(Rink.RINGS_CENTER) < Rink.OUTER_RADIUS) {
-            this.curlingStones[index++].highlightOn();
+            while (this.curlingStones.length > index &&
+                this.curlingStones[index].getTeam() === teamClosestStone &&
+                this.curlingStones[index].position.distanceTo(Rink.RINGS_CENTER) < Rink.OUTER_RADIUS) {
+                this.curlingStones[index++].highlightOn();
+            }
         }
     }
 
@@ -269,7 +282,7 @@ export class GameRenderer {
         if (this.physicsManager.allStonesHaveStopped() && this.gameController.isInSweepingState()) {
             this.physicsManager.sortStonesByDistance();
             this.highlightStonesWorthPoints();
-            this.gameController.enterIdleState();
+            this.gameController.enterEndThrowState();
         }
     }
 }

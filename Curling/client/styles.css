@@ -242,9 +242,9 @@ button.mat-raised-button {
     height: 2%;
 }
 
-#playerThrowButton {
+#throwButton {
     position: absolute;
-    left: 2%;
+    left: 15%;
     bottom: 2%;
 }
 
@@ -252,24 +252,20 @@ button.mat-raised-button {
     position: absolute;
     bottom: 1%;
     color: black;
-    left: 35%;
+    left: 55%;
     right: 35%;
 }
 
-.mdSlideIcon.mat-icon {
-    height: 100%;
-    width: 1.5rem;
-    font-size: 1.5rem;
-}
-
-.mdSlideIcon {
-    float: left;
-}
-
-#aiThrowButton {
+#nextThrow {
     position: absolute;
-    right: 2%;
-    bottom: 2%;
+    bottom: 15%;
+    left: 10%;
+}
+
+#nextRound {
+    position: absolute;
+    bottom: 15%;
+    left: 10%;
 }
 
 /* right column */
@@ -289,10 +285,4 @@ button.mat-raised-button {
     position: absolute;
     right: 2%;
     bottom: 2%;
-}
-
-#nextRoundButton {
-    position: absolute;
-    left: 2%;
-    bottom: 2%;    
 }

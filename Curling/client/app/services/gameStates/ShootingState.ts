@@ -36,6 +36,7 @@ export class ShootingState implements IGameState {
             stone.getVelocity().add(new THREE.Vector3(this.initialSpeedCounter * Math.sin(angleInRad),
                                     0, -this.initialSpeedCounter * Math.cos(angleInRad)));
             this.initialSpeedCounter = 0;
+            this.gameController.removeThrownStoneFromHUD();
 
             this.gameController.enterSweepingState();
         } else {
@@ -47,6 +48,10 @@ export class ShootingState implements IGameState {
     }
 
     public onMouseMove(event: any): void {
+        // Do nothing
+    }
+
+    public onKeyboardDown(event: KeyboardEvent): void {
         // Do nothing
     }
 
