@@ -291,6 +291,13 @@ export class Rink extends THREE.Group {
 
     }
 
+    public cleanAllSpots() {
+        for (let spot of this.sweptSpotsBuffer) {
+            spot.position.z = 50;
+        }
+        this.sweptBufferIndex = 0;
+    }
+
     public getRinkLength(): number {
         return Rink.RINK_LENGTH;
     }

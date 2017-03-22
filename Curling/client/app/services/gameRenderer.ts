@@ -281,6 +281,9 @@ export class GameRenderer {
         this.renderer.render(this.scene, this.cameraManager.getCamera());
 
         if (this.physicsManager.allStonesHaveStopped() && this.gameController.isInSweepingState()) {
+            this.physicsManager.cleanDecayedSpots();
+            this.physicsManager.cleanSweptSpots();
+            this.rink.cleanAllSpots();
             this.physicsManager.sortStonesByDistance();
             this.highlightStonesWorthPoints();
             this.gameController.enterEndThrowState();
