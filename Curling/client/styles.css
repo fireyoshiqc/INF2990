@@ -1,11 +1,22 @@
 /**************/
+
+
 /* CURLING UI */
+
+
 /**************/
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    user-select: none;
+    -webkit-user-select: none;
+    /* Chrome all / Safari all */
+    -moz-user-select: none;
+    /* Firefox all */
+    -ms-user-select: none;
+    /* IE 10+ */
 }
 
 body,
@@ -26,18 +37,23 @@ md-sidenav-container {
     height: calc(100vh);
 }
 
+
 /*****************/
+
+
 /* name selector */
+
+
 /*****************/
 
 #nameBox {
     display: inline-flex;
-    margin-top:2%;
+    margin-top: 2%;
     margin-bottom: 2%;
 }
 
 .full-input {
-    width:100%;
+    width: 100%;
 }
 
 #checkIcon.material-icons.mat-icon {
@@ -51,7 +67,7 @@ md-sidenav-container {
 }
 
 #difficultyChoice {
-    margin-top:2%;
+    margin-top: 2%;
     margin-bottom: 2%;
 }
 
@@ -59,8 +75,13 @@ md-sidenav-container {
     padding-top: 3px;
 }
 
+
 /*******************/
+
+
 /* side navigation */
+
+
 /*******************/
 
 #buttonPanel button {
@@ -86,8 +107,13 @@ md-sidenav-container {
     width: 32px;
 }
 
+
 /***********/
+
+
 /* top bar */
+
+
 /***********/
 
 #topBar {
@@ -95,8 +121,8 @@ md-sidenav-container {
     padding-left: 16px;
     padding-right: 16px;
     box-shadow: 0px 4px 16px black;
-    position: fixed; 
-    z-index: 1; 
+    position: fixed;
+    z-index: 1;
     top: 0;
 }
 
@@ -144,14 +170,19 @@ md-sidenav-container {
     width: 32px;
 }
 
+
 /*******/
+
+
 /* HUD */
+
+
 /*******/
 
 #hudContainer {
     position: fixed;
     z-index: 1;
-    bottom:3px;
+    bottom: 3px;
 }
 
 .columnContainer {
@@ -161,7 +192,7 @@ md-sidenav-container {
 .column {
     border: 1px solid transparent;
     width: 100%;
-    height: 90vh;  
+    height: 90vh;
 }
 
 .defaultCursor:hover {
@@ -178,12 +209,13 @@ button.mat-raised-button {
     padding: 0.2rem 0.5rem 0.2rem 0.4rem;
 }
 
+
 /* left column */
 
 #playerNameTagContainer {
     position: absolute;
-    left: 2%; 
-    top: 2%;  
+    left: 2%;
+    top: 2%;
 }
 
 #playerNameTag.mat-card {
@@ -207,6 +239,7 @@ button.mat-raised-button {
     bottom: 2%;
 }
 
+
 /* center column */
 
 #scoreboardContainer {
@@ -226,7 +259,7 @@ button.mat-raised-button {
 #rounds {
     float: left;
     margin-left: 3%;
-    margin-right: 3%  
+    margin-right: 3%
 }
 
 #forceBarLabel {
@@ -268,10 +301,13 @@ button.mat-raised-button {
     left: 10%;
 }
 
+
 /* right column */
 
 #aiNameTagContainer {
-    position: absolute; right: 2%; top: 2%;
+    position: absolute;
+    right: 2%;
+    top: 2%;
 }
 
 #aiNameTag.mat-card {

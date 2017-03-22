@@ -61,7 +61,7 @@ describe('CameraManager', () => {
     describe('followStone()', () => {
         it('should make the camera point towards the observed vector plus an offset.', done => {
             camera.followStone(new THREE.Vector3(0, 0, 0));
-            expect(camera.getCamera().position.z).to.equal(5);
+            expect(camera.getCamera().position.z).to.equal(2);
             done();
         });
     });
