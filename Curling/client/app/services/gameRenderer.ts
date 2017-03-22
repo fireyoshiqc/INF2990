@@ -230,7 +230,7 @@ export class GameRenderer {
         let shortestDistance = Rink.RINK_LENGTH;
         this.curlingStones.forEach(curlingStone => {
             let angle = -Math.atan(curlingStone.position.x / curlingStone.position.z);
-            let distance = curlingStone.position.distanceTo(new THREE.Vector3(0, 0, 0));
+            let distance = curlingStone.position.distanceTo(new THREE.Vector3(0, 0, Rink.BACK_LINE / 2));
             let error = Math.asin(CurlingStone.MAX_RADIUS / distance);
             if (distance <= shortestDistance && this.curveAngle < angle + error && this.curveAngle > angle - error) {
                 shortestDistance = distance;
@@ -263,7 +263,7 @@ export class GameRenderer {
 
         if (this.totalTranslateOffset > this.DASH_SIZE * 2) {
             this.curveObject.position.x = 0;
-            this.curveObject.position.z = 0;
+            this.curveObject.position.z = Rink.BACK_LINE / 2;
             this.totalTranslateOffset = 0;
         }
 

@@ -209,9 +209,9 @@ export class GameController {
     public enterIdleState(): void {
         // Create stone for active player
         if (this.isPlayerTurn) {
-            this.addStone(Team.Player, new THREE.Vector3(0, 0, 0));
+            this.addStone(Team.Player, new THREE.Vector3(0, 0, Rink.BACK_LINE / 2));
         } else {
-            this.addStone(Team.AI, new THREE.Vector3(0, 0, 0));
+            this.addStone(Team.AI, new THREE.Vector3(0, 0, Rink.BACK_LINE / 2));
         }
 
         this.gameState = this.idleState;

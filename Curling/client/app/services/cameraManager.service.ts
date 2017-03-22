@@ -6,6 +6,7 @@
  */
 
 import { Injectable } from '@angular/core';
+import { Rink } from '../entities/rink';
 
 @Injectable()
 export class CameraManager {
@@ -15,12 +16,12 @@ export class CameraManager {
     private currentCamera: THREE.Camera;
     private usingPerspectiveCamera = true; // By default, use perspective camera
     private readonly ORTHO_ZOOM_FACTOR = 75 / 1920; // Determined experimentally
-    private readonly PERSPECTIVE_OFFSET = 5;
-    private readonly PERSPECTIVE_FOV = 45;
+    private readonly PERSPECTIVE_OFFSET = 2;
+    private readonly PERSPECTIVE_FOV = 70;
     private readonly PERSPECTIVE_NEAR = 1;
     private readonly PERSPECTIVE_FAR = 10000;
     private readonly PERSPECTIVE_Z_POS = 2;
-    private readonly PERSPECTIVE_Y_POS = 2;
+    private readonly PERSPECTIVE_Y_POS = 1;
     private readonly PERSPECTIVE_X_POS = -Math.PI / 18;
     private readonly ORTHO_NEAR = 1;
     private readonly ORTHO_FAR = 10000;
@@ -93,7 +94,27 @@ export class CameraManager {
     public followStone(position: THREE.Vector3): void {
         // Only follow stone when using perspective camera
         if (this.usingPerspectiveCamera) {
-            this.cameraPerspective.position.z = position.z + this.PERSPECTIVE_OFFSET;
+
+
+            if (position.z >= -(Rink.RINK_LENGTH + Rink.HOG_LINE)) {
+                this.cameraPerspective.position.z = position.z + this.PERSPECTIVE_OFFSET
+                    * (1 - position.z / (Rink.RINK_LENGTH + Rink.HOG_LINE));
+                this.cameraPerspective.position.y = this.PERSPECTIVE_Y_POS
+                    * (1 - position.z / (Rink.RINK_LENGTH + Rink.HOG_LINE));
+            }
+            else {
+                this.cameraPerspective.position.z = position.z + this.PERSPECTIVE_OFFSET
+                    * (2 - (position.z + (Rink.RINK_LENGTH + Rink.HOG_LINE))
+                        / (0.33 * (-Rink.HOG_LINE + Rink.BACK_LINE)));
+                this.cameraPerspective.position.y = this.PERSPECTIVE_Y_POS
+                    * (2 - (position.z + (Rink.RINK_LENGTH + Rink.HOG_LINE))
+                        / (0.25 * (-Rink.HOG_LINE + Rink.BACK_LINE)));
+
+            }
+
+            //this.cameraPerspective.position.x = position.x;
+            this.cameraPerspective.lookAt(new THREE.Vector3(0, 0, -(Rink.RINK_LENGTH / 2 + Rink.RINGS_OFFSET)));
+
         }
     }
 
