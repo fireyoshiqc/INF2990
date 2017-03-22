@@ -56,6 +56,10 @@ export class BoardTile {
         return this.bonusActive;
     }
 
+    public disactivateBonus() {
+        this.bonusActive = false;
+    }
+
     public putLetter(letter: Letter): void {
         this.letter = letter;
         this.empty = false;
@@ -73,7 +77,6 @@ export class BoardTile {
             point *= 3;
         }
 
-        this.bonusActive = false;
         return point;
     }
 }

@@ -43,6 +43,7 @@ describe('BoardTile', () => {
 
             expect(boardTile.countTilePoint()).to.equal(2);
             // Bonus desactive
+            boardTile.disactivateBonus();
             expect(boardTile.countTilePoint()).to.equal(1);
             done();
         });
@@ -53,6 +54,7 @@ describe('BoardTile', () => {
 
             expect(boardTile.countTilePoint()).to.equal(3);
             // Bonus desactive
+            boardTile.disactivateBonus();
             expect(boardTile.countTilePoint()).to.equal(1);
             done();
         });

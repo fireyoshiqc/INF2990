@@ -17,7 +17,7 @@ export class CommandPlaceWord extends Command {
         super(CommandType.PLACER, CommandStatus.VALID_COMMAND);
         this.row = "ABCDEFGHIJKLMNO".indexOf(row.toUpperCase());
         this.column = column - 1; // Column starts at 1
-        this.orientation = orientation;
+        this.orientation = orientation.toLowerCase();
         this.word = word;
     }
 

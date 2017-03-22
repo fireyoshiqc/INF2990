@@ -102,7 +102,7 @@ describe('ScrabbleGame', () => {
         });
     });
 
-     describe('isWordOverlappingCentralTile', () => {
+    describe('isWordOverlappingCentralTile', () => {
         it('should verify if the word is correctly overlapping the central tile.', done => {
             let c1 = new CommandPlaceWord("a", 1, "v", "Bac"); // B is a JOKER
             expect(scrabbleGame.isWordOverlappingCentralTile(c1)).to.be.false;
@@ -320,6 +320,46 @@ describe('ScrabbleGame', () => {
             expect(copyBoard[14][2].isEmpty()).to.not.be.equal(scrabbleGame.getBoard()[14][2].isEmpty());
             expect(copyBoard[14][2].isBonusActive()).to.be.equal(scrabbleGame.getBoard()[14][2].isBonusActive());
 
+            done();
+        });
+    });
+
+    describe('countAllNewWordsPoint', () => {
+        let scrabbleGame2 = new ScrabbleGame();
+        let wordList = scrabbleGame2.getWordList();
+
+        it('should count the right point when there is a word that contains joker', done => {
+            let c1 = new CommandPlaceWord("d", 8, "h", "Lame");
+            let word1 = { row: 3, column: 7, orientation: 'h', word: 'lame' };
+
+            scrabbleGame2.placeWord(c1);
+            wordList.updateNewWords(word1);
+
+            // Ne pas compter Joker
+            expect(scrabbleGame2.countAllNewWordsPoint()).to.equal(4);
+            scrabbleGame2.disactivateUsedTilesBonus();
+            done();
+        });
+
+        it('should count the right points when more than one newly formed words using the same bonus', done => {
+            let c2 = new CommandPlaceWord("d", 12, "v", "sapin");
+            let word2 = { row: 3, column: 11, orientation: 'v', word: 'sapin' };
+            let word3 = { row: 3, column: 7, orientation: 'h', word: 'lames' };
+
+            scrabbleGame2.placeWord(c2);
+            wordList.updateNewWords(word2);
+            wordList.updateNewWords(word3);
+
+            expect(scrabbleGame2.countAllNewWordsPoint()).to.equal(26);
+            scrabbleGame2.disactivateUsedTilesBonus();
+
+            let c4 = new CommandPlaceWord("d", 12, "v", "sapins");
+            let word4 = { row: 3, column: 11, orientation: 'v', word: 'sapins' };
+            scrabbleGame2.placeWord(c4);
+            wordList.updateNewWords(word4);
+
+            expect(scrabbleGame2.countAllNewWordsPoint()).to.equal(8);
+            scrabbleGame2.disactivateUsedTilesBonus();
             done();
         });
     });

@@ -10,18 +10,27 @@ import { CommandPlaceWord } from './commandPlaceWord';
 import { Letter } from './letter';
 import * as data from '../../assets/objects/scrabbleBoard.json';
 import { Dictionary } from '../modules/dictionary.module';
+import { WordList, IWord } from './wordList';
 
 export class ScrabbleGame {
     private board: BoardTile[][];
     private readonly BOARD_LENGTH = 15;
+    private wordList: WordList;
+    private usedTilesPerTurn: BoardTile[];
 
     constructor() {
         this.board = [];
         this.loadBoard();
+        this.wordList = new WordList();
+        this.usedTilesPerTurn = [];
     }
 
     public getBoard(): BoardTile[][] {
         return this.board;
+    }
+
+    public getWordList(): WordList {
+        return this.wordList;
     }
 
     private loadBoard() {
@@ -38,10 +47,10 @@ export class ScrabbleGame {
 
     private getTile(command: CommandPlaceWord, offset: number): BoardTile {
         if (command.getOrientation() === "h") {
-                return this.board[command.getRow()][command.getColumn() + offset];
-            } else {
-                return this.board[command.getRow() + offset][command.getColumn()];
-            }
+            return this.board[command.getRow()][command.getColumn() + offset];
+        } else {
+            return this.board[command.getRow() + offset][command.getColumn()];
+        }
     }
 
     public findLettersToRemove(command: CommandPlaceWord): string[] {
@@ -79,17 +88,27 @@ export class ScrabbleGame {
         }
     }
 
-    // The word point is counted before the word is placed
-    public countWordPoint(command: CommandPlaceWord): number {
+    public countAllNewWordsPoint(): number {
+        let score = 0;
+
+        this.wordList.getNewWords().forEach(word => {
+            score += this.countWordPoint(word);
+        });
+
+        this.wordList.updateExistingWords();
+        return score;
+    }
+
+    private countWordPoint(word: IWord): number {
         let score = 0;
         let tile;
         let doubleWord = false, tripleWord = false;
 
-        for (let i = 0; i < command.getWord().length; i++) {
-            if (command.getOrientation() === "h") {
-                tile = this.board[command.getRow()][command.getColumn() + i];
+        for (let i = 0; i < word.word.length; i++) {
+            if (word.orientation === "h") {
+                tile = this.board[word.row][word.column + i];
             } else {
-                tile = this.board[command.getRow() + i][command.getColumn()];
+                tile = this.board[word.row + i][word.column];
             }
 
             if (tile.getTileType() === "DoubleWord" || tile.getTileType() === "Center") {
@@ -99,6 +118,9 @@ export class ScrabbleGame {
             }
 
             score += tile.countTilePoint();
+
+            // Add tile to usedTiles
+            this.usedTilesPerTurn.push(tile);
         }
 
         // Traitement doubleWord / TripleWord
@@ -111,6 +133,14 @@ export class ScrabbleGame {
         }
 
         return score;
+    }
+
+    public disactivateUsedTilesBonus(): void {
+        this.usedTilesPerTurn.forEach(tile => {
+            tile.disactivateBonus();
+        });
+
+        this.usedTilesPerTurn = [];
     }
 
     public isWordInBounds(command: CommandPlaceWord): boolean {
@@ -180,7 +210,7 @@ export class ScrabbleGame {
         let upperColumnIndex = columnIndex;
 
         if (this.isTileInBounds(upperRowIndex, upperColumnIndex) &&
-           !this.board[upperRowIndex][upperColumnIndex].isEmpty()) {
+            !this.board[upperRowIndex][upperColumnIndex].isEmpty()) {
             return true;
         }
 
@@ -189,7 +219,7 @@ export class ScrabbleGame {
         let leftColumnIndex = columnIndex - 1;
 
         if (this.isTileInBounds(leftRowIndex, leftColumnIndex) &&
-           !this.board[leftRowIndex][leftColumnIndex].isEmpty()) {
+            !this.board[leftRowIndex][leftColumnIndex].isEmpty()) {
             return true;
         }
 
@@ -198,7 +228,7 @@ export class ScrabbleGame {
         let lowerColumnIndex = columnIndex;
 
         if (this.isTileInBounds(lowerRowIndex, lowerColumnIndex) &&
-           !this.board[lowerRowIndex][lowerColumnIndex].isEmpty()) {
+            !this.board[lowerRowIndex][lowerColumnIndex].isEmpty()) {
             return true;
         }
 
@@ -207,7 +237,7 @@ export class ScrabbleGame {
         let rightColumnIndex = columnIndex + 1;
 
         if (this.isTileInBounds(rightRowIndex, rightColumnIndex) &&
-           !this.board[rightRowIndex][rightColumnIndex].isEmpty()) {
+            !this.board[rightRowIndex][rightColumnIndex].isEmpty()) {
             return true;
         }
 
@@ -216,11 +246,10 @@ export class ScrabbleGame {
 
     private isTileInBounds(rowIndex: number, columnIndex: number): boolean {
         return rowIndex >= 0 && rowIndex < this.BOARD_LENGTH &&
-               columnIndex >= 0 && columnIndex < this.BOARD_LENGTH;
+            columnIndex >= 0 && columnIndex < this.BOARD_LENGTH;
     }
 
     public areAllHorizontalWordsValid(command: CommandPlaceWord): boolean {
-        // TODO : return the list of new words to help point calculation
 
         /* Temporarily add the word to the current board to verify
            if all words are valid. */
@@ -237,7 +266,7 @@ export class ScrabbleGame {
 
                     // Verify if the letter is the start of a horizontally oriented word
                     if (((j === 0) || this.board[i][j - 1].isEmpty()) && !this.board[i][j + 1].isEmpty()) {
-                        let word = tile.getLetter().getCharacter();
+                        let thisWord = tile.getLetter().getCharacter();
                         let column = j;
 
                         // Retrieve the next tile (to form the word) if in bounds
@@ -246,14 +275,18 @@ export class ScrabbleGame {
                             tile = this.board[i][column];
 
                             if (!tile.isEmpty()) {
-                                word += tile.getLetter().getCharacter();
+                                thisWord += tile.getLetter().getCharacter();
                             } else {
                                 break;
                             }
                         }
 
-                        if (!Dictionary.isWordValid(word)) {
+                        if (Dictionary.isWordValid(thisWord)) {
+                            // Ajouer le nouveau mot forme
+                            this.wordList.updateNewWords({ row: i, column: j, orientation: "h", word: thisWord });
+                        } else {
                             this.board = oldBoard;
+                            this.wordList.clearNewWords();
                             return false;
                         }
                     }
@@ -283,7 +316,7 @@ export class ScrabbleGame {
 
                     // Verify if the letter is the start of a vertically oriented word
                     if (((i === 0) || this.board[i - 1][j].isEmpty()) && !this.board[i + 1][j].isEmpty()) {
-                        let word = tile.getLetter().getCharacter();
+                        let thisWord = tile.getLetter().getCharacter();
                         let row = i;
 
                         // Retrieve the next tile (to form the word) if in bounds
@@ -292,14 +325,18 @@ export class ScrabbleGame {
                             tile = this.board[row][j];
 
                             if (!tile.isEmpty()) {
-                                word += tile.getLetter().getCharacter();
+                                thisWord += tile.getLetter().getCharacter();
                             } else {
                                 break;
                             }
                         }
 
-                        if (!Dictionary.isWordValid(word)) {
+                        if (Dictionary.isWordValid(thisWord)) {
+                            // Ajouter le mot valide au tableau
+                            this.wordList.updateNewWords({ row: i, column: j, orientation: "v", word: thisWord });
+                        } else {
                             this.board = oldBoard;
+                            this.wordList.clearNewWords();
                             return false;
                         }
                     }

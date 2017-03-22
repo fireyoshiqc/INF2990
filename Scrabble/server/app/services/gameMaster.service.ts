@@ -84,7 +84,6 @@ export class GameMaster {
             // TODO : Randomize letters and pick from stash
             for (let player of this.players) {
                 player.addLetters(this.stash.pickLetters(7));
-                console.log(player.getLettersRack());
             }
 
             // Start the timer
@@ -149,12 +148,15 @@ export class GameMaster {
 
                 // 4- Appeler countWordPoint du ScrabbleGame pour compter les points du mot
                 //    REGARDER SI LES LETTRES PLACÉS FORME UN AUTRE MOT ET COMPTER CES POINTS AUSSI
-                let score = this.scrabbleGame.countWordPoint(command);
+                let score = this.scrabbleGame.countAllNewWordsPoint();
 
                 // Si le player réussit un "Bingo", on ajout un bonus de 50 points
                 if (this.activePlayer.isRackEmpty() === true) {
                     score += this.BINGO_BONUS;
                 }
+
+                // Desactiver les tiles bonus utilise pour ce tour
+                this.scrabbleGame.disactivateUsedTilesBonus();
 
                 // 5- Update le score du player
                 this.activePlayer.addPoints(score);
