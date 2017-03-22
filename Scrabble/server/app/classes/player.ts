@@ -6,6 +6,7 @@
  */
 
 import { Letter } from './letter';
+import { CommandExecutionStatus } from '../services/gameMaster.service';
 
 export class Player {
     private name: string;
@@ -71,7 +72,7 @@ export class Player {
 
     // Try to remove the letters from the player's rack
     // Return false if a letter could not be removed from the rack
-    public removeLetters(letters: string[]): boolean {
+    public removeLetters(letters: string[]): CommandExecutionStatus {
         // Save the old rack (deep copy)
         let oldRack = new Array<Letter>();
         this.lettersRack.forEach(letter => oldRack.push(new Letter(letter.getCharacter())));
@@ -87,10 +88,10 @@ export class Player {
                 this.lettersRack.splice(letterIndex, 1);
             } else {
                 this.lettersRack = oldRack;
-                return false;
+                return CommandExecutionStatus.ERROR_REMOVE_LETTERS;
             }
         }
 
-        return true;
+        return CommandExecutionStatus.SUCCESS_REMOVE_LETTERS;
     }
 }
