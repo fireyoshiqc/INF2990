@@ -139,6 +139,7 @@ export class Rink extends THREE.Group {
             Rink.RINK_HEIGHT, Rink.RINK_LENGTH, 32);
 
         let rink: THREE.Mesh = new THREE.Mesh(rinkGeometry, rinkMaterial);
+        rink.name = "whiteice";
 
         this.add(rink);
 

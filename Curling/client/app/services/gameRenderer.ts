@@ -165,7 +165,8 @@ export class GameRenderer {
 
     public checkIfMouseOnIce(mouse: THREE.Vector2): THREE.Intersection[] {
         this.raycaster.setFromCamera(mouse, this.cameraManager.getCamera());
-        let intersects = this.raycaster.intersectObject(this.scene.getObjectByName("rink"), true);
+        let intersects = this.raycaster.intersectObject(this.scene
+            .getObjectByName("rink").getChildByName("whiteice"), true);
         return intersects;
     }
 
