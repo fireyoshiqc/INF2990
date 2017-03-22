@@ -29,7 +29,6 @@ describe('WordList', () => {
 
     describe('updateNewWords', () => {
         it('should insert all the new words for the first time.', done => {
-
             wordList.updateNewWords(word1);
             expect(wordList.getNewWords().length).to.be.equal(1);
             expect(wordList.getNewWords()[0].column).to.be.equal(word1.column);
@@ -51,14 +50,13 @@ describe('WordList', () => {
 
     describe('updateExistingWords', () => {
         it('should update the existingWordsList.', done => {
-
             wordList.updateExistingWords();
+
             expect(wordList.getExistingWords().length).to.be.equal(4);
             expect(wordList.getExistingWords()[0].column).to.be.equal(word1.column);
             expect(wordList.getExistingWords()[1].column).to.be.equal(word2.column);
             expect(wordList.getExistingWords()[2].column).to.be.equal(word3.column);
             expect(wordList.getExistingWords()[3].column).to.be.equal(word4.column);
-
             expect(wordList.getNewWords()).to.be.empty;
             done();
         });
@@ -66,7 +64,6 @@ describe('WordList', () => {
 
     describe('updateNewWords', () => {
         it('should only insert the new words.', done => {
-
             wordList.updateNewWords(word1);
             expect(wordList.getNewWords().length).to.be.empty;
 
@@ -87,11 +84,19 @@ describe('WordList', () => {
 
     describe('updateExistingWords', () => {
         it('should update the existingWordsList after new insertions.', done => {
-
             wordList.updateExistingWords();
+
             expect(wordList.getExistingWords().length).to.be.equal(6);
             expect(wordList.getExistingWords()[4].column).to.be.equal(word5.column);
             expect(wordList.getExistingWords()[5].column).to.be.equal(word6.column);
+            expect(wordList.getNewWords()).to.be.empty;
+            done();
+        });
+    });
+
+    describe('clearNewWords', () => {
+        it('should empty the new words list.', done => {
+            wordList.clearNewWords();
 
             expect(wordList.getNewWords()).to.be.empty;
             done();

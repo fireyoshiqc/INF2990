@@ -22,10 +22,10 @@ describe('BoardComponent', () => {
         });
     });
 
-    describe('PlaceWord()', () => {
+    describe('placeWord()', () => {
         it('should place a word on the board', done => {
             let placeWordCommand = {row : 0, column : 0, orientation : "h", word : "bonjour"};
-            comp.placeWord(placeWordCommand);
+            comp.updateBoard(placeWordCommand);
 
             expect(comp.getBoard()[0][0].getTexture()).to.be.equal("../../assets/textures/letters/B.png");
             expect(comp.getBoard()[0][1].getTexture()).to.be.equal("../../assets/textures/letters/O.png");
@@ -34,6 +34,17 @@ describe('BoardComponent', () => {
             expect(comp.getBoard()[0][4].getTexture()).to.be.equal("../../assets/textures/letters/O.png");
             expect(comp.getBoard()[0][5].getTexture()).to.be.equal("../../assets/textures/letters/U.png");
             expect(comp.getBoard()[0][6].getTexture()).to.be.equal("../../assets/textures/letters/R.png");
+
+            let placeWordCommand2 = {row : 0, column : 0, orientation : "h", word : "bo---u-"};
+            comp.updateBoard(placeWordCommand2);
+
+            expect(comp.getBoard()[0][0].getTexture()).to.be.equal("../../assets/textures/letters/B.png");
+            expect(comp.getBoard()[0][1].getTexture()).to.be.equal("../../assets/textures/letters/O.png");
+            expect(comp.getBoard()[0][2].getTexture()).to.be.equal("../../assets/textures/board/Basic.png");
+            expect(comp.getBoard()[0][3].getTexture()).to.be.equal("../../assets/textures/board/Basic.png");
+            expect(comp.getBoard()[0][4].getTexture()).to.be.equal("../../assets/textures/board/Basic.png");
+            expect(comp.getBoard()[0][5].getTexture()).to.be.equal("../../assets/textures/letters/U.png");
+            expect(comp.getBoard()[0][6].getTexture()).to.be.equal("../../assets/textures/board/Basic.png");
 
             done();
         });

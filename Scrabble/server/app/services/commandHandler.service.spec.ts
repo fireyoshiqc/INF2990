@@ -1,5 +1,5 @@
 /**
- * commandParser.service.spec.ts
+ * CommandHandler.service.spec.ts
  *
  * @authors Pierre To et Mikael Ferland
  * @date 2017/03/05
@@ -10,12 +10,12 @@ import { RoomManager } from '../services/roomManager.service';
 
 import { expect } from 'chai';
 
-describe('CommandParser', () => {
+describe('CommandHandler', () => {
     let roomManager = new RoomManager();
     let commandHandler = new CommandHandler(null, roomManager);
 
     describe('Default constructor ', () => {
-        it('should construct a CommandParser object.', done => {
+        it('should construct a CommandHandler object.', done => {
             expect(commandHandler).to.not.be.undefined;
             expect(commandHandler).to.be.an.instanceOf(CommandHandler);
             done();

@@ -33,4 +33,14 @@ describe('BoardTile', () => {
             done();
         });
     });
+
+    describe('removeLetter()', () => {
+        it('should put a Letter on a BoardTile object.', done => {
+            let letter = new Letter("A");
+            expect(boardTile.getTexture()).to.equal(letter.getTexture());
+            boardTile.removeLetter();
+            expect(boardTile.getTexture()).to.be.equal("../../assets/textures/board/Basic.png");
+            done();
+        });
+    });
 });

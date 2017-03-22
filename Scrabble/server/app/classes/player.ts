@@ -58,12 +58,6 @@ export class Player {
         return this.LETTERS_RACK_SIZE;
     }
 
-    public addLetter(letter: Letter): void {
-        if (this.lettersRack.length < this.LETTERS_RACK_SIZE) {
-            this.lettersRack.push(letter);
-        }
-    }
-
     public addLetters(letters: Array<Letter>): void {
         if (this.lettersRack.length + letters.length <= this.LETTERS_RACK_SIZE) {
             this.lettersRack = this.lettersRack.concat(letters);

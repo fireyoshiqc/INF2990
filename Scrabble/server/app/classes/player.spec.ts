@@ -23,6 +23,8 @@ describe('Player', () => {
             expect(player.getSocketId()).to.be.equal("SocketID");
             expect(player.getRoomId()).to.be.equal(1);
             expect(player.getPoints()).to.be.equal(0);
+            expect(player.isRackEmpty()).to.be.true;
+            expect(player.getMaxRackSize()).to.be.equal(7);
             done();
         });
     });
@@ -35,21 +37,27 @@ describe('Player', () => {
         });
     });
 
-    describe('addLetter()', () => {
+    describe('addLetters()', () => {
         it('should add 7 letters to the letters rack of the player.', done => {
-            player.addLetter(new Letter("JOKER"));
-            player.addLetter(new Letter("b"));
-            player.addLetter(new Letter("c"));
-            player.addLetter(new Letter("d"));
-            player.addLetter(new Letter("e"));
-            player.addLetter(new Letter("f"));
-            player.addLetter(new Letter("g"));
+            let letters = [];
+            letters.push(new Letter("JOKER"));
+            letters.push(new Letter("b"));
+            letters.push(new Letter("c"));
+            letters.push(new Letter("d"));
+            letters.push(new Letter("e"));
+            letters.push(new Letter("f"));
+            letters.push(new Letter("g"));
+            player.addLetters(letters);
+
             expect(player.getLettersRack()).to.eql(["JOKER", "B", "C", "D", "E", "F", "G"]);
             done();
         });
 
         it('should not add a 8th letter to the letters rack of the player.', done => {
-            player.addLetter(new Letter("x"));
+            let letters = [];
+            letters.push(new Letter("x"));
+            player.addLetters(letters);
+
             expect(player.getLettersRack()).to.eql(["JOKER", "B", "C", "D", "E", "F", "G"]);
             done();
         });

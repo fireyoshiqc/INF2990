@@ -6,6 +6,7 @@
  */
 
 import { RoomManager } from './roomManager.service';
+import { Player } from '../classes/player';
 
 import { expect } from 'chai';
 
@@ -59,11 +60,28 @@ describe('RoomManager', () => {
         });
     });
 
-    describe('joinRoom()', () => {
+    describe('createRoom()', () => {
          it('should locate and return an existing room with the given capacity.', done => {
              expect(roomManager.createRoom(2).getRoomInfo().roomID).to.be.equal(0);
              expect(roomManager.createRoom(3).getRoomInfo().roomID).to.be.equal(1);
              expect(roomManager.createRoom(4).getRoomInfo().roomID).to.be.equal(2);
+             done();
+         });
+     });
+
+    describe('leaveRoom()', () => {
+         it('should remove a player from a room.', done => {
+             let room = roomManager.createRoom(2);
+             let player = new Player("test", "1", room.getRoomInfo().roomID);
+             room.addPlayer(player);
+
+             expect(room.getPlayers()[0].getName()).to.be.equal("test");
+             expect(roomManager.getExistingRooms().length).to.be.equal(3);
+
+             roomManager.leaveRoom(player.getName(), room.getRoomInfo().roomID);
+
+             expect(room.isEmpty()).to.be.true;
+             expect(roomManager.getExistingRooms().length).to.be.equal(2);
              done();
          });
      });

@@ -61,14 +61,22 @@ export class BoardComponent implements OnInit {
             });
     }
 
-    public placeWord(command: ICommandPlaceWord): void {
+    public updateBoard(command: ICommandPlaceWord): void {
         let word = command.word;
+        let rowIndex: number;
+        let columnIndex: number;
+        let tile: BoardTile;
 
          for (let i = 0; i < word.length; i++) {
-            if (command.orientation === "h") {
-                this.board[command.row][command.column + i].putLetter(new Letter(word[i]));
-            } else {
-                this.board[command.row + i][command.column].putLetter(new Letter(word[i]));
+            rowIndex = (command.orientation === "h") ? command.row : (command.row + i);
+            columnIndex = (command.orientation === "h") ? (command.column + i) : command.column;
+            tile = this.board[rowIndex][columnIndex];
+
+            // Remove letter from board
+            if (word[i] === "-") {
+                tile.removeLetter();
+            } else { // Add letter to board
+                tile.putLetter(new Letter(word[i]));
             }
          }
     }

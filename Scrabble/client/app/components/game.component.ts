@@ -23,7 +23,7 @@ export class GameComponent implements OnInit {
         this.socket = SocketHandler.requestSocket(this.HOST_NAME + this.SERVER_PORT);
 
         this.socket.on("wcPlaceWord", (command: ICommandPlaceWord) => {
-            this.boardChild.placeWord(command);
+            this.boardChild.updateBoard(command);
         });
 
         this.socket.on("wcUpdateRack", (letters: string[]) => {
