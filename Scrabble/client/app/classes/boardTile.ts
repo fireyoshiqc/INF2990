@@ -39,4 +39,8 @@ export class BoardTile {
     public putLetter(letter: Letter): void {
         this.texture = letter.getTexture();
     }
+
+    public removeLetter(): void {
+        this.texture = "../../assets/textures/board/" + this.tileType + ".png";
+    }
 }
