@@ -14,9 +14,25 @@ import { LetterStash } from './letterStash.service';
 import { StopwatchService } from './stopwatch.service';
 
 export enum CommandExecutionStatus {
-    SUCCESS,
+    SUCCESS, // Command executed successfully
     ERROR, // Command cannot be executed
-    WAIT // A player is trying to play when it's not his turn
+    WAIT, // A player is trying to play when it's not his turn
+
+    // Execution status related to place word command
+    SUCCESS_PLACE_WORD_CAN_PLACE_WORD,
+    ERROR_PLACE_WORD_OUT_OF_BOUNDS,
+    ERROR_PLACE_WORD_INCORRECT_OVERLAPPING,
+    ERROR_PLACE_WORD_CENTRAL_TILE,
+    ERROR_PLACE_WORD_ADJACENT_TILE,
+    ERROR_PLACE_WORD_INVALID_WORDS,
+
+    // Execution status related to change letter command
+    SUCCESS_CHANGE_LETTER_STASH_ENOUGH,
+    ERROR_CHANGE_LETTER_STASH_EMPTY,
+
+    // Execution status related to remove letters from player's rack
+    SUCCESS_REMOVE_LETTERS,
+    ERROR_REMOVE_LETTERS
 }
 
 export interface ITurnInfo {
@@ -137,11 +153,15 @@ export class GameMaster {
 
     private placeWord(command: CommandPlaceWord): CommandExecutionStatus {
         // 1- Validation du placement du mot
-        if (this.canPlaceWord(command)) {
+        let commandExecutionStatus = this.canPlaceWord(command);
 
-            let lettersToRemove = this.scrabbleGame.findLettersToRemove(command);
+        if (commandExecutionStatus === CommandExecutionStatus.SUCCESS_PLACE_WORD_CAN_PLACE_WORD) {
+
             // 2- Vérifier s'il est possible d'enlever les lettres manquantes du plateau de jeu du rack du joueur
-            if (this.activePlayer.removeLetters(lettersToRemove)) {
+            let lettersToRemove = this.scrabbleGame.findLettersToRemove(command);
+            commandExecutionStatus = this.activePlayer.removeLetters(lettersToRemove);
+
+            if (commandExecutionStatus === CommandExecutionStatus.SUCCESS_REMOVE_LETTERS) {
 
                 // 3- Placer les lettres sur le plateau de jeu
                 this.scrabbleGame.placeWord(command);
@@ -177,24 +197,59 @@ export class GameMaster {
             }
         }
 
-        return CommandExecutionStatus.ERROR;
+        return commandExecutionStatus;
+    }
+
+    private canPlaceWord(command: CommandPlaceWord): CommandExecutionStatus {
+        // 1- Verify if word can be physically placed on the board
+        if (!this.scrabbleGame.isWordInBounds(command)) {
+            return CommandExecutionStatus.ERROR_PLACE_WORD_OUT_OF_BOUNDS;
+        }
+
+        // 2- Verify if word is correctly overlapping other words on the board
+        if (!this.scrabbleGame.isWordCorrectlyOverlapping(command)) {
+            return CommandExecutionStatus.ERROR_PLACE_WORD_INCORRECT_OVERLAPPING;
+        }
+
+        // 3a- During first turn, verify if a letter in the word is on the central tile H8
+        if (this.isFirstTurn && !this.scrabbleGame.isWordOverlappingCentralTile(command)) {
+            return CommandExecutionStatus.ERROR_PLACE_WORD_CENTRAL_TILE;
+        } else if (!this.isFirstTurn && !this.scrabbleGame.isWordAdjacentToAnother(command)) {
+            // 3b- Verify if a letter in the word is adjacent to another letter on the board
+            return CommandExecutionStatus.ERROR_PLACE_WORD_ADJACENT_TILE;
+        }
+
+        // 4- Verify if the newly formed words are valid
+        if (!this.scrabbleGame.areAllHorizontalWordsValid(command) ||
+            !this.scrabbleGame.areAllVerticalWordsValid(command)) {
+            return CommandExecutionStatus.ERROR_PLACE_WORD_INVALID_WORDS;
+        }
+
+        return CommandExecutionStatus.SUCCESS_PLACE_WORD_CAN_PLACE_WORD;
     }
 
     private changeLetter(command: CommandChangeLetter): CommandExecutionStatus {
         const lettersToExchange = command.getLetters().split('');
 
         // Verify that there are enough letters left in the stash
-        if (this.stash.getAmountLeft() >= lettersToExchange.length) {
+        let commandExecutionStatus = (this.stash.getAmountLeft() >= lettersToExchange.length) ?
+            CommandExecutionStatus.SUCCESS_CHANGE_LETTER_STASH_ENOUGH :
+            CommandExecutionStatus.ERROR_CHANGE_LETTER_STASH_EMPTY;
 
-            // Verifiy that the player has the letters he/she wants to exchange (refer to removeLetters())
-            if (this.activePlayer.removeLetters(lettersToExchange)) {
+        if (commandExecutionStatus === CommandExecutionStatus.SUCCESS_CHANGE_LETTER_STASH_ENOUGH) {
+
+            // Verify that the player has the letters he/she wants to exchange (refer to removeLetters())
+            commandExecutionStatus = this.activePlayer.removeLetters(lettersToExchange);
+
+            if (commandExecutionStatus === CommandExecutionStatus.SUCCESS_REMOVE_LETTERS) {
                 let exchangedLetters = this.stash.exchangeLetters(lettersToExchange);
                 this.activePlayer.addLetters(exchangedLetters);
                 this.endTurn();
                 return CommandExecutionStatus.SUCCESS;
             }
         }
-        return CommandExecutionStatus.ERROR;
+
+        return commandExecutionStatus;
     }
 
     private checkTurnOver() {
@@ -219,33 +274,5 @@ export class GameMaster {
         this.stopwatch.restart();
 
         return CommandExecutionStatus.SUCCESS;
-    }
-
-    private canPlaceWord(command: CommandPlaceWord): boolean {
-        // 1- Verify if word can be physically placed on the board
-        if (!this.scrabbleGame.isWordInBounds(command)) {
-            return false;
-        }
-
-        // 2- Verify if word is correctly overlapping other words on the board
-        if (!this.scrabbleGame.isWordCorrectlyOverlapping(command)) {
-            return false;
-        }
-
-        // 3a- During first turn, verify if a letter in the word is on the central tile H8
-        if (this.isFirstTurn && !this.scrabbleGame.isWordOverlappingCentralTile(command)) {
-            return false;
-        } else if (!this.isFirstTurn && !this.scrabbleGame.isWordAdjacentToAnother(command)) {
-            // 3b- Verify if a letter in the word is adjacent to another letter on the board
-            return false;
-        }
-
-        // 4- Verify if the newly formed words are valid
-        if (!this.scrabbleGame.areAllHorizontalWordsValid(command) ||
-            !this.scrabbleGame.areAllVerticalWordsValid(command)) {
-            return false;
-        }
-
-        return true;
     }
 }

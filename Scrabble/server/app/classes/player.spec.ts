@@ -7,6 +7,7 @@
 
 import { Player } from './player';
 import { Letter } from './letter';
+import { CommandExecutionStatus } from '../services/gameMaster.service';
 
 import { expect } from 'chai';
 
@@ -56,13 +57,13 @@ describe('Player', () => {
 
     describe('removeLetters()', () => {
         it('should remove a letter from the letters rack of the player.', done => {
-            expect(player.removeLetters(["JOKER", "B"])).to.be.true;
+            expect(player.removeLetters(["JOKER", "B"])).to.be.equal(CommandExecutionStatus.SUCCESS_REMOVE_LETTERS);
             expect(player.getLettersRack()).to.eql(["C", "D", "E", "F", "G"]);
             done();
         });
 
         it('should not remove a letter from the letters rack of the player.', done => {
-            expect(player.removeLetters(["C", "D", "Z"])).to.be.false;
+            expect(player.removeLetters(["C", "D", "Z"])).to.be.equal(CommandExecutionStatus.ERROR_REMOVE_LETTERS);
             expect(player.getLettersRack()).to.eql(["C", "D", "E", "F", "G"]);
             done();
         });

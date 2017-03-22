@@ -16,6 +16,22 @@ export class CommandHandler {
     private sio: SocketIO.Server;
     private roomManager: RoomManager;
     private commandParser: CommandParser;
+    private readonly commandResponseMessage =
+    [
+        "", // CommandExecutionStatus.SUCCESS
+        "ERREUR : Il est impossible d'exécuter cette commande. Voir !aide", // CommandExecutionStatus.ERROR
+        "ERREUR : Veuillez attendre votre tour.", // CommandExecutionStatus.WAIT
+        "", // SUCCESS_PLACE_WORD_CAN_PLACE_WORD
+        "ERREUR : Votre mot sort du plateau de jeu.", // CommandExecutionStatus.ERROR_PLACE_WORD_OUT_OF_BOUNDS
+        "ERREUR : Votre mot remplace des lettres sur le plateau de jeu.", // ERROR_PLACE_WORD_INCORRECT_OVERLAPPING,
+        "ERREUR : Votre mot ne touche pas la case centrale (premier tour).", // ERROR_PLACE_WORD_CENTRAL_TILE,
+        "ERREUR : Votre mot ne touche pas une lettre sur le plateau de jeu.", // ERROR_PLACE_WORD_ADJACENT_TILE,
+        "ERREUR : Des mots nouvellement formés sont invalides. Le tour est terminé.", // ERROR_PLACE_WORD_INVALID_WORDS
+        "", // SUCCESS_CHANGE_LETTER_STASH_ENOUGH
+        "ERREUR : La réserve de lettres est vide.", // ERROR_CHANGE_LETTER_STASH_EMPTY
+        "", // SUCCESS_REMOVE_LETTERS
+        "ERREUR : Vous n'avez pas les lettres requises sur votre chevalet." // ERROR_REMOVE_LETTERS
+    ];
 
     constructor(sio: SocketIO.Server, rmanager: RoomManager) {
         this.sio = sio;
@@ -27,6 +43,8 @@ export class CommandHandler {
         return this.commandParser.isACommand(msg);
     }
 
+    // Create a command
+    // If command syntax is not valid or command is undefined : send a message with SocketIO
     public handleCommand(msg: string, player: Player): void {
         let command = this.commandParser.createCommand(msg);
         let commandResponse = "";
@@ -46,6 +64,8 @@ export class CommandHandler {
         }
     }
 
+    // Execute a command with the GameMaster (each game Room contains a GameMaster)
+    // If the execution failed : send a message with SocketID
     private executeCommand(msg: string, player: Player, command: Command): void {
         // Command is valid, execute it with the game master of the room
         let room = this.roomManager.findRoom(player.getRoomId());
@@ -58,11 +78,15 @@ export class CommandHandler {
                 break;
 
             case CommandExecutionStatus.ERROR:
-                commandResponse = "ERREUR : Il est impossible d'exécuter cette commande.";
-                break;
-
             case CommandExecutionStatus.WAIT:
-                commandResponse = "ERREUR : Veuillez attendre votre tour";
+            case CommandExecutionStatus.ERROR_PLACE_WORD_OUT_OF_BOUNDS:
+            case CommandExecutionStatus.ERROR_PLACE_WORD_INCORRECT_OVERLAPPING:
+            case CommandExecutionStatus.ERROR_PLACE_WORD_CENTRAL_TILE:
+            case CommandExecutionStatus.ERROR_PLACE_WORD_ADJACENT_TILE:
+            case CommandExecutionStatus.ERROR_PLACE_WORD_INVALID_WORDS:
+            case CommandExecutionStatus.ERROR_CHANGE_LETTER_STASH_EMPTY:
+            case CommandExecutionStatus.ERROR_REMOVE_LETTERS:
+                commandResponse = this.commandResponseMessage[executionStatus];
                 break;
 
             default:
@@ -86,7 +110,6 @@ export class CommandHandler {
                 break;
 
             case CommandType.PASSER:
-                // TODO : Si vous avez une fonction pour avertir le client d'un changement, faites-le ici
                 break;
 
             case CommandType.AIDE:
