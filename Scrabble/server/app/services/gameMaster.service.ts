@@ -59,6 +59,7 @@ export class GameMaster {
     private stopwatch: StopwatchService;
     private turnInfo: ITurnInfo;
     private isFirstTurn: boolean;
+    private nextTurn: boolean;
 
     private readonly BINGO_BONUS = 50;
     private readonly RANDOMIZE_SWAP_COUNT = 20;
@@ -143,6 +144,7 @@ export class GameMaster {
             this.turnInfo.seconds = this.stopwatch.getSecondsLeft();
             this.checkTurnOver();
 
+            this.nextTurn = false;
             this.gameStarted = true;
         }
     }
@@ -314,6 +316,7 @@ export class GameMaster {
     private endTurn(): CommandExecutionStatus {
         let playerIndex = this.players.findIndex(p => p.getSocketId() === this.activePlayer.getSocketId());
         this.activePlayer = this.players[(playerIndex + 1) % this.players.length];
+        this.nextTurn = true;
 
         // Reset the timer
         this.stopwatch.restart();
@@ -324,4 +327,13 @@ export class GameMaster {
 
         return CommandExecutionStatus.SUCCESS;
     }
+
+    public resetNextTurn(): void {
+        this.nextTurn = false;
+    }
+
+    public isNextTurn(): boolean {
+        return this.nextTurn;
+    }
+
 }
