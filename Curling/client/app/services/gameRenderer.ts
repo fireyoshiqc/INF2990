@@ -278,6 +278,16 @@ export class GameRenderer {
             this.cameraManager.followStone(this.activeStone.position);
         }
 
+        if (this.gameController.isInSweepingState()) {
+            if (this.activeStone.position.z <= Rink.HOG_LINE) {
+                this.gameController.updateBroomCursor(true);
+            }
+            else {
+                this.gameController.updateBroomCursor(false);
+            }
+
+        }
+
         this.renderer.render(this.scene, this.cameraManager.getCamera());
 
         if (this.physicsManager.allStonesHaveStopped() && this.gameController.isInSweepingState()) {

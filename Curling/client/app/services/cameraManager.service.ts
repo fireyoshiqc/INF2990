@@ -112,7 +112,6 @@ export class CameraManager {
 
             }
 
-            //this.cameraPerspective.position.x = position.x;
             this.cameraPerspective.lookAt(new THREE.Vector3(0, 0, -(Rink.RINK_LENGTH / 2 + Rink.RINGS_OFFSET)));
 
         }

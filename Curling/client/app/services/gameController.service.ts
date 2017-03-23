@@ -53,6 +53,8 @@ export class GameController {
     private showNextThrowMessage = false;
     private showNextRoundMessage = false;
 
+    private broomCursorFrame = 1;
+
     public init(container?: HTMLElement): void {
         this.gameRenderer = new GameRenderer(this.curlingStones, this);
         this.gameRenderer.init(container);
@@ -208,6 +210,7 @@ export class GameController {
 
     public enterIdleState(): void {
         // Create stone for active player
+        document.body.style.cursor = "default";
         if (this.isPlayerTurn) {
             this.addStone(Team.Player, new THREE.Vector3(0, 0, Rink.BACK_LINE / 2));
         } else {
@@ -252,13 +255,14 @@ export class GameController {
     }
 
     public enterSweepingState(): void {
-        document.body.style.cursor = "default";
+        document.body.style.cursor = "url(../assets/textures/balai_rouge.png), auto";
         this.gameRenderer.removeHighlightFromStones();
         this.gameRenderer.hideDirectionCurve();
         this.gameState = this.sweepingState;
     }
 
     public enterEndThrowState(): void {
+        document.body.style.cursor = "default";
         this.gameState = this.endThrowState;
         this.stonesThrown++;
         this.forceVisible = false;
@@ -328,6 +332,42 @@ export class GameController {
 
     public getCurrentState(): IGameState {
         return this.gameState;
+    }
+
+    public updateBroomCursor(green: boolean) {
+        if (green) {
+            document.body.style.cursor = "url(../assets/textures/balai_vert"
+                + Math.floor(this.broomCursorFrame) + ".png), auto";
+            if (this.sweepingState.isSweeping()) {
+                if (this.broomCursorFrame < 6) {
+                    this.broomCursorFrame += 0.5;
+                }
+            } else {
+                if (this.broomCursorFrame > 1) {
+                    this.broomCursorFrame -= 0.5;
+                }
+
+            }
+            if (!this.sweepingState.getCanSweep()) {
+                this.sweepingState.setCanSweep(true);
+            }
+
+        }
+        else {
+            document.body.style.cursor = "url(../assets/textures/balai_rouge.png), auto";
+            this.sweepingState.setCanSweep(false);
+        }
+
+
+
+        if (green && !this.sweepingState.getCanSweep()) {
+            document.body.style.cursor = "url(../assets/textures/balai_vert1.png), auto";
+            this.sweepingState.setCanSweep(true);
+
+        } else if (!green && this.sweepingState.getCanSweep()) {
+            document.body.style.cursor = "url(../assets/textures/balai_rouge.png), auto";
+            this.sweepingState.setCanSweep(false);
+        }
     }
 
     public quitGame(): void {
