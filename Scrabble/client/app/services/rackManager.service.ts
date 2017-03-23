@@ -75,11 +75,24 @@ export class RackManager {
         this.rack = newRack;
     }
 
+    public deselectLetter(): void {
+        this.rack[this.selectedIndex].toggleSelect();
+        this.selectedIndex = null;
+    }
+
     private isArrowKey(event: KeyboardEvent): boolean {
         return event.key === "ArrowLeft" || event.key === "ArrowRight";
     }
 
     private isLetterInRack(letter: string): boolean {
         return (this.rack.findIndex(r => r.getCharacter() === letter) !== -1);
+    }
+
+    public getSelectedIndex(): number {
+        return this.selectedIndex;
+    }
+
+    public setSelectedIndex(selectedIndex: number): void {
+        this.selectedIndex = selectedIndex;
     }
 }

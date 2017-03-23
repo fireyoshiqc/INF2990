@@ -44,6 +44,10 @@ export class GameComponent implements OnInit {
         console.log(event.key);
         if (event.key === "Tab") {
             this.rackActive = !this.rackActive;
+
+            if (!this.rackActive) {
+                this.rackChild.deselectLetter();
+            }
         } else {
             if (this.rackActive) {
                 this.rackChild.keyboardInput(event);

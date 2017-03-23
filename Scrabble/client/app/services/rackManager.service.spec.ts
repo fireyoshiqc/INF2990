@@ -50,4 +50,17 @@ describe('RackManager', function () {
             done();
         });
     });
+
+    describe('deselectLetter()', function () {
+        it('should deselect the active letter.', done => {
+            let selectedIndex = 0;
+
+            rackManager.setSelectedIndex(selectedIndex);
+            expect(rackManager.getSelectedIndex()).to.equal(selectedIndex);
+
+            rackManager.deselectLetter();
+            expect(rackManager.getSelectedIndex()).to.equal(null);
+            done();
+        });
+    });
 });

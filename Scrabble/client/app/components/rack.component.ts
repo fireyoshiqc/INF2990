@@ -28,4 +28,8 @@ export class RackComponent {
     public updateRack(letters: string[]) {
         this.rackManager.updateRack(letters);
     }
+
+    public deselectLetter() {
+        this.rackManager.deselectLetter();
+    }
 }
