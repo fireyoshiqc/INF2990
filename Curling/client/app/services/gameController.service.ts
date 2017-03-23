@@ -50,6 +50,7 @@ export class GameController {
     private isPlayerTurn = false;
     private stonesThrown = 0;
     private roundsCompleted = [false, false, false];
+    private allRoundsComplete = false;
     private showNextThrowMessage = false;
     private showNextRoundMessage = false;
 
@@ -298,6 +299,7 @@ export class GameController {
         // Remove stones from rink
         this.curlingStones.forEach(stone => {
             stone.highlightOff();
+            stone.fadeOut(1);
         });
         this.curlingStones.splice(0);
         this.stonesThrown = 0;
@@ -313,7 +315,13 @@ export class GameController {
             this.roundsCompleted[roundInProgress] = true;
         }
 
-        this.enterIdleState();
+        if (this.roundsCompleted[this.roundsCompleted.length - 1] === true) {
+            this.allRoundsComplete = true;
+        }
+
+        if (!this.allRoundsComplete) {
+            this.enterIdleState();
+        }
     }
 
     public isInSweepingState(): boolean {
