@@ -13,8 +13,6 @@ let database = new DatabaseService();
 database.connect();
 
 router.get('/log', function (req, res) {
-    console.log(sudokuManager.getNumberOfEasySudokus() +
-        " " + sudokuManager.getNumberOfHardSudokus());
     res.render("log",
         {
             easy: sudokuManager.getNumberOfEasySudokus(),

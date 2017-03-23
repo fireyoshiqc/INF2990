@@ -27,7 +27,7 @@ export class RackManager {
         this.selectedIndex = null;
     }
 
-   public handleInput(event: KeyboardEvent): void {
+    public handleInput(event: KeyboardEvent): void {
         if (this.isArrowKey(event) && this.selectedIndex !== null) {
             let nextIndex = ((this.selectedIndex + ((event.key === "ArrowLeft") ? -1 : 1))
                 + RackManager.RACK_LENGTH) % RackManager.RACK_LENGTH;
@@ -76,8 +76,10 @@ export class RackManager {
     }
 
     public deselectLetter(): void {
-        this.rack[this.selectedIndex].toggleSelect();
-        this.selectedIndex = null;
+        if (this.selectedIndex !== null) {
+            this.rack[this.selectedIndex].toggleSelect();
+            this.selectedIndex = null;
+        }
     }
 
     private isArrowKey(event: KeyboardEvent): boolean {

@@ -41,7 +41,6 @@ export class GameComponent implements OnInit {
 
     @HostListener('window:keydown', ['$event'])
     public keyboardInput(event: KeyboardEvent) {
-        console.log(event.key);
         if (event.key === "Tab") {
             this.rackActive = !this.rackActive;
 

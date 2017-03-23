@@ -19,7 +19,6 @@ export class ChatComponent implements OnInit {
 
     public ngOnInit() {
         this.socket = SocketHandler.requestSocket(this.HOST_NAME + this.SERVER_PORT);
-        console.log(this.socket);
 
         this.socket.on("connect_error", () => {
             this.attemptingToConnect = true;

@@ -13,16 +13,16 @@ export interface IWord {
 }
 
 export class WordList {
-    private exsitingWords: IWord[];
+    private existingWords: IWord[];
     private newWords: IWord[];
 
     constructor() {
-        this.exsitingWords = [];
+        this.existingWords = [];
         this.newWords = [];
     }
 
     public updateNewWords(word: IWord): void {
-        let index = this.exsitingWords.findIndex(listedWord => (
+        let index = this.existingWords.findIndex(listedWord => (
             listedWord.word === word.word &&
             listedWord.column === word.column &&
             listedWord.row === word.row &&
@@ -40,12 +40,12 @@ export class WordList {
 
     // Pour les test
     public getExistingWords(): IWord[] {
-        return this.exsitingWords;
+        return this.existingWords;
     }
 
     public updateExistingWords(): void {
         this.newWords.forEach(newWord => {
-            this.exsitingWords.push(newWord);
+            this.existingWords.push(newWord);
         });
 
         this.clearNewWords();

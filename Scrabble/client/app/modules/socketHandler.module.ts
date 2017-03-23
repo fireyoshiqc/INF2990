@@ -14,7 +14,6 @@ export module SocketHandler {
     }
 
     export function disconnectSocket(): void {
-        console.log(activeSocket);
         activeSocket.disconnect();
         activeSocket = undefined;
     }
