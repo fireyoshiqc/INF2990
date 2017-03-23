@@ -25,6 +25,18 @@ describe('Player', () => {
             expect(player.getPoints()).to.be.equal(0);
             expect(player.isRackEmpty()).to.be.true;
             expect(player.getMaxRackSize()).to.be.equal(7);
+            expect(player.getIsBlocked()).to.be.false;
+            done();
+        });
+    });
+
+    describe('block() and unblock()', () => {
+        it('should block and unblock a player.', done => {
+            expect(player.getIsBlocked()).to.be.false;
+            player.block();
+            expect(player.getIsBlocked()).to.be.true;
+            player.unblock();
+            expect(player.getIsBlocked()).to.be.false;
             done();
         });
     });
@@ -33,6 +45,19 @@ describe('Player', () => {
         it('should add points to the player\'s score.', done => {
             player.addPoints(10);
             expect(player.getPoints()).to.be.equal(10);
+            done();
+        });
+    });
+
+    describe('setLetters()', () => {
+        it('should set the letters rack of the player.', done => {
+            let playerTest = new Player("test", "1", 1);
+            let letters = new Array<Letter>();
+            letters.push(new Letter("a"));
+            letters.push(new Letter("b"));
+            letters.push(new Letter("c"));
+            playerTest.setLetters(letters);
+            expect(playerTest.getLettersRack()).to.be.eql(["A", "B", "C"]);
             done();
         });
     });

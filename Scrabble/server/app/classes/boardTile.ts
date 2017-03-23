@@ -20,11 +20,13 @@ export class BoardTile {
     private letter: Letter;
     private empty: boolean;
     private bonusActive: boolean;
+    private canRemoveLetter: boolean;
 
     constructor(tileType: TileType = "Basic") {
         this.tileType = tileType;
         this.empty = true;
         this.bonusActive = true;
+        this.canRemoveLetter = false;
     }
 
     public copyBoardTile(): BoardTile {
@@ -56,13 +58,34 @@ export class BoardTile {
         return this.bonusActive;
     }
 
-    public disactivateBonus() {
+    public disactivateBonus(): void {
         this.bonusActive = false;
+    }
+
+    public getCanRemoveLetter(): boolean {
+        return this.canRemoveLetter;
+    }
+
+    // Letter can be removed (in case newly formed words are invalid)
+    public activateCanRemoveLetter(): void {
+        this.canRemoveLetter = true;
+    }
+
+    public deactivateCanRemoveLetter(): void {
+        this.canRemoveLetter = false;
     }
 
     public putLetter(letter: Letter): void {
         this.letter = letter;
         this.empty = false;
+    }
+
+    public removeLetter(): void {
+        if (this.canRemoveLetter) {
+            this.letter = null;
+            this.empty = true;
+            this.deactivateCanRemoveLetter();
+        }
     }
 
     public countTilePoint(): number {
