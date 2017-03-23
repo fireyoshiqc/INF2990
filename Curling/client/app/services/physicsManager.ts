@@ -84,10 +84,24 @@ export class PhysicsManager {
     private playCollisionSound(idStone1: number, idStone2: number) {
         if (this.curlingStones[idStone1].getVelocity().length >= this.curlingStones[idStone2].getVelocity().length) {
             this.curlingStones[idStone1].add(this.audioManager.getCollisionSound());
-            (<THREE.PositionalAudio>(this.curlingStones[idStone1].getObjectByName("collisionSound"))).play();
+            let collisionSound = <THREE.PositionalAudio>(this.curlingStones[idStone1]
+                .getObjectByName("collisionSound"));
+            if (collisionSound !== undefined) {
+                if (collisionSound.isPlaying) {
+                    collisionSound.stop();
+                }
+                collisionSound.play();
+            }
         } else {
             this.curlingStones[idStone2].add(this.audioManager.getCollisionSound());
-            (<THREE.PositionalAudio>(this.curlingStones[idStone2].getObjectByName("collisionSound"))).play();
+            let collisionSound = <THREE.PositionalAudio>(this.curlingStones[idStone2]
+                .getObjectByName("collisionSound"));
+            if (collisionSound !== undefined) {
+                if (collisionSound.isPlaying) {
+                    collisionSound.stop();
+                }
+                collisionSound.play();
+            }
         }
     }
 

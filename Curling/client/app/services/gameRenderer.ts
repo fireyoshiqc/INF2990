@@ -22,6 +22,7 @@ export class GameRenderer {
     private readonly GAP_SIZE = 0.1;
     private readonly TRANSLATE_OFFSET = 0.5;
     private readonly SPIN_MULTIPLIER = 2;
+    private readonly MAX_ANGLE = 30;
 
     private container: HTMLElement;
     private scene: THREE.Scene;
@@ -102,7 +103,8 @@ export class GameRenderer {
         this.rink.name = "rink";
         this.addToScene(this.rink);
 
-        let directionCurve = new THREE.LineCurve3(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, -30));
+        let directionCurve = new THREE.LineCurve3(new THREE.Vector3(0, -CurlingStone.MAX_RADIUS, 0),
+        new THREE.Vector3(0, -CurlingStone.MAX_RADIUS, -Rink.RINK_LENGTH));
         this.curveGeometry = new THREE.Geometry();
         this.curveGeometry.vertices = directionCurve.getPoints(1);
 
@@ -162,7 +164,7 @@ export class GameRenderer {
         if (intersects.length > 0) {
             let intersectionPoint = intersects[0].point;
             let distance = intersectionPoint.x;
-            let angle = distance / (Rink.RINK_WIDTH / 2) * 30;
+            let angle = distance / (Rink.RINK_WIDTH / 2) * this.MAX_ANGLE;
             this.curveAngle = THREE.Math.degToRad(angle);
             return angle;
         }
