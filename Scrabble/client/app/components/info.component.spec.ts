@@ -7,44 +7,40 @@
 
 import { InfoComponent } from './info.component';
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-
 import { expect } from 'chai';
 
-describe('InfoComponent', function () {
-    let comp: InfoComponent;
-    let fixture: ComponentFixture<InfoComponent>;
+describe('InfoComponent', () => {
+    let comp = new InfoComponent();
 
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            schemas: [CUSTOM_ELEMENTS_SCHEMA],
-            declarations: [InfoComponent]
-        })
-            .compileComponents();
-    }));
-
-    beforeEach(() => {
-        fixture = TestBed.createComponent(InfoComponent);
-        comp = fixture.componentInstance;
-    });
-
-    it('should create component', () => {
+    it('should create component', done => {
         expect(comp).to.not.be.undefined;
         expect(comp).to.be.an.instanceOf(InfoComponent);
+
+        expect(comp.getTurnInfo().minutes).to.be.equal(0);
+        expect(comp.getTurnInfo().seconds).to.be.equal(0);
+        expect(comp.getTurnInfo().activePlayerName).to.be.equal("");
+        expect(comp.getTurnInfo().players).to.not.be.undefined;
+        done();
     });
 });
 
 describe('updateInfo()', () => {
     it('should update the timer and the active player', done => {
         let testInfoComp = new InfoComponent();
-        let testTurnInfo = { minutes: 2, seconds: 50, activePlayerName: "Erica" };
+        let testTurnInfo = {
+            minutes: 2,
+            seconds: 50,
+            activePlayerName: "Erica",
+            players: [{name: "Yawen", score: 29, nRackLetters: 1}, {name: "Erica", score: 24, nRackLetters: 3}]};
 
         testInfoComp.updateTurnInfo(testTurnInfo);
 
         expect(testInfoComp.getTurnInfo().minutes).to.be.equal(2);
         expect(testInfoComp.getTurnInfo().seconds).to.be.equal(50);
         expect(testInfoComp.getTurnInfo().activePlayerName).to.be.equal("Erica");
+        expect(testInfoComp.getTurnInfo().players[0].name).to.be.equal("Yawen");
+        expect(testInfoComp.getTurnInfo().players[0].score).to.be.equal(29);
+        expect(testInfoComp.getTurnInfo().players[0].nRackLetters).to.be.equal(1);
         done();
     });
 });

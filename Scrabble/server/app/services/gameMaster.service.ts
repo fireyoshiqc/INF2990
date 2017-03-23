@@ -36,9 +36,16 @@ export enum CommandExecutionStatus {
 }
 
 export interface ITurnInfo {
-    minutes: number;
-    seconds: number;
-    activePlayerName: string;
+    minutes?: number;
+    seconds?: number;
+    activePlayerName?: string;
+    players?: IPlayerInfo[];
+}
+
+export interface IPlayerInfo {
+    name?: string;
+    score?: number;
+    nRackLetters?: number;
 }
 
 export class GameMaster {
@@ -48,7 +55,7 @@ export class GameMaster {
     private stash: LetterStash;
     private gameStarted: boolean;
     private stopwatch: StopwatchService;
-    private turnInfo = { minutes: 0, seconds: 0, activePlayerName: "" };
+    private turnInfo: ITurnInfo;
     private isFirstTurn: boolean;
 
     private readonly BINGO_BONUS = 50;
@@ -60,6 +67,11 @@ export class GameMaster {
         this.stash = new LetterStash();
         this.gameStarted = false;
         this.stopwatch = new StopwatchService();
+        this.turnInfo = {};
+        this.turnInfo.minutes = 0;
+        this.turnInfo.seconds = 0;
+        this.turnInfo.activePlayerName = "";
+        this.turnInfo.players = [{}];
         this.isFirstTurn = true;
     }
 
@@ -80,6 +92,13 @@ export class GameMaster {
     }
 
     public getTurnInfo(): ITurnInfo {
+        // TODO : Need to take care of the case where the number of players changes because of a disconnect
+        for (let i = 0; i < this.players.length; i++) {
+             this.turnInfo.players[i] = {
+                 name: this.players[i].getName(),
+                 score: this.players[i].getPoints(),
+                 nRackLetters: this.players[i].getLettersRack.length};
+        }
         return this.turnInfo;
     }
 
