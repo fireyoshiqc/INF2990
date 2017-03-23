@@ -163,15 +163,18 @@ describe('GameController', () => {
 
     describe('chooseNextFirstPlayer()', () => {
         it('should choose the first player of the next round.', done => {
-            gameController.setPlayerScore(10);
-            gameController.setAiScore(5);
-            gameController.chooseNextFirstPlayer();
-            expect(gameController.getIsPlayerTurn()).to.be.true;
+            let teamClosestStone = Team.Player;
+            let score = 0;
 
-            gameController.setPlayerScore(5);
-            gameController.setAiScore(10);
-            gameController.chooseNextFirstPlayer();
-            expect(gameController.getIsPlayerTurn()).to.be.false;
+            let isPlayerTurnBefore = gameController.getIsPlayerTurn();
+            gameController.chooseNextFirstPlayer(teamClosestStone, score);
+            let isPlayerTurnAfter = gameController.getIsPlayerTurn();
+            expect(isPlayerTurnBefore).to.equal(isPlayerTurnAfter);
+
+            teamClosestStone = Team.AI;
+            score = 1;
+            gameController.chooseNextFirstPlayer(teamClosestStone, score);
+            expect(gameController.getIsPlayerTurn()).to.equal(false);
 
             gameController.setPlayerScore(0);
             gameController.setAiScore(0);

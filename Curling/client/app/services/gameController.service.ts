@@ -188,6 +188,18 @@ export class GameController {
         this.gameRenderer.switchCamera();
     }
 
+    public chooseNextFirstPlayer(teamClosestStone: Team, score: number): void {
+        // If round is null, no changes required (first player for next round is already determined)
+        if (score !== 0) {
+            // Player with highest score in the round goes first in the next round
+            if (teamClosestStone === Team.Player) {
+                this.isPlayerTurn = true;
+            } else {
+                this.isPlayerTurn = false;
+            }
+        }
+    }
+
     public updateScore(): void {
         if (this.curlingStones.length > 0) {
             let teamClosestStone = this.curlingStones[0].getTeam();
@@ -209,6 +221,8 @@ export class GameController {
             } else {
                 this.aiScore += score;
             }
+
+            this.chooseNextFirstPlayer(teamClosestStone, score);
         }
     }
 
@@ -298,18 +312,8 @@ export class GameController {
         } else if (this.stonesThrown === this.MAX_THROWS) { // Go to next round
             this.updateScore();
             this.showNextRoundMessage = true;
-            this.chooseNextFirstPlayer();
         } else if (this.stonesThrown > 0) { // Go to next throw
             this.showNextThrowMessage = true;
-        }
-    }
-
-    public chooseNextFirstPlayer(): void {
-        // If scores are equal, no changes required (first player for next round is already determined)
-        if (this.playerScore > this.aiScore) {
-            this.isPlayerTurn = true;
-        } else if (this.playerScore < this.aiScore) {
-            this.isPlayerTurn = false;
         }
     }
 
@@ -324,7 +328,6 @@ export class GameController {
         this.curlingStones.forEach(stone => {
             stone.highlightOff();
             this.gameRenderer.getScene().remove(stone);
-
         });
         this.curlingStones.splice(0);
         this.stonesThrown = 0;
