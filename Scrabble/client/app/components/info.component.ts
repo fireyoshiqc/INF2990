@@ -58,7 +58,6 @@ export class InfoComponent {
             this.activePlayerName = turnInfo.activePlayerName;
         }
 
-        console.log(turnInfo.nLettersStash);
         if (this.nLettersStash !== turnInfo.nLettersStash) {
             this.nLettersStash = turnInfo.nLettersStash;
         }
