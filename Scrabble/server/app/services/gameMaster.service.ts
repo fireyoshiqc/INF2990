@@ -17,6 +17,7 @@ export enum CommandExecutionStatus {
     SUCCESS, // Command executed successfully
     ERROR, // Command cannot be executed
     WAIT, // A player is trying to play when it's not his turn
+    BLOCK, // A player is blocked during 3s when newly formed words are invalid
 
     // Execution status related to place word command
     SUCCESS_PLACE_WORD_CAN_PLACE_WORD,
@@ -83,6 +84,10 @@ export class GameMaster {
         return this.players;
     }
 
+    public getStash(): LetterStash {
+        return this.stash;
+    }
+
     public getActivePlayer(): Player {
         return this.activePlayer;
     }
@@ -94,16 +99,21 @@ export class GameMaster {
     public getTurnInfo(): ITurnInfo {
         // TODO : Need to take care of the case where the number of players changes because of a disconnect
         for (let i = 0; i < this.players.length; i++) {
-             this.turnInfo.players[i] = {
-                 name: this.players[i].getName(),
-                 score: this.players[i].getPoints(),
-                 nRackLetters: this.players[i].getLettersRack.length};
+            this.turnInfo.players[i] = {
+                name: this.players[i].getName(),
+                score: this.players[i].getPoints(),
+                nRackLetters: this.players[i].getLettersRack.length
+            };
         }
         return this.turnInfo;
     }
 
     public getIsFirstTurn(): boolean {
         return this.isFirstTurn;
+    }
+
+    public blockActivePlayer(): void {
+        this.activePlayer.block();
     }
 
     public startGame(): void {
@@ -116,7 +126,6 @@ export class GameMaster {
             this.turnInfo.activePlayerName = this.activePlayer.getName();
 
             // Give seven letters to each player from stash
-            // TODO : Randomize letters and pick from stash
             for (let player of this.players) {
                 player.addLetters(this.stash.pickLetters(7));
             }
@@ -154,6 +163,10 @@ export class GameMaster {
         }
 
         if (player.getSocketId() === this.activePlayer.getSocketId()) {
+            if (this.activePlayer.getIsBlocked()) {
+                return CommandExecutionStatus.BLOCK;
+            }
+
             switch (command.getCommandType()) {
                 case CommandType.PLACER:
                     return this.placeWord(command as CommandPlaceWord);
@@ -171,48 +184,41 @@ export class GameMaster {
     }
 
     private placeWord(command: CommandPlaceWord): CommandExecutionStatus {
-        // 1- Validation du placement du mot
+        // 1- Validate if the word can be place on the board
         let commandExecutionStatus = this.canPlaceWord(command);
 
         if (commandExecutionStatus === CommandExecutionStatus.SUCCESS_PLACE_WORD_CAN_PLACE_WORD) {
 
-            // 2- Vérifier s'il est possible d'enlever les lettres manquantes du plateau de jeu du rack du joueur
+            // 2- Verify if the player possesses the letters
             let lettersToRemove = this.scrabbleGame.findLettersToRemove(command);
             commandExecutionStatus = this.activePlayer.removeLetters(lettersToRemove);
 
             if (commandExecutionStatus === CommandExecutionStatus.SUCCESS_REMOVE_LETTERS) {
 
-                // 3- Placer les lettres sur le plateau de jeu
+                // 3- Place the letters on the board
                 this.scrabbleGame.placeWord(command);
 
-                // 4- Appeler countWordPoint du ScrabbleGame pour compter les points du mot
-                //    REGARDER SI LES LETTRES PLACÉS FORME UN AUTRE MOT ET COMPTER CES POINTS AUSSI
-                let score = this.scrabbleGame.countAllNewWordsPoint();
+                // 4- Verify if the newly formed words are valid
+                if (!this.scrabbleGame.areAllHorizontalWordsValid(command) ||
+                    !this.scrabbleGame.areAllVerticalWordsValid(command)) {
+                    return CommandExecutionStatus.ERROR_PLACE_WORD_INVALID_WORDS;
+                } else {
+                    // 5- Update player score
+                    this.updatePlayerScore();
 
-                // Si le player réussit un "Bingo", on ajout un bonus de 50 points
-                if (this.activePlayer.isRackEmpty() === true) {
-                    score += this.BINGO_BONUS;
+                    // 6- Pick new letters from stash
+                    this.activePlayer.addLetters(this.stash.pickLetters(lettersToRemove.length));
+
+                    // 7- End turn
+                    this.endTurn();
+
+                    // First turn requires different validation (central tile)
+                    if (this.isFirstTurn) {
+                        this.isFirstTurn = false;
+                    }
+
+                    return CommandExecutionStatus.SUCCESS;
                 }
-
-                // Desactiver les tiles bonus utilise pour ce tour
-                this.scrabbleGame.disactivateUsedTilesBonus();
-
-                // 5- Update le score du player
-                this.activePlayer.addPoints(score);
-                console.log("Point pour " + this.activePlayer.getName() + " : " + this.activePlayer.getPoints());
-
-                // 6- Redonner au joueur des lettres
-                this.activePlayer.addLetters(this.stash.pickLetters(lettersToRemove.length));
-
-                // 7- Passer au prochain joueur
-                this.endTurn();
-
-                // 8- Le premier tour nécessite une vérification différente pour le placement des lettres
-                if (this.isFirstTurn) {
-                    this.isFirstTurn = false;
-                }
-
-                return CommandExecutionStatus.SUCCESS;
             }
         }
 
@@ -238,13 +244,27 @@ export class GameMaster {
             return CommandExecutionStatus.ERROR_PLACE_WORD_ADJACENT_TILE;
         }
 
-        // 4- Verify if the newly formed words are valid
-        if (!this.scrabbleGame.areAllHorizontalWordsValid(command) ||
-            !this.scrabbleGame.areAllVerticalWordsValid(command)) {
-            return CommandExecutionStatus.ERROR_PLACE_WORD_INVALID_WORDS;
+        return CommandExecutionStatus.SUCCESS_PLACE_WORD_CAN_PLACE_WORD;
+    }
+
+    private updatePlayerScore(): void {
+        let score = this.scrabbleGame.countAllNewWordsPoint();
+
+        // Add a 50 points bonus if the player has a "BINGO"
+        if (this.activePlayer.isRackEmpty() === true) {
+            score += this.BINGO_BONUS;
         }
 
-        return CommandExecutionStatus.SUCCESS_PLACE_WORD_CAN_PLACE_WORD;
+        this.activePlayer.addPoints(score);
+
+        // Bonus are valid only once
+        this.scrabbleGame.disactivateUsedTilesBonus();
+    }
+
+    public undoPlaceWord(command: CommandPlaceWord, player: Player): string {
+        this.activePlayer.unblock();
+        this.endTurn();
+        return this.scrabbleGame.removeWord(command, player);
     }
 
     private changeLetter(command: CommandChangeLetter): CommandExecutionStatus {

@@ -11,6 +11,7 @@ import { Letter } from './letter';
 import * as data from '../../assets/objects/scrabbleBoard.json';
 import { Dictionary } from '../modules/dictionary.module';
 import { WordList, IWord } from './wordList';
+import { Player } from '../classes/player';
 
 export class ScrabbleGame {
     private board: BoardTile[][];
@@ -81,11 +82,44 @@ export class ScrabbleGame {
             if (tile.isEmpty()) {
                 // JOKER
                 (word[i] === word[i].toUpperCase()) ?
-                    // TODO : Change texture of JOKER used as LETTER (still worth 0 points)
+                    // JOKER used as LETTER is worth 0 point
                     tile.putLetter(new Letter(word[i], true)) :
                     tile.putLetter(new Letter(word[i]));
+                tile.activateCanRemoveLetter(); // Is undoable if newly formed words are invalid
+            } else {
+                tile.deactivateCanRemoveLetter();
             }
         }
+    }
+
+    // Called when newly formed words are invalid
+    public removeWord(command: CommandPlaceWord, player: Player): string {
+        let word = command.getWord();
+        let tile;
+        let wordToUpdate = "";
+        let lettersToPutBack = new Array<Letter>();
+
+        for (let i = 0; i < word.length; i++) {
+            tile = this.getTile(command, i);
+
+            if (tile.getCanRemoveLetter()) {
+                // Letters to be removed need to be removed from the server's board
+                tile.removeLetter();
+
+                // Letters to be removed need to be removed from the client's board
+                wordToUpdate += "-";
+
+                // Letters to be removed need to be placed back on the player's rack
+                (word[i] === word[i].toUpperCase()) ?
+                    lettersToPutBack.push(new Letter("JOKER")) :
+                    lettersToPutBack.push(new Letter(word[i]));
+            } else {
+                wordToUpdate += word[i];
+            }
+        }
+
+        player.addLetters(lettersToPutBack);
+        return wordToUpdate;
     }
 
     public countAllNewWordsPoint(): number {
@@ -250,12 +284,6 @@ export class ScrabbleGame {
     }
 
     public areAllHorizontalWordsValid(command: CommandPlaceWord): boolean {
-
-        /* Temporarily add the word to the current board to verify
-           if all words are valid. */
-        let oldBoard = this.copyBoard(this.board);
-        this.placeWord(command);
-
         // Verify if every horizontal word is valid
         // Horizontal words start from column 0 to column 13 (words have a minimum of two letters)
         for (let i = 0; i < this.BOARD_LENGTH; i++) {
@@ -285,7 +313,6 @@ export class ScrabbleGame {
                             // Ajouer le nouveau mot forme
                             this.wordList.updateNewWords({ row: i, column: j, orientation: "h", word: thisWord });
                         } else {
-                            this.board = oldBoard;
                             this.wordList.clearNewWords();
                             return false;
                         }
@@ -294,18 +321,10 @@ export class ScrabbleGame {
             }
         }
 
-        this.board = oldBoard;
         return true;
     }
 
     public areAllVerticalWordsValid(command: CommandPlaceWord): boolean {
-        // TODO : return the list of new words to help point calculation
-
-        /* Temporarily add the word to the current board to verify
-           if all words are valid. */
-        let oldBoard = this.copyBoard(this.board);
-        this.placeWord(command);
-
         // Verify if every vertical word is valid
         // Vertical words start from row 0 to row 13 (words have a minimum of two letters)
         for (let i = 0; i < (this.BOARD_LENGTH - 1); i++) {
@@ -335,7 +354,6 @@ export class ScrabbleGame {
                             // Ajouter le mot valide au tableau
                             this.wordList.updateNewWords({ row: i, column: j, orientation: "v", word: thisWord });
                         } else {
-                            this.board = oldBoard;
                             this.wordList.clearNewWords();
                             return false;
                         }
@@ -344,7 +362,6 @@ export class ScrabbleGame {
             }
         }
 
-        this.board = oldBoard;
         return true;
     }
 

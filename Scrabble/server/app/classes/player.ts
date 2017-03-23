@@ -15,6 +15,7 @@ export class Player {
     private points: number;
     private lettersRack: Letter[];
     private readonly LETTERS_RACK_SIZE = 7;
+    private isBlocked: boolean;
 
     constructor(name: string, socketId: string, roomId: number) {
         this.name = name;
@@ -22,6 +23,7 @@ export class Player {
         this.roomId = roomId;
         this.points = 0;
         this.lettersRack = [];
+        this.isBlocked = false;
     }
 
     public getName(): string {
@@ -56,6 +58,22 @@ export class Player {
 
     public getMaxRackSize(): number {
         return this.LETTERS_RACK_SIZE;
+    }
+
+    public getIsBlocked(): boolean {
+        return this.isBlocked;
+    }
+
+    public block(): void {
+        this.isBlocked = true;
+    }
+
+    public unblock(): void {
+        this.isBlocked = false;
+    }
+
+    public setLetters(letters: Array<Letter>): void {
+        this.lettersRack = letters;
     }
 
     public addLetters(letters: Array<Letter>): void {

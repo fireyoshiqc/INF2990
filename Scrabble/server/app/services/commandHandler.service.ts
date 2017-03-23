@@ -20,7 +20,8 @@ export class CommandHandler {
     [
         "", // CommandExecutionStatus.SUCCESS
         "ERREUR : Il est impossible d'exécuter cette commande. Voir !aide", // CommandExecutionStatus.ERROR
-        "ERREUR : Veuillez attendre votre tour.", // CommandExecutionStatus.WAIT
+        "ATTENTION : Veuillez attendre votre tour.", // CommandExecutionStatus.WAIT
+        "ATTENTION : Veuillez patienter pendant la validation du plateau de jeu.", // CommandExecutionStatus.BLOCK
         "", // SUCCESS_PLACE_WORD_CAN_PLACE_WORD
         "ERREUR : Votre mot sort du plateau de jeu.", // CommandExecutionStatus.ERROR_PLACE_WORD_OUT_OF_BOUNDS
         "ERREUR : Votre mot remplace des lettres sur le plateau de jeu.", // ERROR_PLACE_WORD_INCORRECT_OVERLAPPING,
@@ -74,16 +75,20 @@ export class CommandHandler {
         let commandResponse = "";
         switch (executionStatus) {
             case CommandExecutionStatus.SUCCESS:
-                this.onSuccessfulExecution(msg, player, command);
-                break;
+                this.updateClient(msg, player, command);
+                return;
+
+            case CommandExecutionStatus.ERROR_PLACE_WORD_INVALID_WORDS:
+                this.updateClientInvalidPlaceWord(msg, player, command);
+                return;
 
             case CommandExecutionStatus.ERROR:
             case CommandExecutionStatus.WAIT:
+            case CommandExecutionStatus.BLOCK:
             case CommandExecutionStatus.ERROR_PLACE_WORD_OUT_OF_BOUNDS:
             case CommandExecutionStatus.ERROR_PLACE_WORD_INCORRECT_OVERLAPPING:
             case CommandExecutionStatus.ERROR_PLACE_WORD_CENTRAL_TILE:
             case CommandExecutionStatus.ERROR_PLACE_WORD_ADJACENT_TILE:
-            case CommandExecutionStatus.ERROR_PLACE_WORD_INVALID_WORDS:
             case CommandExecutionStatus.ERROR_CHANGE_LETTER_STASH_EMPTY:
             case CommandExecutionStatus.ERROR_REMOVE_LETTERS:
                 commandResponse = this.commandResponseMessage[executionStatus];
@@ -93,27 +98,26 @@ export class CommandHandler {
                 break;
         }
 
-        if (executionStatus !== CommandExecutionStatus.SUCCESS) {
-            this.sio.sockets.connected[player.getSocketId()]
-                .emit('command sent', { username: "Scrabble Game", submessage: msg, commandResponse });
-        }
+        // Writes the error message in the chat of all players
+        this.sio.sockets.connected[player.getSocketId()]
+            .emit('command sent', { username: "Scrabble Game", submessage: msg, commandResponse });
     }
 
-    private onSuccessfulExecution(msg: string, player: Player, command: Command): void {
+    private updateClient(msg: string, player: Player, command: Command): void {
         switch (command.getCommandType()) {
             case CommandType.PLACER:
-                this.onPlaceWordSuccessful(player, command);
+                this.updateClientPlaceWord(player, command);
                 break;
 
             case CommandType.CHANGER:
-                this.onChangeLetterSuccessful(player, command);
+                this.updateClientChangeLetter(player, command);
                 break;
 
             case CommandType.PASSER:
                 break;
 
             case CommandType.AIDE:
-                this.onHelpSuccessful(msg, player);
+                this.updateClientHelp(msg, player);
                 return;
 
             default:
@@ -126,13 +130,13 @@ export class CommandHandler {
             .emit('command sent', { username: player.getName(), submessage: msg, commandResponse: "" });
     }
 
-    private onPlaceWordSuccessful(player: Player, command: Command): void {
+    private updateClientPlaceWord(player: Player, command: Command): void {
         let placeCommand = command as CommandPlaceWord;
 
         // Updates board (to all players)
         this.sio.sockets
             .in(player.getRoomId().toString())
-            .emit('wcPlaceWord', {
+            .emit('wcUpdateBoard', {
                 row: placeCommand.getRow(), column: placeCommand.getColumn(),
                 orientation: placeCommand.getOrientation(), word: placeCommand.getWord()
             });
@@ -142,13 +146,38 @@ export class CommandHandler {
             .emit('wcUpdateRack', player.getLettersRack());
     }
 
-    private onChangeLetterSuccessful(player: Player, command: Command): void {
+    private updateClientInvalidPlaceWord(msg: string, player: Player, command: Command): void {
+        // Writes the error message in the chat of all players
+        let commandResponse = this.commandResponseMessage[CommandExecutionStatus.ERROR_PLACE_WORD_INVALID_WORDS];
+        this.sio.sockets.connected[player.getSocketId()]
+            .emit('command sent', { username: "Scrabble Game", submessage: msg, commandResponse });
+
+        // Update the client's board and rack immediately even if newly formed words are invalid
+        this.updateClientPlaceWord(player, command);
+
+        let room = this.roomManager.findRoom(player.getRoomId());
+
+        // Wait 3 seconds and remove letters from board, placed letters back to rack
+        setTimeout(() => {
+            // UndoPlaceWord returns a word in which letters to be returned to the player are indicated by "-"
+            let placeCommand = command as CommandPlaceWord;
+            let wordToUpdate = room.getGameMaster().undoPlaceWord(placeCommand, player); // Unblock active player
+
+            placeCommand.setWord(wordToUpdate);
+            this.updateClientPlaceWord(player, placeCommand);
+        }, 15000);
+
+        // Active player can't send additionnal command
+        room.getGameMaster().blockActivePlayer();
+    }
+
+    private updateClientChangeLetter(player: Player, command: Command): void {
         // Updates rack (to active player only)
         this.sio.sockets.connected[player.getSocketId()]
             .emit('wcUpdateRack', player.getLettersRack());
     }
 
-    private onHelpSuccessful(msg: string, player: Player): void {
+    private updateClientHelp(msg: string, player: Player): void {
         // TODO mettre un message d'aide pertinent
         let helpMessage = "Voici l'aide...";
         // VOIR LES REGEX (ex. pour placer un mot, le mot doit être en 2 à 15 lettres (requis)
