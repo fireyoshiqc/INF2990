@@ -24,8 +24,8 @@ export enum AIDifficulty {
 
 @Injectable()
 export class GameController {
-    private playerName: string;
-    private aiDifficulty: string;
+    private playerName = "";
+    private aiDifficulty = "CPU facile";
     private playerScore = 0;
     private aiScore = 0;
     private readonly MAX_THROWS = 16;
@@ -50,9 +50,9 @@ export class GameController {
     private isPlayerTurn = false;
     private stonesThrown = 0;
     private roundsCompleted = [false, false, false];
-    private allRoundsComplete = false;
     private showNextThrowMessage = false;
     private showNextRoundMessage = false;
+    private showEndGameMessage = false;
 
     private broomCursorFrame = 1;
 
@@ -156,8 +156,28 @@ export class GameController {
         return this.showNextThrowMessage;
     }
 
+    public getShowEndGameMessage(): boolean {
+        return this.showEndGameMessage;
+    }
+
     public getRoundsCompleted(): boolean[] {
         return this.roundsCompleted;
+    }
+
+    public isInSweepingState(): boolean {
+        return this.gameState === this.sweepingState;
+    }
+
+    public setShootingAngle(angle: number): void {
+        this.shootingAngle = angle;
+    }
+
+    public getShootingAngle(): number {
+        return this.shootingAngle;
+    }
+
+    public getCurrentState(): IGameState {
+        return this.gameState;
     }
 
     public onResize(event: any): void {
@@ -270,8 +290,12 @@ export class GameController {
         // Choose player for next throw
         this.isPlayerTurn = !this.isPlayerTurn;
 
-        // Go to next round
-        if (this.stonesThrown === this.MAX_THROWS) {
+        // Go to end game
+        // TODO : Implémenter la fin de partie proprement (prochain sprint)
+        if (this.stonesThrown === this.MAX_THROWS &&
+            this.roundsCompleted[1] === true) { // Last turn is completed
+            this.endGame();
+        } else if (this.stonesThrown === this.MAX_THROWS) { // Go to next round
             this.updateScore();
             this.showNextRoundMessage = true;
             this.chooseNextFirstPlayer();
@@ -316,29 +340,28 @@ export class GameController {
             this.roundsCompleted[roundInProgress] = true;
         }
 
-        if (this.roundsCompleted[this.roundsCompleted.length - 1] === true) {
-            this.allRoundsComplete = true;
+        this.enterIdleState();
+    }
+
+    // TODO : Implémenter la fin de partie proprement (prochain sprint)
+    public endGame(): void {
+        this.updateScore();
+        this.showEndGameMessage = true;
+
+        // Remove stones from rink
+        this.curlingStones.forEach(stone => {
+            stone.highlightOff();
+            this.gameRenderer.getScene().remove(stone);
+        });
+        this.curlingStones.splice(0);
+
+        let roundInProgress = this.roundsCompleted.findIndex(nextRound => nextRound === false);
+
+        if (roundInProgress !== -1) {
+            this.roundsCompleted[roundInProgress] = true;
         }
 
-        if (!this.allRoundsComplete) {
-            this.enterIdleState();
-        }
-    }
-
-    public isInSweepingState(): boolean {
-        return this.gameState === this.sweepingState;
-    }
-
-    public setShootingAngle(angle: number): void {
-        this.shootingAngle = angle;
-    }
-
-    public getShootingAngle(): number {
-        return this.shootingAngle;
-    }
-
-    public getCurrentState(): IGameState {
-        return this.gameState;
+        this.gameState = this.idleState;
     }
 
     public updateBroomCursor(green: boolean) {

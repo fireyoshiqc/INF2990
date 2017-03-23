@@ -23,12 +23,13 @@ export class HUDComponent {
     @Input() private aiScore: number;
     @Input() private playerCurlingStones: number[]; // Indicates the number of available stones for player
     @Input() private aiCurlingStones: number[]; // Indicates the number of available stones for ai
-    @Input() private forceVisible = false;
-    @Input() private forceValue = 0;
+    @Input() private forceVisible: boolean;
+    @Input() private forceValue: number;
     @Input() private sliderDisabled = false;
     @Input() private roundsCompleted: boolean[]; // Indicates which rounds have been completed (true)
     @Input() private showNextThrowMessage: boolean;
     @Input() private showNextRoundMessage: boolean;
+    @Input() private showEndGameMessage: boolean;
 
     @Output()
     private switchCameraEvent: EventEmitter<string> = new EventEmitter();
@@ -42,9 +43,12 @@ export class HUDComponent {
         this.aiScore = 0;
         this.playerCurlingStones = [];
         this.aiCurlingStones = [];
+        this.forceVisible = false;
+        this.forceValue = 0;
         this.roundsCompleted = [false, false, false];
         this.showNextThrowMessage = false;
         this.showNextRoundMessage = false;
+        this.showEndGameMessage = false;
     }
 
     @HostListener('window:keydown', ['$event'])
@@ -75,17 +79,5 @@ export class HUDComponent {
 
     public toggleTheme(): void {
         this.isDarkTheme = !this.isDarkTheme;
-    }
-
-    public getForceValue(): number {
-        return this.forceValue;
-    }
-
-    public setForceValue(newForceValue: number): void {
-        this.forceValue = newForceValue;
-    }
-
-    public setForceVisibility(newForceVisibility: boolean): void {
-        this.forceVisible = newForceVisibility;
     }
 }

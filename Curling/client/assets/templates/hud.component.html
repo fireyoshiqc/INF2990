@@ -55,21 +55,34 @@
                     <!-- Next throw message -->
                     <div *ngIf="showNextThrowMessage === true">
                         <div id="nextThrow">
-                            <strong>Prochain lancer : cliquez ou pesez la barre d'espacement</strong>
+                            <md-card class="defaultCursor lightTag" id="waitingForPlayer">
+                                <md-card-content><strong>Prochain lancer : cliquez ou pesez la barre d'espacement</strong></md-card-content>
+                            </md-card>
                         </div>
                     </div>
 
                     <!-- Next round message -->
                     <div *ngIf="showNextRoundMessage === true">
                         <div id="nextRound">
-                            <strong>Prochaine manche : cliquez ou pesez la barre d'espacement</strong>
+                            <md-card class="defaultCursor lightTag" id="waitingForPlayer">
+                                <md-card-content><strong>Prochaine manche : cliquez ou pesez la barre d'espacement</strong></md-card-content>
+                            </md-card>
+                        </div>
+                    </div>
+
+                    <!-- End game message -->
+                    <div *ngIf="showEndGameMessage === true">
+                        <div id="endGame">
+                            <md-card class="defaultCursor lightTag" id="waitingForPlayer">
+                                <md-card-content><strong>Fin de la partie. Merci d'avoir joué!</strong></md-card-content>
+                            </md-card>
                         </div>
                     </div>
 
                 </div>
 
                 <!-- Confirm spin button -->
-                <button md-raised-button class="animatedButton" id="throwButton" (click)="sendThrowStoneEvent()">
+                <button md-raised-button class="animatedButton" id="throwButton" (click)="sendThrowStoneEvent()" [disabled] = "sliderDisabled">
                     <strong>Confirmer Spin</strong>
                     <md-icon *ngIf="selectedSpin == true" class="mdIcon">rotate_right</md-icon>
                     <md-icon *ngIf="selectedSpin == false" class="mdIcon">rotate_left</md-icon>

@@ -13,14 +13,32 @@ import { ShootingState } from './gameStates/ShootingState';
 import { IdleState } from './gameStates/IdleState';
 import { ChoosingAngleState } from './gameStates/ChoosingAngleState';
 import { SweepingState } from './gameStates/SweepingState';
+import { EndThrowState } from './gameStates/EndThrowState';
 
 describe('GameController', () => {
     let gameController = new GameController();
 
-    describe('constructor()', () => {
+    describe('constructor() and getters', () => {
         it('should construct a GameController', done => {
             expect(gameController).to.exist;
             expect(gameController).to.be.an.instanceOf(GameController);
+            expect(gameController.getPlayerName()).to.be.equal("");
+            expect(gameController.getAIDDifficulty()).to.be.equal(AIDifficulty.Easy);
+            expect(gameController.getPlayerScore()).to.be.equal(0);
+            expect(gameController.getAiScore()).to.be.equal(0);
+            expect(gameController.getPlayerCurlingStones().length).to.be.equal(8);
+            expect(gameController.getAICurlingStones().length).to.be.equal(8);
+            expect(gameController.getGameRenderer()).to.be.undefined;
+            expect(gameController.getCurlingStones().length).to.be.equal(0);
+            expect(gameController.getCurrentState()).to.be.an.instanceOf(IdleState);
+            expect(gameController.getShootingAngle()).to.be.undefined;
+            expect(gameController.isForceVisible()).to.be.false;
+            expect(gameController.getIsPlayerTurn()).to.be.false;
+            expect(gameController.getStonesThrown()).to.be.equal(0);
+            expect(gameController.getRoundsCompleted()[0]).to.be.false;
+            expect(gameController.getShowNextThrowMessage()).to.be.false;
+            expect(gameController.getShowNextRoundMessage()).to.be.false;
+            expect(gameController.getShowNextThrowMessage()).to.be.false;
             done();
         });
     });
@@ -58,6 +76,61 @@ describe('GameController', () => {
         });
     });
 
+    describe('addStone()', () => {
+        it('should add a stone to the game.', done => {
+            expect(gameController.getCurlingStones().length).to.be.equal(0);
+            gameController.addStone(Team.Player, new THREE.Vector3(0, 0, 0));
+            expect(gameController.getCurlingStones().length).to.be.equal(1);
+            expect(gameController.getCurlingStones()[0].getTeam()).to.be.equal(Team.Player);
+            gameController.resetStones();
+            expect(gameController.getCurlingStones().length).to.be.equal(0);
+            done();
+        });
+    });
+
+    describe('setPlayerScore()', () => {
+        it('should set the player score.', done => {
+            expect(gameController.getPlayerScore()).to.be.equal(0);
+            gameController.setPlayerScore(22);
+            expect(gameController.getPlayerScore()).to.be.equal(22);
+            gameController.setPlayerScore(0);
+            expect(gameController.getPlayerScore()).to.be.equal(0);
+            done();
+        });
+    });
+
+    describe('setAiScore()', () => {
+        it('should set the ai score.', done => {
+            expect(gameController.getAiScore()).to.be.equal(0);
+            gameController.setAiScore(23);
+            expect(gameController.getAiScore()).to.be.equal(23);
+            gameController.setAiScore(0);
+            expect(gameController.getAiScore()).to.be.equal(0);
+            done();
+        });
+    });
+
+    describe('setForceValue()', () => {
+        it('should set the force value.', done => {
+            expect(gameController.getForceValue()).to.be.equal(0);
+            gameController.setForceValue(24);
+            expect(gameController.getForceValue()).to.be.equal(24);
+            gameController.setForceValue(0);
+            expect(gameController.getForceValue()).to.be.equal(0);
+            done();
+        });
+    });
+
+    describe('setIsPlayerTurn()', () => {
+        it('should set the player true.', done => {
+            gameController.setIsPlayerTurn(true);
+            expect(gameController.getIsPlayerTurn()).to.be.true;
+            gameController.setIsPlayerTurn(false);
+            expect(gameController.getIsPlayerTurn()).to.be.false;
+            done();
+        });
+    });
+
     describe('startNextRound()', () => {
         it('should start a new round.', done => {
             let rounds = gameController.getRoundsCompleted();
@@ -74,6 +147,16 @@ describe('GameController', () => {
         it('should start a new throw.', done => {
             gameController.startNextThrow();
             expect(gameController.getShowNextThrowMessage()).to.be.false;
+            done();
+        });
+    });
+
+    describe('endGame()', () => {
+        it('should end the game.', done => {
+            gameController.endGame();
+            expect(gameController.getShowEndGameMessage()).to.be.true;
+            expect(gameController.getCurlingStones().length).to.be.equal(0);
+            expect(gameController.getCurrentState()).to.be.an.instanceOf(IdleState);
             done();
         });
     });
@@ -190,6 +273,57 @@ describe('GameController', () => {
         it('should switch gameController to sweepingState with the force bar visible', done => {
             gameController.enterSweepingState();
             expect(gameController.getCurrentState()).to.be.instanceOf(SweepingState);
+            done();
+        });
+    });
+
+    describe('enterEndThrowState()', () => {
+        it('should switch gameController to enterEndThrowState with the show next throw message visible', done => {
+            let gc = new GameController();
+            gc.init();
+
+            expect(gc.getRoundsCompleted()).to.eql([false, false, false]);
+            expect(gc.getShowNextThrowMessage()).to.be.false;
+
+            // First throw
+            gc.enterEndThrowState();
+            expect(gc.getCurrentState()).to.be.instanceOf(EndThrowState);
+            expect(gc.getStonesThrown()).to.be.equal(1);
+            expect(gc.getShowNextThrowMessage()).to.be.true;
+
+            // First round
+            for (let i = 0; i < 15; i++) {
+                gc.enterEndThrowState();
+            }
+            expect(gc.getStonesThrown()).to.be.equal(16);
+            expect(gc.getCurrentState()).to.be.instanceOf(EndThrowState);
+            expect(gc.getShowNextRoundMessage()).to.be.true;
+
+            gc.startNextRound();
+
+            expect(gc.getRoundsCompleted()).to.eql([true, false, false]);
+            expect(gc.getCurrentState()).to.be.instanceOf(IdleState);
+            expect(gc.getStonesThrown()).to.be.equal(0);
+            expect(gc.getShowNextRoundMessage()).to.be.false;
+
+            // Second round
+            for (let i = 0; i < 16; i++) {
+                gc.enterEndThrowState();
+            }
+            gc.startNextRound();
+
+            expect(gc.getRoundsCompleted()).to.eql([true, true, false]);
+
+            // Third (last) round
+            for (let i = 0; i < 16; i++) {
+                gc.enterEndThrowState();
+            }
+
+            expect(gc.getRoundsCompleted()).to.eql([true, true, true]);
+            expect(gc.getCurrentState()).to.be.instanceOf(IdleState);
+            expect(gc.getStonesThrown()).to.be.equal(16);
+            expect(gc.getShowEndGameMessage()).to.be.true;
+
             done();
         });
     });

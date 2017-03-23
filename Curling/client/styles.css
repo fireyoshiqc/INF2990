@@ -289,6 +289,13 @@ button.mat-raised-button {
     right: 35%;
 }
 
+#waitingForPlayer.mat-card {
+    padding: 10px;
+    width: 100%;
+    text-align: justify;
+    text-justify: inter-word;
+}
+
 #nextThrow {
     position: absolute;
     bottom: 15%;
@@ -298,9 +305,14 @@ button.mat-raised-button {
 #nextRound {
     position: absolute;
     bottom: 15%;
-    left: 10%;
+    left: 5%;
 }
 
+#endGame {
+    position: absolute;
+    bottom: 15%;
+    left: 25%;
+}
 
 /* right column */
 
