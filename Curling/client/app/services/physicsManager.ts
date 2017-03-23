@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { CurlingStone } from '../entities/curlingStone';
 import { Rink } from '../entities/rink';
+import { AudioManager } from './audioManager.service';
 
 @Injectable()
 export class PhysicsManager {
 
     // Everything is in meters, meters per second, and m/s²
-    // TODO use weight directly instead of mass?
     private readonly GRAVITY_N_PER_KG = 9.81;
     private readonly COEFFICIENT_OF_FRICTION = 0.0168;
     private readonly FRICTION_MAGNITUDE = this.GRAVITY_N_PER_KG * this.COEFFICIENT_OF_FRICTION;
@@ -15,10 +15,14 @@ export class PhysicsManager {
     private sweptSpots: ISweptSpot[] = [];
     private delta: number;
     private rink: Rink;
+    private audioManager: AudioManager;
 
-    constructor(curlingStones: CurlingStone[], rink: Rink) {
+    constructor(curlingStones: CurlingStone[], rink?: Rink) {
         this.curlingStones = curlingStones;
-        this.rink = rink;
+        if (rink !== undefined) {
+            this.rink = rink;
+            this.audioManager = rink.getAudioManager();
+        }
     }
 
     public clearStones() {
@@ -45,6 +49,9 @@ export class PhysicsManager {
                 if (vec.length() !== 0 && vec.length() < CurlingStone.MAX_RADIUS * 2) {
                     this.calculateCollision(i, j, vec);
                     this.separateStones(i, j);
+                    if (this.audioManager !== undefined) {
+                        this.playCollisionSound(i, j);
+                    }
                 }
             }
         }
@@ -71,6 +78,16 @@ export class PhysicsManager {
         } while (this.calculateVectorLinkingBothStones(idStone1, idStone2).length() < CurlingStone.MAX_RADIUS * 2);
     }
 
+    private playCollisionSound(idStone1: number, idStone2: number) {
+        if (this.curlingStones[idStone1].getVelocity().length >= this.curlingStones[idStone2].getVelocity().length) {
+            this.curlingStones[idStone1].add(this.audioManager.getCollisionSound());
+            (<THREE.PositionalAudio>(this.curlingStones[idStone1].getObjectByName("collisionSound"))).play();
+        } else {
+            this.curlingStones[idStone2].add(this.audioManager.getCollisionSound());
+            (<THREE.PositionalAudio>(this.curlingStones[idStone2].getObjectByName("collisionSound"))).play();
+        }
+    }
+
     // Calculate the vector from the center of the first circle and the center of the second circle
     private calculateVectorLinkingBothStones(idStone1: number, idStone2: number): THREE.Vector3 {
         return this.curlingStones[idStone1].position.clone().sub(this.curlingStones[idStone2].position);
@@ -89,6 +106,7 @@ export class PhysicsManager {
 
             this.checkforSweptSpots(stone, delta) ? multiplier = 0.2 : multiplier = 1.5;
 
+
             if (stone.isBeingPlayed()) {
                 // Curve calculation only for the stone that was thrown
                 let curvedVelocity = stone.getVelocity().clone();
@@ -103,6 +121,19 @@ export class PhysicsManager {
             stone.getVelocity().sub((stone.getVelocity().clone().normalize()
                 .multiplyScalar(multiplier * this.FRICTION_MAGNITUDE * this.delta)));
             stone.position.add((stone.getVelocity().clone().multiplyScalar(this.delta)));
+
+            const slidingSound = <THREE.PositionalAudio>(stone.getObjectByName("slidingSound"));
+            if (slidingSound !== undefined) {
+                if (!slidingSound.isPlaying) {
+                    slidingSound.play();
+                }
+                else {
+                    slidingSound.setVolume(stone.getVelocity().length() / 4);
+                    if (stone.getVelocity().length() < 0.01) {
+                        slidingSound.setVolume(0);
+                    }
+                }
+            }
 
         }
         else {
@@ -125,8 +156,16 @@ export class PhysicsManager {
         return isOverSpot;
     }
 
-    public addSweptSpot(spot: THREE.Vector3, id: number): void {
-        this.sweptSpots.push({ position: spot, id });
+    public addSweptSpot(position: THREE.Vector3, id: number, spot?: THREE.Mesh): void {
+        this.sweptSpots.push({ position, id });
+        if (spot !== undefined) {
+            spot.add(this.audioManager.getSweepingSound());
+            const sweepSound = (<THREE.PositionalAudio>(spot.getObjectByName("sweepingSound")));
+            if (sweepSound.isPlaying) {
+                sweepSound.stop();
+            }
+            sweepSound.play();
+        }
     }
 
     public getSweptSpots() {

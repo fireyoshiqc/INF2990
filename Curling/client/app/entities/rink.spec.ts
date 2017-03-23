@@ -16,7 +16,7 @@ describe('Rink', () => {
             let suffix = ".jpg";
             let imagesTable: Array<string> = [path + "lf" + suffix, path + "rt" +
                 suffix, path + "up" + suffix, path + "dn" + suffix, path + "ft" + suffix, path + "bk"];
-            let testRink = new Rink(imagesTable);
+            let testRink = new Rink(imagesTable, null);
             expect(testRink).to.not.be.undefined;
             expect(testRink).to.be.an.instanceof(Rink);
             expect(testRink).to.be.an.instanceof(THREE.Group);

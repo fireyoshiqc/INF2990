@@ -32,7 +32,7 @@ export class SweepingState implements IGameState {
                 let rink = this.gameController.getGameRenderer().getRink();
                 let id = rink.addSpot(intersectionPoint.x, intersectionPoint.z + rink.getRinkLength() / 2);
                 this.gameController.getGameRenderer().getPhysicsManager().addSweptSpot(
-                    new THREE.Vector3(intersectionPoint.x, 0, intersectionPoint.z), id);
+                    new THREE.Vector3(intersectionPoint.x, 0, intersectionPoint.z), id, rink.getSpot(id));
                 this.sweeping = false;
             }
         }

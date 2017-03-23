@@ -7,6 +7,7 @@
 
 import { TextureCacher } from "../services/textureCacher";
 import { CurlingStone } from "./curlingStone";
+import { AudioManager } from "../services/audioManager.service";
 
 export class Rink extends THREE.Group {
 
@@ -39,8 +40,13 @@ export class Rink extends THREE.Group {
 
     private rinkClipPlanes: THREE.Plane[];
 
-    constructor(loaderImages: Array<string>) {
+    private audioManager: AudioManager;
+
+    constructor(loaderImages: Array<string>, audioManager?: AudioManager) {
         super();
+        if (audioManager !== undefined) {
+            this.audioManager = audioManager;
+        }
         let self = this;
         this.loadTextures();
         this.loadEnvmap(loaderImages, () => {
@@ -271,6 +277,10 @@ export class Rink extends THREE.Group {
         return currentBuffer;
     }
 
+    public getSpot(id: number): THREE.Mesh {
+        return this.sweptSpotsBuffer[id];
+    }
+
     public fadeSpot(id: number, delta: number): boolean {
 
         (<THREE.MeshStandardMaterial>this.sweptSpotsBuffer[id].material).metalness -= 0.2 * delta;
@@ -281,30 +291,12 @@ export class Rink extends THREE.Group {
             return true;
         }
         return false;
-
     }
 
     private removeSpot(id: number) {
         this.sweptSpotsBuffer[id].position.z = 50;
         (<THREE.MeshStandardMaterial>this.sweptSpotsBuffer[id].material).metalness = 0.8;
         (<THREE.MeshStandardMaterial>this.sweptSpotsBuffer[id].material).roughness = 0.0;
-        /**
-        //TODO: Make the spot fade out. This code works but is buggy with multiple spots at once.
-
-        // let x = 0;
-        // let self = this;
-        // let intervalID = setInterval(() => {
-        //     (<THREE.MeshStandardMaterial>self.sweptSpotsBuffer[id].material).metalness -= 0.001;
-        //     (<THREE.MeshStandardMaterial>self.sweptSpotsBuffer[id].material).roughness += 0.002;
-        //     if (++x === 100) {
-        //         clearInterval(intervalID);
-        //         self.sweptSpotsBuffer[id].position.z = 50;
-        //         (<THREE.MeshStandardMaterial>self.sweptSpotsBuffer[id].material).metalness = 0.7;
-        //         (<THREE.MeshStandardMaterial>self.sweptSpotsBuffer[id].material).roughness = 0.0;
-        //     }
-        // }, 10);
-         */
-
     }
 
     public cleanAllSpots() {
@@ -316,5 +308,9 @@ export class Rink extends THREE.Group {
 
     public getRinkLength(): number {
         return Rink.RINK_LENGTH;
+    }
+
+    public getAudioManager(): AudioManager {
+        return this.audioManager;
     }
 }

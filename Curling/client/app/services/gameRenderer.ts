@@ -11,6 +11,7 @@ import { SkyBox } from '../entities/skyBox';
 import { Rink } from '../entities/rink';
 import { LightManager } from './lightManager';
 import { PhysicsManager } from './physicsManager';
+import { AudioManager } from './audioManager.service';
 import { CameraManager } from './cameraManager.service';
 import { GameController } from './gameController.service';
 
@@ -29,6 +30,7 @@ export class GameRenderer {
     private lightManager: LightManager;
     private physicsManager: PhysicsManager;
     private cameraManager: CameraManager;
+    private audioManager: AudioManager;
     private clock: THREE.Clock;
     private raycaster: THREE.Raycaster;
     private curlingStones: CurlingStone[] = [];
@@ -87,12 +89,14 @@ export class GameRenderer {
 
         this.cameraManager = new CameraManager(this.container);
 
+        this.audioManager = new AudioManager(this.cameraManager);
+
         let skybox: SkyBox;
         skybox = new SkyBox();
         this.addToScene(skybox);
 
         // TODO: Adjust rink to add play lines (home, throw line, etc.)
-        this.rink = new Rink(skybox.skyBoxImages);
+        this.rink = new Rink(skybox.skyBoxImages, this.audioManager);
         this.rink.position.z = -Rink.RINK_LENGTH / 2;
         this.rink.position.y = Rink.POS_RINK_Y;
         this.rink.name = "rink";
@@ -130,6 +134,7 @@ export class GameRenderer {
     public addStone(stone: CurlingStone): void {
         this.addToScene(stone);
         this.activeStone = stone;
+        this.activeStone.add(this.audioManager.getSlidingSound());
     }
 
     public onResize(event: any) {
