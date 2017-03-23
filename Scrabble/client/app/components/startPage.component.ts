@@ -35,7 +35,6 @@ export class StartPageComponent {
                     });
                 }, 200);
             } else {
-                // TODO : Envoyer le bon message d'erreur
                 alert("Veuillez choisir une taille de partie!!");
             }
         } else {

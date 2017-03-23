@@ -33,6 +33,7 @@ describe('GameMaster', () => {
             expect(gameMaster.getTurnInfo().minutes).to.be.equal(0);
             expect(gameMaster.getTurnInfo().seconds).to.be.equal(0);
             expect(gameMaster.getTurnInfo().activePlayerName).to.be.equal("");
+            expect(gameMaster.getTurnInfo().nLettersStash).to.be.equal(102);
             expect(gameMaster.getIsFirstTurn()).to.be.true;
             done();
         });

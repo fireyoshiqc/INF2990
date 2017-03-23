@@ -1,48 +1,52 @@
 <div class="flex-container" fxLayout="column" fxLayout.xs="row" fxLayoutAlign="left left" fxLayoutAlign.xs="center center">
+    <div class="flex-item" fxFlex="20%" fxFlex.xs="20%">
+        <p><b> Bienvenue {{this.thisPlayer}} ! </b></p>
+    </div>
 
-    <div class="flex-item" fxFlex="100%" fxFlex.xs="100%">
-        <div class="flex-container" fxLayout="row" fxLayout.xs="row" fxLayoutAlign="center left" fxLayoutAlign.xs="center center">
+    <div class="flex-item" fxFlex="20%" fxFlex.xs="20%">
+        <div class="flex-container" fxLayout="row" fxLayout.xs="row" fxLayoutAlign="center center" fxLayoutAlign.xs="center center">
 
-            <div class="flex-item" fxFlex="33%" fxFlex.xs="33%">
+            <div class="flex-item" fxFlex="33%" fxFlex.xs="33%" fxLayoutAlign="center center">
                 <p><b>Joueur actif : </b> {{this.activePlayerName}}</p>
             </div>
 
-            <div class="flex-item" fxFlex="33%" fxFlex.xs="33%">
+            <div class="flex-item" fxFlex="33%" fxFlex.xs="33%" fxLayoutAlign="center center">
                 <p><b>Temps restant : </b> {{this.minutes}}:{{this.seconds}}</p>
             </div>
 
-            <div class="flex-item" fxFlex="33%" fxFlex.xs="33%">
-                <p><b>Lettres restantes : </b> {{this.nStashLetters}}</p>
+            <div class="flex-item" fxFlex="33%" fxFlex.xs="33%" fxLayoutAlign="center center">
+                <p><b>Lettres restantes : </b> {{this.nLettersStash}}</p>
             </div>
 
         </div>
     </div>
 
-    <hr>
+    <div class="flex-item" fxFlex="60%" fxFlex.xs="60%">
+        <div class="flex-container" fxLayout="row" fxLayout.xs="row" fxFlex="25%">
+            <div class="flex-item" fxFlex="33%" fxFlex.xs="33%" fxLayoutAlign="center center">
+                <b>Nom</b>
+            </div>
+            <div class="flex-item" fxFlex="33%" fxFlex.xs="33%" fxLayoutAlign="center center">
+                <b>Score</b>
+            </div>
+            <div class="flex-item" fxFlex="33%" fxFlex.xs="33%" fxLayoutAlign="center center">
+                <b>Nombre de lettres sur chevalet</b>
+            </div>
+        </div>
 
-    <div class="flex-item" fxFlex="20%" fxFlex.xs="20%">
-        <div class="flex-container" fxLayout="row" fxLayout.xs="row" fxLayoutAlign="left left" fxLayoutAlign.xs="center center">
-
-            <md-list>
-                <md-list-item *ngFor="let player of players; let i = index">
-
-                    <div class="flex-item" fxFlex="33%" fxFlex.xs="33%">
-                        <p>Nom</p>
-                        <p>{{player.name}}</p>
-                    </div>
-                    <div class="flex-item" fxFlex="33%" fxFlex.xs="33%">
-                        <p>Score</p>
-                        <p>{{player.score}}</p>
-                    </div>
-                    <div class="flex-item" fxFlex="33%" fxFlex.xs="33%">
-                        <p>Nombre de lettres sur chevalet</p>
-                        <p>{{player.nRackLetters}}</p>
-                    </div>
-
-                </md-list-item>
-            </md-list>
+        <div class="flex-container" *ngFor="let player of players; let i = index" fxLayout="row" fxLayout.xs="row" fxFlex="25%">
+            <div class="flex-item" fxFlex="33%" fxFlex.xs="33%" fxLayoutAlign="center center">
+                {{player.name}}
+            </div>
+            <div class="flex-item" fxFlex="33%" fxFlex.xs="33%" fxLayoutAlign="center center">
+                {{player.score}}
+            </div>
+            <div *ngIf="player.nRackLetters < 7" class="flex-item" fxFlex="33%" fxFlex.xs="33%" fxLayoutAlign="center center">
+                {{player.nRackLetters}}
+            </div>
 
         </div>
+
     </div>
 
 </div>

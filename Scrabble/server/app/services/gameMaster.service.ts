@@ -41,6 +41,7 @@ export interface ITurnInfo {
     seconds?: number;
     activePlayerName?: string;
     players?: IPlayerInfo[];
+    nLettersStash?: number;
 }
 
 export interface IPlayerInfo {
@@ -73,6 +74,7 @@ export class GameMaster {
         this.turnInfo.seconds = 0;
         this.turnInfo.activePlayerName = "";
         this.turnInfo.players = [{}];
+        this.turnInfo.nLettersStash = 0;
         this.isFirstTurn = true;
     }
 
@@ -97,14 +99,19 @@ export class GameMaster {
     }
 
     public getTurnInfo(): ITurnInfo {
-        // TODO : Need to take care of the case where the number of players changes because of a disconnect
+        // Clean the list in the case that players have left
+        this.turnInfo.players = [];
+
+        // Update information
         for (let i = 0; i < this.players.length; i++) {
-            this.turnInfo.players[i] = {
-                name: this.players[i].getName(),
-                score: this.players[i].getPoints(),
-                nRackLetters: this.players[i].getLettersRack.length
-            };
+             this.turnInfo.players[i] = {
+                 name: this.players[i].getName(),
+                 score: this.players[i].getPoints(),
+                 nRackLetters: this.players[i].getLettersRack().length};
         }
+
+        this.turnInfo.nLettersStash = this.stash.getAmountLeft();
+
         return this.turnInfo;
     }
 
@@ -123,7 +130,7 @@ export class GameMaster {
 
             // Active player
             this.activePlayer = this.players[0];
-            this.turnInfo.activePlayerName = this.activePlayer.getName();
+            this.turnInfo.activePlayerName = this.players[0].getName();
 
             // Give seven letters to each player from stash
             for (let player of this.players) {
@@ -298,7 +305,6 @@ export class GameMaster {
             }
 
             // Update turnInfo
-            this.turnInfo.activePlayerName = this.activePlayer.getName();
             this.turnInfo.minutes = this.stopwatch.getMinutesLeft();
             this.turnInfo.seconds = this.stopwatch.getSecondsLeft();
 
@@ -311,6 +317,10 @@ export class GameMaster {
 
         // Reset the timer
         this.stopwatch.restart();
+
+        if (this.activePlayer !== undefined) {
+            this.turnInfo.activePlayerName = this.activePlayer.getName();
+        }
 
         return CommandExecutionStatus.SUCCESS;
     }

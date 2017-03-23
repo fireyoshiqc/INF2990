@@ -12,6 +12,7 @@ export interface ITurnInfo {
     seconds: number;
     activePlayerName: string;
     players: IPlayerInfo[];
+    nLettersStash?: number;
 }
 
 export interface IPlayerInfo {
@@ -31,14 +32,16 @@ export class InfoComponent {
     private minutes: number;
     private seconds: number;
     private activePlayerName: string;
-    private nStashLetters: number;
+    private nLettersStash: number;
+    private thisPlayer: string;
 
     constructor() {
         this.players = [{}];
         this.minutes = 0;
         this.seconds = 0;
         this.activePlayerName = "";
-        this.nStashLetters = 0;
+        this.nLettersStash = 0;
+        this.thisPlayer = "";
     }
 
     // The multitude of ifs is to prevent unecessary data refreshsing which causes flashing
@@ -55,14 +58,28 @@ export class InfoComponent {
             this.activePlayerName = turnInfo.activePlayerName;
         }
 
-        // TODO : At the moment we assume that the number of players in the turn info is the same as the game panel
-        // Update info for each player if necessary
+        console.log(turnInfo.nLettersStash);
+        if (this.nLettersStash !== turnInfo.nLettersStash) {
+            this.nLettersStash = turnInfo.nLettersStash;
+        }
+
+        // Check if a player has left
+        if (this.players.length > turnInfo.players.length) {
+            this.players = this.players.slice(0, turnInfo.players.length);
+        }
+
+        // Update info for each player
         for (let i = 0; i < turnInfo.players.length; i++) {
             this.players[i] = {
                 name: turnInfo.players[i].name,
                 score: turnInfo.players[i].score,
-                nRackLetters: turnInfo.players[i].nRackLetters};
+                nRackLetters: turnInfo.players[i].nRackLetters
+            };
         }
+    }
+
+    public updateName(name: string) {
+        this.thisPlayer = name;
     }
 
     // For tests
@@ -71,7 +88,7 @@ export class InfoComponent {
             minutes: this.minutes,
             seconds: this.seconds,
             activePlayerName: this.activePlayerName,
-            players: this.players  // I think this might fuck up the tests
+            players: this.players
         };
     }
 }

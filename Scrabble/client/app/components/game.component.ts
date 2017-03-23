@@ -33,6 +33,10 @@ export class GameComponent implements OnInit {
         this.socket.on("wcUpdateTurnInfo", (turnInfo: ITurnInfo) => {
             this.infoChild.updateTurnInfo(turnInfo);
         });
+
+        this.socket.on("wcUpdateName", (name: string) => {
+            this.infoChild.updateName(name);
+        });
     }
 
     @HostListener('window:keydown', ['$event'])

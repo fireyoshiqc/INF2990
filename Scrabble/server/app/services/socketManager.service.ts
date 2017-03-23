@@ -113,10 +113,13 @@ export class SocketManager {
                         .in(roomID.toString())
                         .emit('message sent', { username: "Scrabble Game", submessage: msg });
 
-                    // Updates each player's rack with 7 randomized letters from stash
                     gameMaster.getPlayers().forEach(player => {
+                        // Updates each player's rack with 7 randomized letters from stash
                         this.sio.sockets.connected[player.getSocketId()]
                             .emit('wcUpdateRack', player.getLettersRack());
+                        // Updates the player's validated name
+                        this.sio.sockets.connected[player.getSocketId()]
+                            .emit('wcUpdateName', player.getName());
                     });
                 }
             });
