@@ -66,3 +66,4 @@ LIVRABLE DU VENDREDI 25 MARS 2017
           Pour manipuler les lettres sur le chevalet, il faut cliquer sur l'input de la boîte de communication et peser sur TAB. Puis, peser les lettres que vous voulez manipuler.
           La fin de partie n'est pas implémentée encore.
           L'abandon n'est pas encore géré.
+    4.5 - Valeur des "Joker" : Si vous mettez votre curseur sur la tuile un "tooltip" avec la valeur du "Joker" apparaît. 
