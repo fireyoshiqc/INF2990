@@ -87,6 +87,7 @@ export class PhysicsManager {
             let collisionSound = <THREE.PositionalAudio>(this.curlingStones[idStone1]
                 .getObjectByName("collisionSound"));
             if (collisionSound !== undefined) {
+                collisionSound.setVolume(2.0);
                 if (collisionSound.isPlaying) {
                     collisionSound.stop();
                 }
@@ -97,6 +98,7 @@ export class PhysicsManager {
             let collisionSound = <THREE.PositionalAudio>(this.curlingStones[idStone2]
                 .getObjectByName("collisionSound"));
             if (collisionSound !== undefined) {
+                collisionSound.setVolume(2.0);
                 if (collisionSound.isPlaying) {
                     collisionSound.stop();
                 }
@@ -145,7 +147,7 @@ export class PhysicsManager {
                     slidingSound.play();
                 }
                 else {
-                    slidingSound.setVolume(stone.getVelocity().length() / 4);
+                    slidingSound.setVolume(stone.getVelocity().length() / 3);
                     if (stone.getVelocity().length() < 0.01) {
                         slidingSound.setVolume(0);
                     }
