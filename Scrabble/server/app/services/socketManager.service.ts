@@ -91,12 +91,12 @@ export class SocketManager {
                     this.sio.sockets.in(id.toString()).emit('wcRefresh', room.getRoomInfo());
                     if (room.getGameMaster().isGameStarted() === true) {
                         if (room.getGameMaster().isNextTurn() === true) {
-                            let msg = "Changement de tour. Le joueur actif est: " 
+                            let msg = "Changement de tour. Le joueur actif est: "
                                 + room.getGameMaster().getActivePlayer().getName();
                             this.sio.sockets
                                 .in(id.toString())
                                 .emit('message sent', { username: "Scrabble Game", submessage: msg });
-                            // Put nextTurn to false 
+                            // Put nextTurn to false
                             room.getGameMaster().resetNextTurn();
                         }
                         this.sio.sockets.in(id.toString()).emit('wcUpdateTurnInfo', room.getGameMaster().getTurnInfo());

@@ -9,11 +9,17 @@ export class Letter {
     private readonly letter: string;
     private texture: string;
     private selected: boolean;
+    private jokerUsedAsLetter: boolean;
 
-    constructor(letter: string) {
+    constructor(letter: string, jokerUsedAsLetter = false) {
         this.selected = false;
         this.letter = letter.toUpperCase();
-        this.texture = "../../assets/textures/letters/" + this.letter + ".png";
+        this.jokerUsedAsLetter = jokerUsedAsLetter;
+        if (jokerUsedAsLetter === true) {
+            this.texture = "../../assets/textures/letters/JOKER.png";
+        } else {
+            this.texture = "../../assets/textures/letters/" + this.letter + ".png";
+        }
     }
 
     public getCharacter(): string {
@@ -34,6 +40,10 @@ export class Letter {
 
     public toggleSelect(): void {
         this.selected = !this.selected;
+    }
+
+    public isJokerUsedAsLetter(): boolean {
+        return this.jokerUsedAsLetter;
     }
 
 }

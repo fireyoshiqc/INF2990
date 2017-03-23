@@ -19,6 +19,7 @@ describe('BoardTile', () => {
             expect(boardTile).to.not.be.undefined;
             expect(boardTile).to.be.an.instanceOf(BoardTile);
             expect(boardTile.getTileType()).to.be.equal("Basic");
+            expect(boardTile.getCharacter()).to.be.null;
             expect(boardTile.getTexture()).to.be.equal("../../assets/textures/board/Basic.png");
             done();
         });
@@ -30,6 +31,22 @@ describe('BoardTile', () => {
             boardTile.putLetter(letter);
 
             expect(boardTile.getTexture()).to.equal(letter.getTexture());
+            done();
+        });
+    });
+
+    describe('getCharacter()', () => {
+        it('should get the character of the Letter (Joker) put on a BoardTile Object.', done => {
+            let letter = new Letter("A", true);
+            boardTile.putLetter(letter);
+            expect(boardTile.getCharacter()).to.equal(letter.getCharacter());
+            done();
+        });
+
+        it('should not get the character of the Letter (not Joker) put on a BoardTile Object.', done => {
+            let letter = new Letter("A");
+            boardTile.putLetter(letter);
+            expect(boardTile.getCharacter()).to.be.null;
             done();
         });
     });
