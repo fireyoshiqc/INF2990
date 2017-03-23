@@ -298,6 +298,7 @@ export class GameController {
         // Remove stones from rink
         this.curlingStones.forEach(stone => {
             stone.highlightOff();
+            this.gameRenderer.getScene().remove(stone);
         });
         this.curlingStones.splice(0);
         this.stonesThrown = 0;

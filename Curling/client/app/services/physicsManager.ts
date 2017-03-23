@@ -38,7 +38,10 @@ export class PhysicsManager {
 
         // Collision
         this.updateCollidingStonesDirection();
-        this.updateAllStonesPosition(delta);
+        this.updateAllStonesPosition();
+
+        // Fade spots
+        this.fadeAllSweptSpots(delta);
     }
 
     private updateCollidingStonesDirection(): void {
@@ -93,18 +96,18 @@ export class PhysicsManager {
         return this.curlingStones[idStone1].position.clone().sub(this.curlingStones[idStone2].position);
     }
 
-    private updateAllStonesPosition(delta: number): void {
+    private updateAllStonesPosition(): void {
         this.curlingStones.forEach(stone => {
-            this.updateCurlingStonePosition(stone, delta);
+            this.updateCurlingStonePosition(stone);
         });
     }
 
-    private updateCurlingStonePosition(stone: CurlingStone, delta: number, separationCorrection?: number) {
+    private updateCurlingStonePosition(stone: CurlingStone, separationCorrection?: number) {
         if (separationCorrection === undefined) {
 
             let multiplier: number;
 
-            this.checkforSweptSpots(stone, delta) ? multiplier = 0.2 : multiplier = 1.5;
+            this.checkforSweptSpots(stone) ? multiplier = 0.2 : multiplier = 1.5;
 
 
             if (stone.isBeingPlayed()) {
@@ -142,19 +145,28 @@ export class PhysicsManager {
         }
     }
 
-    private checkforSweptSpots(stone: CurlingStone, delta: number): boolean {
+    private fadeAllSweptSpots(delta: number) {
+        this.sweptSpots.forEach(spot => {
+            this.rink.fadeSpot(spot.id, delta);
+        });
+
+    }
+
+    private checkforSweptSpots(stone: CurlingStone): boolean {
         let isOverSpot = false;
         let i = this.sweptSpots.length;
         while (i--) {
             if (stone.position.clone().sub(this.sweptSpots[i].position).length() <= CurlingStone.MAX_RADIUS) {
                 isOverSpot = true;
             }
-            if (this.rink.fadeSpot(this.sweptSpots[i].id, delta)) {
+            if (this.rink.isSpotFaded(this.sweptSpots[i].id)) {
                 this.sweptSpots.splice(i, 1);
             }
         }
         return isOverSpot;
     }
+
+
 
     public addSweptSpot(position: THREE.Vector3, id: number, spot?: THREE.Mesh): void {
         this.sweptSpots.push({ position, id });

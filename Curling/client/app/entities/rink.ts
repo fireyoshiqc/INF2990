@@ -281,16 +281,20 @@ export class Rink extends THREE.Group {
         return this.sweptSpotsBuffer[id];
     }
 
-    public fadeSpot(id: number, delta: number): boolean {
-
-        (<THREE.MeshStandardMaterial>this.sweptSpotsBuffer[id].material).metalness -= 0.2 * delta;
-        (<THREE.MeshStandardMaterial>this.sweptSpotsBuffer[id].material).roughness += 0.2 * delta;
+    public isSpotFaded(id: number): boolean {
         if ((<THREE.MeshStandardMaterial>this.sweptSpotsBuffer[id].material).metalness < 0.6
             || (<THREE.MeshStandardMaterial>this.sweptSpotsBuffer[id].material).roughness > 0.2) {
             this.removeSpot(id);
             return true;
         }
         return false;
+
+    }
+
+    public fadeSpot(id: number, delta: number): void {
+        (<THREE.MeshStandardMaterial>this.sweptSpotsBuffer[id].material).metalness -= 0.2 * delta;
+        (<THREE.MeshStandardMaterial>this.sweptSpotsBuffer[id].material).roughness += 0.2 * delta;
+
     }
 
     private removeSpot(id: number) {
