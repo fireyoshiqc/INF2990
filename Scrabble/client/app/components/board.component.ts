@@ -76,7 +76,11 @@ export class BoardComponent implements OnInit {
             if (word[i] === "-") {
                 tile.removeLetter();
             } else { // Add letter to board
-                tile.putLetter(new Letter(word[i]));
+                if (word[i] === word[i].toUpperCase()) {
+                    tile.putLetter(new Letter(word[i], true));
+                } else {
+                    tile.putLetter(new Letter(word[i]));
+                }
             }
          }
     }

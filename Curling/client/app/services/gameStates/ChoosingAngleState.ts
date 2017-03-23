@@ -19,7 +19,8 @@ export class ChoosingAngleState implements IGameState {
     }
 
     public onMouseUp(event: any): void {
-        if (this.angle !== null) {
+        // Check if the cursor has clicked in the gameArea
+        if (event.path[1].className === "flex-item columnContainer" && this.angle !== null) {
             this.gameController.setShootingAngle(this.angle);
             this.gameController.enterShootingState();
         }

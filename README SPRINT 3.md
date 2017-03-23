@@ -35,14 +35,27 @@ LIVRABLE DU VENDREDI 25 MARS 2017
     2.1 - Des tests sont disponibles sur le client et le serveur : npm test
     2.2 - client : npm start | serveur : npm start
     2.3 - Il est possible de demander une grille facile ou difficile. Vous pouvez faire une partie complète.
+    2.4 - Vous pouvez, à n'importe quel moment, charger un nouveau Sudoku depuis le "sidenav". 
+    2.5 - Pour ouvrir le "sidenav", cliquez sur les trois lignes horizontales en haut à coté de "Sudoku".
+    2.6 - Faire disparaître le tableau de highscores : Cliquer à côté du popup.
+
+    2.7 - BASE DE DONNÉES
+         Il est possible de voir le contenu de la base de données en se connectant avec les informations qui suivent :  
+         2.7.1 - URL : mlab.com, Username : factory24, Password : dankmemes69
 
 3 - CURLING *** À noter que le serveur doit être sur localhost:3002 (par défaut) ***
     3.1 - Des tests sont disponibles sur le client : npm test
     3.2 - client : npm start
-    3.3 - Vous jouez en tant que le joueur principal et l'AI (non implémenté). 
+    3.3 - Vous jouez en tant que le joueur principal et l'AI (non implémenté), c'est-à-dire que vous effectuez les lancées 
+              pour le joueur et pour le AI. 
           Le déroulement de la partie (lancer, balayage, score) est implémenté. 
           La fin de partie n'est pas implémentée encore.
           L'abandon n'est pas pris en compte.
+    
+    3.4 - ÉTAPES : LANCER UNE PIERRE
+        3.4.1 - Sélectionner la direction de spin : Bouton slider ou touches (A & D) + bouton pour confirmer (ligne direction apparaît).
+        3.4.2 - Sélectionner l'angle : Deplacer la souris et cliquer une première fois pour confirmer l'angle.
+        3.4.3 - Sélectionner la force : Cliquer une deuxième fois et garde la souris enfoncer. Relâcher pour confirmer la force (la pierre part).
 
 4 - SCRABBLE *** À noter que le serveur doit être sur localhost:3000 (par défaut) ***
     4.1 - Des tests sont disponibles sur le client et sur le serveur: npm test
@@ -52,4 +65,5 @@ LIVRABLE DU VENDREDI 25 MARS 2017
           Le déroulement de la partie (commandes, tours, réserve) est implémenté.
           Pour manipuler les lettres sur le chevalet, il faut cliquer sur l'input de la boîte de communication et peser sur TAB. Puis, peser les lettres que vous voulez manipuler.
           La fin de partie n'est pas implémentée encore.
-          L'abandon n'est pas pris en compte.
+          L'abandon n'est pas encore géré.
+    4.5 - Valeur des "Joker" : Si vous mettez votre curseur sur la tuile un "tooltip" avec la valeur du "Joker" apparaît. 

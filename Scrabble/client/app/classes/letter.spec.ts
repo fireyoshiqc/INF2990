@@ -19,6 +19,7 @@ describe('Letter', () => {
             expect(letter).to.be.an.instanceOf(Letter);
             expect(letter.getCharacter()).to.be.equal("A");
             expect(letter.getTexture()).to.be.equal("../../assets/textures/letters/A.png");
+            expect(letter.isJokerUsedAsLetter()).to.be.false;
             done();
         });
     });
