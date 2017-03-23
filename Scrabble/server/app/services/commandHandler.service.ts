@@ -165,7 +165,7 @@ export class CommandHandler {
 
             placeCommand.setWord(wordToUpdate);
             this.updateClientPlaceWord(player, placeCommand);
-        }, 15000);
+        }, 3000);
 
         // Active player can't send additionnal command
         room.getGameMaster().blockActivePlayer();
