@@ -13,11 +13,12 @@ export class PhysicsManager {
     private readonly CURVE_ANGLE = Math.PI / 300;
     private curlingStones: CurlingStone[] = [];
     private sweptSpots: ISweptSpot[] = [];
-    private decayedSpots: ISweptSpot[] = [];
     private delta: number;
+    private rink: Rink;
 
-    constructor(curlingStones: CurlingStone[]) {
+    constructor(curlingStones: CurlingStone[], rink: Rink) {
         this.curlingStones = curlingStones;
+        this.rink = rink;
     }
 
     public clearStones() {
@@ -33,7 +34,7 @@ export class PhysicsManager {
 
         // Collision
         this.updateCollidingStonesDirection();
-        this.updateAllStonesPosition();
+        this.updateAllStonesPosition(delta);
     }
 
     private updateCollidingStonesDirection(): void {
@@ -75,18 +76,18 @@ export class PhysicsManager {
         return this.curlingStones[idStone1].position.clone().sub(this.curlingStones[idStone2].position);
     }
 
-    private updateAllStonesPosition(): void {
+    private updateAllStonesPosition(delta: number): void {
         this.curlingStones.forEach(stone => {
-            this.updateCurlingStonePosition(stone);
+            this.updateCurlingStonePosition(stone, delta);
         });
     }
 
-    private updateCurlingStonePosition(stone: CurlingStone, separationCorrection?: number) {
+    private updateCurlingStonePosition(stone: CurlingStone, delta: number, separationCorrection?: number) {
         if (separationCorrection === undefined) {
 
             let multiplier: number;
 
-            this.checkforSweptSpots(stone) ? multiplier = 0.2 : multiplier = 1.5;
+            this.checkforSweptSpots(stone, delta) ? multiplier = 0.2 : multiplier = 1.5;
 
             if (stone.isBeingPlayed()) {
                 // Curve calculation only for the stone that was thrown
@@ -110,25 +111,22 @@ export class PhysicsManager {
         }
     }
 
-    private checkforSweptSpots(stone: CurlingStone): boolean {
+    private checkforSweptSpots(stone: CurlingStone, delta: number): boolean {
         let isOverSpot = false;
-        let spotsToDecay: ISweptSpot[] = [];
-        for (let spot of this.sweptSpots) {
-            spot.ttl -= this.delta;
-            if (stone.position.clone().sub(spot.position).length() <= CurlingStone.MAX_RADIUS) {
+        let i = this.sweptSpots.length;
+        while (i--) {
+            if (stone.position.clone().sub(this.sweptSpots[i].position).length() <= CurlingStone.MAX_RADIUS) {
                 isOverSpot = true;
             }
-            if (spot.ttl <= 0) {
-                spotsToDecay.push(spot);
+            if (this.rink.fadeSpot(this.sweptSpots[i].id, delta)) {
+                this.sweptSpots.splice(i, 1);
             }
         }
-        this.sweptSpots = this.sweptSpots.filter(element => spotsToDecay.indexOf(element) < 0);
-        this.decayedSpots = spotsToDecay;
         return isOverSpot;
     }
 
     public addSweptSpot(spot: THREE.Vector3, id: number): void {
-        this.sweptSpots.push({ position: spot, ttl: 1.0, id });
+        this.sweptSpots.push({ position: spot, id });
     }
 
     public getSweptSpots() {
@@ -137,14 +135,6 @@ export class PhysicsManager {
 
     public cleanSweptSpots() {
         this.sweptSpots = [];
-    }
-
-    public getDecayedSpots(): ISweptSpot[] {
-        return this.decayedSpots;
-    }
-
-    public cleanDecayedSpots(): void {
-        this.decayedSpots = [];
     }
 
     public getOutOfBoundsStones(): CurlingStone[] {
@@ -216,6 +206,5 @@ export class PhysicsManager {
 
 interface ISweptSpot {
     position: THREE.Vector3;
-    ttl: number;
     id: number;
 }

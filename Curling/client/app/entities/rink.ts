@@ -163,17 +163,18 @@ export class Rink extends THREE.Group {
 
     private buildSweptBuffer(): void {
         let sweptDiscGeometry: THREE.Geometry = new THREE.CircleGeometry(CurlingStone.MAX_RADIUS, 20);
-        let discMaterial: THREE.Material = new THREE.MeshStandardMaterial({
-            side: THREE.DoubleSide,
-            metalness: 0.7,
-            roughness: 0.0,
-            envMap: this.reflectTexture,
-            envMapIntensity: 1.0,
-            map: this.whiteIce,
-        });
-        discMaterial.clippingPlanes = this.rinkClipPlanes;
+
 
         for (let i = 0; i < this.SWEPT_BUFFER_MAX; i++) {
+            let discMaterial: THREE.Material = new THREE.MeshStandardMaterial({
+                side: THREE.DoubleSide,
+                metalness: 0.8,
+                roughness: 0.0,
+                envMap: this.reflectTexture,
+                envMapIntensity: 1.0,
+                map: this.whiteIce,
+            });
+            discMaterial.clippingPlanes = this.rinkClipPlanes;
             let disc: THREE.Mesh = new THREE.Mesh(sweptDiscGeometry, discMaterial);
             disc.position.y = 0.00005;
             disc.position.z = 50;
@@ -270,8 +271,23 @@ export class Rink extends THREE.Group {
         return currentBuffer;
     }
 
-    public removeSpot(id: number) {
+    public fadeSpot(id: number, delta: number): boolean {
+
+        (<THREE.MeshStandardMaterial>this.sweptSpotsBuffer[id].material).metalness -= 0.2 * delta;
+        (<THREE.MeshStandardMaterial>this.sweptSpotsBuffer[id].material).roughness += 0.2 * delta;
+        if ((<THREE.MeshStandardMaterial>this.sweptSpotsBuffer[id].material).metalness < 0.6
+            || (<THREE.MeshStandardMaterial>this.sweptSpotsBuffer[id].material).roughness > 0.2) {
+            this.removeSpot(id);
+            return true;
+        }
+        return false;
+
+    }
+
+    private removeSpot(id: number) {
         this.sweptSpotsBuffer[id].position.z = 50;
+        (<THREE.MeshStandardMaterial>this.sweptSpotsBuffer[id].material).metalness = 0.8;
+        (<THREE.MeshStandardMaterial>this.sweptSpotsBuffer[id].material).roughness = 0.0;
         /**
         //TODO: Make the spot fade out. This code works but is buggy with multiple spots at once.
 

@@ -170,22 +170,19 @@ export class CurlingStone extends THREE.Group {
         this.add(handleMesh);
     }
 
-    public fadeOut(): void {
-        let x = 0;
-        let stone = this;
+    public fadeOut(delta: number): boolean {
+        (<THREE.Mesh>this.children[0]).material.opacity -= delta;
+        (<THREE.Mesh>this.children[1]).material.opacity -= delta;
+        if ((<THREE.Mesh>this.children[0]).material.opacity < 0
+            || (<THREE.Mesh>this.children[1]).material.opacity < 0) {
+            return true;
+        }
+        return false;
 
-        let intervalID = window.setInterval(function () {
-            (<THREE.Mesh>stone.children[0]).material.opacity -= 0.01;
-            (<THREE.Mesh>stone.children[1]).material.opacity -= 0.01;
-
-            if (++x === 100) {
-                window.clearInterval(intervalID);
-            }
-        }, 10);
     }
 
     public highlightOn(): void {
-        let outlineMaterial = new THREE.MeshBasicMaterial({color: 0x00ff00, side: THREE.BackSide});
+        let outlineMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00, side: THREE.BackSide });
 
         // Highlight stone
         let stoneMesh = <THREE.Mesh>this.children[0];

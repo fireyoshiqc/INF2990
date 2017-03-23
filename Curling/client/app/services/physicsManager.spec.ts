@@ -6,11 +6,11 @@ import { expect } from 'chai';
 describe('PhysicsManager', () => {
 
     let testCurlingStones = new Array<CurlingStone>();
-    let testPhysicsManager = new PhysicsManager(testCurlingStones);
+    let testPhysicsManager = new PhysicsManager(testCurlingStones, null);
 
     describe('Default constructor ', () => {
         it('should construct the PhysicsManager.', done => {
-            testPhysicsManager = new PhysicsManager(testCurlingStones);
+            testPhysicsManager = new PhysicsManager(testCurlingStones, null);
             expect(testPhysicsManager).to.not.be.undefined;
             expect(testPhysicsManager).to.be.an.instanceof(PhysicsManager);
             done();
@@ -141,7 +141,6 @@ describe('PhysicsManager', () => {
             expect(sweptSpots.length).to.eql(1);
             expect(sweptSpots[0].id).to.eql(0);
             expect(sweptSpots[0].position).to.eql(new THREE.Vector3(0, 0, 0));
-            expect(sweptSpots[0].ttl).to.eql(1.0);
             done();
         });
     });
@@ -150,15 +149,6 @@ describe('PhysicsManager', () => {
         it('should empty the array of swept spots.', done => {
             testPhysicsManager.cleanSweptSpots();
             expect(testPhysicsManager.getSweptSpots().length).to.eql(0);
-            done();
-        });
-    });
-
-
-    describe('cleanDecayedSpots()', () => {
-        it('should empty the array of swept spots.', done => {
-            testPhysicsManager.cleanDecayedSpots();
-            expect(testPhysicsManager.getDecayedSpots().length).to.eql(0);
             done();
         });
     });

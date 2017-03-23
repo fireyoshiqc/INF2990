@@ -299,7 +299,6 @@ export class GameController {
         // Remove stones from rink
         this.curlingStones.forEach(stone => {
             stone.highlightOff();
-            stone.fadeOut();
         });
         this.curlingStones.splice(0);
         this.stonesThrown = 0;
@@ -355,7 +354,9 @@ export class GameController {
         }
         else {
             document.body.style.cursor = "url(../assets/textures/balai_rouge.png), auto";
+            this.broomCursorFrame = 1;
             this.sweepingState.setCanSweep(false);
+            this.sweepingState.setIsSweeping(false);
         }
 
 

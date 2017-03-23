@@ -84,7 +84,7 @@ export class GameRenderer {
         this.renderer.setSize(containerRect.width, containerRect.height);
 
         this.lightManager = new LightManager();
-        this.physicsManager = new PhysicsManager(this.curlingStones);
+
         this.cameraManager = new CameraManager(this.container);
 
         let skybox: SkyBox;
@@ -122,6 +122,7 @@ export class GameRenderer {
         /*------------------ END LIGHT-----------------------------------------*/
 
         // Start asynchronous render loop.
+        this.physicsManager = new PhysicsManager(this.curlingStones, this.rink);
         this.clock = new THREE.Clock();
         this.isStarted = true;
     }
@@ -188,11 +189,13 @@ export class GameRenderer {
         this.scene.remove(this.curveObject);
     }
 
-    private removeOutOfBoundsStones(outOfBoundsStones: CurlingStone[]) {
+    private removeOutOfBoundsStones(outOfBoundsStones: CurlingStone[], delta: number) {
         outOfBoundsStones.forEach(stone => {
             let index = this.curlingStones.indexOf(stone);
-            this.curlingStones.splice(index, 1);
-            stone.fadeOut();
+            if (stone.fadeOut(delta)) {
+                this.curlingStones.splice(index, 1);
+                this.scene.remove(stone);
+            }
         });
     }
 
@@ -247,12 +250,7 @@ export class GameRenderer {
 
         let delta = this.clock.getDelta();
         this.physicsManager.update(delta);
-        this.removeOutOfBoundsStones(this.physicsManager.getOutOfBoundsStones());
-        let self = this;
-        this.physicsManager.getDecayedSpots().forEach(spot => {
-            self.rink.removeSpot(spot.id);
-        });
-        this.physicsManager.cleanDecayedSpots();
+        this.removeOutOfBoundsStones(this.physicsManager.getOutOfBoundsStones(), delta);
 
         // Ligne de direction - Fourmillement
         let scalarOffset = this.TRANSLATE_OFFSET * delta;
@@ -291,7 +289,7 @@ export class GameRenderer {
         this.renderer.render(this.scene, this.cameraManager.getCamera());
 
         if (this.physicsManager.allStonesHaveStopped() && this.gameController.isInSweepingState()) {
-            this.physicsManager.cleanDecayedSpots();
+            this.gameController.updateBroomCursor(false);
             this.physicsManager.cleanSweptSpots();
             this.rink.cleanAllSpots();
             this.physicsManager.sortStonesByDistance();

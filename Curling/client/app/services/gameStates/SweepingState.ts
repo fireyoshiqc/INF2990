@@ -63,4 +63,8 @@ export class SweepingState implements IGameState {
         return this.sweeping;
     }
 
+    public setIsSweeping(sweeping: boolean): void {
+        this.sweeping = sweeping;
+    }
+
 }
