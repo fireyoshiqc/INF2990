@@ -230,19 +230,19 @@ export class GameRenderer {
             x = Math.sign(this.curveAngle) * Rink.RINK_WIDTH / 2;
             z = -x / Math.tan(this.curveAngle);
         }
-        if (-z > Rink.RINK_LENGTH) {
-            z = -Rink.RINK_LENGTH;
+        if (-z > Rink.RINK_LENGTH + Rink.BACK_LINE / 2) {
+            z = -Rink.RINK_LENGTH - Rink.BACK_LINE / 2;
             x = -z * Math.tan(this.curveAngle);
         }
 
-        let shortestDistance = Rink.RINK_LENGTH;
+        let shortestDistance = Rink.RINK_LENGTH + Rink.BACK_LINE / 2;
         this.curlingStones.forEach(curlingStone => {
             let angle = -Math.atan(curlingStone.position.x / curlingStone.position.z);
-            let distance = curlingStone.position.distanceTo(new THREE.Vector3(0, 0, Rink.BACK_LINE / 2));
+            let distance = curlingStone.position.distanceTo(this.activeStone.position);
             let error = Math.asin(CurlingStone.MAX_RADIUS / distance);
             if (distance <= shortestDistance && this.curveAngle < angle + error && this.curveAngle > angle - error) {
                 shortestDistance = distance;
-                z = curlingStone.position.z;
+                z = curlingStone.position.z - Math.cos(this.curveAngle) * Rink.BACK_LINE / 2;
                 x = -z * Math.tan(this.curveAngle);
             }
         });
