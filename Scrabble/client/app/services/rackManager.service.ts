@@ -68,6 +68,8 @@ export class RackManager {
     }
 
     public updateRack(letters: string[]): void {
+        this.deselectLetter();
+
         let newRack = new Array<Letter>();
         letters.forEach(letter => {
             newRack.push(new Letter(letter));
