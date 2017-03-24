@@ -17,7 +17,7 @@ describe('CurlingStone', () => {
         it('should construct an empty (non-rendered) CurlingStone object.', done => {
             testStone = new CurlingStone(Team.Player);
 
-            expect(testStone).to.not.be.undefined;
+            expect(testStone).to.exist;
             expect(testStone).to.be.an.instanceof(CurlingStone);
             expect(testStone).to.be.an.instanceof(THREE.Group);
             expect(testStone.getTeam()).to.be.equal(Team.Player);

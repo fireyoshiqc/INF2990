@@ -21,7 +21,7 @@ describe('PlayerNameComponent', function() {
         comp = fixture.componentInstance;
     });
     it('should create component', () => {
-        expect(comp).to.not.be.undefined;
+        expect(comp).to.exist;
     }
     );
     // A test that checks a synchronous value doesn't need a 'done' parameter

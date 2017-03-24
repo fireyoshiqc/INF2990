@@ -11,7 +11,7 @@ describe('SudokuService', () => {
 
     describe('Default constructor ', () => {
         it('should construct the SudokuService.', done => {
-            expect(sudokuService).to.not.be.undefined;
+            expect(sudokuService).to.exist;
             expect(sudokuService).to.be.an.instanceof(SudokuService);
             done();
         });

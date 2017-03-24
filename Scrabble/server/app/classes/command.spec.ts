@@ -15,7 +15,7 @@ describe('Command', () => {
 
     describe('Default constructor', () => {
         it('should construct a Command object.', done => {
-            expect(command).to.not.be.undefined;
+            expect(command).to.exist;
             expect(command).to.be.an.instanceOf(Command);
             expect(command.getCommandType()).to.be.equal(CommandType.PLACER);
             expect(command.getCommandStatus()).to.be.equal(CommandStatus.VALID_COMMAND);

@@ -13,7 +13,7 @@ describe('Dictionary', () => {
 
     describe('isWordValid', () => {
         it('should validate an existing word (found in the dictionary).', done => {
-            expect(Dictionary).to.not.be.undefined;
+            expect(Dictionary).to.exist;
             expect(Dictionary.isWordValid("teSt")).to.be.true;
             expect(Dictionary.isWordValid("cHAt")).to.be.true;
             expect(Dictionary.isWordValid("TasSE")).to.be.true;

@@ -15,7 +15,7 @@ describe('HUDComponent', () => {
 
     describe('Default constructor ', () => {
         it('should construct the HUDComponent.', done => {
-            expect(hudComponent).to.not.be.undefined;
+            expect(hudComponent).to.exist;
             expect(hudComponent).to.be.an.instanceof(HUDComponent);
             done();
         });

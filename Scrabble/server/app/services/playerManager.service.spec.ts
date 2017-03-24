@@ -15,8 +15,8 @@ describe('PlayerManager', () => {
 
     describe('Default constructor ', () => {
         it('should construct a PlayerManager object with valid playerNames array', done => {
-            expect(testPlayerManager).to.not.be.undefined;
-            expect(testPlayerManager.players).to.not.be.undefined;
+            expect(testPlayerManager).to.exist;
+            expect(testPlayerManager.players).to.exist;
             done();
         });
     });

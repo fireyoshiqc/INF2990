@@ -16,7 +16,7 @@ describe('commandPlaceWord', () => {
 
     describe('Default constructor', () => {
         it('should construct a CommandPlaceLetter object with the supplied parameters.', done => {
-            expect(command).to.not.be.undefined;
+            expect(command).to.exist;
             expect(command).to.be.an.instanceOf(Command);
             expect(command).to.be.an.instanceOf(CommandPlaceWord);
 

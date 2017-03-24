@@ -16,7 +16,7 @@ describe('BoardComponent', () => {
 
     describe('Default constructor ', () => {
         it('should create component', done => {
-            expect(comp).to.not.be.undefined;
+            expect(comp).to.exist;
             expect(comp).to.be.an.instanceOf(BoardComponent);
             done();
         });

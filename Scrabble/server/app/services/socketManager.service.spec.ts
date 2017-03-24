@@ -16,7 +16,7 @@ describe('SocketManager', () => {
 
     describe('Default constructor ', () => {
         it('should construct a socketManager object.', done => {
-            expect(socketManager).to.not.be.undefined;
+            expect(socketManager).to.exist;
             expect(socketManager).to.be.an.instanceOf(SocketManager);
             done();
         });

@@ -16,7 +16,7 @@ describe('RoomManager', () => {
 
     describe('Default constructor', () => {
         it('should construct a RoomManager object.', done => {
-            expect(roomManager).to.not.be.undefined;
+            expect(roomManager).to.exist;
             done();
         });
     });

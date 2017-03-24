@@ -16,7 +16,7 @@ describe('BoardTile', () => {
     describe('Default constructor', () => {
         it('should construct a BoardTile object.', done => {
             let boardTile = new BoardTile("Basic");
-            expect(boardTile).to.not.be.undefined;
+            expect(boardTile).to.exist;
             expect(boardTile).to.be.an.instanceOf(BoardTile);
             expect(boardTile.getTileType()).to.be.equal("Basic");
             expect(boardTile.isEmpty()).to.be.true;

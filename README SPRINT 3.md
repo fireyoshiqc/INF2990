@@ -64,7 +64,7 @@ LIVRABLE DU VENDREDI 24 MARS 2017
          2.7.1 - URL : mlab.com, Username : factory24, Password : sudokuDB24
 
 3 - CURLING *** À noter que le serveur doit être sur localhost:3001 (par défaut) ***
-    3.1 - Des tests sont disponibles sur le client : npm test
+    3.1 - Des tests sont disponibles sur le client et le serveur : npm test
     3.2 - client : npm start | serveur : npm start
     3.3 - Vous jouez en tant que le joueur principal et l'AI (non implémenté), c'est-à-dire que vous effectuez les lancées 
               pour le joueur et pour le AI. 
@@ -78,7 +78,7 @@ LIVRABLE DU VENDREDI 24 MARS 2017
         3.4.3 - Sélectionner la force : Cliquer une deuxième fois et garder le clic gauche enfoncé. Relâcher pour confirmer la force (la pierre part).
 
 4 - SCRABBLE *** À noter que le serveur doit être sur localhost:3000 (par défaut) ***
-    4.1 - Des tests sont disponibles sur le client et sur le serveur: npm test
+    4.1 - Des tests sont disponibles sur le client et le serveur: npm test
     4.2 - serveur : npm start
     4.3 - client(s) : npm start (pour autant de clients que vous voulez)
     4.4 - Dans une salle de jeu, il est possible de jouer et d'effectuer toutes les commandes du jeu.

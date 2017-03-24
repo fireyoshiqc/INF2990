@@ -11,7 +11,7 @@ describe('PhysicsManager', () => {
     describe('Default constructor ', () => {
         it('should construct the PhysicsManager.', done => {
             testPhysicsManager = new PhysicsManager(testCurlingStones);
-            expect(testPhysicsManager).to.not.be.undefined;
+            expect(testPhysicsManager).to.exist;
             expect(testPhysicsManager).to.be.an.instanceof(PhysicsManager);
             done();
         });

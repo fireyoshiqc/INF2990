@@ -18,7 +18,7 @@ describe('CommandParser', () => {
 
     describe('Default constructor ', () => {
         it('should construct a CommandParser object.', done => {
-            expect(commandParser).to.not.be.undefined;
+            expect(commandParser).to.exist;
             expect(commandParser).to.be.an.instanceOf(CommandParser);
             done();
         });

@@ -18,7 +18,7 @@ describe('ScrabbleGame', () => {
 
     describe('Default constructor', () => {
         it('should construct a ScrabbleGame object.', done => {
-            expect(scrabbleGame).to.not.be.undefined;
+            expect(scrabbleGame).to.exist;
             expect(scrabbleGame).to.be.an.instanceOf(ScrabbleGame);
             done();
         });

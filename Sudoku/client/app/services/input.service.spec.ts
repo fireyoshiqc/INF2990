@@ -28,7 +28,7 @@ describe('InputService', () => {
         inputService = new InputService();
 
         it('should create an InputService', () => {
-            expect(inputService).to.not.be.undefined;
+            expect(inputService).to.exist;
             expect(inputService).to.be.an.instanceof(InputService);
         });
     });

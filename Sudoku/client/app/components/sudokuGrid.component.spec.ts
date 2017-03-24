@@ -15,7 +15,7 @@ describe('SudokuGridComponent', () => {
 
     describe('Default constructor ', () => {
         it('should construct the SudokuGridComponent.', done => {
-            expect(sudokuGridComponent).to.not.be.undefined;
+            expect(sudokuGridComponent).to.exist;
             expect(sudokuGridComponent).to.be.an.instanceof(SudokuGridComponent);
             done();
         });

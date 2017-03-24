@@ -17,7 +17,7 @@ describe('GlComponent', () => {
 
     describe('Default constructor ', () => {
         it('should construct the GlComponent.', done => {
-            expect(glComponent).to.not.be.undefined;
+            expect(glComponent).to.exist;
             expect(glComponent).to.be.an.instanceof(GlComponent);
             done();
         });

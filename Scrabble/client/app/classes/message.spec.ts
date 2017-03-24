@@ -16,7 +16,7 @@ describe('Message', () => {
 
     describe('Default constructor', () => {
         it('should construct a Message object.', done => {
-            expect(msg).to.not.be.undefined;
+            expect(msg).to.exist;
             expect(msg).to.be.an.instanceOf(Message);
             expect(msg.getUsername()).to.be.equal("username");
             expect(msg.getSubmessage()).to.be.equal("submessage");
@@ -31,7 +31,7 @@ describe('Message', () => {
 
     describe('Default constructor for commands', () => {
         it('should construct a Message object which is a command.', done => {
-            expect(command).to.not.be.undefined;
+            expect(command).to.exist;
             expect(command).to.be.an.instanceOf(Message);
             expect(command.getUsername()).to.be.equal("username");
             expect(command.getSubmessage()).to.be.equal("submessage");

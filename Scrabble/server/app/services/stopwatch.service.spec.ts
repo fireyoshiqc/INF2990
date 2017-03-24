@@ -7,7 +7,7 @@ describe('StopwatchService', () => {
 
     describe('Default constructor ', () => {
         it('should construct the StopwatchService.', done => {
-            expect(stopwatchService).to.not.be.undefined;
+            expect(stopwatchService).to.exist;
             expect(stopwatchService).to.be.an.instanceof(StopwatchService);
             done();
         });

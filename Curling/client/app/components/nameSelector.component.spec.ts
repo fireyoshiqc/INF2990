@@ -17,7 +17,7 @@ describe('NameSelector', function() {
     let comp = new NameSelectorComponent(null, nameService);
 
     it('should create component', () => {
-        expect(comp).to.not.be.undefined;
+        expect(comp).to.exist;
         expect(comp).to.be.an.instanceOf(NameSelectorComponent);
     });
 });

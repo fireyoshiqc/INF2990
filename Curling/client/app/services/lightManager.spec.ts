@@ -17,7 +17,7 @@ describe('LightManager', () => {
 
     describe('Default constructor ', () => {
         it('should construct an empty LightManager object.', done => {
-            expect(testManager).to.not.be.undefined;
+            expect(testManager).to.exist;
             expect(testManager).to.be.an.instanceof(LightManager);
             done();
         });

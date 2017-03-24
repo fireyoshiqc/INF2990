@@ -31,5 +31,5 @@ describe('AppComponent', function() {
         de = fixture.debugElement.query(By.css('h1'));
     });
 
-    it('should create component', () => expect(comp).to.not.be.undefined);
+    it('should create component', () => expect(comp).to.exist);
 });

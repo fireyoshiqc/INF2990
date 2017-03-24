@@ -50,8 +50,6 @@ export class GameComponent implements OnInit {
         } else {
             if (this.rackActive) {
                 this.rackChild.keyboardInput(event);
-            } else {
-                // A changer: this.chatChild.keyboardInput(event);
             }
         }
     }

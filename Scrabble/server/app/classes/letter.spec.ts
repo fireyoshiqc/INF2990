@@ -15,7 +15,7 @@ describe('Letter', () => {
 
     describe('Default constructor', () => {
         it('should construct a BoardTile object.', done => {
-            expect(letter).to.not.be.undefined;
+            expect(letter).to.exist;
             expect(letter).to.be.an.instanceOf(Letter);
             expect(letter.getCharacter()).to.be.equal("A");
             expect(letter.getValue()).to.be.equal(1);

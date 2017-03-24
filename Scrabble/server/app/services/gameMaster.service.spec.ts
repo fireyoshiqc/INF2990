@@ -22,7 +22,7 @@ describe('GameMaster', () => {
 
     describe('Default constructor', () => {
         it('should construct a GameMaster object.', done => {
-            expect(gameMaster).to.not.be.undefined;
+            expect(gameMaster).to.exist;
             expect(gameMaster).to.be.an.instanceOf(GameMaster);
             expect(gameMaster.getScrabbleGame()).to.be.an.instanceOf(ScrabbleGame);
             expect(gameMaster.getPlayers()[0].getName()).to.be.equal("player1");

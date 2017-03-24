@@ -16,7 +16,7 @@ describe('CommandHandler', () => {
 
     describe('Default constructor ', () => {
         it('should construct a CommandHandler object.', done => {
-            expect(commandHandler).to.not.be.undefined;
+            expect(commandHandler).to.exist;
             expect(commandHandler).to.be.an.instanceOf(CommandHandler);
             done();
         });

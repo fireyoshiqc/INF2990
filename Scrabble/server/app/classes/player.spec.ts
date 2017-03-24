@@ -17,7 +17,7 @@ describe('Player', () => {
 
     describe('Default constructor', () => {
         it('should construct a Player object.', done => {
-            expect(player).to.not.be.undefined;
+            expect(player).to.exist;
             expect(player).to.be.an.instanceOf(Player);
             expect(player.getName()).to.be.equal("PlayerName");
             expect(player.getSocketId()).to.be.equal("SocketID");

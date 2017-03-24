@@ -17,7 +17,7 @@ describe('Room', () => {
 
     describe('Default constructor', () => {
         it('should construct a Room object.', done => {
-            expect(room).to.not.be.undefined;
+            expect(room).to.exist;
             expect(room.getPlayers()).to.be.empty;
             expect(room.getGameMaster()).to.be.an.instanceof(GameMaster);
             done();
