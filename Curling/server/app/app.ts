@@ -66,7 +66,7 @@ export class Application {
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({ extended: true }));
         this.app.use(cookieParser());
-        this.app.use(express.static(path.join(__dirname, '../client')));
+        this.app.use(express.static(path.join(__dirname, '../../client')));
         this.app.use(cors());
     }
 
@@ -97,6 +97,12 @@ export class Application {
 
         this.app.post('/removeName', function (req, res) {
             res.send(nameManager.removeName(req.body.name));
+        });
+
+        // Serve the Angular 2 app
+        this.app.get('*', (req, res) => {
+            res.sendFile(path.join(__dirname, '../../client/index.html'));
+            res.redirect('/');
         });
 
         // Gestion des erreurs

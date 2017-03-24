@@ -24,6 +24,9 @@ export enum AIDifficulty {
 
 @Injectable()
 export class GameController {
+    private readonly HOST_NAME = "http://" + window.location.hostname;
+    private readonly SERVER_PORT = ":3001";
+
     private playerName = "";
     private aiDifficulty = "CPU facile";
     private playerScore = 0;
@@ -408,7 +411,7 @@ export class GameController {
     public quitGame(): void {
         // Send beacon to server to signal name removal before page unload.
         let blob = new Blob([JSON.stringify({ "name": this.playerName })], { type: 'application/json; charset=UTF-8' });
-        navigator.sendBeacon('http://localhost:3002/removeName', blob);
+        navigator.sendBeacon(this.HOST_NAME + this.SERVER_PORT + "/removeName", blob);
     }
 
     /******************** TEST HELPER *******************/

@@ -19,14 +19,18 @@
     /* IE 10+ */
 }
 
+canvas {
+    display: block; /* fix necessary to remove space at bottom of canvas */
+}
+
 body,
 html,
 md-sidenav-container {
     font-family: 'Roboto', sans-serif;
     font-weight: normal;
     font-size: normal;
-    height: 100%;
-    width: 100%;
+    width: calc(100vw);
+    height: calc(100vh);
     -webkit-font-smoothing: antialiased;
     -moz-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -313,6 +317,7 @@ button.mat-raised-button {
     bottom: 15%;
     left: 25%;
 }
+
 
 /* right column */
 

@@ -85,6 +85,7 @@ export class GameRenderer {
         let containerRect = this.container.getBoundingClientRect();
         // Adjust width and height to real container size
         this.renderer.setSize(containerRect.width, containerRect.height);
+        console.log(containerRect.width, containerRect.height);
 
         this.lightManager = new LightManager();
 
