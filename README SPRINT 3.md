@@ -61,7 +61,12 @@ LIVRABLE DU VENDREDI 24 MARS 2017
 
     2.7 - BASE DE DONNÉES
          Il est possible de voir le contenu de la base de données en se connectant avec les informations qui suivent :  
-         2.7.1 - URL : mlab.com, Username : factory24, Password : sudokuDB24
+        2.7.1 - URL : mlab.com, Username : factory24, Password : sudokuDB24
+    
+    2.8 - LOG SERVEUR
+         Le log de serveur est affiché de façon statique donc il faut refresh la page pour voir les nouvelles actions.
+        2.8.1 - URL : localhost:3002/api/log
+        2.8.2 - Le IP "1" lors d'une demande correspond à localhost     
 
 3 - CURLING *** À noter que le serveur doit être sur localhost:3001 (par défaut) ***
     3.1 - Des tests sont disponibles sur le client et le serveur : npm test
