@@ -67,6 +67,12 @@ describe('RoomManager', () => {
              expect(roomManager.createRoom(4).getRoomInfo().roomID).to.be.equal(2);
              done();
          });
+
+         it('should locate and return room with no game started.', done => {
+             roomManager.findRoom(0).getGameMaster().setGameStarted(true);
+             expect(roomManager.createRoom(2).getRoomInfo().roomID).to.not.be.equal(0);
+             done();
+         });
      });
 
     describe('leaveRoom()', () => {
@@ -76,12 +82,12 @@ describe('RoomManager', () => {
              room.addPlayer(player);
 
              expect(room.getPlayers()[0].getName()).to.be.equal("test");
-             expect(roomManager.getExistingRooms().length).to.be.equal(3);
+             expect(roomManager.getExistingRooms().length).to.be.equal(4);
 
              roomManager.leaveRoom(player.getName(), room.getRoomInfo().roomID);
 
              expect(room.isEmpty()).to.be.true;
-             expect(roomManager.getExistingRooms().length).to.be.equal(2);
+             expect(roomManager.getExistingRooms().length).to.be.equal(3);
              done();
          });
      });

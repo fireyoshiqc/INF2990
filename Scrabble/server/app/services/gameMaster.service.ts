@@ -336,4 +336,9 @@ export class GameMaster {
         return this.nextTurn;
     }
 
+    // For tests
+    public setGameStarted(gameStarted: boolean): void {
+        this.gameStarted = gameStarted;
+    }
+
 }
