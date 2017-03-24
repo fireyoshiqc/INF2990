@@ -89,8 +89,8 @@ export class SocketManager {
                 for (let room of this.roomManager.getExistingRooms()) {
                     let id = room.getRoomInfo().roomID as number;
                     this.sio.sockets.in(id.toString()).emit('wcRefresh', room.getRoomInfo());
-                    if (room.getGameMaster().isGameStarted() === true) {
-                        if (room.getGameMaster().isNextTurn() === true) {
+                    if (room.getGameMaster().isGameStarted()) {
+                        if (room.getGameMaster().isNextTurn()) {
                             let msg = "Changement de tour. Le joueur actif est: "
                                 + room.getGameMaster().getActivePlayer().getName();
                             this.sio.sockets

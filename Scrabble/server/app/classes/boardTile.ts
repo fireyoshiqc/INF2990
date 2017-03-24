@@ -40,7 +40,7 @@ export class BoardTile {
 
     public getTileType(): TileType {
         // Pour ne pas compter DoubleWord/TripleWord plus qu'une fois
-        if (this.bonusActive === true) {
+        if (this.bonusActive) {
             return this.tileType;
         }
         return "Basic";
@@ -94,9 +94,9 @@ export class BoardTile {
         }
 
         let point = this.letter.getValue();
-        if (this.tileType === "DoubleLetter" && this.bonusActive === true) {
+        if (this.tileType === "DoubleLetter" && this.bonusActive) {
             point *= 2;
-        } else if (this.tileType === "TripleLetter" && this.bonusActive === true) {
+        } else if (this.tileType === "TripleLetter" && this.bonusActive) {
             point *= 3;
         }
 

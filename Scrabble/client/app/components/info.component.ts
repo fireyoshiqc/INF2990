@@ -44,7 +44,7 @@ export class InfoComponent {
         this.thisPlayer = "";
     }
 
-    // The multitude of ifs is to prevent unecessary data refreshsing which causes flashing
+    // The multitude of ifs is to prevent unecessary data refreshing which causes flashing
     public updateTurnInfo(turnInfo: ITurnInfo): void {
         if (this.minutes !== turnInfo.minutes) {
             this.minutes = turnInfo.minutes;

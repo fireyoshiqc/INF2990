@@ -15,7 +15,7 @@ export class Letter {
         this.selected = false;
         this.letter = letter.toUpperCase();
         this.jokerUsedAsLetter = jokerUsedAsLetter;
-        if (jokerUsedAsLetter === true) {
+        if (jokerUsedAsLetter) {
             this.texture = "../../assets/textures/letters/JOKER.png";
         } else {
             this.texture = "../../assets/textures/letters/" + this.letter + ".png";

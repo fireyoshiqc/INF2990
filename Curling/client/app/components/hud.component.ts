@@ -53,7 +53,7 @@ export class HUDComponent {
 
     @HostListener('window:keydown', ['$event'])
     public keyboardInput(event: KeyboardEvent) {
-        if (this.sliderDisabled === false) {
+        if (!this.sliderDisabled) {
 
             if (event.key === "a") {
                 this.selectedSpin = false; // Spin antihoraire

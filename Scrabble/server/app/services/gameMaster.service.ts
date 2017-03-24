@@ -260,7 +260,7 @@ export class GameMaster {
         let score = this.scrabbleGame.countAllNewWordsPoint();
 
         // Add a 50 points bonus if the player has a "BINGO"
-        if (this.activePlayer.isRackEmpty() === true) {
+        if (this.activePlayer.isRackEmpty()) {
             score += this.BINGO_BONUS;
         }
 

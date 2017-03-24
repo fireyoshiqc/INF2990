@@ -309,8 +309,7 @@ export class GameController {
 
         // Go to end game
         // TODO : Implémenter la fin de partie proprement (prochain sprint)
-        if (this.stonesThrown === this.MAX_THROWS &&
-            this.roundsCompleted[1] === true) { // Last turn is completed
+        if (this.stonesThrown === this.MAX_THROWS && this.roundsCompleted[1]) { // Last turn is completed
             this.endGame();
         } else if (this.stonesThrown === this.MAX_THROWS) { // Go to next round
             this.updateScore();

@@ -44,7 +44,7 @@ export class BoardTile {
     }
 
     public getCharacter(): string {
-        if (this.letter !== null && this.letter.isJokerUsedAsLetter() === true) {
+        if (this.letter !== null && this.letter.isJokerUsedAsLetter()) {
             return this.letter.getCharacter();
         } else {
             return null;

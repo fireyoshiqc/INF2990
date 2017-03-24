@@ -34,7 +34,7 @@ export class Letter {
     private getLetterValue(): number {
         let value: number;
 
-        if (this.jokerUsedAsLetter === true || this.character === "JOKER") {
+        if (this.jokerUsedAsLetter || this.character === "JOKER") {
             value = 0;
         } else if ("EAINORSTUL".includes(this.character)) {
             value = 1;
