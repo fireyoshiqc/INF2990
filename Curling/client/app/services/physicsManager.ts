@@ -25,7 +25,7 @@ export class PhysicsManager {
         }
     }
 
-    public clearStones() {
+    public clearStones(): void {
         this.curlingStones.splice(0, this.curlingStones.length);
     }
 
@@ -60,7 +60,7 @@ export class PhysicsManager {
         }
     }
 
-    private calculateCollision(idStone1: number, idStone2: number, normalCollisionPlane: THREE.Vector3) {
+    private calculateCollision(idStone1: number, idStone2: number, normalCollisionPlane: THREE.Vector3): void {
         let speedStonei = this.curlingStones[idStone1].getVelocity().clone();
         let speedStonej = this.curlingStones[idStone2].getVelocity().clone();
 
@@ -74,14 +74,14 @@ export class PhysicsManager {
         this.curlingStones[idStone2].setVelocity(tangentj.clone().add(normali));
     }
 
-    private separateStones(idStone1: number, idStone2: number) {
+    private separateStones(idStone1: number, idStone2: number): void {
         do {
             this.updateCurlingStonePosition(this.curlingStones[idStone1], 0.01);
             this.updateCurlingStonePosition(this.curlingStones[idStone2], 0.01);
         } while (this.calculateVectorLinkingBothStones(idStone1, idStone2).length() < CurlingStone.MAX_RADIUS * 2);
     }
 
-    private playCollisionSound(idStone1: number, idStone2: number) {
+    private playCollisionSound(idStone1: number, idStone2: number): void {
         if (this.curlingStones[idStone1].getVelocity().length >= this.curlingStones[idStone2].getVelocity().length) {
             this.curlingStones[idStone1].add(this.audioManager.getCollisionSound());
             let collisionSound = <THREE.PositionalAudio>(this.curlingStones[idStone1]
@@ -118,7 +118,7 @@ export class PhysicsManager {
         });
     }
 
-    private updateCurlingStonePosition(stone: CurlingStone, separationCorrection?: number) {
+    private updateCurlingStonePosition(stone: CurlingStone, separationCorrection?: number): void {
         if (separationCorrection === undefined) {
 
             let multiplier: number;
@@ -161,13 +161,15 @@ export class PhysicsManager {
         }
     }
 
-    private fadeAllSweptSpots(delta: number) {
+    // Make the swept ice spots fade
+    private fadeAllSweptSpots(delta: number): void {
         this.sweptSpots.forEach(spot => {
             this.rink.fadeSpot(spot.id, delta);
         });
 
     }
 
+    //  Check if active stone if over a swept ice spot, to change its friction and spin influence
     private checkforSweptSpots(stone: CurlingStone): boolean {
         let isOverSpot = false;
         let i = this.sweptSpots.length;

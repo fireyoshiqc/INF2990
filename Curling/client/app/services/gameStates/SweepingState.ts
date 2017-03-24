@@ -15,8 +15,10 @@ export class SweepingState implements IGameState {
 
     public onMouseDown(event: any): void {
         this.setMouse(event);
+        // Get where the click intersects with the ice (if it does).
         let intersects = this.gameController.getGameRenderer().checkIfMouseOnIce(this.mouse);
 
+        // If the stone has passed the first hog line and the click intersects the ice, begin sweeping
         if (intersects.length > 0 && !this.sweeping && this.canSweep) {
             this.sweeping = true;
         }
@@ -25,8 +27,10 @@ export class SweepingState implements IGameState {
     public onMouseUp(event: any): void {
         this.setMouse(event);
         if (this.sweeping) {
+            // Check if the click still intersects the ice when released.
             let intersects = this.gameController.getGameRenderer().checkIfMouseOnIce(this.mouse);
 
+            // If it does, add a swept ice spot on the ice at that spot visually, and add it to the PhysicsManager.
             if (intersects.length > 0) {
                 let intersectionPoint = intersects[intersects.length - 1].point;
                 let rink = this.gameController.getGameRenderer().getRink();

@@ -27,10 +27,13 @@ export class ShootingState implements IGameState {
 
     public onMouseUp(event: any): void {
 
+        // Stone won't be thrown if the powerbar isn't charged enough.
         if (this.initialSpeedCounter > this.MIN_INITIAL_SPEED) {
+            // Get angle at which to shoot the stone
             let shootingAngle = this.gameController.getShootingAngle();
             let angleInRad = THREE.Math.degToRad(shootingAngle);
 
+            // Shoot the stone and set all its states appropriately
             let stone = this.gameController.getCurlingStones()[this.gameController.getCurlingStones().length - 1];
             stone.setHasBeenShot();
             stone.getVelocity().add(new THREE.Vector3(this.initialSpeedCounter * Math.sin(angleInRad),
@@ -38,8 +41,10 @@ export class ShootingState implements IGameState {
             this.initialSpeedCounter = 0;
             this.gameController.removeThrownStoneFromHUD();
 
+            // Enter sweeping state once the stone has been thrown
             this.gameController.enterSweepingState();
         } else {
+            // Reset the powerbar if it isn't charged enough.
             this.initialSpeedCounter = 0;
             this.gameController.setForceValue(0);
             this.gameController.enterChoosingAngleState();

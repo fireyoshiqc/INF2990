@@ -95,13 +95,15 @@ export class CameraManager {
         // Only follow stone when using perspective camera
         if (this.usingPerspectiveCamera) {
 
-
+            // If the camera hasn't passed the hog line yet, use normal animation
             if (position.z >= -(Rink.RINK_LENGTH + Rink.HOG_LINE)) {
                 this.cameraPerspective.position.z = position.z + this.PERSPECTIVE_OFFSET
                     * (1 - position.z / (Rink.RINK_LENGTH + Rink.HOG_LINE));
                 this.cameraPerspective.position.y = this.PERSPECTIVE_Y_POS
                     * (1 - position.z / (Rink.RINK_LENGTH + Rink.HOG_LINE));
             }
+
+            // If it has passed it, use the pan out animation
             else {
                 this.cameraPerspective.position.z = position.z + this.PERSPECTIVE_OFFSET
                     * (2 - (position.z + (Rink.RINK_LENGTH + Rink.HOG_LINE))
@@ -109,11 +111,10 @@ export class CameraManager {
                 this.cameraPerspective.position.y = this.PERSPECTIVE_Y_POS
                     * (2 - (position.z + (Rink.RINK_LENGTH + Rink.HOG_LINE))
                         / (0.25 * (-Rink.HOG_LINE + Rink.BACK_LINE)));
-
             }
 
+            // Always look at the center of the rings, in order to see all stones in play.
             this.cameraPerspective.lookAt(new THREE.Vector3(0, 0, -(Rink.RINK_LENGTH / 2 + Rink.RINGS_OFFSET)));
-
         }
     }
 

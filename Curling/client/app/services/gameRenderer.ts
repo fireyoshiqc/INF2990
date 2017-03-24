@@ -18,12 +18,14 @@ import { GameController } from './gameController.service';
 @Injectable()
 export class GameRenderer {
 
+    // For the dashed line when aiming
     private readonly DASH_SIZE = 0.1;
     private readonly GAP_SIZE = 0.1;
     private readonly TRANSLATE_OFFSET = 0.5;
     private readonly SPIN_MULTIPLIER = 2;
     private readonly MAX_ANGLE = 30;
 
+    // THREE.js objects and managers
     private container: HTMLElement;
     private scene: THREE.Scene;
     private renderer: THREE.WebGLRenderer;
@@ -43,6 +45,7 @@ export class GameRenderer {
     private curveAngle = 0;
     private rink: Rink;
 
+    // The stone that's getting thrown
     private activeStone: CurlingStone;
 
     constructor(curlingStones: CurlingStone[], gameController: GameController) {
@@ -52,6 +55,10 @@ export class GameRenderer {
 
     public getScene(): THREE.Scene {
         return this.scene;
+    }
+
+    public getRink(): Rink {
+        return this.rink;
     }
 
     public getIsStarted(): boolean {
@@ -93,17 +100,19 @@ export class GameRenderer {
 
         this.audioManager = new AudioManager(this.cameraManager);
 
+        // Initialize skybox
         let skybox: SkyBox;
         skybox = new SkyBox();
         this.addToScene(skybox);
 
-        // TODO: Adjust rink to add play lines (home, throw line, etc.)
+        // Initialize rink and place it in the scene correctly
         this.rink = new Rink(skybox.skyBoxImages, this.audioManager);
         this.rink.position.z = -Rink.RINK_LENGTH / 2;
         this.rink.position.y = Rink.POS_RINK_Y;
         this.rink.name = "rink";
         this.addToScene(this.rink);
 
+        // Define the dashed line for aiming the stones
         let directionCurve = new THREE.LineCurve3(new THREE.Vector3(0, -CurlingStone.MAX_RADIUS, 0),
         new THREE.Vector3(0, -CurlingStone.MAX_RADIUS, -Rink.RINK_LENGTH));
         this.curveGeometry = new THREE.Geometry();
@@ -134,13 +143,15 @@ export class GameRenderer {
         this.isStarted = true;
     }
 
+    // Add stone to the scene (visually)
     public addStone(stone: CurlingStone): void {
         this.addToScene(stone);
         this.activeStone = stone;
         this.activeStone.add(this.audioManager.getSlidingSound());
     }
 
-    public onResize(event: any) {
+    // Called when the browser window gets resized
+    public onResize(event: any): void {
         this.renderer.setSize(event.target.innerWidth, event.target.innerHeight);
         let containerRect = this.container.getBoundingClientRect();
         // Adjust width and height to real container size
@@ -150,16 +161,19 @@ export class GameRenderer {
         this.cameraManager.onResize(this.container);
     }
 
+    // Add any Three.js object to the scene
     public addToScene(obj: THREE.Group | THREE.Mesh): void {
         this.scene.add(obj);
     }
 
+    // Change between projection and ortho camera
     public switchCamera(): void {
         (this.cameraManager.isUsingPerspectiveCamera()) ?
             this.cameraManager.useOrthographicCamera(this.container) :
             this.cameraManager.usePerspectiveCamera(this.container);
     }
 
+    // Calculate the angle when throwing the stone using the mouse position
     public calculateAngle(mouse: THREE.Vector2): number {
         let intersects = this.checkIfMouseOnIce(mouse);
         if (intersects.length > 0) {
@@ -172,6 +186,7 @@ export class GameRenderer {
         return null;
     }
 
+    // Check if the mouse intersects the ice, when calculating the angle
     public checkIfMouseOnIce(mouse: THREE.Vector2): THREE.Intersection[] {
         this.raycaster.setFromCamera(mouse, this.cameraManager.getCamera());
         let intersects = this.raycaster.intersectObject(this.scene
@@ -179,10 +194,7 @@ export class GameRenderer {
         return intersects;
     }
 
-    public getRink(): Rink {
-        return this.rink;
-    }
-
+    // Update the aiming line visually
     public updateDirectionCurve(angleDifference: number): void {
         this.curveObject.geometry.rotateY(THREE.Math.degToRad(angleDifference));
         // Update end point of the directional line
@@ -197,6 +209,7 @@ export class GameRenderer {
         this.scene.remove(this.curveObject);
     }
 
+    // Remove stones and make them fadeout
     private removeOutOfBoundsStones(outOfBoundsStones: CurlingStone[], delta: number) {
         outOfBoundsStones.forEach(stone => {
             let index = this.curlingStones.indexOf(stone);
@@ -207,6 +220,7 @@ export class GameRenderer {
         });
     }
 
+    // Highlight stones that are currently worth points
     private highlightStonesWorthPoints() {
         if (this.curlingStones.length > 0) {
             let teamClosestStone = this.curlingStones[0].getTeam();
@@ -226,18 +240,22 @@ export class GameRenderer {
         });
     }
 
+    // Used for determining the length of the dashed line when aiming (where the line stops)
     private getFurthestCollisionPoint(): THREE.Vector3 {
         let x = 0, z = 0;
-        // Bordure
+        // Rink border
         if (this.curveAngle !== 0) {
             x = Math.sign(this.curveAngle) * Rink.RINK_WIDTH / 2;
             z = -x / Math.tan(this.curveAngle);
         }
+
+        // Rink end
         if (-z > Rink.RINK_LENGTH + Rink.BACK_LINE / 2) {
             z = -Rink.RINK_LENGTH - Rink.BACK_LINE / 2;
             x = -z * Math.tan(this.curveAngle);
         }
 
+        // Other curling stones
         let shortestDistance = Rink.RINK_LENGTH + Rink.BACK_LINE / 2;
         this.curlingStones.forEach(curlingStone => {
             let angle = -Math.atan(curlingStone.position.x / curlingStone.position.z);
@@ -253,6 +271,7 @@ export class GameRenderer {
         return new THREE.Vector3(x, 0, z);
     }
 
+    // The main render (and game) loop
     public render(): void {
         window.requestAnimationFrame(() => this.render());
 
@@ -260,7 +279,7 @@ export class GameRenderer {
         this.physicsManager.update(delta);
         this.removeOutOfBoundsStones(this.physicsManager.getOutOfBoundsStones(), delta);
 
-        // Ligne de direction - Fourmillement
+        // Dashed line that moves when aiming
         let scalarOffset = this.TRANSLATE_OFFSET * delta;
         this.totalTranslateOffset += scalarOffset;
 
@@ -296,6 +315,7 @@ export class GameRenderer {
 
         this.renderer.render(this.scene, this.cameraManager.getCamera());
 
+        // If all stones have stopped, procede with cleaning up the scene.
         if (this.physicsManager.allStonesHaveStopped() && this.gameController.isInSweepingState()) {
             this.gameController.updateBroomCursor(false);
             this.physicsManager.cleanSweptSpots();

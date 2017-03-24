@@ -68,7 +68,7 @@ export class GlComponent implements AfterViewInit {
 
     @HostListener('window:mousedown', ['$event'])
     public onMouseDown(event: any) {
-        this.gameController.onMousedown(event);
+        this.gameController.onMouseDown(event);
     }
 
     @HostListener('window:mouseup', ['$event'])

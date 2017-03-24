@@ -56,11 +56,11 @@ export class HUDComponent {
         if (!this.sliderDisabled) {
 
             if (event.key === "a") {
-                this.selectedSpin = false; // Spin antihoraire
+                this.selectedSpin = false; // Spin counter-clockwise
             }
 
             if (event.key === "d") {
-                this.selectedSpin = true; // Spin horaire
+                this.selectedSpin = true; // Spin clockwise
             }
         }
     }

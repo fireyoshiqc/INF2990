@@ -83,6 +83,7 @@ export class CurlingStone extends THREE.Group {
         this.velocity = velocity;
     }
 
+    // This function builds the whole curling stone model.
     public init(): void {
         /*-------------------- CURLING BASE ------------------------------------------*/
         // Stone base
@@ -173,6 +174,8 @@ export class CurlingStone extends THREE.Group {
     public fadeOut(delta: number): boolean {
         (<THREE.Mesh>this.children[0]).material.opacity -= delta;
         (<THREE.Mesh>this.children[1]).material.opacity -= delta;
+
+        // If the stone has completely faded out, return true so it can get removed from the scene.
         if ((<THREE.Mesh>this.children[0]).material.opacity < 0
             || (<THREE.Mesh>this.children[1]).material.opacity < 0) {
             return true;

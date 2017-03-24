@@ -12,25 +12,27 @@ import { AudioManager } from "../services/audioManager.service";
 export class Rink extends THREE.Group {
 
     // Rink
-    public static readonly POS_RINK_Y = -0.145;
-    public static readonly RINK_LENGTH = 46;
-    public static readonly RINK_WIDTH = 4.4;
-    private static readonly RINK_HEIGHT = 0.1;
-    public static readonly HOG_LINE = -11.28;
-    public static readonly BACK_LINE = -3.80;
+    public static readonly POS_RINK_Y = -0.145; // Y position of the rink
+    public static readonly RINK_LENGTH = 46; // Length in meters
+    public static readonly RINK_WIDTH = 4.4; // Width in meters
+    private static readonly RINK_HEIGHT = 0.1; // Thickness of the ice plane
+    public static readonly HOG_LINE = -11.28; // Where the hog line is relative to the end of the ice plane
+    public static readonly BACK_LINE = -3.80; // Where the back line is relative to the end of the ice plane
 
     // Rings
-    private static readonly CENTER_RADIUS = 0.15;
-    private static readonly INNER_RADIUS = 0.6;
-    private static readonly MIDDLE_RADIUS = 1.2;
-    public static readonly OUTER_RADIUS = 1.8;
-    public static readonly RINGS_OFFSET = 17.37; // By how much the ring set is off from the center of the rink.
+    private static readonly CENTER_RADIUS = 0.15; // Radius of the white dot at the center of the house
+    private static readonly INNER_RADIUS = 0.6; // Radius of red ring in the house
+    private static readonly MIDDLE_RADIUS = 1.2; // Inner radius of blue ring in the house
+    public static readonly OUTER_RADIUS = 1.8; // Outer radius of blue ring in the house
+    public static readonly RINGS_OFFSET = 17.37; // By how much the ring set is off from the center of the rink
     public static readonly RINGS_CENTER = new THREE.Vector3(0, 0, -Rink.RINK_LENGTH / 2 - Rink.RINGS_OFFSET);
+    // Position of the center of the house, relative to the start of the ice plane
 
     private sweptSpotsBuffer: THREE.Mesh[] = [];
     private sweptBufferIndex = 0;
-    private readonly SWEPT_BUFFER_MAX = 50;
+    private readonly SWEPT_BUFFER_MAX = 50; // Max amount of swept ice spots to display
 
+    // All textures and associated variables
     private reflectTexture: THREE.CubeTexture;
     private loadingDone = false;
 
@@ -38,6 +40,7 @@ export class Rink extends THREE.Group {
     private blueIce: THREE.Texture;
     private redIce: THREE.Texture;
 
+    // Clipping planes to prevent swept ice spots to extend past the ice
     private rinkClipPlanes: THREE.Plane[];
 
     private audioManager: AudioManager;
@@ -68,6 +71,7 @@ export class Rink extends THREE.Group {
         this.whiteIce.wrapS = this.whiteIce.wrapT = THREE.RepeatWrapping;
     }
 
+    // Load envmap to create reflection on the ice
     private loadEnvmap(loaderImages: Array<string>, callback: () => void): void {
         let loader: THREE.CubeTextureLoader;
         loader = new THREE.CubeTextureLoader();
@@ -88,6 +92,7 @@ export class Rink extends THREE.Group {
         this.buildRings();
     }
 
+    // Place clipping planes around the ice plane
     private buildClipPlanes(): void {
         let leftPlane = new THREE.Plane(new THREE.Vector3(1, 0, 0), Rink.RINK_WIDTH / 2);
         let rightPlane = new THREE.Plane(new THREE.Vector3(-1, 0, 0), Rink.RINK_WIDTH / 2);
@@ -97,7 +102,6 @@ export class Rink extends THREE.Group {
     }
 
     private buildRings(): void {
-
         let blueRingGeometry: THREE.Geometry = new THREE.RingGeometry(Rink.MIDDLE_RADIUS, Rink.OUTER_RADIUS, 40);
         let blueRingMaterial: THREE.Material = new THREE.MeshStandardMaterial({
             side: THREE.DoubleSide,
@@ -131,6 +135,7 @@ export class Rink extends THREE.Group {
 
         this.add(rings);
 
+        // Decorative set of rings near where the stone is thrown
         let blueRingDeco: THREE.Mesh = new THREE.Mesh(blueRingGeometry, blueRingMaterial);
         let redRingDeco: THREE.Mesh = new THREE.Mesh(redRingGeometry, redRingMaterial);
 
@@ -147,7 +152,6 @@ export class Rink extends THREE.Group {
     }
 
     private buildIce(): void {
-
         let rinkMaterial: THREE.Material = new THREE.MeshStandardMaterial({
             metalness: 0.6,
             roughness: 0.2,
@@ -164,13 +168,12 @@ export class Rink extends THREE.Group {
         rink.position.y = - Rink.RINK_HEIGHT / 2;
 
         this.add(rink);
-
     }
 
     private buildSweptBuffer(): void {
         let sweptDiscGeometry: THREE.Geometry = new THREE.CircleGeometry(CurlingStone.MAX_RADIUS, 20);
 
-
+        // Create the buffer of swept ice spots and hide them where they can't be seen while they aren't in use
         for (let i = 0; i < this.SWEPT_BUFFER_MAX; i++) {
             let discMaterial: THREE.Material = new THREE.MeshStandardMaterial({
                 side: THREE.DoubleSide,
@@ -192,7 +195,7 @@ export class Rink extends THREE.Group {
     }
 
     private buildGameLines(): void {
-
+        // All decos are lines that aren't essential to gameplay
         let centerLineMaterial = new THREE.MeshStandardMaterial({
             color: 0x333355,
             metalness: 0.6,
@@ -269,10 +272,11 @@ export class Rink extends THREE.Group {
         return this.loadingDone;
     }
 
-    public addSpot(x: number, z: number) {
+    public addSpot(x: number, z: number): number {
         this.sweptSpotsBuffer[this.sweptBufferIndex].position.x = x;
         this.sweptSpotsBuffer[this.sweptBufferIndex].position.z = z;
         let currentBuffer = this.sweptBufferIndex;
+        // Increment buffer index to get the next spot to add. Will loop if there are 50 spots on the ice.
         this.sweptBufferIndex = (this.sweptBufferIndex + 1) % this.SWEPT_BUFFER_MAX;
         return currentBuffer;
     }
@@ -297,13 +301,14 @@ export class Rink extends THREE.Group {
 
     }
 
-    private removeSpot(id: number) {
+    private removeSpot(id: number): void {
         this.sweptSpotsBuffer[id].position.z = 50;
         (<THREE.MeshStandardMaterial>this.sweptSpotsBuffer[id].material).metalness = 0.8;
         (<THREE.MeshStandardMaterial>this.sweptSpotsBuffer[id].material).roughness = 0.0;
     }
 
-    public cleanAllSpots() {
+    public cleanAllSpots(): void {
+        // Hide all spots by placing there somewhere far away
         for (let spot of this.sweptSpotsBuffer) {
             spot.position.z = 50;
         }

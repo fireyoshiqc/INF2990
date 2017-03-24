@@ -15,7 +15,7 @@ describe('Rink', () => {
             let path = "../assets/textures/sb_iceflow/iceflow_";
             let suffix = ".jpg";
             let imagesTable: Array<string> = [path + "lf" + suffix, path + "rt" +
-                suffix, path + "up" + suffix, path + "dn" + suffix, path + "ft" + suffix, path + "bk"];
+                suffix, path + "up" + suffix, path + "dn" + suffix, path + "ft" + suffix, path + "bk" + suffix];
             let testRink = new Rink(imagesTable, null);
             expect(testRink).to.exist;
             expect(testRink).to.be.an.instanceof(Rink);

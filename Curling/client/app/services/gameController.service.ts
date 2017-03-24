@@ -45,11 +45,13 @@ export class GameController {
     private endThrowState = new EndThrowState(this);
     private gameState: IGameState = this.idleState;
 
+    // This is related to the powerbar when shooting the stone.
     private shootingAngle: number;
     private sliderDisabled = false;
     private forceVisible = false;
     private forceValue = 0;
 
+    // This is related to the HUD.
     private isPlayerTurn = false;
     private stonesThrown = 0;
     private roundsCompleted = [false, false, false];
@@ -57,6 +59,7 @@ export class GameController {
     private showNextRoundMessage = false;
     private showEndGameMessage = false;
 
+    // Active frame for the green broom animation used by sweeping state.
     private broomCursorFrame = 1;
 
     public init(container?: HTMLElement): void {
@@ -229,7 +232,7 @@ export class GameController {
         }
     }
 
-    public onMousedown(event: any): void {
+    public onMouseDown(event: any): void {
         this.gameState.onMouseDown(event);
     }
 
@@ -262,7 +265,7 @@ export class GameController {
 
     public startThrowStone(event: any): void {
         if (this.gameState === this.idleState) {
-            this.sliderDisabled = true; // Empecher la modification du spin
+            this.sliderDisabled = true; // Prevent modification of spin once it has been selected
 
             if (event === "true") { // Clockwise Spin
                 this.curlingStones[this.curlingStones.length - 1].setSpinOrientation(SpinOrientation.CLOCKWISE);
@@ -275,6 +278,7 @@ export class GameController {
     }
 
     public enterChoosingAngleState(): void {
+        // Hide the cursor
         document.body.style.cursor = "none";
         this.gameRenderer.updateDirectionCurve(0);
         this.gameRenderer.showDirectionCurve();
@@ -292,6 +296,7 @@ export class GameController {
     }
 
     public enterSweepingState(): void {
+        // Load the red broom cursor
         document.body.style.cursor = "url(../assets/textures/balai_rouge.png), auto";
         this.gameRenderer.removeHighlightFromStones();
         this.gameRenderer.hideDirectionCurve();
@@ -369,10 +374,14 @@ export class GameController {
         this.gameState = this.idleState;
     }
 
-    public updateBroomCursor(green: boolean) {
+    // Animates the green broom when the player can sweep
+    public updateBroomCursor(green: boolean): void {
+        // The player can sweep. Animate the broom.
         if (green) {
             document.body.style.cursor = "url(../assets/textures/balai_vert"
                 + Math.floor(this.broomCursorFrame) + ".png), auto";
+
+            // Pull back the broom
             if (this.sweepingState.isSweeping()) {
                 if (this.broomCursorFrame < 6) {
                     this.broomCursorFrame += 0.5;
@@ -381,29 +390,19 @@ export class GameController {
                 if (this.broomCursorFrame > 1) {
                     this.broomCursorFrame -= 0.5;
                 }
-
             }
+            // The player couldn't sweep before. Let him do it.
             if (!this.sweepingState.getCanSweep()) {
+                document.body.style.cursor = "url(../assets/textures/balai_vert1.png), auto";
                 this.sweepingState.setCanSweep(true);
             }
-
         }
+        // The player can't sweep. Give him the red broom of doom.
         else {
             document.body.style.cursor = "url(../assets/textures/balai_rouge.png), auto";
             this.broomCursorFrame = 1;
             this.sweepingState.setCanSweep(false);
             this.sweepingState.setIsSweeping(false);
-        }
-
-
-
-        if (green && !this.sweepingState.getCanSweep()) {
-            document.body.style.cursor = "url(../assets/textures/balai_vert1.png), auto";
-            this.sweepingState.setCanSweep(true);
-
-        } else if (!green && this.sweepingState.getCanSweep()) {
-            document.body.style.cursor = "url(../assets/textures/balai_rouge.png), auto";
-            this.sweepingState.setCanSweep(false);
         }
     }
 

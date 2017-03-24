@@ -23,10 +23,7 @@ export class PlayerNameComponent implements OnInit {
     }
 
     public validatePlayerName(): boolean {
-        if (this.player.name === "") {
-            return false;
-        }
-        return true;
+        return this.player.name !== "";
     }
 }
 
