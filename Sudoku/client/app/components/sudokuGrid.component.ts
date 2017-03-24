@@ -108,7 +108,7 @@ export class SudokuGridComponent implements AfterViewInit {
 
         // Get what's being pasted or drag-and-dropped from the browser
         let pastedData: string;
-        
+
         if (event.type === "drop") {
             pastedData = event.dataTransfer.getData("text/plain");
 

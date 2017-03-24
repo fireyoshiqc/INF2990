@@ -86,14 +86,16 @@ export class SudokuService {
         let getPromise = new Promise((resolve, reject) => {
             this.http.get(this.HOST_NAME + this.SERVER_PORT + '/api/getHighscores').toPromise()
                 .then(res => {
-                    // TODO: Everything
                     let highscores = res.json();
+
                     if (highscores.easy === undefined || highscores.hard === undefined) {
                         reject("Highscores request failed.");
-                    } else {
-                        let easyScores: Array<any> = highscores.easy;
-                        let hardScores: Array<any> = highscores.hard;
+                    }
+                    else {
+                        const easyScores: Array<any> = highscores.easy;
+                        const hardScores: Array<any> = highscores.hard;
                         let isHighscore: boolean;
+
                         // Trying to find the current player's name in the top 3 highscores for each difficulty
                         if (this.difficulty === "facile") {
                             isHighscore = easyScores.find(element => (element.name === this.playerName)) !== undefined;
@@ -108,7 +110,6 @@ export class SudokuService {
                 .catch(() => reject("Could not get highscores."));
         });
         return getPromise;
-
     }
 
     public resetSudoku() {
@@ -129,6 +130,7 @@ export class SudokuService {
     }
 
     public isGridFull(): boolean {
+        // Tries to find an empty square (value of zero).
         return this.inputGrid.find(row =>
             (row.find(column =>
                 (column === 0)) === 0)) === undefined;
