@@ -164,6 +164,7 @@ export class SudokuGridComponent implements AfterViewInit {
         // 1- Delete/Backspace entered
         if (this.inputService.isDelete(entry.keyEvent)) {
             entryValidation.value = 0;
+            entry.inputField.value = "";
             this.inputService.removeInvalidField(entry.inputField);
             this.sudokuService.putEntry(entryValidation);
         }
