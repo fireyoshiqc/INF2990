@@ -12,7 +12,7 @@ LIVRABLE DU VENDREDI 24 MARS 2017
     	1.2.1 - Sauvegarde et affichage, si applicable, des meilleurs temps à la fin d'une partie
     	1.2.2 - Tableau de bord côté serveur pour montrer, entre autres, un journal d'activités
     	1.2.3 - Panneau de contrôle côté client (temps écoulé, nom du joueur et difficulté)
-    	1.2.4 - Message de félicitation pour une grille correctement remplie
+    	1.2.4 - Message de félicitations pour une grille correctement remplie
     1.3 - Choisir un nom de joueur valide pour toute la session
 
 2 - CURLING
@@ -46,7 +46,7 @@ LIVRABLE DU VENDREDI 24 MARS 2017
 //// INSTRUCTIONS ////
 
 0 - SCRIPT D'AUTOMATISATION NPM INSTALL
-    0.1 - À partir de la racine du projet : sh npminstall.sh (ne fonctionne pas sur Windows)
+    0.1 - À partir de la racine du projet : sh npminstall.sh (ne fonctionne pas sur Windows à moins d'avoir Bash/Cygwin)
 
 1- VÉRIFICATION DU CODE AVEC TSLINT
     1.1 - À partir des répertoires /server ou /client des trois modules : npm run lint
@@ -61,11 +61,11 @@ LIVRABLE DU VENDREDI 24 MARS 2017
 
     2.7 - BASE DE DONNÉES
          Il est possible de voir le contenu de la base de données en se connectant avec les informations qui suivent :  
-         2.7.1 - URL : mlab.com, Username : factory24, Password : dankmemes69
+         2.7.1 - URL : mlab.com, Username : factory24, Password : sudokuDB24
 
-3 - CURLING *** À noter que le serveur doit être sur localhost:3002 (par défaut) ***
+3 - CURLING *** À noter que le serveur doit être sur localhost:3001 (par défaut) ***
     3.1 - Des tests sont disponibles sur le client : npm test
-    3.2 - client : npm start
+    3.2 - client : npm start | serveur : npm start
     3.3 - Vous jouez en tant que le joueur principal et l'AI (non implémenté), c'est-à-dire que vous effectuez les lancées 
               pour le joueur et pour le AI. 
           Le déroulement de la partie (lancer, balayage, score) est implémenté. 
@@ -74,8 +74,8 @@ LIVRABLE DU VENDREDI 24 MARS 2017
     
     3.4 - ÉTAPES : LANCER UNE PIERRE
         3.4.1 - Sélectionner la direction de spin : Bouton slider ou touches (A & D) + bouton pour confirmer (ligne direction apparaît).
-        3.4.2 - Sélectionner l'angle : Deplacer la souris et cliquer une première fois pour confirmer l'angle.
-        3.4.3 - Sélectionner la force : Cliquer une deuxième fois et garde la souris enfoncer. Relâcher pour confirmer la force (la pierre part).
+        3.4.2 - Sélectionner l'angle : Déplacer la souris et cliquer une première fois pour confirmer l'angle.
+        3.4.3 - Sélectionner la force : Cliquer une deuxième fois et garder le clic gauche enfoncé. Relâcher pour confirmer la force (la pierre part).
 
 4 - SCRABBLE *** À noter que le serveur doit être sur localhost:3000 (par défaut) ***
     4.1 - Des tests sont disponibles sur le client et sur le serveur: npm test
@@ -83,7 +83,7 @@ LIVRABLE DU VENDREDI 24 MARS 2017
     4.3 - client(s) : npm start (pour autant de clients que vous voulez)
     4.4 - Dans une salle de jeu, il est possible de jouer et d'effectuer toutes les commandes du jeu.
           Le déroulement de la partie (commandes, tours, réserve) est implémenté.
-          Pour manipuler les lettres sur le chevalet, il faut cliquer sur l'input de la boîte de communication et peser sur TAB. Puis, peser les lettres que vous voulez manipuler.
+          Pour manipuler les lettres sur le chevalet, il faut cliquer sur l'input de la boîte de communication et appuyer sur TAB. Puis, entrer au clavier la lettre à déplacer sur le chevalet; touches fléchées ensuite.
           La fin de partie n'est pas implémentée encore.
           L'abandon n'est pas encore géré.
-    4.5 - Valeur des "Joker" : Si vous mettez votre curseur sur la tuile un "tooltip" avec la valeur du "Joker" apparaît. 
+    4.5 - Valeur des "Joker" : Si vous mettez votre curseur sur la tuile, un "tooltip" avec la lettre jouée en lieu et place du "Joker" apparaît. 
