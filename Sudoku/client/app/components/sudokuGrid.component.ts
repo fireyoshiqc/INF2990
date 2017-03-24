@@ -18,11 +18,10 @@ export class SudokuGridComponent implements AfterViewInit {
 
     constructor(public dialog: MdDialog, private sudokuService: SudokuService,
         private stopwatchService: StopwatchService,
-        private inputService: InputService) {
-        this.sudokuService = sudokuService;
-    }
+        private inputService: InputService) { }
 
     public ngAfterViewInit() {
+
         // Necessary to fix prodmode exclusive error (data binding changed on init)
         setTimeout(() => {
             this.nameDialogRef = this.dialog.open(NameDialogComponent, {
@@ -68,8 +67,6 @@ export class SudokuGridComponent implements AfterViewInit {
                                     if (scores !== undefined) {
                                         // Pop the popup!
                                         this.showHighscoresDialog(scores);
-                                    } else {
-                                        // Don't pop the popup! Show a message to say you didn't get a highscore!
                                     }
                                 })
                                 .catch((error) => {
@@ -106,11 +103,19 @@ export class SudokuGridComponent implements AfterViewInit {
 
     public verifyPaste(event: any, entry: IEntryEvent): void {
 
-        // Pick the field that's receiving the paste
+        // Pick the field that's receiving the paste or drop
         let input = event.target;
 
-        // Get what's being pasted from the browser
-        let pastedData: string = event.clipboardData.getData("text/plain");
+        // Get what's being pasted or drag-and-dropped from the browser
+        let pastedData: string;
+        
+        if (event.type === "drop") {
+            pastedData = event.dataTransfer.getData("text/plain");
+
+        } else {
+            pastedData = event.clipboardData.getData("text/plain");
+        }
+
         if (pastedData.length === 1 && pastedData.match(/[1-9]{1}/)) {
 
             input.value = pastedData;

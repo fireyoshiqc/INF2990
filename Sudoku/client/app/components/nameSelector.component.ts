@@ -36,7 +36,6 @@ export class NameSelectorComponent {
                 else {
                     this.error = true;
                     this.errorMessage = "Ce nom est déjà pris ou contient des caractères invalides!";
-
                 }
             });
         }

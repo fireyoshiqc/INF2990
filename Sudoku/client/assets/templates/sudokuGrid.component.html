@@ -12,7 +12,8 @@
                             <div *ngIf="element==0">
                                 <input class="inputField" #inputField size="1" maxlength="1" (keydown)="putEntry({keyEvent:$event, inputField:inputField, row:i, column:j})"
                                     (focus)="formatSelectedTableCell(inputField)" (focusout)="unformatSelectedTableCell(inputField)"
-                                    [style.color]="isDarkTheme ? 'limegreen' : 'seagreen'" [disabled]="sudokuService.isValid" (paste) = "verifyPaste($event, {keyEvent:null, inputField:inputField, row:i, column:j})">
+                                    [style.color]="isDarkTheme ? 'limegreen' : 'seagreen'" [disabled]="sudokuService.isValid"
+                                    (paste)="verifyPaste($event, {keyEvent:null, inputField:inputField, row:i, column:j})" (drop)="verifyPaste($event, {keyEvent:null, inputField:inputField, row:i, column:j})">
                             </div>
                             <div *ngIf="element!=0">
                                 {{element}}
@@ -34,7 +35,7 @@
             </md-card-title>
             <md-card-content>
                 <p>Niveau de difficulté : {{sudokuService.difficulty}} </p>
-                <p *ngIf="stopwatchService.isVisible()">Chronomètre : <span>{{stopwatchService.getMinutes()}}</span> min <span>{{stopwatchService.getSeconds()}}</span> sec</p>
+                <p *ngIf="stopwatchService.isVisible()">Chronomètre : <span>{{stopwatchService.getMinutes()}}</span> min <span>{{stopwatchService.getSeconds()}}</span>                    sec</p>
             </md-card-content>
             <md-card-actions id="controlButtons">
                 <button md-raised-button color="accent" (click)="resetSudoku()">Réinitialiser la grille</button>
@@ -47,7 +48,7 @@
                 Félicitations!
             </md-card-title>
             <md-card-content>
-                <p>Vous avez réussi le sudoku {{sudokuService.difficulty}} en <span>{{stopwatchService.getMinutes()}}</span> min <span>{{stopwatchService.getSeconds()}}</span> sec!</p>
+                <p>Vous avez réussi le sudoku {{sudokuService.difficulty}} en <span>{{stopwatchService.getMinutes()}}</span>                    min <span>{{stopwatchService.getSeconds()}}</span> sec!</p>
             </md-card-content>
         </md-card>
 
