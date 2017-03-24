@@ -44,23 +44,11 @@ export class InfoComponent {
         this.thisPlayer = "";
     }
 
-    // The multitude of ifs is to prevent unecessary data refreshing which causes flashing
     public updateTurnInfo(turnInfo: ITurnInfo): void {
-        if (this.minutes !== turnInfo.minutes) {
-            this.minutes = turnInfo.minutes;
-        }
-
-        if (this.seconds !== turnInfo.seconds) {
-            this.seconds = turnInfo.seconds;
-        }
-
-        if (this.activePlayerName !== turnInfo.activePlayerName) {
-            this.activePlayerName = turnInfo.activePlayerName;
-        }
-
-        if (this.nLettersStash !== turnInfo.nLettersStash) {
-            this.nLettersStash = turnInfo.nLettersStash;
-        }
+        this.minutes = turnInfo.minutes;
+        this.seconds = turnInfo.seconds;
+        this.activePlayerName = turnInfo.activePlayerName;
+        this.nLettersStash = turnInfo.nLettersStash;
 
         // Check if a player has left
         if (this.players.length > turnInfo.players.length) {

@@ -167,7 +167,7 @@ export class CommandHandler {
             this.updateClientPlaceWord(player, placeCommand);
         }, 3000);
 
-        // Active player can't send additionnal command
+        // Active player can't send additional command
         room.getGameMaster().blockActivePlayer();
     }
 

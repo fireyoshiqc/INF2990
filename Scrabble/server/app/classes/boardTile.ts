@@ -39,7 +39,7 @@ export class BoardTile {
     }
 
     public getTileType(): TileType {
-        // Pour ne pas compter DoubleWord/TripleWord plus qu'une fois
+        // Don't count DoubleWord/TripleWord more than once
         if (this.bonusActive) {
             return this.tileType;
         }
@@ -58,7 +58,7 @@ export class BoardTile {
         return this.bonusActive;
     }
 
-    public disactivateBonus(): void {
+    public deactivateBonus(): void {
         this.bonusActive = false;
     }
 

@@ -40,7 +40,6 @@ export class RoomService {
 
         this.socket.on("wcRefresh", (roomInfo: any) => {
             this.roomInfo = roomInfo;
-
         });
     }
 

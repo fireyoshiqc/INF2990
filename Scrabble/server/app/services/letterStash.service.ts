@@ -14,7 +14,7 @@ export class LetterStash {
         this.buildStash();
     }
 
-    public getAmountLeft() {
+    public getAmountLeft(): number {
         return this.stash.length;
     }
 
@@ -44,7 +44,7 @@ export class LetterStash {
         return this.stash.splice(randomIndex, 1)[0];
     }
 
-    private buildStash() {
+    private buildStash(): void {
         const buildString =
             "A".repeat(9) + "B".repeat(2) + "C".repeat(2) + "D".repeat(3) +
             "E".repeat(15) + "F".repeat(2) + "G".repeat(2) + "H".repeat(2) +

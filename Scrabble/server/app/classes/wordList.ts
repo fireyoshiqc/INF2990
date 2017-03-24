@@ -38,7 +38,7 @@ export class WordList {
         return this.newWords;
     }
 
-    // Pour les test
+    // For tests
     public getExistingWords(): IWord[] {
         return this.existingWords;
     }

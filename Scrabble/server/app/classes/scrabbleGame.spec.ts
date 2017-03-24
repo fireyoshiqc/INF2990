@@ -421,7 +421,7 @@ describe('ScrabbleGame', () => {
 
             // Ne pas compter Joker
             expect(scrabbleGame2.countAllNewWordsPoint()).to.equal(4);
-            scrabbleGame2.disactivateUsedTilesBonus();
+            scrabbleGame2.deactivateUsedTilesBonus();
             done();
         });
 
@@ -435,7 +435,7 @@ describe('ScrabbleGame', () => {
             wordList.updateNewWords(word3);
 
             expect(scrabbleGame2.countAllNewWordsPoint()).to.equal(26);
-            scrabbleGame2.disactivateUsedTilesBonus();
+            scrabbleGame2.deactivateUsedTilesBonus();
 
             let c4 = new CommandPlaceWord("d", 12, "v", "sapins");
             let word4 = { row: 3, column: 11, orientation: 'v', word: 'sapins' };
@@ -443,7 +443,7 @@ describe('ScrabbleGame', () => {
             wordList.updateNewWords(word4);
 
             expect(scrabbleGame2.countAllNewWordsPoint()).to.equal(8);
-            scrabbleGame2.disactivateUsedTilesBonus();
+            scrabbleGame2.deactivateUsedTilesBonus();
             done();
         });
     });

@@ -157,7 +157,7 @@ export class ScrabbleGame {
             this.usedTilesPerTurn.push(tile);
         }
 
-        // Traitement doubleWord / TripleWord
+        // DoubleWord / TripleWord bonuses
         if (doubleWord) {
             score *= 2;
         }
@@ -169,9 +169,9 @@ export class ScrabbleGame {
         return score;
     }
 
-    public disactivateUsedTilesBonus(): void {
+    public deactivateUsedTilesBonus(): void {
         this.usedTilesPerTurn.forEach(tile => {
-            tile.disactivateBonus();
+            tile.deactivateBonus();
         });
 
         this.usedTilesPerTurn = [];
@@ -310,7 +310,7 @@ export class ScrabbleGame {
                         }
 
                         if (Dictionary.isWordValid(thisWord)) {
-                            // Ajouer le nouveau mot forme
+                            // Add the newly formed word
                             this.wordList.updateNewWords({ row: i, column: j, orientation: "h", word: thisWord });
                         } else {
                             this.wordList.clearNewWords();

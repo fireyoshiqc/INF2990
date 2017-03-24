@@ -62,7 +62,7 @@ export class GameMaster {
     private nextTurn: boolean;
 
     private readonly BINGO_BONUS = 50;
-    private readonly RANDOMIZE_SWAP_COUNT = 20;
+    private readonly RANDOMIZE_SWAP_COUNT = 4;
 
     constructor(players: Player[]) {
         this.scrabbleGame = new ScrabbleGame();
@@ -193,7 +193,7 @@ export class GameMaster {
     }
 
     private placeWord(command: CommandPlaceWord): CommandExecutionStatus {
-        // 1- Validate if the word can be place on the board
+        // 1- Validate if the word can be placed on the board
         let commandExecutionStatus = this.canPlaceWord(command);
 
         if (commandExecutionStatus === CommandExecutionStatus.SUCCESS_PLACE_WORD_CAN_PLACE_WORD) {
@@ -267,7 +267,7 @@ export class GameMaster {
         this.activePlayer.addPoints(score);
 
         // Bonus are valid only once
-        this.scrabbleGame.disactivateUsedTilesBonus();
+        this.scrabbleGame.deactivateUsedTilesBonus();
     }
 
     public undoPlaceWord(command: CommandPlaceWord, player: Player): string {
