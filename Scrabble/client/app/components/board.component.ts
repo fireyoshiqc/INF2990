@@ -67,7 +67,7 @@ export class BoardComponent implements OnInit {
         let columnIndex: number;
         let tile: BoardTile;
 
-         for (let i = 0; i < word.length; i++) {
+        for (let i = 0; i < word.length; i++) {
             rowIndex = (command.orientation === "h") ? command.row : (command.row + i);
             columnIndex = (command.orientation === "h") ? (command.column + i) : command.column;
             tile = this.board[rowIndex][columnIndex];
@@ -76,12 +76,14 @@ export class BoardComponent implements OnInit {
             if (word[i] === "-") {
                 tile.removeLetter();
             } else { // Add letter to board
-                if (word[i] === word[i].toUpperCase()) {
-                    tile.putLetter(new Letter(word[i], true));
-                } else {
-                    tile.putLetter(new Letter(word[i]));
+                if (tile.getCharacter() === null) {
+                    if (word[i] === word[i].toUpperCase()) {
+                        tile.putLetter(new Letter(word[i], true));
+                    } else {
+                        tile.putLetter(new Letter(word[i]));
+                    }
                 }
             }
-         }
+        }
     }
 }
