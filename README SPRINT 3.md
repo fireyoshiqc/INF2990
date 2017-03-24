@@ -1,14 +1,34 @@
 SPRINT 3
-LIVRABLE DU VENDREDI 25 MARS 2017
+LIVRABLE DU VENDREDI 24 MARS 2017
 ÉQUIPE 24 - FACTORY/24
 
 //// NOUVELLES FONCTIONNALITÉS ////
 
 1 - SUDOKU
-    1.1 - 
+    1.1 - Interaction avec la grille
+        1.1.1 - Sélection d’une case avec les touches du clavier
+        1.1.2 - Indication de la dernière case sélectionnée
+    1.2 - Affichage
+    	1.2.1 - Sauvegarde et affichage, si applicable, des meilleurs temps à la fin d'une partie
+    	1.2.2 - Tableau de bord côté serveur pour montrer, entre autres, un journal d'activités
+    	1.2.3 - Panneau de contrôle côté client (temps écoulé, nom du joueur et difficulté)
+    	1.2.4 - Message de félicitation pour une grille correctement remplie
+    1.3 - Choisir un nom de joueur valide pour toute la session
 
 2 - CURLING
-    2.1 - 
+    2.1 - Gestion d'une partie
+    	2.1.1 - Déroulement des trois manches d’une partie
+    	2.1.2 - Pointage à la fin d’une manche
+    2.1 - Affichage
+    	2.2.1 - Informations sur la partie
+    	2.2.2 - Fenêtre de jeu (heads-up display)
+    2.3 - Gameplay
+    	2.3.1 - Positionnement de la caméra au début d’un tour
+    	2.3.2 - Balayage de la surface de la glace
+    	2.3.3 - Lancer de la pierre (spin, angle et force)
+    	2.3.4 - Détection des pierres en situation de hors-jeu (avec fade out)
+    	2.3.5 - Illumination des pierres en mesure de donner des points
+    2.4 - Choisir un nom de joueur valide pour toute la session
 
 3 - SCRABBLE
     3.1 - Communication avec le serveur (pour les commandes de jeu)
@@ -36,7 +56,7 @@ LIVRABLE DU VENDREDI 25 MARS 2017
     2.2 - client : npm start | serveur : npm start
     2.3 - Il est possible de demander une grille facile ou difficile. Vous pouvez faire une partie complète.
     2.4 - Vous pouvez, à n'importe quel moment, charger un nouveau Sudoku depuis le "sidenav". 
-    2.5 - Pour ouvrir le "sidenav", cliquez sur les trois lignes horizontales en haut à coté de "Sudoku".
+    2.5 - Pour ouvrir le "sidenav", cliquez sur les trois lignes horizontales en haut à côté de "Sudoku".
     2.6 - Faire disparaître le tableau de highscores : Cliquer à côté du popup.
 
     2.7 - BASE DE DONNÉES
