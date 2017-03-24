@@ -45,11 +45,12 @@ export class InputService {
     }
 
     public isArrowKey(keyEvent: KeyboardEvent): boolean {
-        return keyEvent.key in ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
+        return (keyEvent.key === "ArrowUp" || keyEvent.key === "ArrowDown" ||
+            keyEvent.key === "ArrowLeft" || keyEvent.key === "ArrowRight");
     }
 
     public isDelete(keyEvent: KeyboardEvent): boolean {
-        return keyEvent.key in ["Backspace", "Delete"];
+        return (keyEvent.key === "Backspace" || keyEvent.key === "Delete");
     }
 
     public handleArrowKey(entry: IEntryValidation, input: HTMLInputElement) {
