@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewChecked, ElementRef, ViewChild } from '@angular/core';
 import { SocketHandler } from '../modules/socketHandler.module';
 import { Message, IMessageFromServer } from '../classes/message';
 
@@ -8,7 +8,7 @@ import { Message, IMessageFromServer } from '../classes/message';
     templateUrl: '/assets/templates/chat.component.html'
 })
 
-export class ChatComponent implements OnInit {
+export class ChatComponent implements OnInit, AfterViewChecked {
     private readonly HOST_NAME = "http://" + window.location.hostname;
     private readonly SERVER_PORT = ":3000";
     private socket: any;
@@ -16,6 +16,7 @@ export class ChatComponent implements OnInit {
     private msgList = new Array<Message>();
     private openWindow = window;
     private attemptingToConnect = false;
+    @ViewChild('chatbox') private chatContainer: ElementRef;
 
     public ngOnInit() {
         this.socket = SocketHandler.requestSocket(this.HOST_NAME + this.SERVER_PORT);
@@ -25,24 +26,24 @@ export class ChatComponent implements OnInit {
         });
 
         this.socket.on('message sent', (msg: IMessageFromServer) => {
-            this.attemptingToConnect = false;
-            this.msgList.push(new Message(msg));
+            this.addMessage(msg);
         });
 
         this.socket.on('command sent', (msg: IMessageFromServer) => {
-            this.attemptingToConnect = false;
-            this.msgList.push(new Message(msg, true));
+            this.addMessage(msg, true);
         });
 
         this.socket.on('user connect', (msg: IMessageFromServer) => {
-            this.attemptingToConnect = false;
-            this.msgList.push(new Message(msg));
+            this.addMessage(msg);
         });
 
         this.socket.on('user disconnect', (msg: IMessageFromServer) => {
-            this.attemptingToConnect = false;
-            this.msgList.push(new Message(msg));
+            this.addMessage(msg);
         });
+    }
+
+    public ngAfterViewChecked() {
+        this.autoscroll();
     }
 
     public onSubmit() {
@@ -56,7 +57,20 @@ export class ChatComponent implements OnInit {
 
     public onResize(event: any) {
         this.openWindow = window;
+    }
 
+    private addMessage(msg: IMessageFromServer, isCommand?: boolean) {
+        this.attemptingToConnect = false;
+        isCommand === undefined ? this.msgList.push(new Message(msg)) : this.msgList.push(new Message(msg, isCommand));
+    }
+
+    private autoscroll(): void {
+        // Try scrolling the chatbox so the new message can be seen after a view update
+        try {
+            this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
+        } catch (err) {
+            console.log("Error trying to scroll chatbox.");
+        }
     }
 
     public keyboardInput(event: KeyboardEvent) {
