@@ -56,6 +56,8 @@ export class GameEngine {
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         this.renderer.localClippingEnabled = true;
         this.renderer.physicallyCorrectLights = true;
+        this.renderer.shadowMapEnabled = true;
+        this.renderer.shadowMapType = THREE.PCFSoftShadowMap;
         if (this.container !== undefined) {
             if (this.container.getElementsByTagName('canvas').length === 0) {
                 this.container.appendChild(this.renderer.domElement);

@@ -64,6 +64,8 @@ export class SceneBuilder {
         rink.position.z = rink.getDimensions().length / 2;
         rink.position.y = -0.0775;
         rink.name = "rink";
+        rink.castShadow = false;
+        rink.receiveShadow = true;
         return rink;
     }
 
@@ -83,6 +85,10 @@ export class SceneBuilder {
                     this.SPOTLIGHT_HEIGHT, i * (length / (this.Z_SPOTLIGHTS - 1)));
                 light.penumbra = 0.4;
                 light.decay = 2.0;
+                light.castShadow = true;
+                light.shadow.mapSize.width = 512; // 2048 or 4096 looks best but it's GPU-heavy
+                light.shadow.mapSize.height = 512; // 2048 or 4096 looks best but it's GPU-heavy
+                light.shadowCameraFar = 20;
                 spotlightArray.add(light);
 
                 let lightTarget = new THREE.Object3D();

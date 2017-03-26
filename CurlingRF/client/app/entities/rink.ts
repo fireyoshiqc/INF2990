@@ -116,7 +116,8 @@ export class Rink extends THREE.Group {
         let rink: THREE.Mesh = new THREE.Mesh(rinkGeometry, rinkMaterial);
         rink.name = "whiteice";
         rink.position.y = - surface.height / 2;
-
+        rink.castShadow = false;
+        rink.receiveShadow = true;
         this.add(rink);
     }
 
@@ -137,6 +138,8 @@ export class Rink extends THREE.Group {
             map: this.redIce
         });
         let redRing: THREE.Mesh = new THREE.Mesh(redRingGeometry, redRingMaterial);
+        redRing.castShadow = false;
+        redRing.receiveShadow = true;
 
         let blueRingGeometry: THREE.Geometry = new THREE.RingGeometry(middle, outer, 40);
         let blueRingMaterial: THREE.Material = new THREE.MeshStandardMaterial({
@@ -148,6 +151,8 @@ export class Rink extends THREE.Group {
             map: this.blueIce
         });
         let blueRing: THREE.Mesh = new THREE.Mesh(blueRingGeometry, blueRingMaterial);
+        blueRing.castShadow = false;
+        blueRing.receiveShadow = true;
 
         let rings: THREE.Group = new THREE.Group();
         rings.add(blueRing);
@@ -198,6 +203,8 @@ export class Rink extends THREE.Group {
         centerLine.position.y = 0.0002;
         centerLine.position.z = 0;
         centerLine.rotation.x = -Math.PI / 2;
+        centerLine.castShadow = false;
+        centerLine.receiveShadow = true;
         this.add(centerLine);
 
         let hogLineMaterial = new THREE.MeshStandardMaterial({
@@ -215,6 +222,8 @@ export class Rink extends THREE.Group {
         hogLine.position.y = 0.0003;
         hogLine.position.z = hogline;
         hogLine.rotation.x = -Math.PI / 2;
+        hogLine.castShadow = false;
+        hogLine.receiveShadow = true;
         this.add(hogLine);
 
         let hogLineDeco = new THREE.Mesh(hogLineGeometry, hogLineMaterial);
@@ -222,6 +231,8 @@ export class Rink extends THREE.Group {
         hogLineDeco.position.y = 0.0003;
         hogLineDeco.position.z = -hogline;
         hogLineDeco.rotation.x = -Math.PI / 2;
+        hogLineDeco.castShadow = false;
+        hogLineDeco.receiveShadow = true;
         this.add(hogLineDeco);
 
         let backLineGeometry = new THREE.PlaneGeometry(surface.width, 0.03);
@@ -231,6 +242,8 @@ export class Rink extends THREE.Group {
         backLine.position.y = 0.0002;
         backLine.position.z = backline;
         backLine.rotation.x = -Math.PI / 2;
+        backLine.castShadow = false;
+        backLine.receiveShadow = true;
         this.add(backLine);
 
         let backLineDeco = new THREE.Mesh(backLineGeometry, centerLineMaterial);
@@ -238,6 +251,8 @@ export class Rink extends THREE.Group {
         backLineDeco.position.y = 0.0002;
         backLineDeco.position.z = -backline;
         backLineDeco.rotation.x = -Math.PI / 2;
+        backLineDeco.castShadow = false;
+        backLineDeco.receiveShadow = true;
         this.add(backLineDeco);
 
 
@@ -246,6 +261,8 @@ export class Rink extends THREE.Group {
         teeLine.position.y = 0.0002;
         teeLine.position.z = teeline;
         teeLine.rotation.x = -Math.PI / 2;
+        teeLine.castShadow = false;
+        teeLine.receiveShadow = true;
         this.add(teeLine);
 
         let teeLineDeco = new THREE.Mesh(backLineGeometry, centerLineMaterial);
@@ -253,6 +270,8 @@ export class Rink extends THREE.Group {
         teeLineDeco.position.y = 0.0002;
         teeLineDeco.position.z = -teeline;
         teeLineDeco.rotation.x = -Math.PI / 2;
+        teeLineDeco.castShadow = false;
+        teeLineDeco.receiveShadow = true;
         this.add(teeLineDeco);
     }
 }

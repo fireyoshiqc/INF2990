@@ -172,6 +172,11 @@ export class CurlingStone extends THREE.Group {
         let handleMesh: THREE.Mesh = new THREE.Mesh(handleGeometry, handleMaterial);
 
         stoneMesh.rotation.x = Math.PI / 2;
+
+        stoneMesh.castShadow = true;
+        stoneMesh.receiveShadow = true;
+        handleMesh.castShadow = true;
+        handleMesh.receiveShadow = true;
         this.add(stoneMesh);
         this.add(handleMesh);
     }
