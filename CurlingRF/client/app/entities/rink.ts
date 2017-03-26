@@ -10,9 +10,9 @@ import { TextureCacher } from "../utils/textureCacher.util";
 
 export class Rink extends THREE.Group {
 
-    private readonly RINK_LENGTH = 46;
-    private readonly RINK_WIDTH = 4.4;
-    private readonly RINK_HEIGHT = 0.1;
+    private readonly LOCAL_SURFACE_SETUP: ISurfaceSetup = {
+        length: 46, width: 4.4, height: 0.1
+    };
 
     private readonly LOCAL_RING_SETUP: IRingSetup = {
         center: 0.15, inner: 0.6, middle: 1.2, outer: 1.8,
@@ -40,19 +40,25 @@ export class Rink extends THREE.Group {
         });
     }
 
+    public getDimensions(): ISurfaceSetup {
+        return this.LOCAL_SURFACE_SETUP;
+    }
+
     public getRefRingSetup(): IRingSetup {
         const local = this.LOCAL_RING_SETUP;
+        const surface = this.LOCAL_SURFACE_SETUP;
         return {
             center: local.center, inner: local.inner, middle: local.middle, outer: local.outer,
-            offset: local.offset + this.RINK_LENGTH / 2
+            offset: local.offset + surface.length / 2
         };
     }
 
     public getRefLineSetup(): ILineSetup {
         const local = this.LOCAL_LINE_SETUP;
+        const surface = this.LOCAL_SURFACE_SETUP;
         return {
-            hog: local.hog + this.RINK_LENGTH / 2,
-            back: local.back + this.RINK_LENGTH / 2
+            hog: local.hog + surface.length / 2,
+            back: local.back + surface.length / 2
         };
     }
 
@@ -93,6 +99,9 @@ export class Rink extends THREE.Group {
     }
 
     private buildIce(): void {
+
+        const surface = this.LOCAL_SURFACE_SETUP;
+
         let rinkMaterial: THREE.Material = new THREE.MeshStandardMaterial({
             metalness: 0.6,
             roughness: 0.2,
@@ -101,12 +110,12 @@ export class Rink extends THREE.Group {
             map: this.whiteIce
         });
 
-        let rinkGeometry: THREE.Geometry = new THREE.BoxGeometry(this.RINK_WIDTH,
-            this.RINK_HEIGHT, this.RINK_LENGTH, 32);
+        let rinkGeometry: THREE.Geometry = new THREE.BoxGeometry(surface.width,
+            surface.height, surface.length, 32);
 
         let rink: THREE.Mesh = new THREE.Mesh(rinkGeometry, rinkMaterial);
         rink.name = "whiteice";
-        rink.position.y = - this.RINK_HEIGHT / 2;
+        rink.position.y = - surface.height / 2;
 
         this.add(rink);
     }
@@ -169,6 +178,7 @@ export class Rink extends THREE.Group {
 
     private buildGameLines(): void {
 
+        const surface = this.LOCAL_SURFACE_SETUP;
         const hogline = this.LOCAL_LINE_SETUP.hog;
         const backline = this.LOCAL_LINE_SETUP.back;
         const teeline = this.LOCAL_RING_SETUP.offset;
@@ -182,7 +192,7 @@ export class Rink extends THREE.Group {
             envMapIntensity: 1.0,
         });
 
-        let centerLineGeometry = new THREE.PlaneGeometry(0.03, this.RINK_LENGTH);
+        let centerLineGeometry = new THREE.PlaneGeometry(0.03, surface.length);
         let centerLine = new THREE.Mesh(centerLineGeometry, centerLineMaterial);
         centerLine.position.x = 0;
         centerLine.position.y = 0.0002;
@@ -198,7 +208,7 @@ export class Rink extends THREE.Group {
             envMapIntensity: 1.0,
         });
 
-        let hogLineGeometry = new THREE.PlaneGeometry(this.RINK_WIDTH, 0.08);
+        let hogLineGeometry = new THREE.PlaneGeometry(surface.width, 0.08);
 
         let hogLine = new THREE.Mesh(hogLineGeometry, hogLineMaterial);
         hogLine.position.x = 0;
@@ -214,7 +224,7 @@ export class Rink extends THREE.Group {
         hogLineDeco.rotation.x = -Math.PI / 2;
         this.add(hogLineDeco);
 
-        let backLineGeometry = new THREE.PlaneGeometry(this.RINK_WIDTH, 0.03);
+        let backLineGeometry = new THREE.PlaneGeometry(surface.width, 0.03);
 
         let backLine = new THREE.Mesh(backLineGeometry, centerLineMaterial);
         backLine.position.x = 0;
@@ -245,6 +255,12 @@ export class Rink extends THREE.Group {
         teeLineDeco.rotation.x = -Math.PI / 2;
         this.add(teeLineDeco);
     }
+}
+
+export interface ISurfaceSetup {
+    length: number;
+    width: number;
+    height: number;
 }
 
 export interface IRingSetup {

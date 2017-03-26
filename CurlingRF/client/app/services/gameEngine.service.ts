@@ -5,6 +5,8 @@
  * @date 2017/03/26
  */
 
+import { SceneBuilder } from './sceneBuilder.service';
+
 export class GameEngine {
 
     private static instance: GameEngine = new GameEngine();
@@ -27,6 +29,9 @@ export class GameEngine {
     public init(container: HTMLElement): void {
         this.container = container;
         this.createRenderer();
+        this.loadScene();
+        // TODO: Move update to the game controller to start rendering.
+        this.update();
     }
 
     public update(): void {
@@ -52,5 +57,15 @@ export class GameEngine {
         // Adjust width and height to real container size
         this.renderer.setSize(containerRect.width, containerRect.height);
         this.clock = new THREE.Clock();
+    }
+
+    private loadScene(): void {
+        let self = this;
+        SceneBuilder.getInstance().buildScene()
+            .then((scene) => {
+                self.scene = scene;
+            }).catch(() => {
+                throw new Error("ERROR: Could not build game scene (unresolved promise).");
+            });
     }
 }
