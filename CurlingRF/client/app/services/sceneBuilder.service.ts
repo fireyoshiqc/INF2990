@@ -19,6 +19,7 @@ export class SceneBuilder {
     private readonly SUN_COLOR = 0xccccff;
     private readonly SHADOW_COLOR = 0x000077;
     private readonly SUN_INTENSITY = 1.0;
+    private readonly SHADOW_MAPSIZE = 512;
 
     private activeStone: CurlingStone;
     private curlingStones: Array<CurlingStone> = [];
@@ -86,8 +87,8 @@ export class SceneBuilder {
                 light.penumbra = 0.4;
                 light.decay = 2.0;
                 light.castShadow = true;
-                light.shadow.mapSize.width = 512; // 2048 or 4096 looks best but it's GPU-heavy
-                light.shadow.mapSize.height = 512; // 2048 or 4096 looks best but it's GPU-heavy
+                light.shadow.mapSize.width = this.SHADOW_MAPSIZE; // 2048 or 4096 looks best but it's GPU-heavy
+                light.shadow.mapSize.height = this.SHADOW_MAPSIZE; // 2048 or 4096 looks best but it's GPU-heavy
                 light.shadowCameraFar = 20;
                 spotlightArray.add(light);
 
