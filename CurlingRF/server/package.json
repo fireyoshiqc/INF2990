@@ -1,0 +1,63 @@
+{
+  "name": "curling-service",
+  "description": "Projet de base pour le projet2",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "tsc && concurrently --kill-others \"tsc -w \" \"nodemon out/www.js\" ",
+    "lint": "tslint app/**/*.ts app/*.ts --force -t verbose",
+    "tsc": "tsc",
+    "tsc:w": "tsc -w",
+    "clean": "rimraf out node_modules",
+    "postinstall": "rimraf false",
+    "test": "tsc && mocha out/**/*.spec.js -R spec -c -u exports --harmony",
+    "coverage": "tsc && nyc --require ts-node/register _mocha -c -R spec -- out/**/*.js",
+    "nyan-coverage": "tsc && nyc --require ts-node/register _mocha -c -R nyan -- out/**/*.js"
+  },
+  "nyc": {
+    "reporter": [
+      "text-summary",
+      "html"
+    ],
+    "sourceMap": true,
+    "instrument": true
+  },
+  "mocha": {
+    "colors": true
+  },
+  "update:packages": "node wipe-dependencies.js && rm -rf node_modules && npm update --save-dev && npm update --save",
+  "dependencies": {
+    "@types/body-parser": "0.0.32",
+    "@types/cors": "^2.8.0",
+    "@types/express": "^4.0.32",
+    "@types/express-serve-static-core": "^4.0.39",
+    "@types/node": "^6.0.45",
+    "@types/node-uuid": "0.0.28",
+    "body-parser": "~1.13.2",
+    "cookie-parser": "~1.3.5",
+    "cors": "^2.8.1",
+    "debug": "~2.2.0",
+    "express": "~4.13.1",
+    "morgan": "~1.6.1",
+    "nodemon": "^1.11.0",
+    "pug": "^2.0.0-alpha6",
+    "serve-favicon": "~2.3.0",
+    "systemjs": "0.19.39"
+  },
+  "devDependencies": {
+    "@types/chai": "^3.4.34",
+    "@types/cookie-parser": "^1.3.30",
+    "@types/mocha": "^2.2.36",
+    "@types/morgan": "^1.7.32",
+    "chai": "^3.5.0",
+    "concurrently": "3.1.0",
+    "mocha": "^3.2.0",
+    "nyc": "^10.1.2",
+    "remap-istanbul": "^0.8.4",
+    "rimraf": "^2.5.4",
+    "ts-node": "^2.1.0",
+    "tslint": "^4.2.0",
+    "tslint-eslint-rules": "^3.2.3",
+    "typescript": "^2.0.3"
+  }
+}

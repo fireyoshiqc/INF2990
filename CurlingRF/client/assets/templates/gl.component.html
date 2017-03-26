@@ -1,0 +1,94 @@
+<div [class.dark-theme]="isDarkTheme" id="wrapper" class="flex-container" md-theme-watch="true" fxLayout="row" fxLayoutAlign="center center">
+    <md-sidenav-container>
+
+        <md-sidenav #sidenav mode="above" opened="false">
+            <div id="buttonPanel" class="flex-container" fxLayout="column" fxLayoutAlign="start">
+                <md-list>
+                    <md-card id="infoCard">
+                        <md-card-title>Curling</md-card-title>
+                        <md-card-subtitle>FACTORY/24</md-card-subtitle>
+                        <md-card-content>
+                            Ce jeu de curling classique saura mettre à l'épreuve votre dextérité.<br><br>
+                            Utilisez l'icône d'ampoule dans le coin supérieur droit afin de changer le thème de clair à sombre.<br><br>
+                            Utilisez les boutons ci-dessous pour réinitialiser le jeu ou encore pour afficher les records pour chacune des difficultés d'AI.<br>
+                        </md-card-content>
+                    </md-card>
+
+                    <!-- Prevents autofocus on next button -->
+                    <!-- This buttons does nothing -->
+                    <button md-button></button>
+
+                    <h3 md-subheader>Partie</h3>
+                    <md-list-item>
+                        <button md-button class="list-button" (click)="resetGame(); sidenav.toggle()">
+                            <md-icon id="sidenavIcon">autorenew</md-icon><strong>Réinitialiser</strong>
+                        </button>
+                    </md-list-item>
+                    <md-divider></md-divider>
+
+                    <h3 md-subheader>Records</h3>
+                    <md-list-item>
+                        <button md-button class="list-button" (click)="sidenav.toggle()">
+                            <md-icon id="sidenavIcon">assessment</md-icon><strong>Afficher les records</strong>
+                        </button>
+                    </md-list-item>
+                    <md-divider></md-divider>
+
+                    <h3 md-subheader>Aide</h3>
+                    <md-list-item>
+                        <button md-button class="list-button" (click)="sidenav.toggle()">
+                            <md-icon id="sidenavIcon">help outline</md-icon><strong>Afficher le tutoriel</strong>
+                        </button>
+                    </md-list-item>
+                    <md-divider></md-divider>
+                </md-list>
+            </div>
+        </md-sidenav>
+
+        <div class="flex-container" fxLayout="column" fxLayoutAlign="center center">
+
+            <div class="flex-item" fxFlex="10%" fxFlexFill>
+                <md-toolbar id="topBar" color="primary">
+
+                    <button class="icon-button" (click)="sidenav.toggle()"><md-icon id="navIcon">menu</md-icon></button>
+                    
+                    <span id="topSpacer"></span>
+                    <span class="defaultCursor" id="title"><strong>Curling</strong></span>
+                    <span id="topSpacer"></span>
+
+                    <button class="icon-button" (click)="toggleTheme(); hud.toggleTheme();">
+                         <md-icon id="lightBulbIcon">lightbulb_outline</md-icon>
+                    </button>
+                    
+                    <button class="icon-button"><md-icon id="closeIcon">close</md-icon></button>
+                </md-toolbar>
+            </div>
+
+            <!-- curling canvas -->
+            <modifier [container]="container"></modifier>
+            <div #container (window:resize)="onResize($event)"></div>
+
+            <!-- hud -->
+            <div class="flex-item" id="hudContainer" fxFlex="90%" fxFlexFill>
+                <my-hud #hud 
+                    (switchCameraEvent)="switchCamera()"
+                    (startThrowStoneEvent)="startThrowStone($event)"
+                    [playerName]="getGameController().playerName"
+                    [aiDifficulty]="getGameController().aiDifficulty"
+                    [aiScore]="getGameController().aiScore"
+                    [playerScore]="getGameController().playerScore"
+                    [playerCurlingStones]="getGameController().playerCurlingStones"
+                    [aiCurlingStones]="getGameController().aiCurlingStones"
+                    [sliderDisabled]="getGameController().sliderDisabled"
+                    [forceVisible]="getGameController().forceVisible"
+                    [forceValue]="getGameController().forceValue"
+                    [roundsCompleted]="getGameController().roundsCompleted"
+                    [showNextThrowMessage]="getGameController().showNextThrowMessage"
+                    [showNextRoundMessage]="getGameController().showNextRoundMessage"
+                    [showEndGameMessage]="getGameController().showEndGameMessage"></my-hud>
+            </div>
+
+        </div>
+        
+    </md-sidenav-container>
+</div>
