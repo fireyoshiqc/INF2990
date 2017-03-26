@@ -29,7 +29,7 @@ export class GameCamera {
     private readonly ORTHO_Z_POS = 23;
     private readonly ORTHO_Y_POS = 5;
     private readonly ORTHO_X_POS = 0;
-    private readonly ORTHO_Z_ROT = Math.PI / 2;
+    private readonly ORTHO_Z_ROT = -Math.PI / 2;
     private readonly ORTHO_X_ROT = -Math.PI / 2;
 
     public static getInstance(): GameCamera {

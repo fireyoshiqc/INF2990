@@ -71,7 +71,7 @@ export class SkyBox extends THREE.Mesh {
     }
 
     private createMaterial(image: string): THREE.MeshBasicMaterial {
-        let texture = TextureCacher.load(image);
+        let texture: THREE.Texture = TextureCacher.load(image);
         let material = new THREE.MeshBasicMaterial({ color: 0xFFFFFF, map: texture, overdraw: 0.5 });
         return material;
     }

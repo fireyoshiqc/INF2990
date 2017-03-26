@@ -9,6 +9,7 @@ import { Injectable } from '@angular/core';
 import { SceneBuilder } from './sceneBuilder.service';
 import { GameCamera } from './gameCamera.service';
 import { Rink } from '../entities/rink';
+import { CurlingStone } from '../entities/curlingStone';
 
 @Injectable()
 export class GameEngine {
@@ -28,7 +29,10 @@ export class GameEngine {
     public update(): void {
         window.requestAnimationFrame(() => this.update());
         const delta = this.clock.getDelta();
-        this.camera.followStone(new THREE.Vector3(0, 0, 0), <Rink>this.scene.getObjectByName("rink"));
+        // TODO: Remove this once physics are re-implemented.
+        let stone = this.scene.getObjectByName("teststone") as CurlingStone;
+        stone.update(delta);
+        this.camera.followStone(stone.position, <Rink>this.scene.getObjectByName("rink"));
         this.renderer.render(this.scene, this.camera.getCamera());
     }
 
@@ -53,6 +57,7 @@ export class GameEngine {
         this.renderer = new THREE.WebGLRenderer({ antialias: true });
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         this.renderer.localClippingEnabled = true;
+        this.renderer.physicallyCorrectLights = true;
         if (this.container !== undefined) {
             if (this.container.getElementsByTagName('canvas').length === 0) {
                 this.container.appendChild(this.renderer.domElement);
