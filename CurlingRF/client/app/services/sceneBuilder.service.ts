@@ -66,7 +66,7 @@ export class SceneBuilder {
         for (let i = 0; i < this.Z_SPOTLIGHTS; i++) {
             for (let j = 0; j < this.X_SPOTLIGHTS; j++) {
                 let light = new THREE.SpotLight(0xffffff, 0.5);
-                light.position.set((width / (this.X_SPOTLIGHTS - 1)) * j,
+                light.position.set(-width / 2 + (width / (this.X_SPOTLIGHTS - 1)) * j,
                     this.SPOTLIGHT_HEIGHT, i * (length / (this.Z_SPOTLIGHTS - 1)));
                 light.penumbra = 0.4;
                 spotlightArray.add(light);

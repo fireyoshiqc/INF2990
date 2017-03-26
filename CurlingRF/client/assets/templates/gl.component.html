@@ -56,7 +56,8 @@
                     <span class="defaultCursor" id="title"><strong>Curling</strong></span>
                     <span id="topSpacer"></span>
 
-                    <button class="icon-button" (click)="toggleTheme(); hud.toggleTheme();">
+                    <!-- Remettre hud.toggleTheme() -->
+                    <button class="icon-button" (click)="toggleTheme();">
                          <md-icon id="lightBulbIcon">lightbulb_outline</md-icon>
                     </button>
                     
@@ -70,7 +71,7 @@
 
             <!-- hud -->
             <div class="flex-item" id="hudContainer" fxFlex="90%" fxFlexFill>
-                <my-hud #hud 
+                <!--<my-hud #hud 
                     (switchCameraEvent)="switchCamera()"
                     (startThrowStoneEvent)="startThrowStone($event)"
                     [playerName]="getGameController().playerName"
@@ -85,7 +86,7 @@
                     [roundsCompleted]="getGameController().roundsCompleted"
                     [showNextThrowMessage]="getGameController().showNextThrowMessage"
                     [showNextRoundMessage]="getGameController().showNextRoundMessage"
-                    [showEndGameMessage]="getGameController().showEndGameMessage"></my-hud>
+                    [showEndGameMessage]="getGameController().showEndGameMessage"></my-hud>-->
             </div>
 
         </div>

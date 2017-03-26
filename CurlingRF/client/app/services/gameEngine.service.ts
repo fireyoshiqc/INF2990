@@ -5,38 +5,48 @@
  * @date 2017/03/26
  */
 
+import { Injectable } from '@angular/core';
 import { SceneBuilder } from './sceneBuilder.service';
+import { GameCamera } from './gameCamera.service';
+import { Rink } from '../entities/rink';
 
+@Injectable()
 export class GameEngine {
 
-    private static instance: GameEngine = new GameEngine();
     private container: HTMLElement;
     private scene: THREE.Scene;
+    private camera: GameCamera;
     private renderer: THREE.WebGLRenderer;
     private clock: THREE.Clock;
-
-    public static getInstance(): GameEngine {
-        return GameEngine.instance;
-    }
-
-    constructor() {
-        if (GameEngine.instance) {
-            throw new Error("Error: GameEngine is a singleton class, use GameEngine.getInstance() instead of new.");
-        }
-        GameEngine.instance = this;
-    }
 
     public init(container: HTMLElement): void {
         this.container = container;
         this.createRenderer();
-        this.loadScene();
-        // TODO: Move update to the game controller to start rendering.
-        this.update();
+        this.launchGame();
     }
 
     public update(): void {
         window.requestAnimationFrame(() => this.update());
         const delta = this.clock.getDelta();
+        this.camera.followStone(new THREE.Vector3(0, 0, 0), <Rink>this.scene.getObjectByName("rink"));
+        this.renderer.render(this.scene, this.camera.getCamera());
+    }
+
+    // Called when the browser window gets resized
+    public onResize(event: any): void {
+        this.renderer.setSize(event.target.innerWidth, event.target.innerHeight);
+        let containerRect = this.container.getBoundingClientRect();
+        // Adjust width and height to real container size
+        this.renderer.setSize(containerRect.width, containerRect.height);
+
+        // Adjust camera FOV following aspect ratio
+        this.camera.onResize(this.container);
+    }
+
+    public switchCamera(): void {
+        (this.camera.isUsingPerspectiveCamera()) ?
+            this.camera.useOrthographicCamera(this.container) :
+            this.camera.usePerspectiveCamera(this.container);
     }
 
     private createRenderer(): void {
@@ -59,13 +69,21 @@ export class GameEngine {
         this.clock = new THREE.Clock();
     }
 
-    private loadScene(): void {
+    private launchGame(): void {
         let self = this;
         SceneBuilder.getInstance().buildScene()
             .then((scene) => {
                 self.scene = scene;
+                self.setupCamera();
+                // TODO: Move update to the game controller to start rendering.
+                self.update();
             }).catch(() => {
                 throw new Error("ERROR: Could not build game scene (unresolved promise).");
             });
+    }
+
+    private setupCamera(): void {
+        this.camera = GameCamera.getInstance();
+        this.camera.init(this.container);
     }
 }
