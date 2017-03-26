@@ -8,8 +8,6 @@
 import { Injectable } from '@angular/core';
 import { SceneBuilder } from './sceneBuilder.service';
 import { GameCamera } from './gameCamera.service';
-import { Rink } from '../entities/rink';
-import { CurlingStone } from '../entities/curlingStone';
 
 @Injectable()
 export class GameEngine {
@@ -30,9 +28,9 @@ export class GameEngine {
         window.requestAnimationFrame(() => this.update());
         const delta = this.clock.getDelta();
         // TODO: Remove this once physics are re-implemented.
-        let stone = this.scene.getObjectByName("teststone") as CurlingStone;
-        stone.update(delta);
-        this.camera.followStone(stone.position, <Rink>this.scene.getObjectByName("rink"));
+        let sceneData = SceneBuilder.getInstance().getSceneData();
+        sceneData.activeStone.update(delta);
+        this.camera.followStone(sceneData.activeStone.position, sceneData.rink);
         this.renderer.render(this.scene, this.camera.getCamera());
     }
 

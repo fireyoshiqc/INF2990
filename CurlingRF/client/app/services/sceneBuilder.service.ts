@@ -20,6 +20,10 @@ export class SceneBuilder {
     private readonly SHADOW_COLOR = 0x000077;
     private readonly SUN_INTENSITY = 1.0;
 
+    private activeStone: CurlingStone;
+    private curlingStones: Array<CurlingStone> = [];
+    private rink: Rink;
+
     public static getInstance(): SceneBuilder {
         return SceneBuilder.instance;
     }
@@ -36,19 +40,23 @@ export class SceneBuilder {
         let buildPromise = new Promise<THREE.Scene>((resolve, reject) => {
             const scene = new THREE.Scene();
             const skybox = new SkyBox();
-            skybox.name = "skybox";
             scene.add(skybox);
-            const rink = this.buildRink(skybox);
-            scene.add(rink);
-            const light = this.buildLighting(rink);
+            this.rink = this.buildRink(skybox);
+            scene.add(this.rink);
+            const light = this.buildLighting(this.rink);
             scene.add(light);
-            const stone = new CurlingStone(Team.Player, new THREE.Vector3(0, 0, 1), new THREE.Vector3(0, 0, 2));
-            // TODO: Remove this once physics are re-implemented.
-            stone.name = "teststone";
-            scene.add(stone);
+
+            // TODO: Get rid of this when game states are properly implemented
+            this.activeStone = new CurlingStone(Team.Player, new THREE.Vector3(0, 0, 2), new THREE.Vector3(0, 0, 2));
+            this.curlingStones.push(this.activeStone);
+            scene.add(this.activeStone);
             resolve(scene);
         });
         return buildPromise;
+    }
+
+    public getSceneData(): ISceneData {
+        return { activeStone: this.activeStone, curlingStones: this.curlingStones, rink: this.rink };
     }
 
     private buildRink(skybox: SkyBox): Rink {
@@ -89,4 +97,10 @@ export class SceneBuilder {
     private spawnSunlight(): THREE.HemisphereLight {
         return new THREE.HemisphereLight(this.SUN_COLOR, this.SHADOW_COLOR, this.SUN_INTENSITY);
     }
+}
+
+export interface ISceneData {
+    activeStone: CurlingStone;
+    curlingStones: Array<CurlingStone>;
+    rink: Rink;
 }
