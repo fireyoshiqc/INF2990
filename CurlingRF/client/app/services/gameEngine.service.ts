@@ -12,11 +12,24 @@ import { GameCamera } from './gameCamera.service';
 @Injectable()
 export class GameEngine {
 
+    private static instance: GameEngine = new GameEngine();
+
     private container: HTMLElement;
     private scene: THREE.Scene;
     private camera: GameCamera;
     private renderer: THREE.WebGLRenderer;
     private clock: THREE.Clock;
+
+    public static getInstance(): GameEngine {
+        return GameEngine.instance;
+    }
+
+    constructor() {
+        if (GameEngine.instance) {
+            throw new Error("Error: GameEngine is a singleton class, use GameEngine.getInstance() instead of new.");
+        }
+        GameEngine.instance = this;
+    }
 
     public init(container: HTMLElement): void {
         this.container = container;

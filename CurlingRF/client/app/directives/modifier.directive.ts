@@ -1,17 +1,17 @@
 import { Directive, Input } from '@angular/core';
-import { GameEngine } from '../services/gameEngine.service';
+import { GameController } from '../services/gameController.service';
 
 @Directive({
     selector: 'modifier'
 })
 export class ModifierDirective {
-    constructor(private gameEngine: GameEngine) {
+    constructor(private gameController: GameController) {
     }
 
     @Input()
     public set container(value: HTMLElement) {
         if (value) {
-            this.gameEngine.init(value);
+            this.gameController.init(value);
         }
     }
 

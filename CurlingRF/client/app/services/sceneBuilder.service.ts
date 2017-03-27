@@ -5,7 +5,7 @@
  * @date 2017/03/26
  */
 
-import { Rink } from '../entities/rink';
+import { Rink, IRingSetup, ILineSetup } from '../entities/rink';
 import { SkyBox } from '../entities/skybox';
 import { CurlingStone, Team } from '../entities/curlingStone';
 
@@ -54,6 +54,10 @@ export class SceneBuilder {
             resolve(scene);
         });
         return buildPromise;
+    }
+
+    public getRinkData(): IRinkData {
+        return { lines: this.rink.getRefLineSetup(), rings: this.rink.getRefRingSetup() };
     }
 
     public getSceneData(): ISceneData {
@@ -110,4 +114,9 @@ export interface ISceneData {
     activeStone: CurlingStone;
     curlingStones: Array<CurlingStone>;
     rink: Rink;
+}
+
+export interface IRinkData {
+    lines: ILineSetup;
+    rings: IRingSetup;
 }
