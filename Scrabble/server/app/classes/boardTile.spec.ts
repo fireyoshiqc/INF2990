@@ -47,7 +47,7 @@ describe('BoardTile', () => {
             expect(boardTile.getLetter()).to.equal(letter);
             expect(boardTile.isEmpty()).to.be.false;
 
-            boardTile.activateCanRemoveLetter();
+            boardTile.setCanRemoveLetter(true);
             expect(boardTile.getCanRemoveLetter()).to.be.true;
 
             boardTile.removeLetter();

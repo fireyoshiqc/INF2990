@@ -121,7 +121,7 @@ export class GameMaster {
     }
 
     public blockActivePlayer(): void {
-        this.activePlayer.block();
+        this.activePlayer.setBlocked(true);
     }
 
     public startGame(): void {
@@ -271,7 +271,7 @@ export class GameMaster {
     }
 
     public undoPlaceWord(command: CommandPlaceWord, player: Player): string {
-        this.activePlayer.unblock();
+        this.activePlayer.setBlocked(false);
         this.endTurn();
         return this.scrabbleGame.removeWord(command, player);
     }
