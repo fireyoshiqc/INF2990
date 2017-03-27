@@ -99,8 +99,8 @@ export class CommandHandler {
         }
 
         // Writes the error message in the chat of all players
-                this.sio.sockets.in(player.getRoomId().toString())
-                    .emit('command sent', { username: player.getName(), submessage: msg, commandResponse });
+        this.sio.sockets.in(player.getRoomId().toString())
+            .emit('command sent', { username: player.getName(), submessage: msg, commandResponse });
     }
 
     private updateClient(msg: string, player: Player, command: Command): void {
@@ -178,13 +178,8 @@ export class CommandHandler {
     }
 
     private updateClientHelp(msg: string, player: Player): void {
-        // TODO mettre un message d'aide pertinent
-        let helpMessage = "Voici l'aide...";
-        // VOIR LES REGEX (ex. pour placer un mot, le mot doit être en 2 à 15 lettres (requis)
-        // AUSSI, le mot doit être formé avec des lettres du rack,
-        // Mais aussi TENIR compte des lettres qui sont sur le plateau, d'où jusqu'à 15 lettres)
-
+        // Send help message
         this.sio.sockets.connected[player.getSocketId()]
-            .emit('command sent', { username: "Scrabble Game", submessage: msg, commandResponse: helpMessage });
+            .emit('command sent', { username: "Scrabble Game", submessage: msg, commandResponse: Command.helpMessage });
     }
 }
