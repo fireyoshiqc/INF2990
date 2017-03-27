@@ -16,6 +16,7 @@ export class CommandHandler {
     private sio: SocketIO.Server;
     private roomManager: RoomManager;
     private commandParser: CommandParser;
+    // TODO: Rework this so the error is a property of each command.
     private readonly commandResponseMessage =
     [
         "", // CommandExecutionStatus.SUCCESS
@@ -73,6 +74,8 @@ export class CommandHandler {
         let executionStatus = room.getGameMaster().handleCommand(command, player);
 
         let commandResponse = "";
+
+        // TODO: Rework this to use each command's error messages.
         switch (executionStatus) {
             case CommandExecutionStatus.SUCCESS:
                 this.updateClient(msg, player, command);
