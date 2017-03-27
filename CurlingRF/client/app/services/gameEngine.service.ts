@@ -69,8 +69,8 @@ export class GameEngine {
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         this.renderer.localClippingEnabled = true;
         this.renderer.physicallyCorrectLights = true;
-        this.renderer.shadowMapEnabled = true;
-        this.renderer.shadowMapType = THREE.PCFSoftShadowMap;
+        this.checkHardwareCapabilities();
+
         if (this.container !== undefined) {
             if (this.container.getElementsByTagName('canvas').length === 0) {
                 this.container.appendChild(this.renderer.domElement);
@@ -85,6 +85,19 @@ export class GameEngine {
         // Adjust width and height to real container size
         this.renderer.setSize(containerRect.width, containerRect.height);
         this.clock = new THREE.Clock();
+    }
+
+    // Disable shadows on Intel integrated graphics since it has a large performance hit.
+    private checkHardwareCapabilities(): void {
+        const gl = this.renderer.getContext();
+        const hardware = gl.getExtension('WEBGL_debug_renderer_info');
+        const vendor: string = gl.getParameter(hardware.UNMASKED_RENDERER_WEBGL);
+        if (vendor.toLowerCase().includes("intel")) {
+            this.renderer.shadowMap.enabled = false;
+        } else {
+            this.renderer.shadowMap.enabled = true;
+            this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        }
     }
 
     private launchGame(): void {
