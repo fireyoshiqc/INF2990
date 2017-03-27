@@ -2,3 +2,5 @@
 node_modules/
 false/
 npm-debug.log
+# Exclusion des fichiers de développement du refactor de Curling sur master
+CurlingRF/
