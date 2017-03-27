@@ -13,6 +13,7 @@ import { ScrabbleGame } from '../classes/scrabbleGame';
 import { LetterStash } from './letterStash.service';
 import { StopwatchService } from './stopwatch.service';
 
+// TODO: Rework this to be included in the appropriate commands.
 export enum CommandExecutionStatus {
     SUCCESS, // Command executed successfully
     ERROR, // Command cannot be executed
@@ -100,20 +101,24 @@ export class GameMaster {
     }
 
     public getTurnInfo(): ITurnInfo {
+        this.updateTurnInfo();
+        return this.turnInfo;
+    }
+
+    private updateTurnInfo() {
         // Clean the list in the case that players have left
         this.turnInfo.players = [];
 
         // Update information
         for (let i = 0; i < this.players.length; i++) {
-             this.turnInfo.players[i] = {
-                 name: this.players[i].getName(),
-                 score: this.players[i].getPoints(),
-                 nRackLetters: this.players[i].getLettersRack().length};
+            this.turnInfo.players[i] = {
+                name: this.players[i].getName(),
+                score: this.players[i].getPoints(),
+                nRackLetters: this.players[i].getLettersRack().length
+            };
         }
 
         this.turnInfo.nLettersStash = this.stash.getAmountLeft();
-
-        return this.turnInfo;
     }
 
     public getIsFirstTurn(): boolean {
@@ -157,7 +162,7 @@ export class GameMaster {
         }
     }
 
-    public swapPlayer(playerIndex1: number, playerIndex2: number): void {
+    private swapPlayer(playerIndex1: number, playerIndex2: number): void {
         let temporaryPlayer: Player;
 
         temporaryPlayer = this.players[playerIndex1];

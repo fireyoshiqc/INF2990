@@ -15,11 +15,11 @@ export interface IRoomInfo {
 }
 
 export class Room {
-    private roomInfo : IRoomInfo = { roomID: -1, capacity: 0, playerList: new Array<string>() };
+    private roomInfo: IRoomInfo = { roomID: -1, capacity: 0, playerList: new Array<string>() };
     private players: Player[];
     private gameMaster: GameMaster;
 
-    constructor(roomID: number, capacity : number) {
+    constructor(roomID: number, capacity: number) {
         this.roomInfo.roomID = roomID;
         this.roomInfo.capacity = capacity;
         this.roomInfo.playerList = new Array<string>();
@@ -39,14 +39,14 @@ export class Room {
         return this.gameMaster;
     }
 
-    public addPlayer(player : Player): void {
+    public addPlayer(player: Player): void {
         if (!this.isFull()) {
             this.roomInfo.playerList.push(player.getName());
             this.players.push(player);
         }
     }
 
-    public removePlayer(playerName : string): void {
+    public removePlayer(playerName: string): void {
         if (this.players.length > 0) {
             let indexPlayerList = this.roomInfo.playerList.indexOf(playerName);
             this.roomInfo.playerList.splice(indexPlayerList, 1);
@@ -59,11 +59,16 @@ export class Room {
         }
     }
 
-    public isFull() : boolean {
+    public isFull(): boolean {
         return this.roomInfo.playerList.length >= this.roomInfo.capacity;
     }
 
-    public isEmpty() : boolean {
+    public isEmpty(): boolean {
         return this.roomInfo.playerList.length === 0;
+    }
+
+    public isAvailable(roomCapacity: number): boolean {
+        return !this.isFull() && !this.gameMaster.isGameStarted()
+            && this.roomInfo.capacity === roomCapacity;
     }
 }

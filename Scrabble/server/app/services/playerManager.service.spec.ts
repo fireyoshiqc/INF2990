@@ -16,7 +16,7 @@ describe('PlayerManager', () => {
     describe('Default constructor ', () => {
         it('should construct a PlayerManager object with valid playerNames array', done => {
             expect(testPlayerManager).to.exist;
-            expect(testPlayerManager.players).to.exist;
+            expect(testPlayerManager.getPlayers()).to.exist;
             done();
         });
     });
@@ -32,7 +32,7 @@ describe('PlayerManager', () => {
         it('should add a player to playerNames array', done => {
             let testPlayer = testPlayerManager.addPlayer("player1", "1", 1);
             expect(testPlayer.getName()).to.be.equal("player1");
-            expect(testPlayerManager.players.length).to.equal(1);
+            expect(testPlayerManager.getPlayers().length).to.equal(1);
             done();
         });
     });
@@ -47,13 +47,13 @@ describe('PlayerManager', () => {
     describe('removePlayer ', () => {
         it('should not remove a player that does not exist in the player name array', done => {
             testPlayerManager.removePlayer("Mimi");
-            expect(testPlayerManager.players.length).to.equal(1);
+            expect(testPlayerManager.getPlayers().length).to.equal(1);
             done();
         });
 
         it('should remove a player that exists in the player name array', done => {
             testPlayerManager.removePlayer("player1");
-            expect(testPlayerManager.players).to.be.empty;
+            expect(testPlayerManager.getPlayers()).to.be.empty;
             done();
         });
     });

@@ -22,8 +22,7 @@ export class RoomManager {
     }
 
     public createRoom(roomCapacity: number): Room {
-        let room = this.existingRooms.find(r => (!r.isFull() && !r.getGameMaster().isGameStarted()
-                                            && r.getRoomInfo().capacity === roomCapacity));
+        let room = this.existingRooms.find(r => (r.isAvailable(roomCapacity)));
 
         if (room === undefined) {
             room = this.addRoom(roomCapacity);
