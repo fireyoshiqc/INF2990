@@ -265,7 +265,11 @@ export class ScrabbleGame {
             columnIndex >= 0 && columnIndex < this.BOARD_SIZE;
     }
 
-    public areAllHorizontalWordsValid(command: CommandPlaceWord): boolean {
+    public areAllWordsValid(): boolean {
+        return this.areAllHorizontalWordsValid() && this.areAllVerticalWordsValid();
+    }
+
+    private areAllHorizontalWordsValid(): boolean {
         // Verify if every horizontal word is valid
         // Horizontal words start from column 0 to column 13 (words have a minimum of two letters)
         for (let i = 0; i < this.BOARD_SIZE; i++) {
@@ -306,7 +310,7 @@ export class ScrabbleGame {
         return true;
     }
 
-    public areAllVerticalWordsValid(command: CommandPlaceWord): boolean {
+    private areAllVerticalWordsValid(): boolean {
         // Verify if every vertical word is valid
         // Vertical words start from row 0 to row 13 (words have a minimum of two letters)
         for (let i = 0; i < (this.BOARD_SIZE - 1); i++) {

@@ -208,8 +208,7 @@ export class GameMaster {
                 this.scrabbleGame.placeWord(command);
 
                 // 4- Verify if the newly formed words are valid
-                if (!this.scrabbleGame.areAllHorizontalWordsValid(command) ||
-                    !this.scrabbleGame.areAllVerticalWordsValid(command)) {
+                if (!this.scrabbleGame.areAllWordsValid()) {
                     return CommandExecutionStatus.ERROR_PLACE_WORD_INVALID_WORDS;
                 } else {
                     // 5- Update player score

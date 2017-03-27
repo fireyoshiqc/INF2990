@@ -258,107 +258,106 @@ describe('ScrabbleGame', () => {
         });
     });
 
-    describe('areAllHorizontalWordsValid', () => {
+    describe('areAllWordsValid()', () => {
         it('should verify if every horizontal word is valid.', done => {
             let game = new ScrabbleGame();
             let player = new Player("test", "1", 1);
 
             let c1 = new CommandPlaceWord("a", 1, "h", "Bac");
-            expect(game.areAllHorizontalWordsValid(c1)).to.be.true;
+            expect(game.areAllWordsValid()).to.be.true;
             game.placeWord(c1);
-            expect(game.areAllHorizontalWordsValid(c1)).to.be.true;
+            expect(game.areAllWordsValid()).to.be.true;
 
             let c2 = new CommandPlaceWord("a", 1, "h", "Bacz");
             game.placeWord(c2);
-            expect(game.areAllHorizontalWordsValid(c2)).to.be.false;
+            expect(game.areAllWordsValid()).to.be.false;
             game.removeWord(c2, player);
 
             let c3 = new CommandPlaceWord("a", 1, "h", "Bacs");
             game.placeWord(c3);
-            expect(game.areAllHorizontalWordsValid(c3)).to.be.true;
+            expect(game.areAllWordsValid()).to.be.true;
 
             let c4 = new CommandPlaceWord("a", 13, "h", "Bac");
             game.placeWord(c4);
-            expect(game.areAllHorizontalWordsValid(c4)).to.be.true;
+            expect(game.areAllWordsValid()).to.be.true;
             game.removeWord(c4, player);
 
             let c5 = new CommandPlaceWord("o", 1, "h", "Bac");
             game.placeWord(c5);
-            expect(game.areAllHorizontalWordsValid(c5)).to.be.true;
+            expect(game.areAllWordsValid()).to.be.true;
 
             let c6 = new CommandPlaceWord("o", 13, "h", "Bac");
             game.placeWord(c6);
-            expect(game.areAllHorizontalWordsValid(c6)).to.be.true;
+            expect(game.areAllWordsValid()).to.be.true;
             game.removeWord(c6, player);
 
             let c7 = new CommandPlaceWord("a", 12, "h", "con");
             game.placeWord(c7);
-            expect(game.areAllHorizontalWordsValid(c7)).to.be.true;
+            expect(game.areAllWordsValid()).to.be.true;
 
             let c8 = new CommandPlaceWord("a", 15, "v", "sons");
             game.placeWord(c8);
-            expect(game.areAllHorizontalWordsValid(c8)).to.be.true;
+            expect(game.areAllWordsValid()).to.be.true;
 
             let c9 = new CommandPlaceWord("o", 12, "h", "con");
             game.placeWord(c9);
-            expect(game.areAllHorizontalWordsValid(c9)).to.be.true;
+            expect(game.areAllWordsValid()).to.be.true;
 
             let c10 = new CommandPlaceWord("l", 15, "v", "sons");
             game.placeWord(c10);
-            expect(game.areAllHorizontalWordsValid(c10)).to.be.true;
+            expect(game.areAllWordsValid()).to.be.true;
 
             done();
         });
-    });
 
-    describe('areAllVerticalWordsValid', () => {
         it('should verify if every vertical word is valid.', done => {
             let game = new ScrabbleGame();
             let player = new Player("test", "1", 1);
 
             let c1 = new CommandPlaceWord("a", 1, "v", "Bac");
-            expect(game.areAllVerticalWordsValid(c1)).to.be.true;
+            expect(game.areAllWordsValid()).to.be.true;
             game.placeWord(c1);
-            expect(game.areAllVerticalWordsValid(c1)).to.be.true;
+            expect(game.areAllWordsValid()).to.be.true;
 
             let c2 = new CommandPlaceWord("a", 1, "v", "Bacz");
             game.placeWord(c2);
-            expect(game.areAllVerticalWordsValid(c2)).to.be.false;
+            expect(game.areAllWordsValid()).to.be.false;
             game.removeWord(c2, player);
 
             let c3 = new CommandPlaceWord("a", 1, "v", "bacs");
             game.placeWord(c3);
-            expect(game.areAllVerticalWordsValid(c3)).to.be.true;
+            expect(game.areAllWordsValid()).to.be.true;
 
             let c4 = new CommandPlaceWord("a", 14, "v", "Bac");
             game.placeWord(c4);
-            expect(game.areAllVerticalWordsValid(c4)).to.be.true;
+            expect(game.areAllWordsValid()).to.be.true;
 
             let c5 = new CommandPlaceWord("m", 1, "v", "Bac");
             game.placeWord(c5);
-            expect(game.areAllVerticalWordsValid(c5)).to.be.true;
+            expect(game.areAllWordsValid()).to.be.true;
 
             let c6 = new CommandPlaceWord("m", 14, "v", "bac");
             game.placeWord(c6);
-            expect(game.areAllVerticalWordsValid(c6)).to.be.true;
+            expect(game.areAllWordsValid()).to.be.true;
 
             let c7 = new CommandPlaceWord("a", 14, "v", "con");
             game.placeWord(c7);
-            expect(game.areAllVerticalWordsValid(c7)).to.be.true;
+            expect(game.areAllWordsValid()).to.be.true;
 
             let c8 = new CommandPlaceWord("d", 11, "h", "sons");
             game.placeWord(c8);
-            expect(game.areAllVerticalWordsValid(c8)).to.be.true;
+            expect(game.areAllWordsValid()).to.be.true;
 
             let c9 = new CommandPlaceWord("n", 14, "v", "on");
             game.placeWord(c9);
-            expect(game.areAllVerticalWordsValid(c9)).to.be.true;
+            expect(game.areAllWordsValid()).to.be.true;
 
             let c10 = new CommandPlaceWord("m", 12, "h", "cons");
             game.placeWord(c10);
-            expect(game.areAllVerticalWordsValid(c10)).to.be.true;
+            expect(game.areAllWordsValid()).to.be.true;
 
             done();
+
         });
     });
 
