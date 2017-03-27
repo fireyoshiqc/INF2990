@@ -60,8 +60,8 @@ export class CommandHandler {
         }
 
         if (commandStatus !== CommandStatus.VALID_COMMAND) {
-            this.sio.sockets.connected[player.getSocketId()]
-                .emit('command sent', { username: "Scrabble Game", submessage: msg, commandResponse });
+            this.sio.sockets.in(player.getRoomId().toString())
+                .emit('command sent', { username: player.getName(), submessage: msg, commandResponse });
         }
     }
 
@@ -82,9 +82,9 @@ export class CommandHandler {
                 this.updateClientInvalidPlaceWord(msg, player, command);
                 return;
 
-            case CommandExecutionStatus.ERROR:
             case CommandExecutionStatus.WAIT:
             case CommandExecutionStatus.BLOCK:
+            case CommandExecutionStatus.ERROR:
             case CommandExecutionStatus.ERROR_PLACE_WORD_OUT_OF_BOUNDS:
             case CommandExecutionStatus.ERROR_PLACE_WORD_INCORRECT_OVERLAPPING:
             case CommandExecutionStatus.ERROR_PLACE_WORD_CENTRAL_TILE:
@@ -99,8 +99,8 @@ export class CommandHandler {
         }
 
         // Writes the error message in the chat of all players
-        this.sio.sockets.connected[player.getSocketId()]
-            .emit('command sent', { username: "Scrabble Game", submessage: msg, commandResponse });
+                this.sio.sockets.in(player.getRoomId().toString())
+                    .emit('command sent', { username: player.getName(), submessage: msg, commandResponse });
     }
 
     private updateClient(msg: string, player: Player, command: Command): void {
