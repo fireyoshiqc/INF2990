@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
 import { SocketHandler } from '../modules/socketHandler.module';
 
 export interface IPlayer {
@@ -16,7 +15,7 @@ export class PlayerManagerService {
     private nameValid: boolean;
     private player = { name: "", capacity: 0 };
 
-    constructor(private http: Http) {
+    constructor() {
         this.socket = this.saveSocket();
 
         this.socket.on('wcNameValidated', (validity: boolean) => {
