@@ -19,7 +19,7 @@ export class SceneBuilder {
     private readonly SUN_COLOR = 0xccccff;
     private readonly SHADOW_COLOR = 0x000077;
     private readonly SUN_INTENSITY = 1.0;
-    private readonly SHADOW_MAPSIZE = 512;
+    private readonly SHADOW_MAPSIZE = 1024;
 
     private activeStone: CurlingStone;
     private curlingStones: Array<CurlingStone> = [];
@@ -93,7 +93,8 @@ export class SceneBuilder {
                 light.castShadow = true;
                 light.shadow.mapSize.width = this.SHADOW_MAPSIZE; // 2048 or 4096 looks best but it's GPU-heavy
                 light.shadow.mapSize.height = this.SHADOW_MAPSIZE; // 2048 or 4096 looks best but it's GPU-heavy
-                light.shadowCameraFar = 20;
+                // Cast to PerspectiveCamera since Camera doesn't have far property... thanks TypeScript.
+                (<THREE.PerspectiveCamera>light.shadow.camera).far = 20;
                 spotlightArray.add(light);
 
                 let lightTarget = new THREE.Object3D();
