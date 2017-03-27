@@ -304,10 +304,10 @@ export class GameMaster {
         return commandExecutionStatus;
     }
 
-    private checkTurnOver() {
+    private checkTurnOver(): void {
         setInterval(() => {
             if (this.stopwatch.isTurnOver()) {
-                this.endTurn();
+                this.nextTurn = true;
             }
 
             // Update turnInfo
@@ -320,7 +320,6 @@ export class GameMaster {
     private endTurn(): CommandExecutionStatus {
         let playerIndex = this.players.findIndex(p => p.getSocketId() === this.activePlayer.getSocketId());
         this.activePlayer = this.players[(playerIndex + 1) % this.players.length];
-        this.nextTurn = true;
 
         // Reset the timer
         this.stopwatch.restart();

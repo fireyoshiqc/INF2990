@@ -128,18 +128,16 @@ export class SocketManager {
     private updateWaitingRoomInfo(): void {
         for (let room of this.roomManager.getExistingRooms()) {
             let id = room.getRoomInfo().roomID as number;
+            let gameMaster = room.getGameMaster();
             this.sio.sockets.in(id.toString()).emit('wcRefresh', room.getRoomInfo());
-            if (room.getGameMaster().isGameStarted()) {
-                if (room.getGameMaster().isNextTurn()) {
-                    let msg = "Changement de tour. Le joueur actif est: "
-                        + room.getGameMaster().getActivePlayer().getName();
-                    this.sio.sockets
-                        .in(id.toString())
-                        .emit('message sent', { username: "Scrabble Game", submessage: msg });
+            if (gameMaster.isGameStarted()) {
+                if (gameMaster.isNextTurn()) {
+                    // Send !passer message automatically
+                    this.commandHandler.handleCommand("!passer", gameMaster.getActivePlayer());
                     // Put nextTurn to false
-                    room.getGameMaster().resetNextTurn();
+                    gameMaster.resetNextTurn();
                 }
-                this.sio.sockets.in(id.toString()).emit('wcUpdateTurnInfo', room.getGameMaster().getTurnInfo());
+                this.sio.sockets.in(id.toString()).emit('wcUpdateTurnInfo', gameMaster.getTurnInfo());
             }
         }
     }

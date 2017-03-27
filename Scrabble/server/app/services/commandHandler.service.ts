@@ -107,6 +107,7 @@ export class CommandHandler {
     }
 
     private updateClient(msg: string, player: Player, command: Command): void {
+        let cResponse = "";
         switch (command.getCommandType()) {
             case CommandType.PLACER:
                 this.updateClientPlaceWord(player, command);
@@ -117,6 +118,9 @@ export class CommandHandler {
                 break;
 
             case CommandType.PASSER:
+                let room = this.roomManager.findRoom(player.getRoomId());
+                cResponse = "Changement de tour. Le joueur actif est: "
+                    + room.getGameMaster().getActivePlayer().getName();
                 break;
 
             case CommandType.AIDE:
@@ -130,7 +134,7 @@ export class CommandHandler {
         // Writes the successful command in the chat of all players except for help
         this.sio.sockets
             .in(player.getRoomId().toString())
-            .emit('command sent', { username: player.getName(), submessage: msg, commandResponse: "" });
+            .emit('command sent', { username: player.getName(), submessage: msg, commandResponse: cResponse });
     }
 
     private updateClientPlaceWord(player: Player, command: Command): void {
