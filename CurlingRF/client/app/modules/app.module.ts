@@ -7,7 +7,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from '../components/app.component';
 import { GlComponent, NameDialogComponent } from '../components/gl.component';
 import { PlayerNameComponent } from '../components/player-name.component';
-//import { HUDComponent } from '../components/hud.component';
+// TODO: import { HUDComponent } from '../components/hud.component';
 import { GameController } from '../services/gameController.service';
 import { NameSelectorComponent } from '../components/nameSelector.component';
 

@@ -9,10 +9,10 @@ import { expect } from 'chai';
 
 // TODO : what is this for?
 class RouterStub {
-    public navigateByUrl(url: string) { return url; }
+    public navigateByUrl(url: string): string { return url; }
 }
 
-describe('AppComponent', function() {
+describe('AppComponent', () => {
     let de: DebugElement;
     let comp: AppComponent;
     let fixture: ComponentFixture<AppComponent>;

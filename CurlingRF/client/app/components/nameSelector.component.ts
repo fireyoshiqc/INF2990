@@ -25,7 +25,7 @@ export class NameSelectorComponent {
     constructor(public dialogRef: MdDialogRef<NameSelectorComponent>, private nameService: NameService) {
     }
 
-    public onStart() {
+    public onStart(): void {
         this.error = false;
 
         if (this.aiDifficulty !== undefined && this.playerName !== undefined) {

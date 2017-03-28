@@ -10,7 +10,7 @@ export module TextureCacher {
     let texLoader = new THREE.TextureLoader();
     let texCache: THREE.Texture[] = [];
 
-    export function load(path: string) {
+    export function load(path: string): THREE.Texture {
 
         if (texCache[path] === undefined) {
             texCache[path] = texLoader.load(path);
@@ -23,13 +23,13 @@ export module TextureCacher {
         return texCache[path];
     }
 
-    export function discard(path: string) {
+    export function discard(path: string): void {
         if (texCache[path] !== undefined) {
             delete texCache[path];
         }
     }
 
-    export function clear() {
+    export function clear(): void {
         texCache = [];
     }
 }

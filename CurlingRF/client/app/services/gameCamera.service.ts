@@ -53,7 +53,7 @@ export class GameCamera {
         this.currentCamera = this.cameraPerspective;
     }
 
-    private initPerspectiveCamera(containerRect: ClientRect) {
+    private initPerspectiveCamera(containerRect: ClientRect): void {
         // Camera creation
         let aspectPerspective = containerRect.width / containerRect.height;
         this.cameraPerspective = new THREE.PerspectiveCamera(this.PERSPECTIVE_FOV,
@@ -65,7 +65,7 @@ export class GameCamera {
         this.cameraPerspective.rotation.x = this.PERSPECTIVE_X_POS;
     }
 
-    private initOrthographicCamera(containerRect: ClientRect) {
+    private initOrthographicCamera(containerRect: ClientRect): void {
         // Camera creation
         let zoomFactor = this.ORTHO_ZOOM_FACTOR * containerRect.width;
         let leftPlaneOrthographic = containerRect.width / -zoomFactor;
@@ -135,7 +135,7 @@ export class GameCamera {
     }
 
     // When window is resized, change camera aspects
-    public onResize(container: HTMLElement) {
+    public onResize(container: HTMLElement): void {
         let containerRect = container.getBoundingClientRect();
 
         if (this.usingPerspectiveCamera) {

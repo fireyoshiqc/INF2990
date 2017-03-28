@@ -42,7 +42,7 @@ export class CurlingStone extends THREE.Group {
     private team: Team;
 
     // Must be set before init()
-    public static setPlayerStoneColor(aColor: string) {
+    public static setPlayerStoneColor(aColor: string): void {
         let regex = new RegExp('#[0-9a-fA-F]{6}');
 
         if (regex.test(aColor)) {
@@ -232,7 +232,7 @@ export class CurlingStone extends THREE.Group {
         return this.hasBeenShot;
     }
 
-    public setHasBeenShot() {
+    public setHasBeenShot(): void {
         this.hasBeenShot = true;
     }
 

@@ -15,7 +15,7 @@ export class GlComponent implements AfterViewInit {
 
     constructor(public dialog: MdDialog, private gameController: GameController) { }
 
-    public ngAfterViewInit() {
+    public ngAfterViewInit(): void {
         // Necessary to fix prodmode exclusive error (data binding changed on init)
         setTimeout(() => {
             this.dialogRef = this.dialog.open(NameDialogComponent, {
@@ -32,16 +32,16 @@ export class GlComponent implements AfterViewInit {
         return this.isDarkTheme;
     }
 
-    public toggleTheme() {
+    public toggleTheme(): void {
         this.isDarkTheme = !this.isDarkTheme;
     }
 
-    public onResize(event: any) {
+    public onResize(event: any): void {
         this.gameController.onResize(event);
     }
 
     @HostListener('window:keydown', ['$event'])
-    public keyboardInput(event: KeyboardEvent) {
+    public keyboardInput(event: KeyboardEvent): void {
         // Player can switch camera view
         if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
             this.gameController.switchCamera();

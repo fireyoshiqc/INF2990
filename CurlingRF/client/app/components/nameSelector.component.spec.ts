@@ -11,7 +11,7 @@ import { Http } from '@angular/http';
 
 import { expect } from 'chai';
 
-describe('NameSelector', function() {
+describe('NameSelector', () => {
     let http: Http;
     let nameService = new NameService(http);
     let comp = new NameSelectorComponent(null, nameService);
