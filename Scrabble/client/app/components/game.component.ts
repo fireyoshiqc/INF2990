@@ -62,4 +62,8 @@ export class GameComponent implements OnInit {
     public getTheme(): boolean {
         return this.isDarkTheme;
     }
+
+    public resetGame(): void {
+        alert("reset");
+    }
 }
