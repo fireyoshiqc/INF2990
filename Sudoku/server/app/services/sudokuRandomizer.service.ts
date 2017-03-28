@@ -66,7 +66,7 @@ export class SudokuRandomizer {
         return this.sudoku;
     }
 
-    public swap(coordinates1: IArrayCoordinates, coordinates2: IArrayCoordinates) {
+    public swap(coordinates1: IArrayCoordinates, coordinates2: IArrayCoordinates): void {
         let temporary: number;
 
         temporary = this.sudoku.grid[coordinates1.x][coordinates1.y];

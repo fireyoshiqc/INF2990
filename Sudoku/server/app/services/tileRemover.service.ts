@@ -23,7 +23,7 @@ export class TileRemover {
         let tilesToRemove = (this.sudoku.difficulty === Difficulty.Easy) ?
             this.NUM_EMPTY_TILES_EASY : this.NUM_EMPTY_TILES_HARD;
         let possibleIndexes: Array<number> = Array.apply(null, Array(81)).map(
-            function (value: number, index: number) { return index; });
+            (value: number, index: number) => index);
         let removedIndexes = new Array();
         let removedValues = new Array();
 
@@ -121,11 +121,11 @@ export class TileRemover {
         return this.sudoku.grid[row].every(element => element !== entry);
     }
 
-    private validateColumn(entry: number, column: number) {
+    private validateColumn(entry: number, column: number): boolean {
         return this.sudoku.grid.every(row => row[column] !== entry);
     }
 
-    private validateSquare(entry: number, row: number, column: number) {
+    private validateSquare(entry: number, row: number, column: number): boolean {
         let x: number, y: number;
         // Coordinates for upper left corner of each square
         x = this.SQUARE_SIZE * Math.floor(row / this.SQUARE_SIZE);

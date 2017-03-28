@@ -56,7 +56,7 @@ export class Application {
      * @class Server
      * @method config
      */
-    private config() {
+    private config(): void {
         // Middlewares configuration
         this.app.use(logger('dev'));
         this.app.use(bodyParser.json());
@@ -67,7 +67,7 @@ export class Application {
         this.app.use('/api', rest.default);
     }
 
-    private views() {
+    private views(): void {
         this.app.set("view engine", "pug");
         this.app.set("views", path.join(__dirname, '../app/api/views'));
     }
@@ -78,7 +78,7 @@ export class Application {
      * @class Server
      * @method routes
      */
-    public routes() {
+    public routes(): void {
 
         // Serve the Angular 2 app
         this.app.get('*', (req, res) => {
