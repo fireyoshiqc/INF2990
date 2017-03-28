@@ -23,7 +23,7 @@ export class StartPageComponent {
         this.playerManagerService = playerManagerService;
     }
 
-    public onJoin() {
+    public onJoin(): void {
         if (this.playerManagerService.isNameValid()) {
             if (this.capacity > 1) {
                 this.playerManagerService.setName(this.playerName);
@@ -42,7 +42,7 @@ export class StartPageComponent {
         }
     }
 
-    public validateName() {
+    public validateName(): void {
         this.playerManagerService.validateName(this.playerName);
     }
 }
