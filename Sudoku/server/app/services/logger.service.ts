@@ -14,7 +14,7 @@ export class LoggerService {
         this.logList = new Collections.LinkedList<string>();
     }
 
-    public logEvent(type: string, description: string) {
+    public logEvent(type: string, description: string): void {
         if (this.logList.size() >= this.LOG_QUEUE_MAX_SIZE) {
             this.logList.remove(this.logList.first());
         }

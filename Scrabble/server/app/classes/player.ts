@@ -64,12 +64,8 @@ export class Player {
         return this.isBlocked;
     }
 
-    public block(): void {
-        this.isBlocked = true;
-    }
-
-    public unblock(): void {
-        this.isBlocked = false;
+    public setBlocked(blocked: boolean): void {
+        this.isBlocked = blocked;
     }
 
     public setLetters(letters: Array<Letter>): void {
@@ -86,12 +82,9 @@ export class Player {
     // Return false if a letter could not be removed from the rack
     public removeLetters(letters: string[]): CommandExecutionStatus {
         // Save the old rack (deep copy)
-        let oldRack = new Array<Letter>();
-        this.lettersRack.forEach(letter => oldRack.push(new Letter(letter.getCharacter())));
+        let oldRack = this.backupRack();
 
-        letters = letters.map(letter => {
-            return letter === "*" ? "JOKER" : letter;
-        });
+        letters = this.mapJokers(letters);
 
         for (let i = 0; i < letters.length; i++) {
             let letterIndex = this.lettersRack.findIndex(l => l.getCharacter() === letters[i].toUpperCase());
@@ -105,5 +98,18 @@ export class Player {
         }
 
         return CommandExecutionStatus.SUCCESS_REMOVE_LETTERS;
+    }
+
+    private backupRack() {
+        let oldRack = new Array<Letter>();
+        this.lettersRack.forEach(letter => oldRack.push(new Letter(letter.getCharacter())));
+        return oldRack;
+    }
+
+    private mapJokers(letters: Array<string>): Array<string> {
+        return letters.map(letter => {
+            return letter === "*" ? "JOKER" : letter;
+        });
+
     }
 }

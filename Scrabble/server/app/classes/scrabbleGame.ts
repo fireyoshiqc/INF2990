@@ -15,7 +15,7 @@ import { Player } from '../classes/player';
 
 export class ScrabbleGame {
     private board: BoardTile[][];
-    private readonly BOARD_LENGTH = 15;
+    private readonly BOARD_SIZE = 15;
     private wordList: WordList;
     private usedTilesPerTurn: BoardTile[];
 
@@ -37,21 +37,23 @@ export class ScrabbleGame {
     private loadBoard() {
         let scrabbleBoardArray = (<any>data).array;
 
-        for (let i = 0; i < this.BOARD_LENGTH; i++) {
+        for (let i = 0; i < this.BOARD_SIZE; i++) {
             this.board[i] = [];
 
-            for (let j = 0; j < this.BOARD_LENGTH; j++) {
+            for (let j = 0; j < this.BOARD_SIZE; j++) {
                 this.board[i][j] = new BoardTile(<TileType>scrabbleBoardArray[i][j]);
             }
         }
     }
 
     private getTile(command: CommandPlaceWord, offset: number): BoardTile {
-        if (command.getOrientation() === "h") {
-            return this.board[command.getRow()][command.getColumn() + offset];
-        } else {
-            return this.board[command.getRow() + offset][command.getColumn()];
-        }
+        // If the specified command orientation is horizontal, get the offset column.
+        // Otherwise, get the offset row.
+        const row = command.getRow();
+        const column = command.getColumn();
+        return command.getOrientation() === "h"
+            ? this.board[row][column + offset]
+            : this.board[row + offset][column];
     }
 
     public findLettersToRemove(command: CommandPlaceWord): string[] {
@@ -62,7 +64,9 @@ export class ScrabbleGame {
         for (let i = 0; i < word.length; i++) {
             tile = this.getTile(command, i);
 
+            // JOKER
             if (tile.isEmpty()) {
+                // If the letter is not the same when put to uppercase, that means it's a joker character.
                 (word[i] === word[i].toUpperCase()) ?
                     lettersToRemove.push("JOKER") : // JOKER
                     lettersToRemove.push(word[i]);  // REGULAR LETTERS
@@ -85,9 +89,9 @@ export class ScrabbleGame {
                     // JOKER used as LETTER is worth 0 point
                     tile.putLetter(new Letter(word[i], true)) :
                     tile.putLetter(new Letter(word[i]));
-                tile.activateCanRemoveLetter(); // Is undoable if newly formed words are invalid
+                tile.setCanRemoveLetter(true); // Is undoable if newly formed words are invalid
             } else {
-                tile.deactivateCanRemoveLetter();
+                tile.setCanRemoveLetter(false);
             }
         }
     }
@@ -133,17 +137,15 @@ export class ScrabbleGame {
         return score;
     }
 
-    private countWordPoint(word: IWord): number {
+    private countWordPoint(playedWord: IWord): number {
         let score = 0;
         let tile;
         let doubleWord = false, tripleWord = false;
 
-        for (let i = 0; i < word.word.length; i++) {
-            if (word.orientation === "h") {
-                tile = this.board[word.row][word.column + i];
-            } else {
-                tile = this.board[word.row + i][word.column];
-            }
+        for (let i = 0; i < playedWord.word.length; i++) {
+            tile = playedWord.orientation === "h"
+                ? this.board[playedWord.row][playedWord.column + i]
+                : this.board[playedWord.row + i][playedWord.column];
 
             if (tile.getTileType() === "DoubleWord" || tile.getTileType() === "Center") {
                 doubleWord = true;
@@ -177,9 +179,17 @@ export class ScrabbleGame {
         this.usedTilesPerTurn = [];
     }
 
+    // TODO : Make this the only thing called in GameMaster.
+    public isWordValid(command: CommandPlaceWord, firstWord: boolean): boolean {
+        return (firstWord
+            ? this.isWordOverlappingCentralTile(command)
+            : this.isWordAdjacentToAnother(command))
+            && this.isWordInBounds(command) && this.isWordCorrectlyOverlapping(command);
+    }
+
     public isWordInBounds(command: CommandPlaceWord): boolean {
         return (((command.getOrientation() === "h") ?
-            command.getColumn() : command.getRow()) + command.getWord().length) <= this.BOARD_LENGTH;
+            command.getColumn() : command.getRow()) + command.getWord().length) <= this.BOARD_SIZE;
     }
 
     public isWordCorrectlyOverlapping(command: CommandPlaceWord): boolean {
@@ -240,54 +250,30 @@ export class ScrabbleGame {
 
     private isLetterAdjacentTo(rowIndex: number, columnIndex: number): boolean {
         // Check upper tile
-        let upperRowIndex = rowIndex - 1;
-        let upperColumnIndex = columnIndex;
+        return this.isTileAdjacent(rowIndex - 1, columnIndex) // Left tile
+            || this.isTileAdjacent(rowIndex, columnIndex - 1) // Up tile
+            || this.isTileAdjacent(rowIndex + 1, columnIndex) // Right tile
+            || this.isTileAdjacent(rowIndex, columnIndex + 1); // Down tile
+    }
 
-        if (this.isTileInBounds(upperRowIndex, upperColumnIndex) &&
-            !this.board[upperRowIndex][upperColumnIndex].isEmpty()) {
-            return true;
-        }
-
-        // Check left tile
-        let leftRowIndex = rowIndex;
-        let leftColumnIndex = columnIndex - 1;
-
-        if (this.isTileInBounds(leftRowIndex, leftColumnIndex) &&
-            !this.board[leftRowIndex][leftColumnIndex].isEmpty()) {
-            return true;
-        }
-
-        // Check lower tile
-        let lowerRowIndex = rowIndex + 1;
-        let lowerColumnIndex = columnIndex;
-
-        if (this.isTileInBounds(lowerRowIndex, lowerColumnIndex) &&
-            !this.board[lowerRowIndex][lowerColumnIndex].isEmpty()) {
-            return true;
-        }
-
-        // Check right tile
-        let rightRowIndex = rowIndex;
-        let rightColumnIndex = columnIndex + 1;
-
-        if (this.isTileInBounds(rightRowIndex, rightColumnIndex) &&
-            !this.board[rightRowIndex][rightColumnIndex].isEmpty()) {
-            return true;
-        }
-
-        return false;
+    private isTileAdjacent(rowIndex: number, columnIndex: number): boolean {
+        return this.isTileInBounds(rowIndex, columnIndex) && !this.board[rowIndex][columnIndex].isEmpty();
     }
 
     private isTileInBounds(rowIndex: number, columnIndex: number): boolean {
-        return rowIndex >= 0 && rowIndex < this.BOARD_LENGTH &&
-            columnIndex >= 0 && columnIndex < this.BOARD_LENGTH;
+        return rowIndex >= 0 && rowIndex < this.BOARD_SIZE &&
+            columnIndex >= 0 && columnIndex < this.BOARD_SIZE;
     }
 
-    public areAllHorizontalWordsValid(command: CommandPlaceWord): boolean {
+    public areAllWordsValid(): boolean {
+        return this.areAllHorizontalWordsValid() && this.areAllVerticalWordsValid();
+    }
+
+    private areAllHorizontalWordsValid(): boolean {
         // Verify if every horizontal word is valid
         // Horizontal words start from column 0 to column 13 (words have a minimum of two letters)
-        for (let i = 0; i < this.BOARD_LENGTH; i++) {
-            for (let j = 0; j < (this.BOARD_LENGTH - 1); j++) {
+        for (let i = 0; i < this.BOARD_SIZE; i++) {
+            for (let j = 0; j < (this.BOARD_SIZE - 1); j++) {
                 let tile = this.board[i][j];
 
                 if (!tile.isEmpty()) {
@@ -298,7 +284,7 @@ export class ScrabbleGame {
                         let column = j;
 
                         // Retrieve the next tile (to form the word) if in bounds
-                        while ((column + 1) < this.BOARD_LENGTH) {
+                        while ((column + 1) < this.BOARD_SIZE) {
                             column++;
                             tile = this.board[i][column];
 
@@ -324,11 +310,11 @@ export class ScrabbleGame {
         return true;
     }
 
-    public areAllVerticalWordsValid(command: CommandPlaceWord): boolean {
+    private areAllVerticalWordsValid(): boolean {
         // Verify if every vertical word is valid
         // Vertical words start from row 0 to row 13 (words have a minimum of two letters)
-        for (let i = 0; i < (this.BOARD_LENGTH - 1); i++) {
-            for (let j = 0; j < this.BOARD_LENGTH; j++) {
+        for (let i = 0; i < (this.BOARD_SIZE - 1); i++) {
+            for (let j = 0; j < this.BOARD_SIZE; j++) {
                 let tile = this.board[i][j];
 
                 if (!tile.isEmpty()) {
@@ -339,7 +325,7 @@ export class ScrabbleGame {
                         let row = i;
 
                         // Retrieve the next tile (to form the word) if in bounds
-                        while ((row + 1) < this.BOARD_LENGTH) {
+                        while ((row + 1) < this.BOARD_SIZE) {
                             row++;
                             tile = this.board[row][j];
 
@@ -368,10 +354,10 @@ export class ScrabbleGame {
     public copyBoard(board: BoardTile[][]): BoardTile[][] {
         let copyBoard: BoardTile[][] = [];
 
-        for (let i = 0; i < this.BOARD_LENGTH; i++) {
+        for (let i = 0; i < this.BOARD_SIZE; i++) {
             copyBoard[i] = [];
 
-            for (let j = 0; j < this.BOARD_LENGTH; j++) {
+            for (let j = 0; j < this.BOARD_SIZE; j++) {
                 copyBoard[i][j] = this.board[i][j].copyBoardTile();
             }
         }

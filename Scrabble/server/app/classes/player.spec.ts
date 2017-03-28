@@ -30,12 +30,12 @@ describe('Player', () => {
         });
     });
 
-    describe('block() and unblock()', () => {
+    describe('setBlocked()', () => {
         it('should block and unblock a player.', done => {
             expect(player.getIsBlocked()).to.be.false;
-            player.block();
+            player.setBlocked(true);
             expect(player.getIsBlocked()).to.be.true;
-            player.unblock();
+            player.setBlocked(false);
             expect(player.getIsBlocked()).to.be.false;
             done();
         });

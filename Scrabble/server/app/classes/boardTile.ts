@@ -66,13 +66,8 @@ export class BoardTile {
         return this.canRemoveLetter;
     }
 
-    // Letter can be removed (in case newly formed words are invalid)
-    public activateCanRemoveLetter(): void {
-        this.canRemoveLetter = true;
-    }
-
-    public deactivateCanRemoveLetter(): void {
-        this.canRemoveLetter = false;
+    public setCanRemoveLetter(canRemove: boolean) {
+        this.canRemoveLetter = canRemove;
     }
 
     public putLetter(letter: Letter): void {
@@ -84,7 +79,7 @@ export class BoardTile {
         if (this.canRemoveLetter) {
             this.letter = null;
             this.empty = true;
-            this.deactivateCanRemoveLetter();
+            this.setCanRemoveLetter(false);
         }
     }
 
@@ -94,10 +89,12 @@ export class BoardTile {
         }
 
         let point = this.letter.getValue();
-        if (this.tileType === "DoubleLetter" && this.bonusActive) {
-            point *= 2;
-        } else if (this.tileType === "TripleLetter" && this.bonusActive) {
-            point *= 3;
+        if (this.bonusActive) {
+            if (this.tileType === "DoubleLetter") {
+                point *= 2;
+            } else if (this.tileType === "TripleLetter") {
+                point *= 3;
+            }
         }
 
         return point;

@@ -16,6 +16,7 @@ export class CommandHandler {
     private sio: SocketIO.Server;
     private roomManager: RoomManager;
     private commandParser: CommandParser;
+    // TODO: Rework this so the error is a property of each command.
     private readonly commandResponseMessage =
     [
         "", // CommandExecutionStatus.SUCCESS
@@ -60,8 +61,8 @@ export class CommandHandler {
         }
 
         if (commandStatus !== CommandStatus.VALID_COMMAND) {
-            this.sio.sockets.connected[player.getSocketId()]
-                .emit('command sent', { username: "Scrabble Game", submessage: msg, commandResponse });
+            this.sio.sockets.in(player.getRoomId().toString())
+                .emit('command sent', { username: player.getName(), submessage: msg, commandResponse });
         }
     }
 
@@ -73,6 +74,8 @@ export class CommandHandler {
         let executionStatus = room.getGameMaster().handleCommand(command, player);
 
         let commandResponse = "";
+
+        // TODO: Rework this to use each command's error messages.
         switch (executionStatus) {
             case CommandExecutionStatus.SUCCESS:
                 this.updateClient(msg, player, command);
@@ -82,9 +85,9 @@ export class CommandHandler {
                 this.updateClientInvalidPlaceWord(msg, player, command);
                 return;
 
-            case CommandExecutionStatus.ERROR:
             case CommandExecutionStatus.WAIT:
             case CommandExecutionStatus.BLOCK:
+            case CommandExecutionStatus.ERROR:
             case CommandExecutionStatus.ERROR_PLACE_WORD_OUT_OF_BOUNDS:
             case CommandExecutionStatus.ERROR_PLACE_WORD_INCORRECT_OVERLAPPING:
             case CommandExecutionStatus.ERROR_PLACE_WORD_CENTRAL_TILE:
@@ -99,11 +102,12 @@ export class CommandHandler {
         }
 
         // Writes the error message in the chat of all players
-        this.sio.sockets.connected[player.getSocketId()]
-            .emit('command sent', { username: "Scrabble Game", submessage: msg, commandResponse });
+        this.sio.sockets.in(player.getRoomId().toString())
+            .emit('command sent', { username: player.getName(), submessage: msg, commandResponse });
     }
 
     private updateClient(msg: string, player: Player, command: Command): void {
+        let cResponse = "";
         switch (command.getCommandType()) {
             case CommandType.PLACER:
                 this.updateClientPlaceWord(player, command);
@@ -114,6 +118,9 @@ export class CommandHandler {
                 break;
 
             case CommandType.PASSER:
+                let room = this.roomManager.findRoom(player.getRoomId());
+                cResponse = "Changement de tour. Le joueur actif est: "
+                    + room.getGameMaster().getActivePlayer().getName();
                 break;
 
             case CommandType.AIDE:
@@ -127,7 +134,7 @@ export class CommandHandler {
         // Writes the successful command in the chat of all players except for help
         this.sio.sockets
             .in(player.getRoomId().toString())
-            .emit('command sent', { username: player.getName(), submessage: msg, commandResponse: "" });
+            .emit('command sent', { username: player.getName(), submessage: msg, commandResponse: cResponse });
     }
 
     private updateClientPlaceWord(player: Player, command: Command): void {
@@ -178,13 +185,8 @@ export class CommandHandler {
     }
 
     private updateClientHelp(msg: string, player: Player): void {
-        // TODO mettre un message d'aide pertinent
-        let helpMessage = "Voici l'aide...";
-        // VOIR LES REGEX (ex. pour placer un mot, le mot doit être en 2 à 15 lettres (requis)
-        // AUSSI, le mot doit être formé avec des lettres du rack,
-        // Mais aussi TENIR compte des lettres qui sont sur le plateau, d'où jusqu'à 15 lettres)
-
+        // Send help message
         this.sio.sockets.connected[player.getSocketId()]
-            .emit('command sent', { username: "Scrabble Game", submessage: msg, commandResponse: helpMessage });
+            .emit('command sent', { username: "Scrabble Game", submessage: msg, commandResponse: Command.helpMessage });
     }
 }

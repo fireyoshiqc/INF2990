@@ -181,6 +181,7 @@
     //"no-unnecessary-qualifier": true, => REQUIRES TYPE CHECKING
     "object-literal-shorthand": true,
     //"promise-function-async": true, => REQUIRES TYPE CHECKING
-    "switch-default": true
+    "switch-default": true,
+    "typedef": [true, "call-signature"]
   }
 }

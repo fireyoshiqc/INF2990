@@ -52,8 +52,6 @@ export class BoardComponent implements OnInit {
             .map(res => res.json())
             .subscribe(res => {
                 for (let i = 0; i < this.BOARD_LENGTH; i++) {
-                    this.board[i] = [];
-
                     for (let j = 0; j < this.BOARD_LENGTH; j++) {
                         this.board[i][j] = new BoardTile(<TileType>res.array[i][j]);
                     }
@@ -63,27 +61,26 @@ export class BoardComponent implements OnInit {
 
     public updateBoard(command: ICommandPlaceWord): void {
         let word = command.word;
-        let rowIndex: number;
-        let columnIndex: number;
-        let tile: BoardTile;
 
         for (let i = 0; i < word.length; i++) {
-            rowIndex = (command.orientation === "h") ? command.row : (command.row + i);
-            columnIndex = (command.orientation === "h") ? (command.column + i) : command.column;
-            tile = this.board[rowIndex][columnIndex];
+            let tile = this.retrieveNextBoardTile(command, i);
 
             // Remove letter from board
             if (word[i] === "-") {
                 tile.removeLetter();
-            } else { // Add letter to board
-                if (tile.getCharacter() === null) {
-                    if (word[i] === word[i].toUpperCase()) {
-                        tile.putLetter(new Letter(word[i], true));
-                    } else {
-                        tile.putLetter(new Letter(word[i]));
-                    }
-                }
+            } else if (tile.getCharacter() === null) { // Add letter to board
+                let jokerUsedAsLetter = (word[i] === word[i].toUpperCase());
+                tile.putLetter(new Letter(word[i], jokerUsedAsLetter));
             }
         }
+    }
+
+    private retrieveNextBoardTile(command: ICommandPlaceWord, iteration: number): BoardTile {
+        /* iteration = 0 : the starting tile of the word
+           iteration = 1 : the second tile (i.e. second letter) of the word */
+        let rowIndex = (command.orientation === "h") ? command.row : (command.row + iteration);
+        let columnIndex = (command.orientation === "h") ? (command.column + iteration) : command.column;
+
+        return this.board[rowIndex][columnIndex];
     }
 }

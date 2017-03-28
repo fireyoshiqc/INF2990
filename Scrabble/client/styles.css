@@ -13,9 +13,16 @@
 }
 
 html,
-body {
+body,
+md-sidenav-container {
+    font-family: 'Roboto', sans-serif;
+    font-weight: normal;
+    font-size: normal;
     height: 100%;
     width: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
 }
 
 #wrapper {
@@ -42,6 +49,86 @@ body {
 
 .material-icons.md-inactive {
     color: rgba(255, 255, 255, 0.3);
+}
+
+/***************************/
+/* top bar component */
+/***************************/
+
+#topBar {
+    height: 56px;
+    padding-left: 16px;
+    padding-right: 16px;
+    box-shadow: 0px 4px 16px black;
+}
+
+#navIcon.material-icons.mat-icon {
+    margin-left: 16px;
+    font-size: 32px;
+    height: 32px;
+    width: 32px;
+}
+
+#lightBulbIcon.material-icons.mat-icon {
+    margin-left: 16px;
+    margin-right: 16px;
+    font-size: 32px;
+    height: 32px;
+    width: 32px;
+}
+
+#closeIcon.material-icons.mat-icon {
+    margin-left: 16px;
+    margin-right: 16px;
+    font-size: 32px;
+    height: 32px;
+    width: 32px;
+}
+
+/***************************/
+/* control panel component */
+/***************************/
+
+#title {
+    padding-left: 72px;
+    font-size: 28px;
+}
+
+#topSpacer {
+    flex: 1 1 auto;
+}
+
+.icon-button {
+    cursor: pointer;
+    background: transparent;
+    border: none !important;
+}
+
+.icon-button:focus {
+    outline: none;
+}
+
+#infoCard {
+    width: 350px;
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.list-button {
+    width: 320px;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+#sidenavIcon.material-icons.mat-icon {
+    margin-right: 32px;
+    font-size: 32px;
+    height: 32px;
+    width: 32px;
+}
+
+#buttonPanel button {
+    text-align: start;
 }
 
 

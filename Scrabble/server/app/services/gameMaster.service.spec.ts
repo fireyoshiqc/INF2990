@@ -39,19 +39,6 @@ describe('GameMaster', () => {
         });
     });
 
-    describe('swapPlayers()', () => {
-        it('should swap two players\' order.', done => {
-            expect(gameMaster.getPlayers()[0].getName()).to.be.equal("player1");
-            expect(gameMaster.getPlayers()[1].getName()).to.be.equal("player2");
-
-            gameMaster.swapPlayer(0, 1);
-
-            expect(gameMaster.getPlayers()[0].getName()).to.be.equal("player2");
-            expect(gameMaster.getPlayers()[1].getName()).to.be.equal("player1");
-            done();
-        });
-    });
-
     describe('startGame()', () => {
         it('should start the game.', done => {
             gameMaster.startGame();

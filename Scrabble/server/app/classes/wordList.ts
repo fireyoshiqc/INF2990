@@ -51,7 +51,7 @@ export class WordList {
         this.clearNewWords();
     }
 
-    public clearNewWords() {
+    public clearNewWords(): void {
         this.newWords = [];
     }
 

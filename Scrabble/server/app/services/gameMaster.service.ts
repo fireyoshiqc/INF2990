@@ -13,6 +13,7 @@ import { ScrabbleGame } from '../classes/scrabbleGame';
 import { LetterStash } from './letterStash.service';
 import { StopwatchService } from './stopwatch.service';
 
+// TODO: Rework this to be included in the appropriate commands.
 export enum CommandExecutionStatus {
     SUCCESS, // Command executed successfully
     ERROR, // Command cannot be executed
@@ -100,20 +101,24 @@ export class GameMaster {
     }
 
     public getTurnInfo(): ITurnInfo {
+        this.updateTurnInfo();
+        return this.turnInfo;
+    }
+
+    private updateTurnInfo() {
         // Clean the list in the case that players have left
         this.turnInfo.players = [];
 
         // Update information
         for (let i = 0; i < this.players.length; i++) {
-             this.turnInfo.players[i] = {
-                 name: this.players[i].getName(),
-                 score: this.players[i].getPoints(),
-                 nRackLetters: this.players[i].getLettersRack().length};
+            this.turnInfo.players[i] = {
+                name: this.players[i].getName(),
+                score: this.players[i].getPoints(),
+                nRackLetters: this.players[i].getLettersRack().length
+            };
         }
 
         this.turnInfo.nLettersStash = this.stash.getAmountLeft();
-
-        return this.turnInfo;
     }
 
     public getIsFirstTurn(): boolean {
@@ -121,7 +126,7 @@ export class GameMaster {
     }
 
     public blockActivePlayer(): void {
-        this.activePlayer.block();
+        this.activePlayer.setBlocked(true);
     }
 
     public startGame(): void {
@@ -157,7 +162,7 @@ export class GameMaster {
         }
     }
 
-    public swapPlayer(playerIndex1: number, playerIndex2: number): void {
+    private swapPlayer(playerIndex1: number, playerIndex2: number): void {
         let temporaryPlayer: Player;
 
         temporaryPlayer = this.players[playerIndex1];
@@ -208,8 +213,7 @@ export class GameMaster {
                 this.scrabbleGame.placeWord(command);
 
                 // 4- Verify if the newly formed words are valid
-                if (!this.scrabbleGame.areAllHorizontalWordsValid(command) ||
-                    !this.scrabbleGame.areAllVerticalWordsValid(command)) {
+                if (!this.scrabbleGame.areAllWordsValid()) {
                     return CommandExecutionStatus.ERROR_PLACE_WORD_INVALID_WORDS;
                 } else {
                     // 5- Update player score
@@ -271,7 +275,7 @@ export class GameMaster {
     }
 
     public undoPlaceWord(command: CommandPlaceWord, player: Player): string {
-        this.activePlayer.unblock();
+        this.activePlayer.setBlocked(false);
         this.endTurn();
         return this.scrabbleGame.removeWord(command, player);
     }
@@ -300,10 +304,10 @@ export class GameMaster {
         return commandExecutionStatus;
     }
 
-    private checkTurnOver() {
+    private checkTurnOver(): void {
         setInterval(() => {
             if (this.stopwatch.isTurnOver()) {
-                this.endTurn();
+                this.nextTurn = true;
             }
 
             // Update turnInfo
@@ -316,7 +320,6 @@ export class GameMaster {
     private endTurn(): CommandExecutionStatus {
         let playerIndex = this.players.findIndex(p => p.getSocketId() === this.activePlayer.getSocketId());
         this.activePlayer = this.players[(playerIndex + 1) % this.players.length];
-        this.nextTurn = true;
 
         // Reset the timer
         this.stopwatch.restart();

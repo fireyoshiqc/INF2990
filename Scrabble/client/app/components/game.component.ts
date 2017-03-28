@@ -15,11 +15,12 @@ export class GameComponent implements OnInit {
     private readonly SERVER_PORT = ":3000";
     private socket: any;
     private rackActive = false;
+    private isDarkTheme = false;
     @ViewChild(RackComponent) private rackChild: RackComponent;
     @ViewChild(BoardComponent) private boardChild: BoardComponent;
     @ViewChild(InfoComponent) private infoChild: InfoComponent;
 
-    public ngOnInit() {
+    public ngOnInit(): void {
         this.socket = SocketHandler.requestSocket(this.HOST_NAME + this.SERVER_PORT);
 
         this.socket.on("wcUpdateBoard", (command: ICommandPlaceWord) => {
@@ -40,7 +41,7 @@ export class GameComponent implements OnInit {
     }
 
     @HostListener('window:keydown', ['$event'])
-    public keyboardInput(event: KeyboardEvent) {
+    public keyboardInput(event: KeyboardEvent): void {
         if (event.key === "Tab") {
             this.rackActive = !this.rackActive;
 
@@ -52,5 +53,17 @@ export class GameComponent implements OnInit {
                 this.rackChild.keyboardInput(event);
             }
         }
+    }
+
+    public toggleTheme(): void {
+        this.isDarkTheme = !this.isDarkTheme;
+    }
+
+    public getTheme(): boolean {
+        return this.isDarkTheme;
+    }
+
+    public resetGame(): void {
+        alert("reset");
     }
 }

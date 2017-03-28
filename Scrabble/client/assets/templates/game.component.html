@@ -1,43 +1,100 @@
-<div id="wrapper" class="flex-container" fxLayout="column" fxLayoutAlign="center center">
-    <div class="flex-item" fxFlex fxFlexFill>
-        <div id="header">
-            <md-toolbar color="primary">
-            <span>Scrabble</span>
+<div [class.dark-theme]="isDarkTheme" id="wrapper" class="flex-container" md-theme="light-sudoku-theme" md-theme-watch="true"
+    fxLayout="row" fxLayoutAlign="center center">
+    <md-sidenav-container>
+        <md-sidenav #sidenav mode="above" opened="false">
+            <div id="buttonPanel" class="flex-container" fxLayout="column" fxLayoutAlign="start">
+                <md-list>
+                    <md-card id="infoCard">
+                        <md-card-title>Scrabble</md-card-title>
+                        <md-card-subtitle>FACTORY/24</md-card-subtitle>
+                        <md-card-content>
+                            Ce jeu de Scrabble classique saura mettre à l'épreuve votre connaissance du vocabulaire français.<br>
+                            <br> Utilisez l'icône d'ampoule dans le coin supérieur droit afin de changer le thème de clair
+                            à sombre.<br>
+                            <br> Utilisez les boutons ci-dessous pour retourner à la page d'accueil ou encore pour afficher
+                            les records.<br>
+                        </md-card-content>
+                    </md-card>
+
+                    <!-- Prevents autofocus on next button -->
+                    <!-- This buttons does nothing -->
+                    <button md-button></button>
+
+                    <h3 md-subheader>Retour</h3>
+                    <md-list-item>
+                        <button md-button class="list-button" (click)="resetGame(); sidenav.toggle()">
+                            <md-icon id="sidenavIcon">exit_to_app</md-icon><strong>Retourner</strong>
+                        </button>
+                    </md-list-item>
+                    <md-divider></md-divider>
+
+                    <h3 md-subheader>Records</h3>
+                    <md-list-item>
+                        <button md-button class="list-button" (click)="sidenav.toggle()">
+                            <md-icon id="sidenavIcon">assessment</md-icon><strong>Afficher les records</strong>
+                        </button>
+                    </md-list-item>
+                    <md-divider></md-divider>
+                </md-list>
+            </div>
+        </md-sidenav>
+        <div class="flex-container" fxLayout="column" fxLayoutAlign="center center">
+            <md-toolbar id="topBar" color="primary">
+
+                <button class="icon-button" (click)="sidenav.toggle()"><md-icon id="navIcon">menu</md-icon></button>
+
+                <span id="title">Scrabble</span>
+                <span id="topSpacer"></span>
+
+                <!-- TODO: TOGGLE THEME FOR CHAT AND INFOCOMPONENT -->
+                <button class="icon-button" (click)="toggleTheme();">
+                        <md-icon id="lightBulbIcon">lightbulb_outline</md-icon>
+                </button>
+
+                <button class="icon-button"><md-icon id="closeIcon">close</md-icon></button>
+
             </md-toolbar>
-        </div>
-    </div>
 
-    <div class="flex-item" fxFlex="93.2%" fxFlexFill>
-        <div class="flex-container" fxLayout="row" fxLayoutAlign="center center" fxFlexFill>
+            <div class="flex-item" fxLayoutAlign="center" fxFlex="auto" fxFlexFill>
+                <div id="wrapper" class="flex-container" fxLayout="column" fxLayoutAlign="center center">
+                    <div class="flex-item" fxFlex="93.2%" fxFlexFill>
+                        <div class="flex-container" fxLayout="row" fxLayoutAlign="center center" fxFlexFill>
 
-            <div class="flex-item" fxFlex.xl="40%" fxFlex.lg="50%" fxFlex.md="60%" fxFlex.sm="70%" id="gamePanel" fxFlexFill>
-                <div class="flex-container" fxLayout="column" fxLayout.xs="column" fxLayoutAlign="center center" fxLayoutAlign.xs="center center" fxFlexFill>
+                            <div class="flex-item" fxFlex.xl="40%" fxFlex.lg="50%" fxFlex.md="60%" fxFlex.sm="70%" id="gamePanel" fxFlexFill>
+                                <div class="flex-container" fxLayout="column" fxLayout.xs="column" fxLayoutAlign="center center" fxLayoutAlign.xs="center center"
+                                    fxFlexFill>
 
-                    <div class="flex-item" fxFlex="auto" fxFlexFill>
-                        <board-comp></board-comp>
+                                    <div class="flex-item" fxFlex="auto" fxFlexFill>
+                                        <board-comp></board-comp>
+                                    </div>
+
+                                    <div class="flex-item" fxFlex="auto" fxFlexFill>
+                                        <rack-comp></rack-comp>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="flex-item" fxFlex.xl="40%" fxFlex.lg="50%" fxFlex.md="40%" fxFlex.sm="30%" id="sidePanel" fxFlexFill>
+                                <div class="flex-container" fxLayout="column" fxLayout.xs="column" fxLayoutAlign="center center" fxLayoutAlign.xs="start"
+                                    fxFlexFill>
+
+                                    <div class="flex-item" fxFlex="30%" fxFlex.xs="30%" fxFlexFill>
+                                        <info-comp></info-comp>
+                                    </div>
+
+                                    <div class="flex-item" fxFlex="70%" fxFlex.xs="70%" fxFlexFill>
+                                        <chat-comp></chat-comp>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
-
-                    <div class="flex-item" fxFlex="auto" fxFlexFill>
-                        <rack-comp></rack-comp>
-                    </div>
-
                 </div>
             </div>
 
-            <div class="flex-item" fxFlex.xl="40%" fxFlex.lg="50%" fxFlex.md="40%" fxFlex.sm="30%" id="sidePanel" fxFlexFill>
-                <div class="flex-container" fxLayout="column" fxLayout.xs="column" fxLayoutAlign="center center" fxLayoutAlign.xs="start" fxFlexFill>
-
-                    <div class="flex-item" fxFlex="30%" fxFlex.xs="30%" fxFlexFill>
-                        <info-comp></info-comp>
-                    </div>
-
-                    <div class="flex-item" fxFlex="70%" fxFlex.xs="70%" fxFlexFill>
-                        <chat-comp></chat-comp>
-                    </div>
-
-                </div>
-            </div>
-
         </div>
-    </div>
+    </md-sidenav-container>
 </div>

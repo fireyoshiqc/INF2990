@@ -9,10 +9,14 @@ import { Player } from '../classes/player';
 
 export class PlayerManager {
 
-    public players: Player[];
+    private players: Player[];
 
     constructor() {
         this.players = [];
+    }
+
+    public getPlayers() {
+        return this.players;
     }
 
     public validateName(name: string): boolean {
