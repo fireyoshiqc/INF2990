@@ -29,7 +29,7 @@ export class SceneBuilder {
         return SceneBuilder.instance;
     }
 
-    constructor() {
+    private constructor() {
         if (SceneBuilder.instance) {
             throw new Error("Error: SceneBuilder is a singleton class, use SceneBuilder.getInstance() instead of new.");
         }

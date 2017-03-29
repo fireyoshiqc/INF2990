@@ -10,7 +10,23 @@ import { GameEngine } from '../gameEngine.service';
 
 export class EndThrowState implements IGameState {
 
-    constructor(private gameEngine: GameEngine) {
+    private static instance: EndThrowState = new EndThrowState();
+    private gameEngine: GameEngine;
+
+    public getInstance(): EndThrowState {
+        return EndThrowState.instance;
+    }
+
+    public init(): void {
+        this.gameEngine = GameEngine.getInstance();
+    }
+
+    private constructor() {
+        if (EndThrowState.instance) {
+            throw new Error("Error: EndThrowState " +
+                "is a singleton class, use EndThrowState.getInstance() instead of new.");
+        }
+        EndThrowState.instance = this;
     }
 
     public onMouseDown(event: any): void {

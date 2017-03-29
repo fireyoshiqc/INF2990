@@ -36,7 +36,7 @@ export class GameCamera {
         return GameCamera.instance;
     }
 
-    constructor() {
+    private constructor() {
         if (GameCamera.instance) {
             throw new Error("Error: GameCamera is a singleton class, use GameCamera.getInstance() instead of new.");
         }

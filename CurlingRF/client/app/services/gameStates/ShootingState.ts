@@ -3,7 +3,23 @@ import { GameEngine } from '../gameEngine.service';
 
 export class ShootingState implements IGameState {
 
-    constructor(private gameEngine: GameEngine) {
+    private static instance: ShootingState = new ShootingState();
+    private gameEngine: GameEngine;
+
+    public getInstance(): ShootingState {
+        return ShootingState.instance;
+    }
+
+    public init(): void {
+        this.gameEngine = GameEngine.getInstance();
+    }
+
+    private constructor() {
+        if (ShootingState.instance) {
+            throw new Error("Error: ShootingState " +
+                "is a singleton class, use ShootingState.getInstance() instead of new.");
+        }
+        ShootingState.instance = this;
     }
 
     public onMouseDown(event: any): void {

@@ -3,7 +3,22 @@ import { GameEngine } from '../gameEngine.service';
 
 export class IdleState implements IGameState {
 
-    constructor(private gameEngine: GameEngine) {
+    private static instance: IdleState = new IdleState();
+    private gameEngine: GameEngine;
+
+    public getInstance(): IdleState {
+        return IdleState.instance;
+    }
+
+    public init(): void {
+        this.gameEngine = GameEngine.getInstance();
+    }
+
+    private constructor() {
+        if (IdleState.instance) {
+            throw new Error("Error: IdleState is a singleton class, use IdleState.getInstance() instead of new.");
+        }
+        IdleState.instance = this;
     }
 
     public onMouseDown(event: any): void {

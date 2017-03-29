@@ -24,7 +24,7 @@ export class GameEngine {
         return GameEngine.instance;
     }
 
-    constructor() {
+    private constructor() {
         if (GameEngine.instance) {
             throw new Error("Error: GameEngine is a singleton class, use GameEngine.getInstance() instead of new.");
         }

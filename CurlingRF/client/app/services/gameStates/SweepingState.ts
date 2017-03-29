@@ -3,7 +3,23 @@ import { GameEngine } from '../gameEngine.service';
 
 export class SweepingState implements IGameState {
 
-    constructor(private gameEngine: GameEngine) {
+    private static instance: SweepingState = new SweepingState();
+    private gameEngine: GameEngine;
+
+    public getInstance(): SweepingState {
+        return SweepingState.instance;
+    }
+
+    public init(): void {
+        this.gameEngine = GameEngine.getInstance();
+    }
+
+    private constructor() {
+        if (SweepingState.instance) {
+            throw new Error("Error: SweepingState " +
+                "is a singleton class, use SweepingState.getInstance() instead of new.");
+        }
+        SweepingState.instance = this;
     }
 
     public onMouseDown(event: any): void {

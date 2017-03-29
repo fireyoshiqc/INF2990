@@ -1,4 +1,8 @@
+import { GameEngine } from '../gameEngine.service';
+
 export interface IGameState {
+    getInstance(): IGameState;
+    init(gameEngine: GameEngine): void;
     onMouseDown(event: any): void;
     onMouseUp(event: any): void;
     onMouseMove(event: any): void;
