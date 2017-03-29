@@ -8,6 +8,12 @@
 import { Injectable } from '@angular/core';
 import { SceneBuilder } from './sceneBuilder.service';
 import { GameCamera } from './gameCamera.service';
+import { IGameState } from './gameStates/GameState';
+import { ChoosingAngleState } from './gameStates/ChoosingAngleState';
+import { EndThrowState } from './gameStates/EndThrowState';
+import { IdleState } from './gameStates/IdleState';
+import { ShootingState } from './gameStates/ShootingState';
+import { SweepingState } from './gameStates/SweepingState';
 
 @Injectable()
 export class GameEngine {
@@ -19,6 +25,8 @@ export class GameEngine {
     private camera: GameCamera;
     private renderer: THREE.WebGLRenderer;
     private clock: THREE.Clock;
+
+    private gameState: IGameState;
 
     public static getInstance(): GameEngine {
         return GameEngine.instance;
@@ -34,6 +42,8 @@ export class GameEngine {
     public init(container: HTMLElement): void {
         this.container = container;
         this.createRenderer();
+        this.initGameStates();
+        this.gameState = IdleState.getInstance();
         this.launchGame();
     }
 
@@ -116,5 +126,13 @@ export class GameEngine {
     private setupCamera(): void {
         this.camera = GameCamera.getInstance();
         this.camera.init(this.container);
+    }
+
+    private initGameStates(): void {
+        ChoosingAngleState.getInstance().init();
+        EndThrowState.getInstance().init();
+        IdleState.getInstance().init();
+        ShootingState.getInstance().init();
+        SweepingState.getInstance().init();
     }
 }

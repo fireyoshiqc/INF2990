@@ -6,7 +6,7 @@ export class SweepingState implements IGameState {
     private static instance: SweepingState = new SweepingState();
     private gameEngine: GameEngine;
 
-    public getInstance(): SweepingState {
+    public static getInstance(): SweepingState {
         return SweepingState.instance;
     }
 

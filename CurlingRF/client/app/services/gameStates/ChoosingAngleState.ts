@@ -6,7 +6,7 @@ export class ChoosingAngleState implements IGameState {
     private static instance: ChoosingAngleState = new ChoosingAngleState();
     private gameEngine: GameEngine;
 
-    public getInstance(): ChoosingAngleState {
+    public static getInstance(): ChoosingAngleState {
         return ChoosingAngleState.instance;
     }
 

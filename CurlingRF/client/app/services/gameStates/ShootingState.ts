@@ -6,7 +6,7 @@ export class ShootingState implements IGameState {
     private static instance: ShootingState = new ShootingState();
     private gameEngine: GameEngine;
 
-    public getInstance(): ShootingState {
+    public static getInstance(): ShootingState {
         return ShootingState.instance;
     }
 

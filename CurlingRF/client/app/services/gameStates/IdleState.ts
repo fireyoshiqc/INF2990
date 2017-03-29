@@ -6,7 +6,7 @@ export class IdleState implements IGameState {
     private static instance: IdleState = new IdleState();
     private gameEngine: GameEngine;
 
-    public getInstance(): IdleState {
+    public static getInstance(): IdleState {
         return IdleState.instance;
     }
 

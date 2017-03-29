@@ -13,7 +13,7 @@ export class EndThrowState implements IGameState {
     private static instance: EndThrowState = new EndThrowState();
     private gameEngine: GameEngine;
 
-    public getInstance(): EndThrowState {
+    public static getInstance(): EndThrowState {
         return EndThrowState.instance;
     }
 
