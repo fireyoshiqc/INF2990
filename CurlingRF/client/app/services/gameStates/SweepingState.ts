@@ -41,4 +41,9 @@ export class SweepingState implements IGameState {
     public update(delta: number): void {
         // Do nothing
     }
+
+    public enterState(): SweepingState {
+        // Do nothing yet, but return this state.
+        return this;
+    }
 }

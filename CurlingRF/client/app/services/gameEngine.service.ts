@@ -5,7 +5,6 @@
  * @date 2017/03/26
  */
 
-import { Injectable } from '@angular/core';
 import { SceneBuilder } from './sceneBuilder.service';
 import { GameCamera } from './gameCamera.service';
 import { IGameState } from './gameStates/GameState';
@@ -15,7 +14,6 @@ import { IdleState } from './gameStates/IdleState';
 import { ShootingState } from './gameStates/ShootingState';
 import { SweepingState } from './gameStates/SweepingState';
 
-@Injectable()
 export class GameEngine {
 
     private static instance: GameEngine = new GameEngine();

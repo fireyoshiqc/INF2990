@@ -7,4 +7,5 @@ export interface IGameState {
     onMouseMove(event: any): void;
     onKeyboardDown(event: KeyboardEvent): void;
     update(delta: number): void;
+    enterState(): IGameState;
 }

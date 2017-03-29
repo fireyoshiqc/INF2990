@@ -42,4 +42,9 @@ export class ChoosingAngleState implements IGameState {
         // Do nothing
     }
 
+    public enterState(): ChoosingAngleState {
+        // Do nothing yet, but return this state.
+        return this;
+    }
+
 }

@@ -40,4 +40,9 @@ export class IdleState implements IGameState {
     public update(delta: number): void {
         // Do nothing
     }
+
+    public enterState(): IdleState {
+        // Do nothing yet, but return this state.
+        return this;
+    }
 }
