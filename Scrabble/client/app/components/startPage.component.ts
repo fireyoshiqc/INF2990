@@ -29,11 +29,11 @@ export class StartPageComponent {
                 this.playerManagerService.setName(this.playerName);
                 this.playerManagerService.setCapacity(this.capacity);
                 this.playerManagerService.addPlayer();
-                setTimeout(() => {
-                    this.dialog.open(WaitingDialogComponent, {
-                        disableClose: true
-                    });
-                }, 200);
+
+                this.dialog.open(WaitingDialogComponent, {
+                    disableClose: true
+                });
+
             } else {
                 alert("Veuillez choisir une taille de partie!!");
             }

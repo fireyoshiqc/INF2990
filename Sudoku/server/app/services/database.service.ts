@@ -17,7 +17,7 @@ export class DatabaseService {
         (<any>mongoose).Promise = global.Promise;
     }
 
-    public connect() {
+    public connect(): void {
         let self = this;
         mongoose.connect("mongodb://factory24:sudoku@ds125060.mlab.com:25060/sudokuscores").then(
             () => {
@@ -109,7 +109,7 @@ export class DatabaseService {
         return scorePromise;
     }
 
-    private addDummyScores() {
+    private addDummyScores(): void {
         const EASY_NAMES = ["Toto", "Snoop Dogg", "Michel Gagnon"];
         const HARD_NAMES = ["Doom Marine", "John Doe", "Joe Blo"];
         const AVG_EASY_TIME = 7 * 60;

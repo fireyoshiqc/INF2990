@@ -12,7 +12,7 @@ let database = new DatabaseService();
 
 database.connect();
 
-router.get('/log', function (req, res) {
+router.get('/log', (req, res) => {
     res.render("log",
         {
             easy: sudokuManager.getNumberOfEasySudokus(),

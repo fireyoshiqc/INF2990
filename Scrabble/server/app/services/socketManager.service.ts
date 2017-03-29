@@ -57,7 +57,7 @@ export class SocketManager {
 
             // Updates the information in the waiting room
             setInterval(() => {
-                this.updateWaitingRoomInfo();
+                this.updateAllRooms();
             }, 1000);
         });
     }
@@ -125,7 +125,7 @@ export class SocketManager {
         }
     }
 
-    private updateWaitingRoomInfo(): void {
+    private updateAllRooms(): void {
         for (let room of this.roomManager.getExistingRooms()) {
             let id = room.getRoomInfo().roomID as number;
             let gameMaster = room.getGameMaster();
