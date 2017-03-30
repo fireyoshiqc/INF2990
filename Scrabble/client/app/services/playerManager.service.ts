@@ -23,11 +23,11 @@ export class PlayerManagerService {
         });
     }
 
-    public validateName(name: string) {
+    public validateName(name: string): void {
         this.socket.emit('cwValidateName', name);
     }
 
-    public addPlayer() {
+    public addPlayer(): void {
         this.socket.emit('cwAddPlayer', this.player);
     }
 
@@ -35,11 +35,11 @@ export class PlayerManagerService {
         return this.player.name;
     }
 
-    public setName(name: string) {
+    public setName(name: string): void {
         this.player.name = name;
     }
 
-    public setCapacity(capacity: number) {
+    public setCapacity(capacity: number): void {
         this.player.capacity = capacity;
     }
 

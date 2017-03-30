@@ -25,7 +25,7 @@ export class SocketManager {
         this.commandHandler = new CommandHandler(this.sio, this.roomManager);
     }
 
-    public handleSockets() {
+    public handleSockets(): void {
         this.sio.on('connection', (socket) => {
 
             socket.on('chat message', (msg: string) => {
@@ -62,7 +62,7 @@ export class SocketManager {
         });
     }
 
-    private sendMessage(socket: SocketIO.Socket, msg: string) {
+    private sendMessage(socket: SocketIO.Socket, msg: string): void {
         let player = this.playerManager.getPlayerFromSocketID(socket.id);
 
         if (player !== undefined) {
@@ -78,7 +78,7 @@ export class SocketManager {
         }
     }
 
-    private addPlayer(socket: SocketIO.Socket, player: any) {
+    private addPlayer(socket: SocketIO.Socket, player: any): void {
         // Find (or create) a room in room manager service
         let room = this.roomManager.createRoom(player.capacity);
 
@@ -97,7 +97,7 @@ export class SocketManager {
         socket.leave(player.roomID.toString());
     }
 
-    private initGame(socket: SocketIO.Socket, roomID: number) {
+    private initGame(socket: SocketIO.Socket, roomID: number): void {
         let room = this.roomManager.findRoom(roomID);
         let gameMaster = room.getGameMaster();
 

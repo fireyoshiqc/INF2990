@@ -34,7 +34,7 @@ export class ScrabbleGame {
         return this.wordList;
     }
 
-    private loadBoard() {
+    private loadBoard(): void {
         let scrabbleBoardArray = (<any>data).array;
 
         for (let i = 0; i < this.BOARD_SIZE; i++) {

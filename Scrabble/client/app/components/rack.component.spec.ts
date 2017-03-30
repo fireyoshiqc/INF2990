@@ -9,7 +9,7 @@ import { RackComponent } from './rack.component';
 
 import { expect } from 'chai';
 
-describe('RackComponent', function() {
+describe('RackComponent', () => {
     let comp = new RackComponent(null);
 
     it('should create component', done => {

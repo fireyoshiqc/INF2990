@@ -65,7 +65,7 @@ export class InfoComponent {
         }
     }
 
-    public updateName(name: string) {
+    public updateName(name: string): void {
         this.thisPlayer = name;
     }
 

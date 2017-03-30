@@ -18,7 +18,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     private attemptingToConnect = false;
     @ViewChild('chatbox') private chatContainer: ElementRef;
 
-    public ngOnInit() {
+    public ngOnInit(): void {
         this.socket = SocketHandler.requestSocket(this.HOST_NAME + this.SERVER_PORT);
 
         this.socket.on("connect_error", () => {
@@ -42,11 +42,11 @@ export class ChatComponent implements OnInit, AfterViewChecked {
         });
     }
 
-    public ngAfterViewChecked() {
+    public ngAfterViewChecked(): void {
         this.autoscroll();
     }
 
-    public onSubmit() {
+    public onSubmit(): void {
         if (this.msgFromClient !== undefined && this.msgFromClient !== null) {
             if (this.msgFromClient.replace(/\s+/g, "") !== "") {
                 // Remove all spaces as a test to prevent sending huge empty messages
@@ -55,11 +55,11 @@ export class ChatComponent implements OnInit, AfterViewChecked {
         }
     }
 
-    public onResize(event: any) {
+    public onResize(event: any): void {
         this.openWindow = window;
     }
 
-    private addMessage(msg: IMessageFromServer, isCommand?: boolean) {
+    private addMessage(msg: IMessageFromServer, isCommand?: boolean): void {
         this.attemptingToConnect = false;
         isCommand === undefined ? this.msgList.push(new Message(msg)) : this.msgList.push(new Message(msg, isCommand));
     }
@@ -73,7 +73,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
         }
     }
 
-    public keyboardInput(event: KeyboardEvent) {
+    public keyboardInput(event: KeyboardEvent): void {
         // TODO: gérer le input à partir d'ici
     }
 }

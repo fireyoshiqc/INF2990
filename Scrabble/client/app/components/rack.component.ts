@@ -21,15 +21,15 @@ export class RackComponent {
         this.rackManager = rackManager;
     }
 
-    public keyboardInput(event: KeyboardEvent) {
+    public keyboardInput(event: KeyboardEvent): void {
         this.rackManager.handleInput(event);
     }
 
-    public updateRack(letters: string[]) {
+    public updateRack(letters: string[]): void {
         this.rackManager.updateRack(letters);
     }
 
-    public deselectLetter() {
+    public deselectLetter(): void {
         this.rackManager.deselectLetter();
     }
 }
