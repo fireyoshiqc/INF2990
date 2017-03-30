@@ -1,11 +1,20 @@
 import { IGameState } from './GameState';
 import { SweepingState } from './SweepingState';
 import { GameController } from '../GameController.service';
+import { ChoosingAngleState } from './ChoosingAngleState';
+import { GameEngine } from '../gameEngine.service';
 
 export class ShootingState implements IGameState {
 
     private static instance: ShootingState = new ShootingState();
     private gameController: GameController;
+    private readonly MAX_INITIAL_SPEED = 5;
+    private readonly MIN_INITIAL_SPEED = 1;
+    private readonly MAX_HOLD_TIME_MS = 2000;
+    private readonly INTERVAL_DELAY_MS = 100;
+
+    private timer: any;
+    private initialSpeedCounter = 0;
 
     public static getInstance(): ShootingState {
         return ShootingState.instance;
@@ -24,11 +33,38 @@ export class ShootingState implements IGameState {
     }
 
     public onMouseDown(event: any): void {
-        // Do nothing
+        this.timer = setInterval(() => {
+            if (this.initialSpeedCounter < this.MAX_INITIAL_SPEED) {
+                this.initialSpeedCounter += this.MAX_INITIAL_SPEED / (this.MAX_HOLD_TIME_MS / this.INTERVAL_DELAY_MS);
+                this.gameController.getGameData().forceValue = this.initialSpeedCounter / this.MAX_INITIAL_SPEED * 100;
+            }
+        }, this.INTERVAL_DELAY_MS);
     }
 
     public onMouseUp(event: any): void {
-        // Do nothing
+        // Stone won't be thrown if the powerbar isn't charged enough.
+        let gameData = this.gameController.getGameData();
+        let hudData = this.gameController.getHUDData();
+        let angleInRad = THREE.Math.degToRad(gameData.curveAngle);
+        if (this.initialSpeedCounter > this.MIN_INITIAL_SPEED) {
+            // Get angle at which to shoot the stone
+            // Shoot the stone and set all its states appropriately
+            let stone = GameEngine.getInstance().getStones()[GameEngine.getInstance().getStones().length - 1];
+            stone.setHasBeenShot();
+            stone.getVelocity().add(new THREE.Vector3(this.initialSpeedCounter * Math.sin(angleInRad),
+                0, -this.initialSpeedCounter * Math.cos(angleInRad)));
+            this.initialSpeedCounter = 0;
+            (gameData.isPlayerTurn) ? hudData.playerStones.pop() : hudData.aiStones.pop();
+
+            // Enter sweeping state once the stone has been thrown
+            gameData.state = this.nextState();
+        } else {
+            // Reset the powerbar if it isn't charged enough.
+            this.initialSpeedCounter = 0;
+            gameData.state = ChoosingAngleState.getInstance().enterState();
+            gameData.forceValue = 0;
+        }
+        clearInterval(this.timer);
     }
 
     public onMouseMove(event: any): void {
@@ -41,11 +77,13 @@ export class ShootingState implements IGameState {
 
     public update(delta: number): void {
         // Do nothing
+        ChoosingAngleState.getInstance().update(delta);
     }
 
     public enterState(): ShootingState {
         // Do nothing yet, but return this state.
         document.body.style.cursor = "default";
+        this.gameController.getHUDData().forceVisible = true;
         return this;
     }
 

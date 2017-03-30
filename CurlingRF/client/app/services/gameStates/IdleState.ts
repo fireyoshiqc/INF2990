@@ -53,6 +53,7 @@ export class IdleState implements IGameState {
         const stone = new CurlingStone(team, null,
             new THREE.Vector3(0, 0, startZ));
         GameEngine.getInstance().addStone(stone);
+        gameData.forceValue = 0;
         return this;
     }
 

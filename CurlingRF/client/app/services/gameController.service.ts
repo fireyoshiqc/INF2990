@@ -24,14 +24,24 @@ export class GameController {
     private readonly HOST_NAME = "http://" + window.location.hostname;
     private readonly SERVER_PORT = ":3001";
 
+    private readonly MAX_THROWS = 16;
+
+    private hudData: IHUDData = {
+        playerStones: new Array<number>(this.MAX_THROWS / 2),
+        aiStones: new Array<number>(this.MAX_THROWS / 2),
+        forceVisible: false,
+        sliderDisabled: false
+    };
+
     private gameEngine: GameEngine;
     private playerName = "";
-    private gameData: IGameData = { state: null, isPlayerTurn: false, spinClockwise: false, curveAngle: 0 };
-
-    // This is related to the powerbar when shooting the stone.
-    private sliderDisabled = false;
-    private forceVisible = false;
-    private forceValue = 0;
+    private gameData: IGameData = {
+        state: null,
+        isPlayerTurn: false,
+        spinClockwise: false,
+        curveAngle: 0,
+        forceValue: 0
+    };
 
     public init(container?: HTMLElement): void {
         this.gameEngine = GameEngine.getInstance();
@@ -83,6 +93,10 @@ export class GameController {
         return this.gameData;
     }
 
+    public getHUDData(): IHUDData {
+        return this.hudData;
+    }
+
     public onResize(event: any): void {
         this.gameEngine.onResize(event);
     }
@@ -94,7 +108,7 @@ export class GameController {
     public startThrowStone(event: any): void {
         this.gameData.spinClockwise = (event === "true");
         this.gameData.state = this.gameData.state.nextState();
-        this.sliderDisabled = true; // Prevent modification of spin once it has been selected
+        this.hudData.sliderDisabled = true; // Prevent modification of spin once it has been selected
     }
 
     public quitGame(): void {
@@ -117,4 +131,12 @@ export interface IGameData {
     isPlayerTurn: boolean;
     spinClockwise: boolean;
     curveAngle: number;
+    forceValue: number;
+}
+
+export interface IHUDData {
+    playerStones: Array<number>;
+    aiStones: Array<number>;
+    forceVisible: boolean;
+    sliderDisabled: boolean;
 }

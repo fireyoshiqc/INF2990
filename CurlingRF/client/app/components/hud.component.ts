@@ -52,7 +52,7 @@ export class HUDComponent {
     }
 
     @HostListener('window:keydown', ['$event'])
-    public keyboardInput(event: KeyboardEvent) {
+    public keyboardInput(event: KeyboardEvent): void {
         if (!this.sliderDisabled) {
 
             if (event.key === "a") {

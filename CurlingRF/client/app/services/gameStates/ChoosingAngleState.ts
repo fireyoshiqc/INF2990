@@ -40,7 +40,6 @@ export class ChoosingAngleState implements IGameState {
 
     public onMouseUp(event: any): void {
         if (this.angle !== null) {
-            this.gameController.getGameData().curveAngle = this.angle;
             this.gameController.getGameData().state = this.nextState();
         }
     }
