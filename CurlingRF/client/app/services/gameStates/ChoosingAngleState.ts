@@ -77,7 +77,7 @@ export class ChoosingAngleState implements IGameState {
         this.curve.translateX(scalarOffset * Math.sin(gameData.curveAngle));
         this.curve.translateZ(scalarOffset * Math.cos(gameData.curveAngle));
 
-        if (this.totalTranslateOffset > curveData.dashSize * 2) {
+        if (this.totalTranslateOffset >= curveData.dashSize * 2) {
             this.curve.position.x = 0;
             this.curve.position.z = lines.start;
             this.totalTranslateOffset = 0;
