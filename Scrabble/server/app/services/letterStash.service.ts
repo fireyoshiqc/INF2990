@@ -14,6 +14,10 @@ export class LetterStash {
         this.buildStash();
     }
 
+    public getLetters(): Array<Letter> {
+        return this.stash;
+    }
+
     public getAmountLeft(): number {
         return this.stash.length;
     }
@@ -56,6 +60,13 @@ export class LetterStash {
         this.stash = letterArr.map(char => new Letter(char));
         this.stash.push(new Letter("JOKER"));
         this.stash.push(new Letter("JOKER"));
+    }
+
+    public returnLetters(toReturn: Array<string>): void {
+        toReturn = toReturn.map(letter => {
+            return letter === "*" ? "JOKER" : letter;
+        });
+        this.stash = this.stash.concat(toReturn.map(char => new Letter(char)));
     }
 }
 

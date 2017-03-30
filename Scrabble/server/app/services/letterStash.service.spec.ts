@@ -81,4 +81,37 @@ describe('LetterStash', () => {
 
     });
 
+    describe('returnLetters()', () => {
+
+        it('should return letters to the stash', done => {
+            let stash = new LetterStash();
+
+            // Count the number of letter A, Z and JOKER before returnLetters()
+            let lettersA = stash.getLetters().filter(letter => letter.getCharacter() === "A");
+            let lettersZ = stash.getLetters().filter(letter => letter.getCharacter() === "Z");
+            let lettersJoker = stash.getLetters().filter(letter => letter.getCharacter() === "JOKER");
+            expect(lettersA.length).to.be.equal(9);
+            expect(lettersZ.length).to.be.equal(1);
+            expect(lettersJoker.length).to.be.equal(2);
+
+            let lettersToReturn = ["a", "z", "*"];
+            let oldAmount = stash.getAmountLeft();
+            stash.returnLetters(lettersToReturn);
+
+            let newAmount = oldAmount + 3;
+            expect(stash.getAmountLeft()).to.eql(newAmount);
+
+            // Count the number of letter A, Z and JOKER after returnLetters()
+            lettersA = stash.getLetters().filter(letter => letter.getCharacter() === "A");
+            lettersZ = stash.getLetters().filter(letter => letter.getCharacter() === "Z");
+            lettersJoker = stash.getLetters().filter(letter => letter.getCharacter() === "JOKER");
+            expect(lettersA.length).to.be.equal(10);
+            expect(lettersZ.length).to.be.equal(2);
+            expect(lettersJoker.length).to.be.equal(3);
+
+            done();
+        });
+
+    });
+
 });

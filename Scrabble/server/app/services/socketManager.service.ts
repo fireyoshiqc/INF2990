@@ -130,6 +130,7 @@ export class SocketManager {
             let id = room.getRoomInfo().roomID as number;
             let gameMaster = room.getGameMaster();
             this.sio.sockets.in(id.toString()).emit('wcRefresh', room.getRoomInfo());
+
             if (gameMaster.isGameStarted()) {
                 if (gameMaster.isNextTurn()) {
                     // Send !passer message automatically
@@ -148,10 +149,17 @@ export class SocketManager {
         if (player !== undefined) {
             this.roomManager.leaveRoom(player.getName(), player.getRoomId());
             this.playerManager.removePlayer(player.getName());
-            let disconnectMsg = "L'utilisateur a quitté la partie.";
-            this.sio.sockets
-                .in(player.getRoomId().toString())
-                .emit('user disconnect', { username: player.getName(), submessage: disconnectMsg });
+
+            let room = this.roomManager.findRoom(player.getRoomId());
+
+            // Send a message to every player in the game room
+            if (room !== undefined && room.getGameMaster().isGameStarted()) {
+                let disconnectMsg = "L'utilisateur a quitté la partie. Ses lettres vont être remises dans la réserve." +
+                                    " Le joueur actif est " + room.getGameMaster().getActivePlayer().getName() + ".";
+                this.sio.sockets
+                    .in(player.getRoomId().toString())
+                    .emit('user disconnect', { username: player.getName(), submessage: disconnectMsg });
+            }
         }
         console.log("User disconnected");
     }
