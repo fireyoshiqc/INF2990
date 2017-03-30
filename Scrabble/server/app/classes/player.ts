@@ -100,7 +100,7 @@ export class Player {
         return CommandExecutionStatus.SUCCESS_REMOVE_LETTERS;
     }
 
-    private backupRack() {
+    private backupRack(): Letter[] {
         let oldRack = new Array<Letter>();
         this.lettersRack.forEach(letter => oldRack.push(new Letter(letter.getCharacter())));
         return oldRack;

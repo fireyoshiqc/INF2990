@@ -37,7 +37,7 @@ export class CommandPlaceWord extends Command {
         return this.word;
     }
 
-    public setWord(newWord: string) {
+    public setWord(newWord: string): void {
         this.word = newWord;
     }
 }

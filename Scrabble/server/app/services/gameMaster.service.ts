@@ -105,7 +105,7 @@ export class GameMaster {
         return this.turnInfo;
     }
 
-    private updateTurnInfo() {
+    private updateTurnInfo(): void {
         // Clean the list in the case that players have left
         this.turnInfo.players = [];
 
