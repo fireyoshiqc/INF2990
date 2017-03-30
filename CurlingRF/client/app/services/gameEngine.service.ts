@@ -20,6 +20,7 @@ export class GameEngine {
     private camera: GameCamera;
     private renderer: THREE.WebGLRenderer;
     private clock: THREE.Clock;
+    private raycaster: THREE.Raycaster;
 
     private curlingStones: Array<CurlingStone> = [];
     private activeStone: CurlingStone;
@@ -69,10 +70,34 @@ export class GameEngine {
         this.renderer.render(this.scene, this.camera.getCamera());
     }
 
+    public checkIntersect(mouse: THREE.Vector2): THREE.Intersection[] {
+        this.raycaster.setFromCamera(mouse, this.camera.getCamera());
+        let intersects = this.raycaster.intersectObject(this.scene
+            .getObjectByName("rink").getObjectByName("whiteice"), true);
+        return intersects;
+    }
+
     public addStone(stone: CurlingStone): void {
         this.curlingStones.push(stone);
         this.activeStone = stone;
         this.scene.add(stone);
+    }
+
+    public getStones() : Array<CurlingStone> {
+        return this.curlingStones;
+    }
+
+    public getActiveStone() : CurlingStone {
+        return this.activeStone;
+    }
+
+    public addToScene(obj: THREE.Object3D): void {
+        console.log(obj);
+        this.scene.add(obj);
+    }
+
+    public removeFromScene(obj: THREE.Object3D): void {
+        this.scene.remove(obj);
     }
 
     // Called when the browser window gets resized
@@ -113,6 +138,7 @@ export class GameEngine {
         // Adjust width and height to real container size
         this.renderer.setSize(containerRect.width, containerRect.height);
         this.clock = new THREE.Clock();
+        this.raycaster = new THREE.Raycaster();
     }
 
     // Disable shadows on Intel integrated graphics since it has a large performance hit.

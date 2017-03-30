@@ -25,12 +25,10 @@ export class GameController {
     private readonly SERVER_PORT = ":3001";
 
     private gameEngine: GameEngine;
-    private gameState: IGameState;
     private playerName = "";
-    private gameData: IGameData = { isPlayerTurn: false, spinClockwise: false };
+    private gameData: IGameData = { state: null, isPlayerTurn: false, spinClockwise: false, curveAngle: 0 };
 
     // This is related to the powerbar when shooting the stone.
-    private shootingAngle: number;
     private sliderDisabled = false;
     private forceVisible = false;
     private forceValue = 0;
@@ -45,7 +43,7 @@ export class GameController {
                 if (Math.random() > 0.5) {
                     self.gameData.isPlayerTurn = true;
                 }
-                self.gameState = IdleState.getInstance().enterState();
+                self.gameData.state = IdleState.getInstance().enterState();
                 self.gameEngine.update();
             })
             .catch(() => {
@@ -54,7 +52,23 @@ export class GameController {
     }
 
     public updateState(delta: number): void {
-        this.gameState.update(delta);
+        this.gameData.state.update(delta);
+    }
+
+    public onMouseDown(event: any): void {
+        this.gameData.state.onMouseDown(event);
+    }
+
+    public onMouseUp(event: any): void {
+        this.gameData.state.onMouseUp(event);
+    }
+
+    public onMouseMove(event: any): void {
+        this.gameData.state.onMouseMove(event);
+    }
+
+    public onKeyboardDown(event: KeyboardEvent): void {
+        this.gameData.state.onKeyboardDown(event);
     }
 
     public getPlayerName(): string {
@@ -79,7 +93,7 @@ export class GameController {
 
     public startThrowStone(event: any): void {
         this.gameData.spinClockwise = (event === "true");
-        this.gameState = this.gameState.nextState();
+        this.gameData.state = this.gameData.state.nextState();
         this.sliderDisabled = true; // Prevent modification of spin once it has been selected
     }
 
@@ -99,6 +113,8 @@ export class GameController {
 }
 
 export interface IGameData {
+    state: IGameState;
     isPlayerTurn: boolean;
     spinClockwise: boolean;
+    curveAngle: number;
 }

@@ -56,6 +56,21 @@ export class GlComponent implements AfterViewInit {
         }
     }
 
+    @HostListener('window:mousedown', ['$event'])
+    public onMouseDown(event: any): void {
+        this.gameController.onMouseDown(event);
+    }
+
+    @HostListener('window:mouseup', ['$event'])
+    public onMouseUp(event: any): void {
+        this.gameController.onMouseUp(event);
+    }
+
+    @HostListener('window:mousemove', ['$event'])
+    public onMouseMove(event: any): void {
+        this.gameController.onMouseMove(event);
+    }
+
     @HostListener('window:beforeunload', ['$event'])
     public onBeforeUnload(event: any): any {
         this.gameController.quitGame();

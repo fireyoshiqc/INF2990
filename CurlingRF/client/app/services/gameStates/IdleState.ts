@@ -46,7 +46,6 @@ export class IdleState implements IGameState {
     }
 
     public enterState(): IdleState {
-        // Do nothing yet, but return this state.
         document.body.style.cursor = "default";
         const gameData = this.gameController.getGameData();
         const team = gameData.isPlayerTurn ? Team.Player : Team.AI;

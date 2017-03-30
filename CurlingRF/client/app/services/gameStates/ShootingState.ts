@@ -45,6 +45,7 @@ export class ShootingState implements IGameState {
 
     public enterState(): ShootingState {
         // Do nothing yet, but return this state.
+        document.body.style.cursor = "default";
         return this;
     }
 

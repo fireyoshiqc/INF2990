@@ -7,7 +7,6 @@
 
 import { Rink, IRingSetup, ILineSetup } from '../entities/rink';
 import { SkyBox } from '../entities/skybox';
-import { CurlingStone, Team } from '../entities/curlingStone';
 
 export class SceneBuilder {
 
@@ -20,6 +19,13 @@ export class SceneBuilder {
     private readonly SHADOW_COLOR = 0x000077;
     private readonly SUN_INTENSITY = 1.0;
     private readonly SHADOW_MAPSIZE = 1024;
+    private readonly CURVE_DATA = {
+        dashSize: 0.1,
+        gapSize: 0.1,
+        translateOffset: 0.5,
+        spinMultiplier: 2,
+        maxAngle: 30
+    };
 
     private rink: Rink;
 
@@ -49,8 +55,38 @@ export class SceneBuilder {
         return buildPromise;
     }
 
+    public async buildAngleCurve(): Promise<THREE.Line> {
+        let buildPromise = new Promise<THREE.Line>((resolve, recject) => {
+            // Define the dashed line for aiming the stones
+            let directionCurve = new THREE.LineCurve3(
+                new THREE.Vector3(0, 0, 0),
+                new THREE.Vector3(0, 0, this.rink.getDimensions().length));
+            let curveGeometry = new THREE.Geometry();
+            curveGeometry.vertices = directionCurve.getPoints(1);
+
+            curveGeometry.computeLineDistances();
+
+            let curveMaterial = new THREE.LineDashedMaterial({
+                color: 0xff0000,
+                dashSize: this.CURVE_DATA.dashSize,
+                gapSize: this.CURVE_DATA.gapSize,
+            });
+
+            // Create the final object to add to the scene
+            let curveObject = new THREE.Line(curveGeometry, curveMaterial);
+            curveObject.name = "directionalCurve"; // For testing only
+            curveObject.translateZ(this.getRinkData().lines.start);
+            resolve(curveObject);
+        });
+        return buildPromise;
+    }
+
     public getRinkData(): IRinkData {
         return { rink: this.rink, lines: this.rink.getRefLineSetup(), rings: this.rink.getRefRingSetup() };
+    }
+
+    public getCurveData(): ICurveData {
+        return this.CURVE_DATA;
     }
 
     private buildRink(skybox: SkyBox): Rink {
@@ -104,4 +140,13 @@ export interface IRinkData {
     rink: Rink;
     lines: ILineSetup;
     rings: IRingSetup;
+}
+
+export interface ICurveData {
+    // For the dashed line when aiming
+    dashSize: number;
+    gapSize: number;
+    translateOffset: number;
+    spinMultiplier: number;
+    maxAngle: number;
 }
