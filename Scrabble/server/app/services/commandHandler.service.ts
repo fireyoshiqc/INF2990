@@ -149,14 +149,17 @@ export class CommandHandler {
             });
 
         // Updates rack (to active player only)
-        this.sio.sockets.connected[player.getSocketId()]
-            .emit('wcUpdateRack', player.getLettersRack());
+        let playerSocket = this.sio.sockets.connected[player.getSocketId()];
+
+        if (playerSocket !== undefined) {
+            playerSocket.emit('wcUpdateRack', player.getLettersRack());
+        }
     }
 
     private updateClientInvalidPlaceWord(msg: string, player: Player, command: Command): void {
         // Writes the error message in the chat of all players
         let commandResponse = this.commandResponseMessage[CommandExecutionStatus.ERROR_PLACE_WORD_INVALID_WORDS];
-        this.sio.sockets.connected[player.getSocketId()]
+        this.sio.sockets.in(player.getRoomId().toString())
             .emit('command sent', { username: "Scrabble Game", submessage: msg, commandResponse });
 
         // Update the client's board and rack immediately even if newly formed words are invalid
@@ -180,13 +183,20 @@ export class CommandHandler {
 
     private updateClientChangeLetter(player: Player, command: Command): void {
         // Updates rack (to active player only)
-        this.sio.sockets.connected[player.getSocketId()]
-            .emit('wcUpdateRack', player.getLettersRack());
+        let playerSocket = this.sio.sockets.connected[player.getSocketId()];
+
+        if (playerSocket !== undefined) {
+            playerSocket.emit('wcUpdateRack', player.getLettersRack());
+        }
     }
 
     private updateClientHelp(msg: string, player: Player): void {
         // Send help message
-        this.sio.sockets.connected[player.getSocketId()]
-            .emit('command sent', { username: "Scrabble Game", submessage: msg, commandResponse: Command.helpMessage });
+        let playerSocket = this.sio.sockets.connected[player.getSocketId()];
+
+        if (playerSocket !== undefined) {
+            playerSocket.emit('command sent',
+                { username: "Scrabble Game", submessage: msg, commandResponse: Command.helpMessage });
+        }
     }
 }

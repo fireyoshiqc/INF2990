@@ -33,7 +33,9 @@ export class SocketManager {
             });
 
             socket.on('disconnect', (msg: any) => {
-                this.disconnectUser(socket);
+                setTimeout(() => {
+                    this.disconnectUser(socket);
+                }, 4000);
             });
 
             socket.on('cwValidateName', (name: string) => {
@@ -115,12 +117,14 @@ export class SocketManager {
                 .emit('message sent', { username: "Scrabble Game", submessage: msg });
 
             gameMaster.getPlayers().forEach(player => {
-                // Updates each player's rack with 7 randomized letters from stash
-                this.sio.sockets.connected[player.getSocketId()]
-                    .emit('wcUpdateRack', player.getLettersRack());
-                // Updates the player's validated name
-                this.sio.sockets.connected[player.getSocketId()]
-                    .emit('wcUpdateName', player.getName());
+                let playerSocket = this.sio.sockets.connected[player.getSocketId()];
+
+                if (playerSocket !== undefined) {
+                    // Updates each player's rack with 7 randomized letters from stash
+                    playerSocket.emit('wcUpdateRack', player.getLettersRack());
+                    // Updates the player's validated name
+                    playerSocket.emit('wcUpdateName', player.getName());
+                }
             });
         }
     }
@@ -155,7 +159,7 @@ export class SocketManager {
             // Send a message to every player in the game room
             if (room !== undefined && room.getGameMaster().isGameStarted()) {
                 let disconnectMsg = "L'utilisateur a quitté la partie. Ses lettres vont être remises dans la réserve." +
-                                    " Le joueur actif est " + room.getGameMaster().getActivePlayer().getName() + ".";
+                    " Le joueur actif est " + room.getGameMaster().getActivePlayer().getName() + ".";
                 this.sio.sockets
                     .in(player.getRoomId().toString())
                     .emit('user disconnect', { username: player.getName(), submessage: disconnectMsg });
