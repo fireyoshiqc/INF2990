@@ -99,6 +99,10 @@ export class ChoosingAngleState implements IGameState {
         return ShootingState.getInstance().enterState();
     }
 
+    public hideCurve(): void {
+        GameEngine.getInstance().removeFromScene(this.curve);
+    }
+
     private setMouse(event: any): void {
         this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
         this.mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;

@@ -1,5 +1,6 @@
 import { IGameState } from './GameState';
 import { EndThrowState } from './EndThrowState';
+import { ChoosingAngleState } from './ChoosingAngleState';
 import { GameController } from '../GameController.service';
 
 export class SweepingState implements IGameState {
@@ -45,6 +46,7 @@ export class SweepingState implements IGameState {
 
     public enterState(): SweepingState {
         // Do nothing yet, but return this state.
+        ChoosingAngleState.getInstance().hideCurve();
         return this;
     }
 
