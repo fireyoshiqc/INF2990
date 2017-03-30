@@ -66,7 +66,7 @@ export class BoardTile {
         return this.canRemoveLetter;
     }
 
-    public setCanRemoveLetter(canRemove: boolean) {
+    public setCanRemoveLetter(canRemove: boolean): void {
         this.canRemoveLetter = canRemove;
     }
 

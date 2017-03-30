@@ -34,7 +34,7 @@ export class BoardTile {
         return this.texture;
     }
 
-    public setTexture(texture: string) {
+    public setTexture(texture: string): void {
         this.texture = texture;
     }
 

@@ -105,7 +105,7 @@ export class GameMaster {
         return this.turnInfo;
     }
 
-    private updateTurnInfo() {
+    private updateTurnInfo(): void {
         // Clean the list in the case that players have left
         this.turnInfo.players = [];
 
@@ -127,6 +127,18 @@ export class GameMaster {
 
     public blockActivePlayer(): void {
         this.activePlayer.setBlocked(true);
+    }
+
+    public resetNextTurn(): void {
+        this.nextTurn = false;
+    }
+
+    public isNextTurn(): boolean {
+        return this.nextTurn;
+    }
+
+    public setGameStarted(gameStarted: boolean): void {
+        this.gameStarted = gameStarted;
     }
 
     public startGame(): void {
@@ -331,17 +343,17 @@ export class GameMaster {
         return CommandExecutionStatus.SUCCESS;
     }
 
-    public resetNextTurn(): void {
-        this.nextTurn = false;
-    }
+    public handleQuit(playerName: string): void {
+        if (this.gameStarted) {
+            // Skip to the next player only if the player who is trying to quit the game is the active player
+            if (this.activePlayer.getName() === playerName) {
+                this.endTurn();
+            }
 
-    public isNextTurn(): boolean {
-        return this.nextTurn;
+            // Return player's letters to the stash
+            let indexPlayers = this.players.findIndex(p => p.getName() === playerName);
+            let lettersToReturn = this.players[indexPlayers].getLettersRack();
+            this.stash.returnLetters(lettersToReturn);
+        }
     }
-
-    // For tests
-    public setGameStarted(gameStarted: boolean): void {
-        this.gameStarted = gameStarted;
-    }
-
 }

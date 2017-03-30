@@ -15,7 +15,7 @@ export class PlayerManager {
         this.players = [];
     }
 
-    public getPlayers() {
+    public getPlayers(): Player[] {
         return this.players;
     }
 

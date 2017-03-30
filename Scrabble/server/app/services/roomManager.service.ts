@@ -41,7 +41,7 @@ export class RoomManager {
         return this.existingRooms.find(r => r.getRoomInfo().roomID === roomID);
     }
 
-    public leaveRoom(playerName: string, roomID: number) {
+    public leaveRoom(playerName: string, roomID: number): void {
         let room = this.existingRooms.find(r => (r.getRoomInfo().roomID === roomID));
 
         if (room !== undefined) {

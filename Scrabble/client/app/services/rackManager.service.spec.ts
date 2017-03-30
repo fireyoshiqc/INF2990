@@ -10,7 +10,7 @@ import { Letter } from '../classes/letter';
 
 import { expect } from 'chai';
 
-describe('RackManager', function () {
+describe('RackManager', () => {
 
     let rackManager: RackManager;
 
@@ -18,7 +18,7 @@ describe('RackManager', function () {
         rackManager = new RackManager();
     });
 
-    describe('Default constructor', function () {
+    describe('Default constructor', () => {
         it('should construct a rack manager.', done => {
             expect(rackManager).to.exist;
             expect(rackManager).to.be.instanceOf(RackManager);
@@ -26,7 +26,7 @@ describe('RackManager', function () {
         });
     });
 
-    describe('getRack()', function () {
+    describe('getRack()', () => {
         it('should return a rack of size 7.', done => {
             expect(rackManager.getRackLetters().length).to.equal(RackManager.RACK_LENGTH);
             expect(rackManager.getRackLetters()[0]).to.be.instanceOf(Letter);
@@ -34,7 +34,7 @@ describe('RackManager', function () {
         });
     });
 
-    describe('updateRack()', function () {
+    describe('updateRack()', () => {
         it('should update the rack with new letters.', done => {
             let letters = ["A", "B", "C", "D", "E", "F", "G"];
 
@@ -51,7 +51,7 @@ describe('RackManager', function () {
         });
     });
 
-    describe('deselectLetter()', function () {
+    describe('deselectLetter()', () => {
         it('should deselect the active letter.', done => {
             let selectedIndex = 0;
 
