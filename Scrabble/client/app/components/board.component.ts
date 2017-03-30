@@ -39,7 +39,7 @@ export class BoardComponent implements OnInit {
         }
     }
 
-    public ngOnInit() {
+    public ngOnInit(): void {
         this.loadBoard();
     }
 
@@ -47,7 +47,7 @@ export class BoardComponent implements OnInit {
         return this.board;
     }
 
-    private loadBoard() {
+    private loadBoard(): void {
         this.http.get("/assets/objects/scrabbleBoard.json")
             .map(res => res.json())
             .subscribe(res => {
