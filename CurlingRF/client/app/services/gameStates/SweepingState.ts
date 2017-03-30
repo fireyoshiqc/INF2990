@@ -1,18 +1,18 @@
 import { IGameState } from './GameState';
 import { EndThrowState } from './EndThrowState';
-import { GameEngine } from '../gameEngine.service';
+import { GameController } from '../GameController.service';
 
 export class SweepingState implements IGameState {
 
     private static instance: SweepingState = new SweepingState();
-    private gameEngine: GameEngine;
+    private gameController: GameController;
 
     public static getInstance(): SweepingState {
         return SweepingState.instance;
     }
 
-    public init(): void {
-        this.gameEngine = GameEngine.getInstance();
+    public init(gameController: GameController): void {
+        this.gameController = gameController;
     }
 
     private constructor() {

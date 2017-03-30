@@ -1,18 +1,21 @@
 import { IGameState } from './GameState';
 import { ChoosingAngleState } from './ChoosingAngleState';
+import { GameController } from '../gameController.service';
 import { GameEngine } from '../gameEngine.service';
+import { SceneBuilder } from '../sceneBuilder.service';
+import { CurlingStone, Team } from '../../entities/curlingStone';
 
 export class IdleState implements IGameState {
 
     private static instance: IdleState = new IdleState();
-    private gameEngine: GameEngine;
+    private gameController: GameController;
 
     public static getInstance(): IdleState {
         return IdleState.instance;
     }
 
-    public init(): void {
-        this.gameEngine = GameEngine.getInstance();
+    public init(gameController: GameController): void {
+        this.gameController = gameController;
     }
 
     private constructor() {
@@ -45,11 +48,12 @@ export class IdleState implements IGameState {
     public enterState(): IdleState {
         // Do nothing yet, but return this state.
         document.body.style.cursor = "default";
-        // if (this.isPlayerTurn) {
-        //     this.addStone(Team.Player, new THREE.Vector3(0, 0, Rink.BACK_LINE / 2));
-        // } else {
-        //     this.addStone(Team.AI, new THREE.Vector3(0, 0, Rink.BACK_LINE / 2));
-        // }
+        const gameData = this.gameController.getGameData();
+        const team = gameData.isPlayerTurn ? Team.Player : Team.AI;
+        const startZ = SceneBuilder.getInstance().getRinkData().lines.start;
+        const stone = new CurlingStone(team, null,
+            new THREE.Vector3(0, 0, startZ));
+        GameEngine.getInstance().addStone(stone);
         return this;
     }
 

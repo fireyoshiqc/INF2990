@@ -1,18 +1,18 @@
 import { IGameState } from './GameState';
 import { ShootingState } from './ShootingState';
-import { GameEngine } from '../gameEngine.service';
+import { GameController } from '../gameController.service';
 
 export class ChoosingAngleState implements IGameState {
 
     private static instance: ChoosingAngleState = new ChoosingAngleState();
-    private gameEngine: GameEngine;
+    private gameController: GameController;
 
     public static getInstance(): ChoosingAngleState {
         return ChoosingAngleState.instance;
     }
 
-    public init(): void {
-        this.gameEngine = GameEngine.getInstance();
+    public init(gameController: GameController): void {
+        this.gameController = gameController;
     }
 
     private constructor() {

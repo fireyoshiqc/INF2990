@@ -33,7 +33,7 @@ describe('CurlingStone', () => {
 
         it('should make a colored CurlingStone object if a valid color format is entered.', done => {
             CurlingStone.setPlayerStoneColor("#FF0000");
-            testStone = new CurlingStone(Team.Player, null, null);
+            testStone = new CurlingStone(Team.Player);
 
             expect(testStone.getColor()).to.equal("#FF0000");
             done();
@@ -41,7 +41,7 @@ describe('CurlingStone', () => {
 
         it('should make a CurlingStone object if an incorrect string is entered.', done => {
             CurlingStone.setPlayerStoneColor("DEADBEEF");
-            testStone = new CurlingStone(Team.Player, null, null);
+            testStone = new CurlingStone(Team.Player);
 
             expect(testStone.getColor()).to.not.equal("DEADBEEF");
             expect(testStone.getColor()).to.equal("#FF0000");

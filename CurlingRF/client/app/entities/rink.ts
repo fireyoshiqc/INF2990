@@ -20,7 +20,7 @@ export class Rink extends THREE.Group {
     };
 
     private readonly LOCAL_LINE_SETUP: ILineSetup = {
-        hog: 11.72, back: 19.2
+        hog: 11.72, back: 19.2, start: -21.1
     };
     // All textures and associated variables
     private reflectTexture: THREE.CubeTexture;
@@ -58,7 +58,8 @@ export class Rink extends THREE.Group {
         const surface = this.LOCAL_SURFACE_SETUP;
         return {
             hog: local.hog + surface.length / 2,
-            back: local.back + surface.length / 2
+            back: local.back + surface.length / 2,
+            start: local.start + surface.length / 2
         };
     }
 
@@ -293,4 +294,5 @@ export interface IRingSetup {
 export interface ILineSetup {
     hog: number;
     back: number;
+    start: number;
 }

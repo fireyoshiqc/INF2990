@@ -21,8 +21,6 @@ export class SceneBuilder {
     private readonly SUN_INTENSITY = 1.0;
     private readonly SHADOW_MAPSIZE = 1024;
 
-    private activeStone: CurlingStone;
-    private curlingStones: Array<CurlingStone> = [];
     private rink: Rink;
 
     public static getInstance(): SceneBuilder {
@@ -46,22 +44,13 @@ export class SceneBuilder {
             scene.add(this.rink);
             const light = this.buildLighting(this.rink);
             scene.add(light);
-
-            // TODO: Get rid of this when game states are properly implemented
-            this.activeStone = new CurlingStone(Team.Player, new THREE.Vector3(0, 0, 2), new THREE.Vector3(0, 0, 2));
-            this.curlingStones.push(this.activeStone);
-            scene.add(this.activeStone);
             resolve(scene);
         });
         return buildPromise;
     }
 
     public getRinkData(): IRinkData {
-        return { lines: this.rink.getRefLineSetup(), rings: this.rink.getRefRingSetup() };
-    }
-
-    public getSceneData(): ISceneData {
-        return { activeStone: this.activeStone, curlingStones: this.curlingStones, rink: this.rink };
+        return { rink: this.rink, lines: this.rink.getRefLineSetup(), rings: this.rink.getRefRingSetup() };
     }
 
     private buildRink(skybox: SkyBox): Rink {
@@ -111,13 +100,8 @@ export class SceneBuilder {
     }
 }
 
-export interface ISceneData {
-    activeStone: CurlingStone;
-    curlingStones: Array<CurlingStone>;
-    rink: Rink;
-}
-
 export interface IRinkData {
+    rink: Rink;
     lines: ILineSetup;
     rings: IRingSetup;
 }

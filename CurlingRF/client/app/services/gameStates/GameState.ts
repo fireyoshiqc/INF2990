@@ -1,7 +1,7 @@
-import { GameEngine } from '../gameEngine.service';
+import { GameController } from '../gameController.service';
 
 export interface IGameState {
-    init(gameEngine: GameEngine): void;
+    init(gameController: GameController): void;
     onMouseDown(event: any): void;
     onMouseUp(event: any): void;
     onMouseMove(event: any): void;

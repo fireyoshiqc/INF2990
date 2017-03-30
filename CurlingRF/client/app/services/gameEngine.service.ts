@@ -7,12 +7,9 @@
 
 import { SceneBuilder } from './sceneBuilder.service';
 import { GameCamera } from './gameCamera.service';
-import { IGameState } from './gameStates/GameState';
-import { ChoosingAngleState } from './gameStates/ChoosingAngleState';
-import { EndThrowState } from './gameStates/EndThrowState';
-import { IdleState } from './gameStates/IdleState';
-import { ShootingState } from './gameStates/ShootingState';
-import { SweepingState } from './gameStates/SweepingState';
+
+import { GameController } from './gameController.service';
+import { CurlingStone } from '../entities/curlingStone';
 
 export class GameEngine {
 
@@ -24,7 +21,10 @@ export class GameEngine {
     private renderer: THREE.WebGLRenderer;
     private clock: THREE.Clock;
 
-    private gameState: IGameState;
+    private curlingStones: Array<CurlingStone> = [];
+    private activeStone: CurlingStone;
+
+    private controller: GameController;
 
     public static getInstance(): GameEngine {
         return GameEngine.instance;
@@ -37,22 +37,42 @@ export class GameEngine {
         GameEngine.instance = this;
     }
 
-    public init(container: HTMLElement): void {
+    public init(container: HTMLElement, controller: GameController): Promise<any> {
+
         this.container = container;
+        this.controller = controller;
         this.createRenderer();
-        this.initGameStates();
-        this.gameState = IdleState.getInstance();
-        this.launchGame();
+        let self = this;
+        let initPromise = new Promise((resolve, reject) => {
+            SceneBuilder.getInstance().buildScene()
+                .then((scene) => {
+                    self.scene = scene;
+                    self.setupCamera();
+                    resolve();
+                }).catch(() => {
+                    reject();
+                    throw new Error("ERROR: Could not build game scene (unresolved promise).");
+                });
+        });
+
+        return initPromise;
     }
 
     public update(): void {
         window.requestAnimationFrame(() => this.update());
         const delta = this.clock.getDelta();
+        this.controller.updateState(delta);
         // TODO: Remove this once physics are re-implemented.
-        let sceneData = SceneBuilder.getInstance().getSceneData();
-        sceneData.activeStone.update(delta);
-        this.camera.followStone(sceneData.activeStone.position, sceneData.rink);
+        if (this.activeStone) {
+            this.camera.followStone(this.activeStone.position, SceneBuilder.getInstance().getRinkData().rink);
+        }
         this.renderer.render(this.scene, this.camera.getCamera());
+    }
+
+    public addStone(stone: CurlingStone): void {
+        this.curlingStones.push(stone);
+        this.activeStone = stone;
+        this.scene.add(stone);
     }
 
     // Called when the browser window gets resized
@@ -108,29 +128,12 @@ export class GameEngine {
         }
     }
 
-    private launchGame(): void {
-        let self = this;
-        SceneBuilder.getInstance().buildScene()
-            .then((scene) => {
-                self.scene = scene;
-                self.setupCamera();
-                // TODO: Move update to the game controller to start rendering.
-                self.update();
-            }).catch(() => {
-                throw new Error("ERROR: Could not build game scene (unresolved promise).");
-            });
-    }
-
     private setupCamera(): void {
         this.camera = GameCamera.getInstance();
         this.camera.init(this.container);
     }
 
-    private initGameStates(): void {
-        ChoosingAngleState.getInstance().init();
-        EndThrowState.getInstance().init();
-        IdleState.getInstance().init();
-        ShootingState.getInstance().init();
-        SweepingState.getInstance().init();
-    }
+
+
+
 }

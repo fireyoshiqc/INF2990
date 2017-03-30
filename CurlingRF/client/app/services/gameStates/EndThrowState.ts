@@ -7,19 +7,19 @@
 
 import { IGameState } from './GameState';
 import { IdleState } from './IdleState';
-import { GameEngine } from '../gameEngine.service';
+import { GameController } from '../gameController.service';
 
 export class EndThrowState implements IGameState {
 
     private static instance: EndThrowState = new EndThrowState();
-    private gameEngine: GameEngine;
+    private gameController: GameController;
 
     public static getInstance(): EndThrowState {
         return EndThrowState.instance;
     }
 
-    public init(): void {
-        this.gameEngine = GameEngine.getInstance();
+    public init(gameController: GameController): void {
+        this.gameController = gameController;
     }
 
     private constructor() {

@@ -35,7 +35,7 @@ export class CurlingStone extends THREE.Group {
     private readonly HANDLE_MELD = 0.005; // By how much the handle sinks into the cover.
 
     private stoneColor: string;
-    private velocity: THREE.Vector3;
+    private velocity: THREE.Vector3 = new THREE.Vector3(0, 0, 0);
     private beingPlayed = false;
     private hasBeenShot = false;
     private spinOrientation: SpinOrientation;
