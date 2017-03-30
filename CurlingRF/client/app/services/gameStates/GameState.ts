@@ -8,4 +8,5 @@ export interface IGameState {
     onKeyboardDown(event: KeyboardEvent): void;
     update(delta: number): void;
     enterState(): IGameState;
+    nextState(): IGameState;
 }

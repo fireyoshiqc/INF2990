@@ -6,6 +6,7 @@
  */
 
 import { IGameState } from './GameState';
+import { IdleState } from './IdleState';
 import { GameEngine } from '../gameEngine.service';
 
 export class EndThrowState implements IGameState {
@@ -52,5 +53,9 @@ export class EndThrowState implements IGameState {
     public enterState(): EndThrowState {
         // Do nothing yet, but return this state.
         return this;
+    }
+
+    public nextState(): IdleState {
+        return IdleState.getInstance().enterState();
     }
 }

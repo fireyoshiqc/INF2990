@@ -1,4 +1,5 @@
 import { IGameState } from './GameState';
+import { ChoosingAngleState } from './ChoosingAngleState';
 import { GameEngine } from '../gameEngine.service';
 
 export class IdleState implements IGameState {
@@ -43,6 +44,16 @@ export class IdleState implements IGameState {
 
     public enterState(): IdleState {
         // Do nothing yet, but return this state.
+        document.body.style.cursor = "default";
+        // if (this.isPlayerTurn) {
+        //     this.addStone(Team.Player, new THREE.Vector3(0, 0, Rink.BACK_LINE / 2));
+        // } else {
+        //     this.addStone(Team.AI, new THREE.Vector3(0, 0, Rink.BACK_LINE / 2));
+        // }
         return this;
+    }
+
+    public nextState(): ChoosingAngleState {
+        return ChoosingAngleState.getInstance().enterState();
     }
 }

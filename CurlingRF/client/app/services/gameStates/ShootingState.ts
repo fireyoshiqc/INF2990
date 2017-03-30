@@ -1,4 +1,5 @@
 import { IGameState } from './GameState';
+import { SweepingState } from './SweepingState';
 import { GameEngine } from '../gameEngine.service';
 
 export class ShootingState implements IGameState {
@@ -45,5 +46,9 @@ export class ShootingState implements IGameState {
     public enterState(): ShootingState {
         // Do nothing yet, but return this state.
         return this;
+    }
+
+    public nextState(): SweepingState {
+        return SweepingState.getInstance().enterState();
     }
 }

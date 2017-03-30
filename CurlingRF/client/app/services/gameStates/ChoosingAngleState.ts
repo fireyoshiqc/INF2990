@@ -1,4 +1,5 @@
 import { IGameState } from './GameState';
+import { ShootingState } from './ShootingState';
 import { GameEngine } from '../gameEngine.service';
 
 export class ChoosingAngleState implements IGameState {
@@ -45,6 +46,10 @@ export class ChoosingAngleState implements IGameState {
     public enterState(): ChoosingAngleState {
         // Do nothing yet, but return this state.
         return this;
+    }
+
+    public nextState(): ShootingState {
+        return ShootingState.getInstance().enterState();
     }
 
 }
