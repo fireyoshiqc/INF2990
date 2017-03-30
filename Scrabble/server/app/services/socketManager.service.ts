@@ -148,7 +148,7 @@ export class SocketManager {
         if (player !== undefined) {
             this.roomManager.leaveRoom(player.getName(), player.getRoomId());
             this.playerManager.removePlayer(player.getName());
-            let disconnectMsg = "L'utilisateur a quitté la partie.";
+            let disconnectMsg = "L'utilisateur a quitté la partie. Ses lettres vont être remises dans la réserve.";
             this.sio.sockets
                 .in(player.getRoomId().toString())
                 .emit('user disconnect', { username: player.getName(), submessage: disconnectMsg });

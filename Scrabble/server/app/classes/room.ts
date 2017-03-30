@@ -48,14 +48,18 @@ export class Room {
 
     public removePlayer(playerName: string): void {
         if (this.players.length > 0) {
+            // Remove player from room info (contains only player names string)
             let indexPlayerList = this.roomInfo.playerList.indexOf(playerName);
             this.roomInfo.playerList.splice(indexPlayerList, 1);
 
+            // Return player's letters to the stash
             let indexPlayers = this.players.findIndex(p => p.getName() === playerName);
-            this.players.splice(indexPlayers, 1);
 
-            // TODO : Retourner les lettres du player qui quitte dans la réserve de lettre
-            // (faire appel à gameMaster qui possède un scrabbleGame)
+            let lettersToReturn = this.players[indexPlayers].getLettersRack();
+            this.gameMaster.getStash().returnLetters(lettersToReturn);
+
+            // Remove player from room (contains Player object)
+            this.players.splice(indexPlayers, 1);
         }
     }
 
