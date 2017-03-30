@@ -143,7 +143,6 @@ export class ChoosingAngleState implements IGameState {
         // Rink end
         if (z > rinkDims.length - lines.start) {
             z = rinkDims.length - lines.start;
-            console.log(z);
             x = z * Math.tan(gameData.curveAngle);
         }
 
