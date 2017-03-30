@@ -35,7 +35,7 @@ $theme: mat-light-theme($primary, $accent, $warn);
 @include angular-material-theme($theme);
 .dark-theme {
     $dark-p: mat-palette($mat-cyan, 800);
-    $dark-a: mat-palette($mat-grey, 50);
+    $dark-a: mat-palette($mat-blue, 900);
     $dark-w: mat-palette($mat-red);
     $dark-b: mat-dark-theme-foreground($mat-grey, 900);
     $dark-f: mat-dark-theme-foreground($mat-grey, 50);
