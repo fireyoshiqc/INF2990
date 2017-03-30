@@ -52,13 +52,10 @@ export class Room {
             let indexPlayerList = this.roomInfo.playerList.indexOf(playerName);
             this.roomInfo.playerList.splice(indexPlayerList, 1);
 
-            // Return player's letters to the stash
-            let indexPlayers = this.players.findIndex(p => p.getName() === playerName);
-
-            let lettersToReturn = this.players[indexPlayers].getLettersRack();
-            this.gameMaster.getStash().returnLetters(lettersToReturn);
+            this.gameMaster.handleQuit(playerName);
 
             // Remove player from room (contains Player object)
+            let indexPlayers = this.players.findIndex(p => p.getName() === playerName);
             this.players.splice(indexPlayers, 1);
         }
     }
