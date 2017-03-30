@@ -27,7 +27,13 @@ export class GameController {
     private gameEngine: GameEngine;
     private gameState: IGameState;
     private playerName = "";
-    private gameData: IGameData = { isPlayerTurn: false };
+    private gameData: IGameData = { isPlayerTurn: false, spinClockwise: false };
+
+    // This is related to the powerbar when shooting the stone.
+    private shootingAngle: number;
+    private sliderDisabled = false;
+    private forceVisible = false;
+    private forceValue = 0;
 
     public init(container?: HTMLElement): void {
         this.gameEngine = GameEngine.getInstance();
@@ -35,6 +41,10 @@ export class GameController {
         this.gameEngine.init(container, this)
             .then(() => {
                 self.initGameStates();
+                // Choose first player randomly
+                if (Math.random() > 0.5) {
+                    self.gameData.isPlayerTurn = true;
+                }
                 self.gameState = IdleState.getInstance().enterState();
                 self.gameEngine.update();
             })
@@ -67,6 +77,12 @@ export class GameController {
         this.gameEngine.switchCamera();
     }
 
+    public startThrowStone(event: any): void {
+        this.gameData.spinClockwise = (event === "true");
+        this.gameState = this.gameState.nextState();
+        this.sliderDisabled = true; // Prevent modification of spin once it has been selected
+    }
+
     public quitGame(): void {
         // Send beacon to server to signal name removal before page unload.
         let blob = new Blob([JSON.stringify({ "name": this.playerName })], { type: 'application/json; charset=UTF-8' });
@@ -84,4 +100,5 @@ export class GameController {
 
 export interface IGameData {
     isPlayerTurn: boolean;
+    spinClockwise: boolean;
 }

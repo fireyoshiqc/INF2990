@@ -40,11 +40,19 @@ export class GlComponent implements AfterViewInit {
         this.gameController.onResize(event);
     }
 
+    public getGameController(): GameController {
+        return this.gameController;
+    }
+
+    public startThrowStone(event: any): void {
+        this.gameController.startThrowStone(event);
+    }
+
     @HostListener('window:keydown', ['$event'])
     public keyboardInput(event: KeyboardEvent): void {
         // Player can switch camera view
         if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
-            this.gameController.switchCamera();
+            this.switchCamera();
         }
     }
 
@@ -52,6 +60,10 @@ export class GlComponent implements AfterViewInit {
     public onBeforeUnload(event: any): any {
         this.gameController.quitGame();
         return;
+    }
+
+    public switchCamera(): void {
+        this.gameController.switchCamera();
     }
 }
 
