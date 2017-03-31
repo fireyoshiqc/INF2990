@@ -3,8 +3,6 @@ import { EndThrowState } from './EndThrowState';
 import { ChoosingAngleState } from './ChoosingAngleState';
 import { GameController } from '../gameController.service';
 import { PhysicsManager } from '../physicsManager.service';
-import { GameEngine } from '../gameEngine.service';
-import { CurlingStone } from '../../entities/curlingStone';
 
 export class SweepingState implements IGameState {
 
