@@ -10,7 +10,7 @@ import { expect } from 'chai';
 describe('CameraManager', () => {
 
     let camera = GameCamera.getInstance();
-    camera.init(null);
+    camera.init(document.body);
 
     describe('constructor()', () => {
         it('should construct a CameraManager using a given HTML container.', done => {

@@ -112,7 +112,7 @@ export class ChoosingAngleState implements IGameState {
     }
 
     private calculateAngle(mouse: THREE.Vector2): number {
-        const rinkDims = SceneBuilder.getInstance().getRinkData().rink.getDimensions();
+        const rinkDims = SceneBuilder.getInstance().getRinkData().dims;
         let gameData = this.gameController.getGameData();
 
         let intersects = GameEngine.getInstance().checkIntersect(mouse);
@@ -137,7 +137,7 @@ export class ChoosingAngleState implements IGameState {
     private getFurthestCollisionPoint(): THREE.Vector3 {
         let x = 0, z = 0;
         let gameData = this.gameController.getGameData();
-        const rinkDims = SceneBuilder.getInstance().getRinkData().rink.getDimensions();
+        const rinkDims = SceneBuilder.getInstance().getRinkData().dims;
         const lines = SceneBuilder.getInstance().getRinkData().lines;
 
         // Rink border

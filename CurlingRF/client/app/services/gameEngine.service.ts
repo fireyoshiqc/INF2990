@@ -65,7 +65,7 @@ export class GameEngine {
         this.controller.updateState(delta);
         // TODO: Remove this once physics are re-implemented.
         if (this.activeStone) {
-            this.camera.followStone(this.activeStone.position, SceneBuilder.getInstance().getRinkData().rink);
+            this.camera.followStone(this.activeStone.position);
         }
         this.renderer.render(this.scene, this.camera.getCamera());
     }

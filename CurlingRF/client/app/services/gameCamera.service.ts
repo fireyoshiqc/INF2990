@@ -6,7 +6,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import { Rink } from '../entities/rink';
+import { SceneBuilder } from './sceneBuilder.service';
 
 @Injectable()
 export class GameCamera {
@@ -103,12 +103,12 @@ export class GameCamera {
         return this.currentCamera;
     }
 
-    public followStone(position: THREE.Vector3, rink?: Rink): void {
+    public followStone(position: THREE.Vector3): void {
         // Only follow stone when using perspective camera
         if (this.usingPerspectiveCamera) {
-            if (rink) {
-                const hog = rink.getRefLineSetup().hog;
-                const back = rink.getRefLineSetup().back;
+
+                const hog = SceneBuilder.getInstance().getRinkData().lines.hog;
+                const back = SceneBuilder.getInstance().getRinkData().lines.back;
 
                 if (position.z <= hog) {
                     this.cameraPerspective.position.z = position.z + this.PERSPECTIVE_OFFSET
@@ -124,13 +124,8 @@ export class GameCamera {
                 }
 
                 // Always look at the center of the rings, in order to see all stones in play.
-                this.cameraPerspective.lookAt(new THREE.Vector3(0, 0, rink.getRefRingSetup().offset));
-            } else {
-                // If there is no rink specified, just follow the stone and look at it.
-                this.cameraPerspective.position.z = position.z + this.PERSPECTIVE_OFFSET;
-                this.cameraPerspective.position.y = this.PERSPECTIVE_Y_POS;
-                this.cameraPerspective.lookAt(position);
-            }
+                const offset = SceneBuilder.getInstance().getRinkData().rings.offset;
+                this.cameraPerspective.lookAt(new THREE.Vector3(0, 0, offset));
         }
     }
 

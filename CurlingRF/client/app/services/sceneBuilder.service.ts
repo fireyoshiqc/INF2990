@@ -5,7 +5,7 @@
  * @date 2017/03/26
  */
 
-import { Rink, IRingSetup, ILineSetup } from '../entities/rink';
+import { Rink, IRingSetup, ILineSetup, ISurfaceSetup } from '../entities/rink';
 import { SkyBox } from '../entities/skyBox';
 
 export class SceneBuilder {
@@ -82,7 +82,11 @@ export class SceneBuilder {
     }
 
     public getRinkData(): IRinkData {
-        return { rink: this.rink, lines: this.rink.getRefLineSetup(), rings: this.rink.getRefRingSetup() };
+        return {
+            dims: this.rink.getDimensions(),
+            lines: this.rink.getRefLineSetup(),
+            rings: this.rink.getRefRingSetup()
+        };
     }
 
     public getCurveData(): ICurveData {
@@ -137,7 +141,7 @@ export class SceneBuilder {
 }
 
 export interface IRinkData {
-    rink: Rink;
+    dims: ISurfaceSetup;
     lines: ILineSetup;
     rings: IRingSetup;
 }
