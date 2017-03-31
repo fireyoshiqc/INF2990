@@ -139,11 +139,15 @@ export class ChoosingAngleState implements IGameState {
         let gameData = this.gameController.getGameData();
         const rinkDims = SceneBuilder.getInstance().getRinkData().dims;
         const lines = SceneBuilder.getInstance().getRinkData().lines;
+        let shortestDistance = rinkDims.length - lines.start;
 
         // Rink border
         if (gameData.curveAngle !== 0) {
             x = Math.sign(gameData.curveAngle) * rinkDims.width / 2;
             z = x / Math.tan(gameData.curveAngle);
+        } else {
+            x = 0;
+            z = shortestDistance;
         }
 
         // Rink end
@@ -153,8 +157,6 @@ export class ChoosingAngleState implements IGameState {
         }
 
         // Other curling stones
-        let shortestDistance = rinkDims.length - lines.start;
-
         GameEngine.getInstance().getStones().forEach(curlingStone => {
             let angle = -Math.atan(curlingStone.position.x / curlingStone.position.z);
             let distance = curlingStone.position.distanceTo(GameEngine.getInstance().getActiveStone().position);

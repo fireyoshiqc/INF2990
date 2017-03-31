@@ -15,6 +15,7 @@ export class EndThrowState implements IGameState {
 
     private static instance: EndThrowState = new EndThrowState();
     private gameController: GameController;
+    private stonesThrown: number;
 
     public static getInstance(): EndThrowState {
         return EndThrowState.instance;
@@ -33,7 +34,13 @@ export class EndThrowState implements IGameState {
     }
 
     public onMouseDown(event: any): void {
-        // Do nothing
+        if (this.gameController.getHUDData().nextThrowMessageVisible) {
+            this.gameController.getGameData().state = this.nextState();
+        }
+
+        if (this.gameController.getHUDData().nextRoundMessageVisible) {
+            this.gameController.getHUDData().nextRoundMessageVisible = false;
+        }
     }
 
     public onMouseUp(event: any): void {
@@ -45,7 +52,15 @@ export class EndThrowState implements IGameState {
     }
 
     public onKeyboardDown(event: KeyboardEvent): void {
-        // Do nothing
+        if (event.key === " ") { // Spacebar
+            if (this.gameController.getHUDData().nextThrowMessageVisible) {
+                this.gameController.getGameData().state = this.nextState();
+            }
+
+            if (this.gameController.getHUDData().nextRoundMessageVisible) {
+                this.gameController.startNextRound();
+            }
+        }
     }
 
     public update(delta: number): void {
@@ -53,11 +68,21 @@ export class EndThrowState implements IGameState {
     }
 
     public enterState(): EndThrowState {
+        this.stonesThrown++;
+        let hudData = this.gameController.getHUDData();
+        hudData.forceVisible = false;
+        let gameData = this.gameController.getGameData();
+        gameData.isPlayerTurn = !gameData.isPlayerTurn;
+
         this.highlightStonesWorthPoints();
         return this;
     }
 
     public nextState(): IdleState {
+
+        this.gameController.getHUDData().nextThrowMessageVisible = false;
+        this.gameController.getHUDData().nextRoundMessageVisible = false;
+
         return IdleState.getInstance().enterState();
     }
 
@@ -79,8 +104,29 @@ export class EndThrowState implements IGameState {
                 curlingStones[index].position.distanceTo(ringsCenter) < rings.outer) {
 
                 curlingStones[index++].highlightOn();
-
             }
+        }
+    }
+
+    private startNextRound() {
+        let curlingStones = GameEngine.getInstance().getStones();
+        curlingStones.forEach(stone => {
+            GameEngine.getInstance().removeFromScene(stone);
+        });
+
+        curlingStones = [];
+        this.gameController.getHUDData().playerStones = new Array<number>(this.gameController.getMaxThrows() / 2);
+        this.gameController.getHUDData().aiStones = new Array<number>(this.gameController.getMaxThrows() / 2);
+
+        // Go to end game´
+        const gameData = this.gameController.getGameData();
+        if (this.stonesThrown === this.gameController.getMaxThrows() && gameData.roundsCompleted[1]) {
+            // this.endGame();
+        } else if (this.stonesThrown === this.gameController.getMaxThrows()) { // Go to next round
+            // this.updateScore();
+            // this.showNextRoundMessage = true;
+        } else if (this.stonesThrown > 0) { // Go to next throw
+            // this.showNextThrowMessage = true;
         }
     }
 }

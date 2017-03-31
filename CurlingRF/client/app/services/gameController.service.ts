@@ -30,7 +30,9 @@ export class GameController {
         playerStones: new Array<number>(this.MAX_THROWS / 2),
         aiStones: new Array<number>(this.MAX_THROWS / 2),
         forceVisible: false,
-        sliderDisabled: false
+        sliderDisabled: false,
+        nextThrowMessageVisible: false,
+        nextRoundMessageVisible: false
     };
 
     private gameEngine: GameEngine;
@@ -40,7 +42,8 @@ export class GameController {
         isPlayerTurn: false,
         spinClockwise: false,
         curveAngle: 0,
-        forceValue: 0
+        forceValue: 0,
+        roundsCompleted: [ false, false, false ]
     };
 
     public init(container?: HTMLElement): void {
@@ -81,6 +84,10 @@ export class GameController {
         this.gameData.state.onKeyboardDown(event);
     }
 
+    public getMaxThrows(): number {
+        return this.MAX_THROWS;
+    }
+
     public getPlayerName(): string {
         return this.playerName;
     }
@@ -111,6 +118,36 @@ export class GameController {
         this.hudData.sliderDisabled = true; // Prevent modification of spin once it has been selected
     }
 
+    public startNextThrow(): void {
+        this.hudData.nextThrowMessageVisible = false;
+
+        this.gameData.state = IdleState.getInstance().nextState();
+    }
+
+    public startNextRound(): void {
+        /*
+        // Remove stones from rink
+        this.curlingStones.forEach(stone => {
+            stone.highlightOff();
+            this.gameRenderer.getScene().remove(stone);
+        });
+        this.curlingStones.splice(0);
+        this.stonesThrown = 0;
+
+        this.playerCurlingStones = new Array<number>(this.MAX_THROWS / 2);
+        this.aiCurlingStones = new Array<number>(this.MAX_THROWS / 2);
+
+        this.showNextRoundMessage = false;
+
+        let roundInProgress = this.roundsCompleted.findIndex(nextRound => nextRound === false);
+
+        if (roundInProgress !== -1) {
+            this.roundsCompleted[roundInProgress] = true;
+        }
+
+        this.enterIdleState();*/
+    }
+
     public quitGame(): void {
         // Send beacon to server to signal name removal before page unload.
         let blob = new Blob([JSON.stringify({ "name": this.playerName })], { type: 'application/json; charset=UTF-8' });
@@ -132,6 +169,7 @@ export interface IGameData {
     spinClockwise: boolean;
     curveAngle: number;
     forceValue: number;
+    roundsCompleted: boolean[];
 }
 
 export interface IHUDData {
@@ -139,4 +177,6 @@ export interface IHUDData {
     aiStones: Array<number>;
     forceVisible: boolean;
     sliderDisabled: boolean;
+    nextThrowMessageVisible: boolean;
+    nextRoundMessageVisible: boolean;
 }
