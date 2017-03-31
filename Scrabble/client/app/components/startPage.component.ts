@@ -36,6 +36,8 @@ export class StartPageComponent {
 
             if (this.nameValid) {
                 this.error = false;
+                this.playerManagerService.setName(this.playerName);
+                this.playerManagerService.addPlayer();
             } else {
                 this.error = true;
                 this.errorMessage = "Ce nom est déjà pris ou contient des caractères invalides!";
@@ -49,9 +51,8 @@ export class StartPageComponent {
 
     public confirmCapacity(indicationMessage: HTMLElement): void {
         if (this.capacity > 1) {
-            this.playerManagerService.setName(this.playerName);
             this.playerManagerService.setCapacity(this.capacity);
-            this.playerManagerService.addPlayer();
+            this.playerManagerService.joinRoom();
 
             this.dialog.open(WaitingDialogComponent, {
                 disableClose: true

@@ -13,7 +13,7 @@ import { expect } from 'chai';
 
 describe('Player', () => {
 
-    let player = new Player("PlayerName", "SocketID", 1);
+    let player = new Player("PlayerName", "SocketID");
 
     describe('Default constructor', () => {
         it('should construct a Player object.', done => {
@@ -21,7 +21,7 @@ describe('Player', () => {
             expect(player).to.be.an.instanceOf(Player);
             expect(player.getName()).to.be.equal("PlayerName");
             expect(player.getSocketId()).to.be.equal("SocketID");
-            expect(player.getRoomId()).to.be.equal(1);
+            expect(player.getRoomId()).to.be.equal(-1);
             expect(player.getPoints()).to.be.equal(0);
             expect(player.isRackEmpty()).to.be.true;
             expect(player.getMaxRackSize()).to.be.equal(7);
@@ -51,7 +51,7 @@ describe('Player', () => {
 
     describe('setLetters()', () => {
         it('should set the letters rack of the player.', done => {
-            let playerTest = new Player("test", "1", 1);
+            let playerTest = new Player("test", "1");
             let letters = new Array<Letter>();
             letters.push(new Letter("a"));
             letters.push(new Letter("b"));

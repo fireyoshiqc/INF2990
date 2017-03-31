@@ -41,6 +41,7 @@ export class Room {
 
     public addPlayer(player: Player): void {
         if (!this.isFull()) {
+            console.log(player.getName() + " joined the room " + this.roomInfo.roomID);
             this.roomInfo.playerList.push(player.getName());
             this.players.push(player);
         }
@@ -57,6 +58,8 @@ export class Room {
             // Remove player from room (contains Player object)
             let indexPlayers = this.players.findIndex(p => p.getName() === playerName);
             this.players.splice(indexPlayers, 1);
+
+            console.log(playerName + " quit the room " + this.roomInfo.roomID);
         }
     }
 

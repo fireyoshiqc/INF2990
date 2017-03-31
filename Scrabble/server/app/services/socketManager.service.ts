@@ -47,6 +47,10 @@ export class SocketManager {
                 this.addPlayer(socket, player);
             });
 
+            socket.on('cwJoinRoom', (player: any) => {
+                this.joinRoom(socket, player);
+            });
+
             // Allows client to leave a specific room
             socket.on('cwLeaveRoom', (player: any) => {
                 this.leaveRoom(socket, player);
@@ -81,21 +85,26 @@ export class SocketManager {
     }
 
     private addPlayer(socket: SocketIO.Socket, player: any): void {
-        // Find (or create) a room in room manager service
+        // Create a new player in the playerManager
+        let newPlayer = this.playerManager.addPlayer(player.name, socket.id);
+    }
+
+    private joinRoom(socket: SocketIO.Socket, player: any): void {
+         // Find (or create) a room in room manager service
         let room = this.roomManager.createRoom(player.capacity);
 
-        // Create a new player in the playerManager
-        let newPlayer = this.playerManager.addPlayer(player.name, socket.id, room.getRoomInfo().roomID);
+        let joinPlayer = this.playerManager.getPlayerFromSocketID(socket.id);
 
-        // Allows client to join a specific room
-        room.addPlayer(newPlayer);
+         // Allows client to join a specific room
+         joinPlayer.setRoomId(room.getRoomInfo().roomID);
+        room.addPlayer(joinPlayer);
+
         socket.join(room.getRoomInfo().roomID.toString());
         this.sio.emit('wcFindRoom', room.getRoomInfo(), player.name);
     }
 
     private leaveRoom(socket: SocketIO.Socket, player: any): void {
         this.roomManager.leaveRoom(player.name, player.roomID);
-        this.playerManager.removePlayer(player.name);
         socket.leave(player.roomID.toString());
     }
 

@@ -26,9 +26,9 @@ export class PlayerManager {
         return validity;
     }
 
-    public addPlayer(playerName: string, socketId: string, roomID: number): Player {
+    public addPlayer(playerName: string, socketId: string): Player {
         console.log("Player added to the playerManager : " + playerName);
-        let newPlayer = new Player(playerName, socketId, roomID);
+        let newPlayer = new Player(playerName, socketId);
         this.players.push(newPlayer);
         return newPlayer;
     }
