@@ -4,6 +4,7 @@
  * @authors Félix Boulet
  * @date 2017/02/18
  */
+
 import { GameCamera } from './gameCamera.service';
 import { expect } from 'chai';
 
@@ -55,14 +56,6 @@ describe('CameraManager', () => {
     describe('getCamera()', () => {
         it('should return a THREE.js camera.', done => {
             expect(camera.getCamera()).to.be.an.instanceof(THREE.Camera);
-            done();
-        });
-    });
-
-    describe('followStone()', () => {
-        it('should make the camera point towards the observed vector plus an offset.', done => {
-            camera.followStone(new THREE.Vector3(0, 0, 0));
-            expect(camera.getCamera().position.z).to.equal(2);
             done();
         });
     });

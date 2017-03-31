@@ -38,7 +38,7 @@ export class GameEngine {
         GameEngine.instance = this;
     }
 
-    public init(container: HTMLElement, controller: GameController): Promise<any> {
+    public async init(container: HTMLElement, controller: GameController): Promise<any> {
 
         this.container = container;
         this.controller = controller;
