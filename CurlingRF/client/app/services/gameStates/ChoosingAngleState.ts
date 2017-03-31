@@ -86,12 +86,15 @@ export class ChoosingAngleState implements IGameState {
     public enterState(): ChoosingAngleState {
         document.body.style.cursor = "none";
         let self = this;
-        SceneBuilder.getInstance().buildAngleCurve()
-            .then((curve) => {
-                self.curve = curve;
-                GameEngine.getInstance().addToScene(self.curve);
-                this.updateDirectionCurve(0);
-            });
+        if (this.curve === undefined) {
+            SceneBuilder.getInstance().buildAngleCurve()
+                .then((curve) => {
+                    self.curve = curve;
+                    GameEngine.getInstance().addToScene(self.curve);
+                    this.updateDirectionCurve(0);
+                });
+        }
+        this.gameController.getHUDData().forceVisible = false;
         return this;
     }
 

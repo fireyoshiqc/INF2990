@@ -1,7 +1,7 @@
 import { IGameState } from './GameState';
 import { EndThrowState } from './EndThrowState';
 import { ChoosingAngleState } from './ChoosingAngleState';
-import { GameController } from '../GameController.service';
+import { GameController } from '../gameController.service';
 
 export class SweepingState implements IGameState {
 

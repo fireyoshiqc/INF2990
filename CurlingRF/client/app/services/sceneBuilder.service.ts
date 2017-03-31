@@ -6,7 +6,7 @@
  */
 
 import { Rink, IRingSetup, ILineSetup } from '../entities/rink';
-import { SkyBox } from '../entities/skybox';
+import { SkyBox } from '../entities/skyBox';
 
 export class SceneBuilder {
 

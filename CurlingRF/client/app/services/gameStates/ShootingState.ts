@@ -1,6 +1,6 @@
 import { IGameState } from './GameState';
 import { SweepingState } from './SweepingState';
-import { GameController } from '../GameController.service';
+import { GameController } from '../gameController.service';
 import { ChoosingAngleState } from './ChoosingAngleState';
 import { GameEngine } from '../gameEngine.service';
 
@@ -46,6 +46,9 @@ export class ShootingState implements IGameState {
         let gameData = this.gameController.getGameData();
         let hudData = this.gameController.getHUDData();
         let angleInRad = THREE.Math.degToRad(gameData.curveAngle);
+
+        clearInterval(this.timer);
+
         if (this.initialSpeedCounter > this.MIN_INITIAL_SPEED) {
             // Get angle at which to shoot the stone
             // Shoot the stone and set all its states appropriately
@@ -64,7 +67,6 @@ export class ShootingState implements IGameState {
             gameData.state = ChoosingAngleState.getInstance().enterState();
             gameData.forceValue = 0;
         }
-        clearInterval(this.timer);
     }
 
     public onMouseMove(event: any): void {
@@ -76,12 +78,12 @@ export class ShootingState implements IGameState {
     }
 
     public update(delta: number): void {
-        // Do nothing
+        // Animate the angle line while the shot is being charged
         ChoosingAngleState.getInstance().update(delta);
     }
 
     public enterState(): ShootingState {
-        // Do nothing yet, but return this state.
+        // Make the force bar visible
         document.body.style.cursor = "default";
         this.gameController.getHUDData().forceVisible = true;
         return this;
