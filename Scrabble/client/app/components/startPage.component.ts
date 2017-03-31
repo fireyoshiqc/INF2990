@@ -14,31 +14,54 @@ import { MdDialog, MdDialogRef } from '@angular/material';
     templateUrl: '/assets/templates/startPage.component.html',
     providers: [PlayerManagerService]
 })
-export class StartPageComponent {
 
+export class StartPageComponent {
     private capacity: number;
     private playerName: string;
+    private nameValid: boolean;
+    private error: boolean;
+    private errorMessage: string;
 
     constructor(public dialog: MdDialog, private playerManagerService: PlayerManagerService) {
         this.playerManagerService = playerManagerService;
+        this.nameValid = false;
+        this.error = false;
+        this.errorMessage = "";
+        this.playerName = "";
     }
 
-    public onJoin(): void {
-        if (this.playerManagerService.isNameValid()) {
-            if (this.capacity > 1) {
-                this.playerManagerService.setName(this.playerName);
-                this.playerManagerService.setCapacity(this.capacity);
-                this.playerManagerService.addPlayer();
+    public confirmName(): void {
+        if (this.playerName !== "") {
+            this.nameValid = this.playerManagerService.isNameValid();
 
-                this.dialog.open(WaitingDialogComponent, {
-                    disableClose: true
-                });
-
+            if (this.nameValid) {
+                this.error = false;
             } else {
-                alert("Veuillez choisir une taille de partie!!");
+                this.error = true;
+                this.errorMessage = "Ce nom est déjà pris ou contient des caractères invalides!";
+                this.nameValid = false;
             }
         } else {
-            alert("Nom invalide!!");
+            this.error = true;
+            this.errorMessage = "Veuillez entrer un nom.";
+        }
+    }
+
+    public confirmCapacity(indicationMessage: HTMLElement): void {
+        if (this.capacity > 1) {
+            this.playerManagerService.setName(this.playerName);
+            this.playerManagerService.setCapacity(this.capacity);
+            this.playerManagerService.addPlayer();
+
+            this.dialog.open(WaitingDialogComponent, {
+                disableClose: true
+            });
+        } else {
+            indicationMessage.classList.add("invalid");
+
+            setTimeout(() => {
+                indicationMessage.classList.remove("invalid");
+            }, 2000);
         }
     }
 

@@ -16,8 +16,8 @@ import { MdDialogRef } from '@angular/material';
     templateUrl: '/assets/templates/waitingRoom.component.html',
     providers: [RoomService]
 })
-export class WaitingRoomComponent {
 
+export class WaitingRoomComponent {
     private playerName: string;
     private roomID: number;
     private playerList: string[];
