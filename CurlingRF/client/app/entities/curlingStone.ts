@@ -195,20 +195,20 @@ export class CurlingStone extends THREE.Group {
     }
 
     public highlightOn(): void {
-        let outlineMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00, side: THREE.BackSide });
+        let outlineMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00, side: THREE.BackSide });
 
         // Highlight stone
         let stoneMesh = <THREE.Mesh>this.children[0];
         let stoneGeometry = <THREE.Geometry>(stoneMesh.geometry);
         let outlineStoneMesh = new THREE.Mesh(stoneGeometry, outlineMaterial);
-        outlineStoneMesh.scale.multiplyScalar(1.10);
+        outlineStoneMesh.scale.multiplyScalar(1.15);
         stoneMesh.add(outlineStoneMesh);
 
         // Highlight handle
         let handleMesh = <THREE.Mesh>this.children[1];
         let handleGeometry = <THREE.Geometry>(handleMesh.geometry);
         let outlineHandleMesh = new THREE.Mesh(handleGeometry, outlineMaterial);
-        outlineHandleMesh.scale.multiplyScalar(1.10);
+        outlineHandleMesh.scale.multiplyScalar(1.15);
         handleMesh.add(outlineHandleMesh);
     }
 

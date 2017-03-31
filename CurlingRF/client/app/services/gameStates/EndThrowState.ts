@@ -53,9 +53,7 @@ export class EndThrowState implements IGameState {
     }
 
     public enterState(): EndThrowState {
-        // Do nothing yet, but return this state.
         this.highlightStonesWorthPoints();
-        console.log("Highlight the stones!!");
         return this;
     }
 
