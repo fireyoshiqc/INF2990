@@ -2,11 +2,14 @@ import { Injectable } from '@angular/core';
 import { CurlingStone } from '../entities/curlingStone';
 import { SceneBuilder } from './sceneBuilder.service';
 //import { AudioManager } from './audioManager.service';
+import { GameEngine } from './gameEngine.service';
 
 @Injectable()
 export class PhysicsManager {
 
     // Everything is in meters, meters per second, and m/s²
+    private static instance = new PhysicsManager();
+
     private readonly GRAVITY_N_PER_KG = 9.81;
     private readonly COEFFICIENT_OF_FRICTION = 0.0168;
     private readonly FRICTION_MAGNITUDE = this.GRAVITY_N_PER_KG * this.COEFFICIENT_OF_FRICTION;
@@ -17,12 +20,20 @@ export class PhysicsManager {
     //private rink: Rink;
     //private audioManager: AudioManager;
 
-    constructor(curlingStones: CurlingStone[]) {
-        this.curlingStones = curlingStones;
-        // if (rink !== undefined) {
-        //     this.rink = rink;
-        //     //this.audioManager = rink.getAudioManager();
-        // }
+    public static getInstance(): PhysicsManager {
+        return this.instance;
+    }
+
+    private constructor() {
+        if (PhysicsManager.instance) {
+            throw new Error(
+                "Error: PhysicsManager is a singleton class, use PhysicsManager.getInstance() instead of new.");
+        }
+        PhysicsManager.instance = this;
+    }
+
+    public init(curlingStones?: Array<CurlingStone>): void {
+        this.curlingStones = curlingStones ? curlingStones : GameEngine.getInstance().getStones();
     }
 
     public clearStones(): void {

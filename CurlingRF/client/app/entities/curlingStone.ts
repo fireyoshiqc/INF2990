@@ -35,7 +35,7 @@ export class CurlingStone extends THREE.Group {
     private readonly HANDLE_MELD = 0.005; // By how much the handle sinks into the cover.
 
     private stoneColor: string;
-    private velocity: THREE.Vector3 = new THREE.Vector3(0, 0, 0);
+    private velocity: THREE.Vector3 = new THREE.Vector3();
     private beingPlayed = false;
     private hasBeenShot = false;
     private spinOrientation: SpinOrientation;
@@ -58,7 +58,7 @@ export class CurlingStone extends THREE.Group {
         this.stoneColor = (this.team === Team.Player) ? CurlingStone.playerStoneColor : CurlingStone.aiStoneColor;
 
         if (velocity) {
-            this.velocity = velocity;
+            this.velocity.set(velocity.x, velocity.y, velocity.z);
         }
         if (position) {
             this.position.set(position.x, position.y, position.z);
@@ -85,7 +85,7 @@ export class CurlingStone extends THREE.Group {
     }
 
     public setVelocity(velocity: THREE.Vector3): void {
-        this.velocity = velocity;
+        this.velocity.set(velocity.x, velocity.y, velocity.z);
     }
 
     // This function builds the whole curling stone model.

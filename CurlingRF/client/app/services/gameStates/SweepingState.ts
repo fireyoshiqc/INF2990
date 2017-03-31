@@ -2,11 +2,15 @@ import { IGameState } from './GameState';
 import { EndThrowState } from './EndThrowState';
 import { ChoosingAngleState } from './ChoosingAngleState';
 import { GameController } from '../gameController.service';
+import { PhysicsManager } from '../physicsManager.service';
+import { GameEngine } from '../gameEngine.service';
+import { CurlingStone } from '../../entities/curlingStone';
 
 export class SweepingState implements IGameState {
 
     private static instance: SweepingState = new SweepingState();
     private gameController: GameController;
+    private physicsManager: PhysicsManager;
 
     public static getInstance(): SweepingState {
         return SweepingState.instance;
@@ -14,6 +18,8 @@ export class SweepingState implements IGameState {
 
     public init(gameController: GameController): void {
         this.gameController = gameController;
+        this.physicsManager = PhysicsManager.getInstance();
+        this.physicsManager.init();
     }
 
     private constructor() {
@@ -42,6 +48,8 @@ export class SweepingState implements IGameState {
 
     public update(delta: number): void {
         // Do nothing
+        // console.log(GameEngine.getInstance().getActiveStone().getVelocity());
+        this.physicsManager.update(delta);
     }
 
     public enterState(): SweepingState {

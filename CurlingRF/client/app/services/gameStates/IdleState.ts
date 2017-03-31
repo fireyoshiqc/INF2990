@@ -50,7 +50,7 @@ export class IdleState implements IGameState {
         const gameData = this.gameController.getGameData();
         const team = gameData.isPlayerTurn ? Team.Player : Team.AI;
         const startZ = SceneBuilder.getInstance().getRinkData().lines.start;
-        const stone = new CurlingStone(team, null,
+        const stone = new CurlingStone(team, new THREE.Vector3(0, 0, 0),
             new THREE.Vector3(0, 0, startZ));
         GameEngine.getInstance().addStone(stone);
         gameData.forceValue = 0;

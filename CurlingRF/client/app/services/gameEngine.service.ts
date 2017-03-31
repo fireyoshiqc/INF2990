@@ -67,6 +67,7 @@ export class GameEngine {
         if (this.activeStone) {
             this.camera.followStone(this.activeStone.position);
         }
+
         this.renderer.render(this.scene, this.camera.getCamera());
     }
 
@@ -83,16 +84,20 @@ export class GameEngine {
         this.scene.add(stone);
     }
 
-    public getStones() : Array<CurlingStone> {
+    public getStones(): Array<CurlingStone> {
         return this.curlingStones;
     }
 
-    public getActiveStone() : CurlingStone {
+    public getActiveStone(): CurlingStone {
         return this.activeStone;
     }
 
+    public launchActiveStone(velocity: THREE.Vector3): void {
+        this.activeStone.setVelocity(this.activeStone.getVelocity().clone().add(velocity.clone()));
+        this.activeStone.setHasBeenShot();
+    }
+
     public addToScene(obj: THREE.Object3D): void {
-        console.log(obj);
         this.scene.add(obj);
     }
 
