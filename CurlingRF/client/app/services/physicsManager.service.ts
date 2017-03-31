@@ -14,6 +14,7 @@ export class PhysicsManager {
     private readonly COEFFICIENT_OF_FRICTION = 0.0168;
     private readonly FRICTION_MAGNITUDE = this.GRAVITY_N_PER_KG * this.COEFFICIENT_OF_FRICTION;
     private readonly CURVE_ANGLE = Math.PI / 300;
+    private readonly SPIN_RATIO = 2;
     private curlingStones: CurlingStone[] = [];
     // private sweptSpots: ISweptSpot[] = [];
     private delta: number;
@@ -47,9 +48,9 @@ export class PhysicsManager {
     public update(delta: number): void {
         this.delta = delta;
 
-        // Collision
         this.updateCollidingStonesDirection();
         this.updateAllStonesPosition();
+        this.spinActiveStone();
 
         // Fade spots
         // this.fadeAllSweptSpots(delta);
@@ -150,7 +151,7 @@ export class PhysicsManager {
 
             stone.getVelocity().sub((stone.getVelocity().clone().normalize()
                 .multiplyScalar(multiplier * this.FRICTION_MAGNITUDE * this.delta)));
-            stone.position.add((stone.getVelocity().clone().multiplyScalar(this.delta)));
+            stone.update(this.delta);
 
             // const slidingSound = <THREE.PositionalAudio>(stone.getObjectByName("slidingSound"));
             // if (slidingSound !== undefined) {
@@ -169,6 +170,14 @@ export class PhysicsManager {
         else {
             // For stone separation
             stone.position.add(stone.getVelocity().clone().multiplyScalar(separationCorrection * this.delta));
+        }
+    }
+
+    private spinActiveStone(): void {
+        let stone = GameEngine.getInstance().getActiveStone();
+
+        if (stone !== undefined && stone.getVelocity().length() > 0.1) {
+            stone.rotateY(stone.getSpinOrientation() * this.delta * stone.getVelocity().length() / this.SPIN_RATIO);
         }
     }
 

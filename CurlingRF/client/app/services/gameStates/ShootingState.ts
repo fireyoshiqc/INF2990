@@ -45,7 +45,6 @@ export class ShootingState implements IGameState {
         // Stone won't be thrown if the powerbar isn't charged enough.
         let gameData = this.gameController.getGameData();
         let hudData = this.gameController.getHUDData();
-        let angleInRad = THREE.Math.degToRad(gameData.curveAngle);
 
         clearInterval(this.timer);
 
@@ -54,8 +53,8 @@ export class ShootingState implements IGameState {
             // Shoot the stone and set all its states appropriately
             let stone = GameEngine.getInstance().getStones()[GameEngine.getInstance().getStones().length - 1];
             stone.setHasBeenShot();
-            stone.getVelocity().add(new THREE.Vector3(this.initialSpeedCounter * Math.sin(angleInRad),
-                0, this.initialSpeedCounter * Math.cos(angleInRad)));
+            stone.getVelocity().add(new THREE.Vector3(this.initialSpeedCounter * Math.sin(gameData.curveAngle),
+                0, this.initialSpeedCounter * Math.cos(gameData.curveAngle)));
             this.initialSpeedCounter = 0;
             (gameData.isPlayerTurn) ? hudData.playerStones.pop() : hudData.aiStones.pop();
 

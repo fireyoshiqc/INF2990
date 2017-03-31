@@ -47,8 +47,6 @@ export class SweepingState implements IGameState {
     }
 
     public update(delta: number): void {
-        // Do nothing
-        // console.log(GameEngine.getInstance().getActiveStone().getVelocity());
         this.physicsManager.update(delta);
     }
 
