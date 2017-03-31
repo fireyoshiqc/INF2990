@@ -52,15 +52,11 @@ export class ShootingState implements IGameState {
         if (this.initialSpeedCounter > this.MIN_INITIAL_SPEED) {
             // Get angle at which to shoot the stone
             // Shoot the stone and set all its states appropriately
-            GameEngine.getInstance().launchActiveStone(new THREE.Vector3(this.initialSpeedCounter * Math.sin(angleInRad),
+            let stone = GameEngine.getInstance().getStones()[GameEngine.getInstance().getStones().length - 1];
+            stone.setHasBeenShot();
+            stone.getVelocity().add(new THREE.Vector3(this.initialSpeedCounter * Math.sin(angleInRad),
                 0, this.initialSpeedCounter * Math.cos(angleInRad)));
-            // let stone = GameEngine.getInstance().getStones()[GameEngine.getInstance().getStones().length - 1];
-            // stone.setHasBeenShot();
-            // stone.getVelocity().add(new THREE.Vector3(this.initialSpeedCounter * Math.sin(angleInRad),
-            //     0, this.initialSpeedCounter * Math.cos(angleInRad)));
-            //     // console.log(stone.getVelocity());
-            //     // console.log(GameEngine.getInstance().getActiveStone().getVelocity());
-            // this.initialSpeedCounter = 0;
+            this.initialSpeedCounter = 0;
             (gameData.isPlayerTurn) ? hudData.playerStones.pop() : hudData.aiStones.pop();
 
             // Enter sweeping state once the stone has been thrown

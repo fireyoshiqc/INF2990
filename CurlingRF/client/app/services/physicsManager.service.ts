@@ -135,7 +135,7 @@ export class PhysicsManager {
             let multiplier: number;
 
             // this.checkforSweptSpots(stone) ? multiplier = 0.2 : multiplier = 1.5;
-
+            multiplier = 1.5;
 
             if (stone.isBeingPlayed()) {
                 // Curve calculation only for the stone that was thrown

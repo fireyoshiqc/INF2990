@@ -92,11 +92,6 @@ export class GameEngine {
         return this.activeStone;
     }
 
-    public launchActiveStone(velocity: THREE.Vector3): void {
-        this.activeStone.setVelocity(this.activeStone.getVelocity().clone().add(velocity.clone()));
-        this.activeStone.setHasBeenShot();
-    }
-
     public addToScene(obj: THREE.Object3D): void {
         this.scene.add(obj);
     }
