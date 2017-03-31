@@ -86,7 +86,7 @@ export class SocketManager {
 
     private addPlayer(socket: SocketIO.Socket, player: any): void {
         // Create a new player in the playerManager
-        let newPlayer = this.playerManager.addPlayer(player.name, socket.id);
+        this.playerManager.addPlayer(player.name, socket.id);
     }
 
     private joinRoom(socket: SocketIO.Socket, player: any): void {
