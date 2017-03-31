@@ -153,9 +153,9 @@ md-radio-button {
     /* IE 10+ */
 }
 
-/***************************/
+/*********************/
 /* top bar component */
-/***************************/
+/*********************/
 
 #topBar {
     height: 56px;
@@ -416,8 +416,40 @@ md-list {
 
 /**********************/
 
+#waitingRoomDiv {
+    width: 500px;
+}
+
+#waitingRoomID {
+    padding-bottom: 20px;
+}
+
 #waitingMessage {
     text-align: center;
     border: 2px #2E7D32 solid;
     border-radius: 25px 25px 25px 25px;
+    width: 100%;
+    padding-top: 0px;
+}
+
+#waitingPlayerCard {
+    padding: 10px;
+}
+
+.mdIcon.mat-icon {
+    height: 100%;
+    width: 2rem;
+    font-size: 3rem;
+}
+
+#waitingPlayerIcon {
+    color: limegreen;
+}
+
+#waitingOtherPlayerName {
+    color: dimgray;
+}
+
+#waitingActualPlayerName {
+    color: black;
 }
