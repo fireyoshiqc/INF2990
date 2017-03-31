@@ -3,7 +3,7 @@ import { ChoosingAngleState } from './ChoosingAngleState';
 import { GameController } from '../gameController.service';
 import { GameEngine } from '../gameEngine.service';
 import { SceneBuilder } from '../sceneBuilder.service';
-import { CurlingStone, Team } from '../../entities/curlingStone';
+import { CurlingStone, Team, SpinOrientation } from '../../entities/curlingStone';
 
 export class IdleState implements IGameState {
 
@@ -58,6 +58,9 @@ export class IdleState implements IGameState {
     }
 
     public nextState(): ChoosingAngleState {
+        const gameData = this.gameController.getGameData();
+        const spin = gameData.spinClockwise ? SpinOrientation.CLOCKWISE : SpinOrientation.COUNTER_CLOCKWISE;
+        GameEngine.getInstance().getActiveStone().setSpinOrientation(spin);
         return ChoosingAngleState.getInstance().enterState();
     }
 }
