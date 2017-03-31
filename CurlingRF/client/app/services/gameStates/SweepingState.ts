@@ -47,16 +47,21 @@ export class SweepingState implements IGameState {
     }
 
     public update(delta: number): void {
+
         this.physicsManager.update(delta);
+
+        if (this.physicsManager.allStonesHaveStopped()) {
+            this.gameController.getGameData().state = this.nextState();
+        }
     }
 
     public enterState(): SweepingState {
-        // Do nothing yet, but return this state.
         ChoosingAngleState.getInstance().hideCurve();
         return this;
     }
 
     public nextState(): EndThrowState {
+        this.physicsManager.sortStonesByDistance();
         return EndThrowState.getInstance().enterState();
     }
 }

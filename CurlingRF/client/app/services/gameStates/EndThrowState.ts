@@ -8,6 +8,8 @@
 import { IGameState } from './GameState';
 import { IdleState } from './IdleState';
 import { GameController } from '../gameController.service';
+import { GameEngine } from '../gameEngine.service';
+import { SceneBuilder } from '../sceneBuilder.service';
 
 export class EndThrowState implements IGameState {
 
@@ -52,10 +54,35 @@ export class EndThrowState implements IGameState {
 
     public enterState(): EndThrowState {
         // Do nothing yet, but return this state.
+        this.highlightStonesWorthPoints();
+        console.log("Highlight the stones!!");
         return this;
     }
 
     public nextState(): IdleState {
         return IdleState.getInstance().enterState();
+    }
+
+    // Highlight stones that are currently worth points
+    private highlightStonesWorthPoints(): void {
+
+        let curlingStones = GameEngine.getInstance().getStones();
+        let rings = SceneBuilder.getInstance().getRinkData().rings;
+
+        if (curlingStones.length > 0) {
+
+            let teamClosestStone = curlingStones[0].getTeam();
+            let index = 0;
+
+            const ringsCenter = new THREE.Vector3(0, 0, rings.offset);
+
+            while (curlingStones.length > index &&
+                curlingStones[index].getTeam() === teamClosestStone &&
+                curlingStones[index].position.distanceTo(ringsCenter) < rings.outer) {
+
+                curlingStones[index++].highlightOn();
+
+            }
+        }
     }
 }
