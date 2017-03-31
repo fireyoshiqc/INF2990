@@ -51,6 +51,7 @@ export class PhysicsManager {
         this.updateCollidingStonesDirection();
         this.updateAllStonesPosition();
         this.spinActiveStone();
+        this.removeOutOfBoundsStones();
 
         // Fade spots
         // this.fadeAllSweptSpots(delta);
@@ -226,8 +227,9 @@ export class PhysicsManager {
     //     this.sweptSpots = [];
     // }
 
-    public getOutOfBoundsStones(): CurlingStone[] {
-        let outOfBoundsStones: CurlingStone[] = [];
+    private removeOutOfBoundsStones(): void {
+
+        let stonesToRemove = new Array<CurlingStone>();
 
         this.curlingStones.forEach(stone => {
             if (stone.getHasBeenShot()) {
@@ -239,12 +241,17 @@ export class PhysicsManager {
                         stone.isBeingPlayed);
 
                 if (isPastBackLine || isPastRinkSides || hasStoppedBeforeGameLine) {
-                    outOfBoundsStones.push(stone);
+                    if (stone.fadeOut(this.delta)) {
+                        stonesToRemove.push(stone);
+                    }
                 }
             }
         });
 
-        return outOfBoundsStones;
+        for (let stone of stonesToRemove) {
+            this.curlingStones.splice(stonesToRemove.indexOf(stone), 1);
+            GameEngine.getInstance().removeFromScene(stone);
+        }
     }
 
     public sortStonesByDistance(): void {
