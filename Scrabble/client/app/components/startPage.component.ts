@@ -66,8 +66,11 @@ export class StartPageComponent {
         }
     }
 
-    public validateName(): void {
+    public validateName(event: KeyboardEvent): void {
         this.playerManagerService.validateName(this.playerName);
+        if (event.key === "Enter") {
+            this.confirmName();
+        }
     }
 }
 

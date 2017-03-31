@@ -23,7 +23,7 @@
                     <div class="flex-container" fxLayout="row" fxLayoutAlign="center center" fxFlexFill>
                         <div class="flex-item" fxFlex="75%" fxLayoutAlign="center center" fxFlexFill>
                             <md-input-container>
-                                <input mdInput id="nameInput" (keyup)="validateName()" maxlength="12" md-input placeholder="Entrez votre nom... (entre 4 à 12 caractères)"
+                                <input mdInput id="nameInput" (keyup)="validateName($event)" maxlength="12" md-input placeholder="Entrez votre nom... (entre 4 à 12 caractères)"
                                     type="text" [(ngModel)]="playerName" disabled={{nameValid}}>
                                 <md-hint *ngIf="error" id="nameInputError" align="start">{{errorMessage}}</md-hint>
                             </md-input-container>
