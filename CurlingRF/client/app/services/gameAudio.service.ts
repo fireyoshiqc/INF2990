@@ -98,14 +98,14 @@ export class GameAudio {
     }
 
     public getCollisionSound(): THREE.PositionalAudio {
-        return this.collisionSound;
+        return Object.create(this.collisionSound);
     }
 
     public getSlidingSound(): THREE.PositionalAudio {
-        return this.slidingSound;
+        return Object.create(this.slidingSound);
     }
 
     public getSweepingSound(): THREE.PositionalAudio {
-        return this.sweepingSound;
+        return Object.create(this.sweepingSound);
     }
 }

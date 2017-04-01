@@ -85,8 +85,8 @@ export class GameEngine {
 
     public addStone(stone: CurlingStone): void {
         // Create copies of the audio so it can play multiple times at once.
-        stone.add(<THREE.PositionalAudio>Object.create(this.audio.getSlidingSound()));
-        stone.add(<THREE.PositionalAudio>Object.create(this.audio.getCollisionSound()));
+        stone.add(this.audio.getSlidingSound());
+        stone.add(this.audio.getCollisionSound());
         this.curlingStones.push(stone);
         this.activeStone = stone;
         this.scene.add(stone);

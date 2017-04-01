@@ -148,18 +148,17 @@ export class PhysicsManager {
             stone.update(this.delta);
 
             const slidingSound = <THREE.PositionalAudio>(stone.getObjectByName("slidingSound"));
+
             if (slidingSound !== undefined) {
-                if (!slidingSound.isPlaying) {
-                    slidingSound.play();
-                }
-                else {
-                    slidingSound.setVolume(stone.getVelocity().length() / 3);
-                    if (stone.getVelocity().length() < 0.01) {
-                        slidingSound.setVolume(0);
+                if (stone.getVelocity().length() > 0.01) {
+                    slidingSound.setVolume(stone.getVelocity().length() / 4);
+                    if (!slidingSound.isPlaying) {
+                        slidingSound.play();
                     }
+                } else {
+                    slidingSound.stop();
                 }
             }
-
         }
         else {
             // For stone separation
