@@ -38,11 +38,11 @@ export class GameAudio {
                 self.collisionSound.name = "collisionSound";
             },
             // Function called when download progresses
-            function (xhr: any) {
+            (xhr: any) => {
                 // Do nothing
             },
             // Function called when download errors
-            function (xhr: any) {
+            (xhr: any) => {
                 console.log('Error loading sounds');
             }
         );
@@ -56,11 +56,11 @@ export class GameAudio {
                 self.slidingSound.name = "slidingSound";
             },
             // Function called when download progresses
-            function (xhr: any) {
+            (xhr: any) => {
                 // Do nothing
             },
             // Function called when download errors
-            function (xhr: any) {
+            (xhr: any) => {
                 console.log('Error loading sounds');
             }
         );
@@ -74,11 +74,11 @@ export class GameAudio {
                 self.sweepingSound.name = "sweepingSound";
             },
             // Function called when download progresses
-            function (xhr: any) {
+            (xhr: any) => {
                 // Do nothing
             },
             // Function called when download errors
-            function (xhr: any) {
+            (xhr: any) => {
                 console.log('Error loading sounds');
             }
         );
