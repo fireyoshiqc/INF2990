@@ -95,7 +95,7 @@ describe('ScrabbleGame', () => {
             expect(game.getBoard()[0][3].isEmpty()).to.be.false;
             expect(game.getBoard()[0][4].isEmpty()).to.be.false;
 
-            let player = new Player("test", "1", 1);
+            let player = new Player("test", "1");
             let wordToUpdate = game.removeWord(c2, player);
 
             expect(game.getBoard()[0][0].getLetter().getCharacter()).to.be.equal("B");
@@ -261,7 +261,7 @@ describe('ScrabbleGame', () => {
     describe('areAllWordsValid()', () => {
         it('should verify if every horizontal word is valid.', done => {
             let game = new ScrabbleGame();
-            let player = new Player("test", "1", 1);
+            let player = new Player("test", "1");
 
             let c1 = new CommandPlaceWord("a", 1, "h", "Bac");
             expect(game.areAllWordsValid()).to.be.true;
@@ -312,7 +312,7 @@ describe('ScrabbleGame', () => {
 
         it('should verify if every vertical word is valid.', done => {
             let game = new ScrabbleGame();
-            let player = new Player("test", "1", 1);
+            let player = new Player("test", "1");
 
             let c1 = new CommandPlaceWord("a", 1, "v", "Bac");
             expect(game.areAllWordsValid()).to.be.true;

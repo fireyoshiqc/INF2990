@@ -78,7 +78,7 @@ describe('RoomManager', () => {
     describe('leaveRoom()', () => {
          it('should remove a player from a room.', done => {
              let room = roomManager.createRoom(2);
-             let player = new Player("test", "1", room.getRoomInfo().roomID);
+             let player = new Player("test", "1");
              room.addPlayer(player);
 
              expect(room.getPlayers()[0].getName()).to.be.equal("test");

@@ -33,7 +33,9 @@ export class SocketManager {
             });
 
             socket.on('disconnect', (msg: any) => {
-                this.disconnectUser(socket);
+                setTimeout(() => {
+                    this.disconnectUser(socket);
+                }, 4000);
             });
 
             socket.on('cwValidateName', (name: string) => {
@@ -43,6 +45,10 @@ export class SocketManager {
 
             socket.on('cwAddPlayer', (player: any) => {
                 this.addPlayer(socket, player);
+            });
+
+            socket.on('cwJoinRoom', (player: any) => {
+                this.joinRoom(socket, player);
             });
 
             // Allows client to leave a specific room
@@ -79,21 +85,26 @@ export class SocketManager {
     }
 
     private addPlayer(socket: SocketIO.Socket, player: any): void {
-        // Find (or create) a room in room manager service
+        // Create a new player in the playerManager
+        this.playerManager.addPlayer(player.name, socket.id);
+    }
+
+    private joinRoom(socket: SocketIO.Socket, player: any): void {
+         // Find (or create) a room in room manager service
         let room = this.roomManager.createRoom(player.capacity);
 
-        // Create a new player in the playerManager
-        let newPlayer = this.playerManager.addPlayer(player.name, socket.id, room.getRoomInfo().roomID);
+        let joinPlayer = this.playerManager.getPlayerFromSocketID(socket.id);
 
-        // Allows client to join a specific room
-        room.addPlayer(newPlayer);
+         // Allows client to join a specific room
+         joinPlayer.setRoomId(room.getRoomInfo().roomID);
+        room.addPlayer(joinPlayer);
+
         socket.join(room.getRoomInfo().roomID.toString());
         this.sio.emit('wcFindRoom', room.getRoomInfo(), player.name);
     }
 
     private leaveRoom(socket: SocketIO.Socket, player: any): void {
         this.roomManager.leaveRoom(player.name, player.roomID);
-        this.playerManager.removePlayer(player.name);
         socket.leave(player.roomID.toString());
     }
 
@@ -115,12 +126,14 @@ export class SocketManager {
                 .emit('message sent', { username: "Scrabble Game", submessage: msg });
 
             gameMaster.getPlayers().forEach(player => {
-                // Updates each player's rack with 7 randomized letters from stash
-                this.sio.sockets.connected[player.getSocketId()]
-                    .emit('wcUpdateRack', player.getLettersRack());
-                // Updates the player's validated name
-                this.sio.sockets.connected[player.getSocketId()]
-                    .emit('wcUpdateName', player.getName());
+                let playerSocket = this.sio.sockets.connected[player.getSocketId()];
+
+                if (playerSocket !== undefined) {
+                    // Updates each player's rack with 7 randomized letters from stash
+                    playerSocket.emit('wcUpdateRack', player.getLettersRack());
+                    // Updates the player's validated name
+                    playerSocket.emit('wcUpdateName', player.getName());
+                }
             });
         }
     }
@@ -155,7 +168,7 @@ export class SocketManager {
             // Send a message to every player in the game room
             if (room !== undefined && room.getGameMaster().isGameStarted()) {
                 let disconnectMsg = "L'utilisateur a quitté la partie. Ses lettres vont être remises dans la réserve." +
-                                    " Le joueur actif est " + room.getGameMaster().getActivePlayer().getName() + ".";
+                    " Le joueur actif est " + room.getGameMaster().getActivePlayer().getName() + ".";
                 this.sio.sockets
                     .in(player.getRoomId().toString())
                     .emit('user disconnect', { username: player.getName(), submessage: disconnectMsg });

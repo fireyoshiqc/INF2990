@@ -1,35 +1,52 @@
-<div id="wrapper" class="flex-container" fxLayout="column" fxLayoutAlign="center center">
-    <div class="flex-item" fxFlex="10%" fxFlexFill>
-        <div class="flex-container" fxLayout="row" fxLayoutAlign="center center" fxFlexFill>
+<div id="waitingRoomDiv" class="flex-container" fxLayout="column" fxLayoutAlign="center center">
+    <div class="flex-item" id="waitingRoomID" fxFlex="10%" fxFlexFill>
+        <div class="flex-container" fxLayout="row" fxLayoutAlign="start center" fxFlexFill>
             <div class="flex-item" fxFlex="80%" fxFlexFill>
-                <h2>Bienvenue {{playerName}}!</h2>
+                <h2>Salle d'attente {{roomID}}</h2>
             </div>
 
-            <div class="flex-item" fxFlex="10%" fxLayoutAlign="center center" fxFlexFill>
-                <button md-raised-button color="primary" #quit (click)="leaveWaitingRoom()">Quitter</button>
+            <div class="flex-item" fxFlex="20%" fxLayoutAlign="center center" fxFlexFill>
+                <button md-raised-button id="confirmationButton" color="primary" #quit (click)="leaveWaitingRoom()">Annuler</button>
             </div>
         </div>
     </div>
 
     <div class="flex-item" fxFlex="90%" fxFlex.xs="90%" fxFlexFill>
         <div class="flex-container" fxLayout="column" fxLayoutAlign="center center" fxFlexFill>
-            <div id="waitingMessage" class="flex-item" fxFlex.xl=40% fxFlex.lg="50%" fxFlex.md="40%" fxFlex.sm="30%" fxLayoutAlign="center center" fxFlexFill>
-                <div *ngIf="this.missingPlayers !== 0">
-                  <h2>Room ID : {{roomID}} -> En attente de {{missingPlayers}} joueur(s)</h2>
-                </div>
-                <div *ngIf="this.missingPlayers === 0">
-                  <h2>Room ID : {{roomID}} -> Salle pleine, début de la partie...</h2>
-                </div>
-
-
+            <div class="flex-item" fxFlex.xl=40% fxFlex.lg="50%" fxFlex.md="40%" fxFlex.sm="30%" fxLayoutAlign="center center" fxFlexFill>
+                <md-card id="waitingMessage">
+                    <md-card-content>
+                        <div *ngIf="this.missingPlayers !== 0">
+                            <h3 *ngIf="this.missingPlayers !== 1">En attente de {{missingPlayers}} joueurs</h3>
+                            <h3 *ngIf="this.missingPlayers === 1">En attente de {{missingPlayers}} joueur</h3>
+                            <md-progress-bar mode="indeterminate"></md-progress-bar>
+                        </div>
+                        <div *ngIf="this.missingPlayers === 0">
+                            <h3>Salle pleine, début de la partie...</h3>
+                            <md-progress-bar mode="determinate" value="100%"></md-progress-bar>
+                        </div>
+                    </md-card-content>
+                </md-card>
             </div>
 
             <div class="flex-item" fxFlex="70%" fxFlex.xs="70%" fxFlexFill>
-                <h1>Liste des joueurs en attente</h1>
+                <h3 *ngIf="this.playerList.length === 1">Joueur dans la salle</h3>
+                <h3 *ngIf="this.playerList.length !== 1">Joueurs dans la salle</h3>
                 <md-list-item md-multi-line md-list-item-text *ngFor="let player of playerList;">
-                    <h3 md-line><strong>{{player}}</strong></h3>
+                    <md-card id="waitingPlayerCard">
+                        <div class="flex-container" fxLayout="row" fxLayoutAlign="center center">
+                            <div class="flex-item" fxFlex="12%" fxFlexFill>
+                                <md-icon id="waitingPlayerIcon" *ngIf="this.playerName !== player" class="mdIcon">person_outline</md-icon>
+                                <md-icon id="waitingPlayerIcon" *ngIf="this.playerName === player" class="mdIcon">person</md-icon>
+                            </div>
+                            <div class="flex-item" fxFlex="88%" fxFlexFill>
+                                <h5 id="waitingOtherPlayerName" *ngIf="this.playerName !== player">{{player}}</h5>
+                                <h5 id="waitingActualPlayerName" *ngIf="this.playerName === player"><strong>{{player}}</strong></h5>
+                            </div>
+                        </div>
+                    </md-card>
                 </md-list-item>
+                </div>
             </div>
         </div>
     </div>
-</div>

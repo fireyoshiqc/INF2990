@@ -16,8 +16,8 @@ import { MdDialogRef } from '@angular/material';
     templateUrl: '/assets/templates/waitingRoom.component.html',
     providers: [RoomService]
 })
-export class WaitingRoomComponent {
 
+export class WaitingRoomComponent {
     private playerName: string;
     private roomID: number;
     private playerList: string[];
@@ -27,6 +27,7 @@ export class WaitingRoomComponent {
     constructor(public dialogRef: MdDialogRef<WaitingRoomComponent>,
         public router: Router, private roomService: RoomService) {
         this.roomService = roomService;
+        this.playerList = [];
 
         // Updates the room info every second
         this.timer = setInterval(() => {
@@ -59,7 +60,7 @@ export class WaitingRoomComponent {
             setTimeout(() => {
                 this.dialogRef.close();
                 this.router.navigate(['/game']);
-            }, 1000);
+            }, 2000);
 
             setTimeout(() => {
                 this.roomService.startGame(this.roomID);

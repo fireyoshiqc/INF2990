@@ -17,7 +17,7 @@ import { LetterStash } from './letterStash.service';
 import { expect } from 'chai';
 
 describe('GameMaster', () => {
-    let players = [new Player("player1", "1", 1), new Player("player2", "2", 1)];
+    let players = [new Player("player1", "1"), new Player("player2", "2")];
     let gameMaster = new GameMaster(players);
 
     describe('Default constructor', () => {

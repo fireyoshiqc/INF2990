@@ -30,7 +30,7 @@ describe('PlayerManager', () => {
 
     describe('addPlayer ', () => {
         it('should add a player to playerNames array', done => {
-            let testPlayer = testPlayerManager.addPlayer("player1", "1", 1);
+            let testPlayer = testPlayerManager.addPlayer("player1", "1");
             expect(testPlayer.getName()).to.be.equal("player1");
             expect(testPlayerManager.getPlayers().length).to.equal(1);
             done();
@@ -60,7 +60,7 @@ describe('PlayerManager', () => {
 
     describe('getPlayerFromSocketID', () => {
         it('should return the player based on the socketID', done => {
-            testPlayerManager.addPlayer("Lilo", "123", 1);
+            testPlayerManager.addPlayer("Lilo", "123");
             expect(testPlayerManager.getPlayerFromSocketID("123").getName()).to.equal("Lilo");
             done();
         });

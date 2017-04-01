@@ -42,11 +42,16 @@ describe('Room', () => {
 
     describe('addPlayer()', () => {
         it('should increment the number of players in the room.', done => {
-            let player1 = new Player("Joueur1", "1", room.getRoomInfo().roomID);
-            let player2 = new Player("Joueur2", "2", room.getRoomInfo().roomID);
-            let player3 = new Player("Joueur3", "3", room.getRoomInfo().roomID);
-            let player4 = new Player("Joueur4", "4", room.getRoomInfo().roomID);
-            let player5 = new Player("Joueur5", "5", 9);
+            let player1 = new Player("Joueur1", "1");
+            player1.setRoomId(room.getRoomInfo().roomID);
+            let player2 = new Player("Joueur2", "2");
+             player2.setRoomId(room.getRoomInfo().roomID);
+            let player3 = new Player("Joueur3", "3");
+             player3.setRoomId(room.getRoomInfo().roomID);
+            let player4 = new Player("Joueur4", "4");
+             player4.setRoomId(room.getRoomInfo().roomID);
+            let player5 = new Player("Joueur5", "5");
+             player5.setRoomId(room.getRoomInfo().roomID);
 
             // Try adding five players in a room of 4
             room.addPlayer(player1);
@@ -73,7 +78,6 @@ describe('Room', () => {
         it('should decrement the number of players in the room.', done => {
             // Try removing five players in a room of 4
             room.removePlayer("Joueur1");
-            expect(room.getRoomInfo().playerList.find(playerName => playerName === "Joueur1")).to.be.undefined;
             expect(room.getRoomInfo().playerList.length).to.be.equal(3);
             room.removePlayer("Joueur2");
             room.removePlayer("Joueur3");

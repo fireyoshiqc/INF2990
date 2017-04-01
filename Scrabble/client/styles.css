@@ -51,9 +51,111 @@ body {
     color: rgba(255, 255, 255, 0.3);
 }
 
-/***************************/
+/**************/
+/* start page */
+/**************/
+
+#teamName {
+    color: rgba(0, 0, 0, 0.6);
+}
+
+#userInputDiv {
+    background: url(assets/textures/scrabble-bg.jpg);
+    background-size: 100%;
+}
+
+#nameImputCard {
+    width:60%;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+#nameInputError {
+    color: red;
+}
+
+#capacityInputCard {
+    width: 30%;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+#confirmationButton {
+    color: white;
+    font-weight: bold;
+}
+
+md-radio-button {
+    padding-right: 10px;
+}
+
+/*************************************/
+/* blinking effect for invalid input */
+/*************************************/
+
+@-webkit-keyframes invalid {
+    from {
+        color: rgba(255, 0, 0, 0.6);
+        font-weight: bold;
+        font-size: medium;
+    }
+    to {
+        color: rgba(255, 0, 0, 0.6);
+        font-weight: bold;
+    }
+}
+
+@-moz-keyframes invalid {
+    from {
+        color: rgba(255, 0, 0, 0.6);
+        font-weight: bold;
+        font-size: medium;
+    }
+    to {
+        color: rgba(255, 0, 0, 0.6);
+        font-weight: bold;
+    }
+}
+
+@-o-keyframes invalid {
+    from {
+        color: rgba(255, 0, 0, 0.6);
+        font-weight: bold;
+        font-size: medium;
+    }
+    to {
+        color: rgba(255, 0, 0, 0.6);
+        font-weight: bold;
+    }
+}
+
+@keyframes invalid {
+    from {
+        color: rgba(255, 0, 0, 0.6);
+        font-weight: bold;
+        font-size: medium;
+    }
+    to {
+        color: rgba(255, 0, 0, 0.6);
+        font-weight: bold;
+    }
+}
+
+
+/* Invalid class for inputField (blinking effect) */
+
+.invalid {
+    -webkit-animation: invalid 1s 2;
+    /* Safari 4+ */
+    -moz-animation: invalid 1s 2;
+    /* Fx 5+ */
+    -o-animation: invalid 1s 2;
+    /* Opera 12+ */
+    animation: invalid 1s 2;
+    /* IE 10+ */
+}
+
+/*********************/
 /* top bar component */
-/***************************/
+/*********************/
 
 #topBar {
     height: 56px;
@@ -291,15 +393,15 @@ md-input-container {
 
 /**********************/
 
-md-list {
-    max-width: 100%;
-    word-wrap: word-break;
+#chatCard {
+    padding: 10px; 
+    box-shadow: none;
 }
 
-#messageTest {
-    max-width: 100%;
-    word-wrap: word-break;
-    word-break: break-all;
+#chatCard md-card-subtitle {
+    margin: 0px 0px 2px 0px;
+    color: black;
+    font-weight: bold;
 }
 
 .commandMessage {
@@ -314,8 +416,40 @@ md-list {
 
 /**********************/
 
+#waitingRoomDiv {
+    width: 500px;
+}
+
+#waitingRoomID {
+    padding-bottom: 20px;
+}
+
 #waitingMessage {
     text-align: center;
-    border: 2px cornflowerblue solid;
-    border-radius: 25px 25px 0px 0px;
+    border: 2px #2E7D32 solid;
+    border-radius: 25px 25px 25px 25px;
+    width: 100%;
+    padding-top: 0px;
+}
+
+#waitingPlayerCard {
+    padding: 10px;
+}
+
+.mdIcon.mat-icon {
+    height: 100%;
+    width: 2rem;
+    font-size: 3rem;
+}
+
+#waitingPlayerIcon {
+    color: limegreen;
+}
+
+#waitingOtherPlayerName {
+    color: dimgray;
+}
+
+#waitingActualPlayerName {
+    color: black;
 }

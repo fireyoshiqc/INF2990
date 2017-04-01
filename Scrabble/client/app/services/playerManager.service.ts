@@ -12,7 +12,7 @@ export class PlayerManagerService {
     private readonly HOST_NAME = "http://" + window.location.hostname;
     private readonly SERVER_PORT = ":3000";
     private socket: any;
-    private nameValid: boolean;
+    private nameValid = false;
     private player = { name: "", capacity: 0 };
 
     constructor() {
@@ -29,6 +29,10 @@ export class PlayerManagerService {
 
     public addPlayer(): void {
         this.socket.emit('cwAddPlayer', this.player);
+    }
+
+    public joinRoom(): void {
+        this.socket.emit('cwJoinRoom', this.player);
     }
 
     public getName(): string {
