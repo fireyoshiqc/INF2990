@@ -9,13 +9,26 @@ import { GameCamera } from './gameCamera.service';
 
 export class GameAudio {
 
+    private static instance = new GameAudio();
+
     private camera: THREE.Camera;
     private listener: THREE.AudioListener;
     private collisionSound: THREE.PositionalAudio;
     private slidingSound: THREE.PositionalAudio;
     private sweepingSound: THREE.PositionalAudio;
 
-    constructor(gameCamera: GameCamera) {
+    public static getInstance(): GameAudio {
+        return GameAudio.instance;
+    }
+
+    private constructor() {
+        if (GameAudio.instance) {
+            throw new Error("Error: GameAudio is a singleton class, use GameAudio.getInstance() instead of new.");
+        }
+        GameAudio.instance = this;
+    }
+
+    public init(gameCamera: GameCamera): void {
         this.camera = gameCamera.getCamera();
         this.listener = new THREE.AudioListener();
         this.camera.add(this.listener);

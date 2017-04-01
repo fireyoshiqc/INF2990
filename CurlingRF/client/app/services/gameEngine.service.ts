@@ -7,9 +7,11 @@
 
 import { SceneBuilder } from './sceneBuilder.service';
 import { GameCamera } from './gameCamera.service';
+import { GameAudio } from './gameAudio.service';
 
 import { GameController } from './gameController.service';
 import { CurlingStone } from '../entities/curlingStone';
+
 
 export class GameEngine {
 
@@ -18,6 +20,7 @@ export class GameEngine {
     private container: HTMLElement;
     private scene: THREE.Scene;
     private camera: GameCamera;
+    private audio: GameAudio;
     private renderer: THREE.WebGLRenderer;
     private clock: THREE.Clock;
     private raycaster: THREE.Raycaster;
@@ -49,6 +52,7 @@ export class GameEngine {
                 .then((scene) => {
                     self.scene = scene;
                     self.setupCamera();
+                    self.setupAudio();
                     resolve();
                 }).catch(() => {
                     reject();
@@ -79,6 +83,9 @@ export class GameEngine {
     }
 
     public addStone(stone: CurlingStone): void {
+        // Create copies of the audio so it can play multiple times at once.
+        stone.add(<THREE.PositionalAudio>Object.create(this.audio.getSlidingSound()));
+        stone.add(<THREE.PositionalAudio>Object.create(this.audio.getCollisionSound()));
         this.curlingStones.push(stone);
         this.activeStone = stone;
         this.scene.add(stone);
@@ -157,6 +164,11 @@ export class GameEngine {
     private setupCamera(): void {
         this.camera = GameCamera.getInstance();
         this.camera.init(this.container);
+    }
+
+    private setupAudio(): void {
+        this.audio = GameAudio.getInstance();
+        this.audio.init(this.camera);
     }
 
 

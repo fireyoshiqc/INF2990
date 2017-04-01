@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CurlingStone } from '../entities/curlingStone';
 import { SceneBuilder } from './sceneBuilder.service';
-//import { AudioManager } from './audioManager.service';
 import { GameEngine } from './gameEngine.service';
 
 @Injectable()
@@ -18,8 +17,6 @@ export class PhysicsManager {
     private curlingStones: CurlingStone[] = [];
     // private sweptSpots: ISweptSpot[] = [];
     private delta: number;
-    //private rink: Rink;
-    //private audioManager: AudioManager;
 
     public static getInstance(): PhysicsManager {
         return this.instance;
@@ -65,9 +62,7 @@ export class PhysicsManager {
                 if (vec.length() !== 0 && vec.length() < CurlingStone.MAX_RADIUS * 2) {
                     this.calculateCollision(i, j, vec);
                     this.separateStones(i, j);
-                    // if (this.audioManager !== undefined) {
-                    //     this.playCollisionSound(i, j);
-                    // }
+                    this.playCollisionSound(i, j);
                 }
             }
         }
@@ -94,31 +89,29 @@ export class PhysicsManager {
         } while (this.calculateVectorLinkingBothStones(idStone1, idStone2).length() < CurlingStone.MAX_RADIUS * 2);
     }
 
-    // private playCollisionSound(idStone1: number, idStone2: number): void {
-    //     if (this.curlingStones[idStone1].getVelocity().length >= this.curlingStones[idStone2].getVelocity().length) {
-    //         this.curlingStones[idStone1].add(this.audioManager.getCollisionSound());
-    //         let collisionSound = <THREE.PositionalAudio>(this.curlingStones[idStone1]
-    //             .getObjectByName("collisionSound"));
-    //         if (collisionSound !== undefined) {
-    //             collisionSound.setVolume(2.0);
-    //             if (collisionSound.isPlaying) {
-    //                 collisionSound.stop();
-    //             }
-    //             collisionSound.play();
-    //         }
-    //     } else {
-    //         this.curlingStones[idStone2].add(this.audioManager.getCollisionSound());
-    //         let collisionSound = <THREE.PositionalAudio>(this.curlingStones[idStone2]
-    //             .getObjectByName("collisionSound"));
-    //         if (collisionSound !== undefined) {
-    //             collisionSound.setVolume(2.0);
-    //             if (collisionSound.isPlaying) {
-    //                 collisionSound.stop();
-    //             }
-    //             collisionSound.play();
-    //         }
-    //     }
-    // }
+    private playCollisionSound(idStone1: number, idStone2: number): void {
+        if (this.curlingStones[idStone1].getVelocity().length >= this.curlingStones[idStone2].getVelocity().length) {
+            let collisionSound = <THREE.PositionalAudio>(this.curlingStones[idStone1]
+                .getObjectByName("collisionSound"));
+            if (collisionSound !== undefined) {
+                collisionSound.setVolume(2.0);
+                if (collisionSound.isPlaying) {
+                    collisionSound.stop();
+                }
+                collisionSound.play();
+            }
+        } else {
+            let collisionSound = <THREE.PositionalAudio>(this.curlingStones[idStone2]
+                .getObjectByName("collisionSound"));
+            if (collisionSound !== undefined) {
+                collisionSound.setVolume(2.0);
+                if (collisionSound.isPlaying) {
+                    collisionSound.stop();
+                }
+                collisionSound.play();
+            }
+        }
+    }
 
     // Calculate the vector from the center of the first circle and the center of the second circle
     private calculateVectorLinkingBothStones(idStone1: number, idStone2: number): THREE.Vector3 {
@@ -154,18 +147,18 @@ export class PhysicsManager {
                 .multiplyScalar(multiplier * this.FRICTION_MAGNITUDE * this.delta)));
             stone.update(this.delta);
 
-            // const slidingSound = <THREE.PositionalAudio>(stone.getObjectByName("slidingSound"));
-            // if (slidingSound !== undefined) {
-            //     if (!slidingSound.isPlaying) {
-            //         slidingSound.play();
-            //     }
-            //     else {
-            //         slidingSound.setVolume(stone.getVelocity().length() / 3);
-            //         if (stone.getVelocity().length() < 0.01) {
-            //             slidingSound.setVolume(0);
-            //         }
-            //     }
-            // }
+            const slidingSound = <THREE.PositionalAudio>(stone.getObjectByName("slidingSound"));
+            if (slidingSound !== undefined) {
+                if (!slidingSound.isPlaying) {
+                    slidingSound.play();
+                }
+                else {
+                    slidingSound.setVolume(stone.getVelocity().length() / 3);
+                    if (stone.getVelocity().length() < 0.01) {
+                        slidingSound.setVolume(0);
+                    }
+                }
+            }
 
         }
         else {
