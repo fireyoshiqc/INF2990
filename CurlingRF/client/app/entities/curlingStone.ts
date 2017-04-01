@@ -40,6 +40,7 @@ export class CurlingStone extends THREE.Group {
     private hasBeenShot = false;
     private spinOrientation: SpinOrientation;
     private team: Team;
+    private isFading = false;
 
     // Must be set before init()
     public static setPlayerStoneColor(aColor: string): void {
@@ -182,12 +183,16 @@ export class CurlingStone extends THREE.Group {
     }
 
     public fadeOut(delta: number): boolean {
+        if (!this.isFading) {
+            this.isFading = true;
+        }
         (<THREE.Mesh>this.children[0]).material.opacity -= delta;
         (<THREE.Mesh>this.children[1]).material.opacity -= delta;
 
         // If the stone has completely faded out, return true so it can get removed from the scene.
         if ((<THREE.Mesh>this.children[0]).material.opacity < 0
             || (<THREE.Mesh>this.children[1]).material.opacity < 0) {
+            this.isFading = false;
             return true;
         }
         return false;
@@ -226,6 +231,10 @@ export class CurlingStone extends THREE.Group {
 
     public isBeingPlayed(): boolean {
         return this.beingPlayed;
+    }
+
+    public isCurrentlyFading(): boolean {
+        return this.isFading;
     }
 
     public getHasBeenShot(): boolean {

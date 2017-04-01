@@ -269,7 +269,7 @@ export class PhysicsManager {
         let allStonesHaveStopped = true;
 
         this.curlingStones.forEach(stone => {
-            if (stone.getVelocity().length() > 0.01) {
+            if (stone.getVelocity().length() > 0.01 || stone.isCurrentlyFading()) {
                 allStonesHaveStopped = false;
             }
         });
