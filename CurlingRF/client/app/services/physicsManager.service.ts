@@ -244,6 +244,7 @@ export class PhysicsManager {
                                 slidingSound.stop();
                             }
                         }
+                        GameEngine.getInstance().removeFromScene(this.curlingStones[i]);
                         this.curlingStones.splice(i, 1);
                     }
                 }
