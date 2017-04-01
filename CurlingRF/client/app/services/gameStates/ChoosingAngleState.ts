@@ -161,7 +161,7 @@ export class ChoosingAngleState implements IGameState {
 
         // Other curling stones
         GameEngine.getInstance().getStones().forEach(curlingStone => {
-            let angle = -Math.atan(curlingStone.position.x / curlingStone.position.z);
+            let angle = Math.atan(curlingStone.position.x / curlingStone.position.z);
             let distance = curlingStone.position.distanceTo(GameEngine.getInstance().getActiveStone().position);
             let error = Math.asin(CurlingStone.MAX_RADIUS / distance);
 
@@ -169,8 +169,8 @@ export class ChoosingAngleState implements IGameState {
                 gameData.curveAngle < angle + error &&
                 gameData.curveAngle > angle - error) {
                 shortestDistance = distance;
-                z = curlingStone.position.z - Math.cos(gameData.curveAngle) * lines.back / 2;
-                x = -z * Math.tan(gameData.curveAngle);
+                z = Math.cos(gameData.curveAngle) * shortestDistance;
+                x = z * Math.tan(gameData.curveAngle);
             }
         });
         return new THREE.Vector3(x, 0, z);
