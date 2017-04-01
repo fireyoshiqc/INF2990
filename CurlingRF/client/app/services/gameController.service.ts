@@ -24,7 +24,7 @@ export class GameController {
     private readonly HOST_NAME = "http://" + window.location.hostname;
     private readonly SERVER_PORT = ":3001";
 
-    private readonly MAX_THROWS = 16;
+    private readonly MAX_THROWS = 2;
 
     private hudData: IHUDData = {
         playerStones: new Array<number>(this.MAX_THROWS / 2),
@@ -122,30 +122,6 @@ export class GameController {
         this.hudData.nextThrowMessageVisible = false;
 
         this.gameData.state = IdleState.getInstance().nextState();
-    }
-
-    public startNextRound(): void {
-        /*
-        // Remove stones from rink
-        this.curlingStones.forEach(stone => {
-            stone.highlightOff();
-            this.gameRenderer.getScene().remove(stone);
-        });
-        this.curlingStones.splice(0);
-        this.stonesThrown = 0;
-
-        this.playerCurlingStones = new Array<number>(this.MAX_THROWS / 2);
-        this.aiCurlingStones = new Array<number>(this.MAX_THROWS / 2);
-
-        this.showNextRoundMessage = false;
-
-        let roundInProgress = this.roundsCompleted.findIndex(nextRound => nextRound === false);
-
-        if (roundInProgress !== -1) {
-            this.roundsCompleted[roundInProgress] = true;
-        }
-
-        this.enterIdleState();*/
     }
 
     public quitGame(): void {

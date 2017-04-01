@@ -15,7 +15,7 @@ export class EndThrowState implements IGameState {
 
     private static instance: EndThrowState = new EndThrowState();
     private gameController: GameController;
-    private stonesThrown: number;
+    private stonesThrown = 0;
 
     public static getInstance(): EndThrowState {
         return EndThrowState.instance;
@@ -39,7 +39,8 @@ export class EndThrowState implements IGameState {
         }
 
         if (this.gameController.getHUDData().nextRoundMessageVisible) {
-            this.gameController.getHUDData().nextRoundMessageVisible = false;
+            this.gameController.getGameData().state = this.nextState();
+            this.startNextRound();
         }
     }
 
@@ -58,7 +59,7 @@ export class EndThrowState implements IGameState {
             }
 
             if (this.gameController.getHUDData().nextRoundMessageVisible) {
-                this.gameController.startNextRound();
+                this.startNextRound();
             }
         }
     }
@@ -68,10 +69,20 @@ export class EndThrowState implements IGameState {
     }
 
     public enterState(): EndThrowState {
+
         this.stonesThrown++;
+
         let hudData = this.gameController.getHUDData();
         hudData.forceVisible = false;
-        hudData.nextThrowMessageVisible = true;
+
+        if (this.stonesThrown === this.gameController.getMaxThrows()) {
+            hudData.nextRoundMessageVisible = true;
+            hudData.nextThrowMessageVisible = false;
+        } else {
+            hudData.nextRoundMessageVisible = false;
+            hudData.nextThrowMessageVisible = true;
+        }
+        
         let gameData = this.gameController.getGameData();
         gameData.isPlayerTurn = !gameData.isPlayerTurn;
 
@@ -109,15 +120,26 @@ export class EndThrowState implements IGameState {
         }
     }
 
-    private startNextRound() {
+    private startNextRound(): void {
+        const gameData = this.gameController.getGameData();
+        const hudData = this.gameController.getHUDData();
         let curlingStones = GameEngine.getInstance().getStones();
         curlingStones.forEach(stone => {
             GameEngine.getInstance().removeFromScene(stone);
         });
 
-        curlingStones = [];
-        this.gameController.getHUDData().playerStones = new Array<number>(this.gameController.getMaxThrows() / 2);
-        this.gameController.getHUDData().aiStones = new Array<number>(this.gameController.getMaxThrows() / 2);
+        curlingStones.splice(0);
+        this.stonesThrown = 0;
+        hudData.playerStones = new Array<number>(this.gameController.getMaxThrows() / 2);
+        hudData.aiStones = new Array<number>(this.gameController.getMaxThrows() / 2);
+
+        const roundInProgress = gameData.roundsCompleted.findIndex(nextRound => nextRound === false);
+
+        if (roundInProgress !== -1) {
+            gameData.roundsCompleted[roundInProgress] = true;
+        }
+
+        this.gameController.getGameData().state = this.nextState();
 
         // // Go to end game´
         // const gameData = this.gameController.getGameData();
