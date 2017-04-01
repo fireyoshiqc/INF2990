@@ -82,7 +82,7 @@ export class EndThrowState implements IGameState {
             hudData.nextRoundMessageVisible = false;
             hudData.nextThrowMessageVisible = true;
         }
-        
+
         let gameData = this.gameController.getGameData();
         gameData.isPlayerTurn = !gameData.isPlayerTurn;
 

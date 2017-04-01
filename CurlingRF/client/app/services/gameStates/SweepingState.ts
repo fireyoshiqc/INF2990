@@ -3,6 +3,7 @@ import { EndThrowState } from './EndThrowState';
 import { ChoosingAngleState } from './ChoosingAngleState';
 import { GameController } from '../gameController.service';
 import { PhysicsManager } from '../physicsManager.service';
+import { GameEngine } from '../gameEngine.service';
 
 export class SweepingState implements IGameState {
 
@@ -55,6 +56,9 @@ export class SweepingState implements IGameState {
 
     public enterState(): SweepingState {
         ChoosingAngleState.getInstance().hideCurve();
+        GameEngine.getInstance().getStones().forEach(stone => {
+            stone.highlightOff();
+        });
         return this;
     }
 
