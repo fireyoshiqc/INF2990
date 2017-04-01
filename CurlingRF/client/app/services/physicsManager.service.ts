@@ -222,34 +222,32 @@ export class PhysicsManager {
 
     private removeOutOfBoundsStones(): void {
 
-        let stonesToRemove = new Array<CurlingStone>();
+        let i = this.curlingStones.length;
 
-        this.curlingStones.forEach(stone => {
-            if (stone.getHasBeenShot()) {
+        while (i--) {
+
+            if (this.curlingStones[i].getHasBeenShot()) {
                 const rink = SceneBuilder.getInstance().getRinkData();
-                let isPastBackLine = stone.position.z > rink.lines.back;
-                let isPastRinkSides = Math.abs(stone.position.x) > (rink.dims.width / 2 - CurlingStone.MAX_RADIUS);
-                let hasStoppedBeforeGameLine = stone.getVelocity().length() < 0.01 &&
-                    (stone.position.z < rink.lines.hog + CurlingStone.MAX_RADIUS &&
-                        stone.isBeingPlayed);
+                let isPastBackLine = this.curlingStones[i].position.z > rink.lines.back;
+                let isPastRinkSides = Math.abs(this.curlingStones[i].position.x)
+                    > (rink.dims.width / 2 - CurlingStone.MAX_RADIUS);
+                let hasStoppedBeforeGameLine = this.curlingStones[i].getVelocity().length() < 0.01 &&
+                    (this.curlingStones[i].position.z < rink.lines.hog + CurlingStone.MAX_RADIUS &&
+                        this.curlingStones[i].isBeingPlayed);
 
                 if (isPastBackLine || isPastRinkSides || hasStoppedBeforeGameLine) {
-                    if (stone.fadeOut(this.delta)) {
-                        stonesToRemove.push(stone);
-                        const slidingSound = <THREE.PositionalAudio>(stone.getObjectByName("slidingSound"));
+                    if (this.curlingStones[i].fadeOut(this.delta)) {
+                        const slidingSound = <THREE.PositionalAudio>(this.curlingStones[i]
+                            .getObjectByName("slidingSound"));
                         if (slidingSound !== undefined) {
                             if (slidingSound.isPlaying) {
                                 slidingSound.stop();
                             }
                         }
+                        this.curlingStones.splice(i, 1);
                     }
                 }
             }
-        });
-
-        for (let stone of stonesToRemove) {
-            this.curlingStones.splice(stonesToRemove.indexOf(stone), 1);
-            GameEngine.getInstance().removeFromScene(stone);
         }
     }
 
