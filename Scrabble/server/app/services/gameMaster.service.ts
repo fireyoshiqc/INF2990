@@ -337,6 +337,7 @@ export class GameMaster {
         // Check if game is overlapping
         if (this.activePlayer.getLettersRack().length < this.activePlayer.getMaxRackSize()) {
             this.gameOver = true;
+            this.adjustFinalScores();
             // TODO: Deduct points for letters left (different funct)
             return null;
         }
@@ -357,6 +358,19 @@ export class GameMaster {
 
     public isGameOver(): boolean {
         return this.gameOver;
+    }
+
+    private adjustFinalScores(): void {
+        let scoreBonus = 0;
+
+        this.players.forEach(player => {
+            if (player !== this.activePlayer) {
+                player.subtractPoints(player.getTotalRackPoints());
+                scoreBonus += player.getTotalRackPoints();
+            }
+        });
+
+        this.activePlayer.addPoints(scoreBonus);
     }
 
     public handleQuit(playerName: string): void {

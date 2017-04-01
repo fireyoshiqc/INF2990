@@ -50,6 +50,10 @@ export class Player {
         this.points += points;
     }
 
+    public subtractPoints(points: number): void {
+        this.points = (this.points < points) ? 0 : (this.points - points);
+    }
+
     public getLettersRack(): string[] {
         let lettersRackString = new Array<string>();
         this.lettersRack.forEach(letter => lettersRackString.push(letter.getCharacter()));
@@ -62,6 +66,12 @@ export class Player {
 
     public getMaxRackSize(): number {
         return this.LETTERS_RACK_SIZE;
+    }
+
+    public getTotalRackPoints(): number {
+        let totalPoints = 0;
+        this.lettersRack.forEach(letter => totalPoints += letter.getValue());
+        return totalPoints;
     }
 
     public getIsBlocked(): boolean {
