@@ -64,7 +64,7 @@ export class WaitingRoomComponent {
 
             setTimeout(() => {
                 this.roomService.startGame(this.roomID);
-            }, 4000);
+            }, 3000);
         }
     }
 }

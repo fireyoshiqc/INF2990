@@ -393,15 +393,15 @@ md-input-container {
 
 /**********************/
 
-md-list {
-    max-width: 100%;
-    word-wrap: word-break;
+#chatCard {
+    padding: 10px; 
+    box-shadow: none;
 }
 
-#messageTest {
-    max-width: 100%;
-    word-wrap: word-break;
-    word-break: break-all;
+#chatCard md-card-subtitle {
+    margin: 0px 0px 2px 0px;
+    color: black;
+    font-weight: bold;
 }
 
 .commandMessage {
