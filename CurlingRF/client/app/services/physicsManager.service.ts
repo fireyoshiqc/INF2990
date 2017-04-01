@@ -236,6 +236,12 @@ export class PhysicsManager {
                 if (isPastBackLine || isPastRinkSides || hasStoppedBeforeGameLine) {
                     if (stone.fadeOut(this.delta)) {
                         stonesToRemove.push(stone);
+                        const slidingSound = <THREE.PositionalAudio>(stone.getObjectByName("slidingSound"));
+                        if (slidingSound !== undefined) {
+                            if (slidingSound.isPlaying) {
+                                slidingSound.stop();
+                            }
+                        }
                     }
                 }
             }
