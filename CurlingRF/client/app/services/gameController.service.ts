@@ -24,7 +24,7 @@ export class GameController {
     private readonly HOST_NAME = "http://" + window.location.hostname;
     private readonly SERVER_PORT = ":3001";
 
-    private readonly MAX_THROWS = 2;
+    private readonly MAX_THROWS = 16;
 
     private hudData: IHUDData = {
         playerStones: new Array<number>(this.MAX_THROWS / 2),

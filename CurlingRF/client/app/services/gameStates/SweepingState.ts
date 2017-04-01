@@ -82,6 +82,8 @@ export class SweepingState implements IGameState {
 
     public enterState(): SweepingState {
         document.body.style.cursor = "url(../assets/textures/balai_rouge.png), auto";
+        this.canSweep = false;
+        this.isSweeping = false;
         ChoosingAngleState.getInstance().hideCurve();
         GameEngine.getInstance().getStones().forEach(stone => {
             stone.highlightOff();
@@ -100,14 +102,15 @@ export class SweepingState implements IGameState {
     private animateBroomCursor(): void {
         if (this.isSweeping) {
             if (this.broomCursorFrame < this.MAX_BROOM_ANIM_FRAMES) {
-                this.broomCursorFrame++;
+                this.broomCursorFrame += 0.5;
             }
         } else {
             if (this.broomCursorFrame > this.MIN_BROOM_ANIM_FRAMES) {
-                this.broomCursorFrame--;
+                this.broomCursorFrame -= 0.5;
             }
         }
 
-        document.body.style.cursor = "url(../assets/textures/balai_vert" + this.broomCursorFrame + ".png), auto";
+        document.body.style.cursor = "url(../assets/textures/balai_vert"
+            + Math.floor(this.broomCursorFrame) + ".png), auto";
     }
 }

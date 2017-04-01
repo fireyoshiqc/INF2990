@@ -10,6 +10,7 @@ import { IdleState } from './IdleState';
 import { GameController } from '../gameController.service';
 import { GameEngine } from '../gameEngine.service';
 import { SceneBuilder } from '../sceneBuilder.service';
+import { Team } from '../../entities/curlingStone';
 
 export class EndThrowState implements IGameState {
 
@@ -77,18 +78,20 @@ export class EndThrowState implements IGameState {
         let hudData = this.gameController.getHUDData();
         hudData.forceVisible = false;
 
+        let roundEnd = false;
+
         if (this.stonesThrown === this.gameController.getMaxThrows()) {
             hudData.nextRoundMessageVisible = true;
             hudData.nextThrowMessageVisible = false;
+            roundEnd = true;
         } else {
             hudData.nextRoundMessageVisible = false;
             hudData.nextThrowMessageVisible = true;
         }
 
-        let gameData = this.gameController.getGameData();
-        gameData.isPlayerTurn = !gameData.isPlayerTurn;
 
-        this.highlightStonesWorthPoints();
+        this.countAndHighlightPoints(roundEnd);
+
         return this;
     }
 
@@ -101,10 +104,12 @@ export class EndThrowState implements IGameState {
     }
 
     // Highlight stones that are currently worth points
-    private highlightStonesWorthPoints(): void {
+    private countAndHighlightPoints(roundEnd: boolean): void {
 
         let curlingStones = GameEngine.getInstance().getStones();
         let rings = SceneBuilder.getInstance().getRinkData().rings;
+
+        let gameData = this.gameController.getGameData();
 
         if (curlingStones.length > 0) {
 
@@ -113,12 +118,35 @@ export class EndThrowState implements IGameState {
 
             const ringsCenter = new THREE.Vector3(0, 0, rings.offset);
 
+            let score = 0;
+
             while (curlingStones.length > index &&
                 curlingStones[index].getTeam() === teamClosestStone &&
                 curlingStones[index].position.distanceTo(ringsCenter) < rings.outer) {
-
+                score++;
                 curlingStones[index++].highlightOn();
             }
+
+            // Don't add points yet if it's not the end of the round.
+            if (roundEnd) {
+                // Update score of closest team
+                teamClosestStone === Team.Player ? gameData.playerScore += score : gameData.aiScore += score;
+                this.chooseNextFirstPlayer(teamClosestStone, score);
+            }
+        }
+
+        if (!roundEnd) {
+
+            gameData.isPlayerTurn = !gameData.isPlayerTurn;
+
+        }
+    }
+
+    private chooseNextFirstPlayer(teamClosestStone: Team, score: number): void {
+        // If round is null, no changes required (first player for next round is already determined)
+        if (score !== 0) {
+            // Player with highest score in the round goes first in the next round
+            this.gameController.getGameData().isPlayerTurn = (teamClosestStone === Team.Player);
         }
     }
 
