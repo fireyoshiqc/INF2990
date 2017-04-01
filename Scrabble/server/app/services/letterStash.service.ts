@@ -22,6 +22,10 @@ export class LetterStash {
         return this.stash.length;
     }
 
+    public isEmpty(): boolean {
+        return this.stash.length === 0;
+    }
+
     public pickLetters(amount: number): Array<Letter> {
         let pickedLetters: Array<Letter> = [];
         if (this.stash.length < amount) {
