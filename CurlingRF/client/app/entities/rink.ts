@@ -33,14 +33,20 @@ export class Rink extends THREE.Group {
     // Clipping planes to prevent swept ice spots to extend past the ice
     private rinkClipPlanes: THREE.Plane[];
 
-    constructor(loaderImages: Array<string>) {
+    constructor() {
         super();
+    }
+
+    public init(loaderImages: Array<string>): Promise<Rink> {
         let self = this;
-        this.loadTextures();
-        this.loadEnvmap(loaderImages, () => {
-            self.buildRink();
-            self.loadingDone = true;
+        let initPromise = new Promise((resolve, reject) => {
+            self.loadTextures();
+            self.loadEnvmap(loaderImages, () => {
+                self.buildRink();
+                resolve(self);
+            });
         });
+        return initPromise;
     }
 
     public getDimensions(): ISurfaceSetup {

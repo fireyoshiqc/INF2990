@@ -11,6 +11,7 @@ import { GameAudio } from './gameAudio.service';
 
 import { GameController } from './gameController.service';
 import { CurlingStone } from '../entities/curlingStone';
+import { FastIce } from '../entities/fastIce';
 
 
 export class GameEngine {
@@ -27,6 +28,7 @@ export class GameEngine {
 
     private curlingStones: Array<CurlingStone> = [];
     private activeStone: CurlingStone;
+    private fastIceBuffer: Array<FastIce> = [];
 
     private controller: GameController;
 
@@ -53,6 +55,7 @@ export class GameEngine {
                     self.scene = scene;
                     self.setupCamera();
                     self.setupAudio();
+                    self.setupFastIceBuffer();
                     resolve();
                 }).catch(() => {
                     reject();
@@ -67,11 +70,9 @@ export class GameEngine {
         window.requestAnimationFrame(() => this.update());
         const delta = this.clock.getDelta();
         this.controller.updateState(delta);
-        // TODO: Remove this once physics are re-implemented.
         if (this.activeStone) {
             this.camera.followStone(this.activeStone.position);
         }
-
         this.renderer.render(this.scene, this.camera.getCamera());
     }
 
@@ -169,6 +170,10 @@ export class GameEngine {
     private setupAudio(): void {
         this.audio = GameAudio.getInstance();
         this.audio.init(this.camera);
+    }
+
+    private setupFastIceBuffer(): void {
+        this.fastIceBuffer = SceneBuilder.getInstance().buildFastIceBuffer();
     }
 
 

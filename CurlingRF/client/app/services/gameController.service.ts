@@ -44,7 +44,7 @@ export class GameController {
         spinClockwise: false,
         curveAngle: 0,
         forceValue: 0,
-        roundsCompleted: [ false, false, false ]
+        roundsCompleted: [false, false, false]
     };
 
     private gameEngine: GameEngine;
@@ -69,23 +69,33 @@ export class GameController {
     }
 
     public updateState(delta: number): void {
-        this.gameData.state.update(delta);
+        if (this.gameData.state) {
+            this.gameData.state.update(delta);
+        }
     }
 
     public onMouseDown(event: any): void {
-        this.gameData.state.onMouseDown(event);
+        if (this.gameData.state) {
+            this.gameData.state.onMouseDown(event);
+        }
     }
 
     public onMouseUp(event: any): void {
-        this.gameData.state.onMouseUp(event);
+        if (this.gameData.state) {
+            this.gameData.state.onMouseUp(event);
+        }
     }
 
     public onMouseMove(event: any): void {
-        this.gameData.state.onMouseMove(event);
+        if (this.gameData.state) {
+            this.gameData.state.onMouseMove(event);
+        }
     }
 
     public onKeyboardDown(event: KeyboardEvent): void {
-        this.gameData.state.onKeyboardDown(event);
+        if (this.gameData.state) {
+            this.gameData.state.onKeyboardDown(event);
+        }
     }
 
     public getMaxThrows(): number {

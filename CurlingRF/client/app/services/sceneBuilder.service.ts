@@ -48,11 +48,15 @@ export class SceneBuilder {
             const scene = new THREE.Scene();
             const skybox = new SkyBox();
             scene.add(skybox);
-            this.rink = this.buildRink(skybox);
-            scene.add(this.rink);
-            const light = this.buildLighting(this.rink);
-            scene.add(light);
-            resolve(scene);
+            let self = this;
+            this.buildRink().init(skybox.getSkyBoxImages())
+                .then((rink) => {
+                    self.rink = rink;
+                    scene.add(this.rink);
+                    const light = this.buildLighting(this.rink);
+                    scene.add(light);
+                    resolve(scene);
+                });
         });
         return buildPromise;
     }
@@ -103,8 +107,8 @@ export class SceneBuilder {
         return fastIceBuffer;
     }
 
-    private buildRink(skybox: SkyBox): Rink {
-        const rink = new Rink(skybox.getSkyBoxImages());
+    private buildRink(): Rink {
+        const rink = new Rink();
         rink.position.z = rink.getDimensions().length / 2;
         rink.position.y = -0.0775;
         rink.name = "rink";
