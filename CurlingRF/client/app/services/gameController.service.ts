@@ -29,22 +29,26 @@ export class GameController {
     private hudData: IHUDData = {
         playerStones: new Array<number>(this.MAX_THROWS / 2),
         aiStones: new Array<number>(this.MAX_THROWS / 2),
+        aiDifficulty: "CPU facile",
         forceVisible: false,
         sliderDisabled: false,
         nextThrowMessageVisible: false,
         nextRoundMessageVisible: false
     };
 
-    private gameEngine: GameEngine;
-    private playerName = "";
     private gameData: IGameData = {
         state: null,
+        playerScore: 0,
+        aiScore: 0,
         isPlayerTurn: false,
         spinClockwise: false,
         curveAngle: 0,
         forceValue: 0,
         roundsCompleted: [ false, false, false ]
     };
+
+    private gameEngine: GameEngine;
+    private playerName = "";
 
     public init(container?: HTMLElement): void {
         this.gameEngine = GameEngine.getInstance();
@@ -141,6 +145,8 @@ export class GameController {
 
 export interface IGameData {
     state: IGameState;
+    playerScore: number;
+    aiScore: number;
     isPlayerTurn: boolean;
     spinClockwise: boolean;
     curveAngle: number;
@@ -151,6 +157,7 @@ export interface IGameData {
 export interface IHUDData {
     playerStones: Array<number>;
     aiStones: Array<number>;
+    aiDifficulty: string;
     forceVisible: boolean;
     sliderDisabled: boolean;
     nextThrowMessageVisible: boolean;
