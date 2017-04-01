@@ -322,14 +322,15 @@ export class GameMaster {
 
     private checkTurnOver(): void {
         setInterval(() => {
-            if (this.stopwatch.isTurnOver()) {
-                this.nextTurn = true;
+            if (!this.gameOver) {
+                if (this.stopwatch.isTurnOver()) {
+                    this.nextTurn = true;
+                }
+
+                // Update turnInfo
+                this.turnInfo.minutes = this.stopwatch.getMinutesLeft();
+                this.turnInfo.seconds = this.stopwatch.getSecondsLeft();
             }
-
-            // Update turnInfo
-            this.turnInfo.minutes = this.stopwatch.getMinutesLeft();
-            this.turnInfo.seconds = this.stopwatch.getSecondsLeft();
-
         }, 1000);
     }
 
