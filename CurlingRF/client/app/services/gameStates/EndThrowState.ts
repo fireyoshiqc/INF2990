@@ -70,6 +70,8 @@ export class EndThrowState implements IGameState {
 
     public enterState(): EndThrowState {
 
+        document.body.style.cursor = "default";
+
         this.stonesThrown++;
 
         let hudData = this.gameController.getHUDData();
