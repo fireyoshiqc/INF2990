@@ -30,6 +30,9 @@ export class Rink extends THREE.Group {
     private blueIce: THREE.Texture;
     private redIce: THREE.Texture;
 
+    // Clipping planes to prevent swept ice spots to extend past the ice
+    private rinkClipPlanes: THREE.Plane[];
+
     constructor(loaderImages: Array<string>) {
         super();
         let self = this;
@@ -63,6 +66,18 @@ export class Rink extends THREE.Group {
         };
     }
 
+    public getWhiteIceTexture(): THREE.Texture {
+        return this.whiteIce;
+    }
+
+    public getReflectTexture(): THREE.CubeTexture {
+        return this.reflectTexture;
+    }
+
+    public getClippingPlanes(): Array<THREE.Plane> {
+        return this.rinkClipPlanes;
+    }
+
     public isLoadingDone(): boolean {
         return this.loadingDone;
     }
@@ -94,9 +109,19 @@ export class Rink extends THREE.Group {
     }
 
     private buildRink(): void {
+        this.buildClipPlanes();
         this.buildIce();
         this.buildGameLines();
         this.buildRings();
+    }
+
+    // Place clipping planes around the ice plane
+    private buildClipPlanes(): void {
+        let leftPlane = new THREE.Plane(new THREE.Vector3(1, 0, 0), this.LOCAL_SURFACE_SETUP.width / 2);
+        let rightPlane = new THREE.Plane(new THREE.Vector3(-1, 0, 0), this.LOCAL_SURFACE_SETUP.width / 2);
+        let frontPlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
+        let backPlane = new THREE.Plane(new THREE.Vector3(0, 0, -1), this.LOCAL_SURFACE_SETUP.length);
+        this.rinkClipPlanes = [leftPlane, rightPlane, frontPlane, backPlane];
     }
 
     private buildIce(): void {

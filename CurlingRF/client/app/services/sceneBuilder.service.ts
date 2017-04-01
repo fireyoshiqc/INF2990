@@ -7,6 +7,7 @@
 
 import { Rink, IRingSetup, ILineSetup, ISurfaceSetup } from '../entities/rink';
 import { SkyBox } from '../entities/skyBox';
+import { FastIce } from '../entities/fastIce';
 
 export class SceneBuilder {
 
@@ -26,6 +27,7 @@ export class SceneBuilder {
         spinMultiplier: 2,
         maxAngle: 30
     };
+    private readonly SWEPT_BUFFER_MAX = 50; // Max amount of fast ice spots to display
 
     private rink: Rink;
 
@@ -56,7 +58,7 @@ export class SceneBuilder {
     }
 
     public async buildAngleCurve(): Promise<THREE.Line> {
-        let buildPromise = new Promise<THREE.Line>((resolve, recject) => {
+        let buildPromise = new Promise<THREE.Line>((resolve, reject) => {
             // Define the dashed line for aiming the stones
             let directionCurve = new THREE.LineCurve3(
                 new THREE.Vector3(0, 0, 0),
@@ -91,6 +93,14 @@ export class SceneBuilder {
 
     public getCurveData(): ICurveData {
         return this.CURVE_DATA;
+    }
+
+    public buildFastIceBuffer(): Array<FastIce> {
+        let fastIceBuffer = new Array<FastIce>();
+        for (let i = 0; i < this.SWEPT_BUFFER_MAX; i++) {
+            fastIceBuffer.push(new FastIce(this.rink));
+        }
+        return fastIceBuffer;
     }
 
     private buildRink(skybox: SkyBox): Rink {
@@ -138,6 +148,8 @@ export class SceneBuilder {
     private spawnSunlight(): THREE.HemisphereLight {
         return new THREE.HemisphereLight(this.SUN_COLOR, this.SHADOW_COLOR, this.SUN_INTENSITY);
     }
+
+
 }
 
 export interface IRinkData {
