@@ -12,8 +12,12 @@ export class SweepingState implements IGameState {
     private gameController: GameController;
     private physicsManager: PhysicsManager;
 
-    private broomCursorFrame = 1;
+    private readonly MAX_BROOM_ANIM_FRAMES = 6;
+    private readonly MIN_BROOM_ANIM_FRAMES = 1;
+
+    private broomCursorFrame = this.MIN_BROOM_ANIM_FRAMES;
     private canSweep = false;
+    private isSweeping = false;
 
     public static getInstance(): SweepingState {
         return SweepingState.instance;
@@ -35,10 +39,16 @@ export class SweepingState implements IGameState {
 
     public onMouseDown(event: any): void {
         // Do nothing
+        if (this.canSweep) {
+            this.isSweeping = true;
+        }
     }
 
     public onMouseUp(event: any): void {
         // Do nothing
+        if (this.canSweep) {
+            this.isSweeping = false;
+        }
     }
 
     public onMouseMove(event: any): void {
@@ -56,9 +66,13 @@ export class SweepingState implements IGameState {
         const activeStoneZPos = GameEngine.getInstance().getActiveStone().position.z;
         const rinkData = SceneBuilder.getInstance().getRinkData();
 
-        // Length minus hog gives the position of the first hog line.
-        if (activeStoneZPos > rinkData.dims.length - rinkData.lines.hog) {
-            document.body.style.cursor = "url(../assets/textures/balai_vert1.png), auto";
+        if (!this.canSweep) {
+            // Length minus hog gives the position of the first hog line.
+            if (activeStoneZPos > rinkData.dims.length - rinkData.lines.hog) {
+                this.canSweep = true;
+            }
+        } else {
+            this.animateBroomCursor();
         }
 
         if (this.physicsManager.allStonesHaveStopped()) {
@@ -76,7 +90,24 @@ export class SweepingState implements IGameState {
     }
 
     public nextState(): EndThrowState {
+        this.canSweep = false;
+        this.isSweeping = false;
+        this.broomCursorFrame = this.MIN_BROOM_ANIM_FRAMES;
         this.physicsManager.sortStonesByDistance();
         return EndThrowState.getInstance().enterState();
+    }
+
+    private animateBroomCursor(): void {
+        if (this.isSweeping) {
+            if (this.broomCursorFrame < this.MAX_BROOM_ANIM_FRAMES) {
+                this.broomCursorFrame++;
+            }
+        } else {
+            if (this.broomCursorFrame > this.MIN_BROOM_ANIM_FRAMES) {
+                this.broomCursorFrame--;
+            }
+        }
+
+        document.body.style.cursor = "url(../assets/textures/balai_vert" + this.broomCursorFrame + ".png), auto";
     }
 }
