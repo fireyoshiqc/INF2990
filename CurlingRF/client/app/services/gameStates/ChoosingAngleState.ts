@@ -93,6 +93,9 @@ export class ChoosingAngleState implements IGameState {
                     GameEngine.getInstance().addToScene(self.curve);
                     this.updateDirectionCurve(0);
                 });
+        } else {
+            GameEngine.getInstance().addToScene(self.curve);
+            this.updateDirectionCurve(0);
         }
         this.gameController.getHUDData().forceVisible = false;
         return this;

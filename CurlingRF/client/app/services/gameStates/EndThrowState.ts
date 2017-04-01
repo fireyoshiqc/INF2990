@@ -71,6 +71,7 @@ export class EndThrowState implements IGameState {
         this.stonesThrown++;
         let hudData = this.gameController.getHUDData();
         hudData.forceVisible = false;
+        hudData.nextThrowMessageVisible = true;
         let gameData = this.gameController.getGameData();
         gameData.isPlayerTurn = !gameData.isPlayerTurn;
 
@@ -118,15 +119,15 @@ export class EndThrowState implements IGameState {
         this.gameController.getHUDData().playerStones = new Array<number>(this.gameController.getMaxThrows() / 2);
         this.gameController.getHUDData().aiStones = new Array<number>(this.gameController.getMaxThrows() / 2);
 
-        // Go to end game´
-        const gameData = this.gameController.getGameData();
-        if (this.stonesThrown === this.gameController.getMaxThrows() && gameData.roundsCompleted[1]) {
-            // this.endGame();
-        } else if (this.stonesThrown === this.gameController.getMaxThrows()) { // Go to next round
-            // this.updateScore();
-            // this.showNextRoundMessage = true;
-        } else if (this.stonesThrown > 0) { // Go to next throw
-            // this.showNextThrowMessage = true;
-        }
+        // // Go to end game´
+        // const gameData = this.gameController.getGameData();
+        // if (this.stonesThrown === this.gameController.getMaxThrows() && gameData.roundsCompleted[1]) {
+        //     // this.endGame();
+        // } else if (this.stonesThrown === this.gameController.getMaxThrows()) { // Go to next round
+        //     // this.updateScore();
+        //     // this.showNextRoundMessage = true;
+        // } else if (this.stonesThrown > 0) { // Go to next throw
+        //     // this.showNextThrowMessage = true;
+        // }
     }
 }
