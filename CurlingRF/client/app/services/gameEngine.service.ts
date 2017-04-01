@@ -174,6 +174,8 @@ export class GameEngine {
 
     private setupFastIceBuffer(): void {
         this.fastIceBuffer = SceneBuilder.getInstance().buildFastIceBuffer();
+        this.fastIceBuffer.forEach((fastIce) =>
+            fastIce.add(<THREE.PositionalAudio>Object.create(this.audio.getSweepingSound())));
     }
 
 
