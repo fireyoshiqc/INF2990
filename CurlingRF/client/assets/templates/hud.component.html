@@ -53,7 +53,7 @@
                     </div>
 
                     <!-- Next throw message -->
-                    <div *ngIf="showNextThrowMessage === true">
+                    <div *ngIf="nextThrowMessageVisible === true">
                         <div id="nextThrow">
                             <md-card class="defaultCursor lightTag" id="waitingForPlayer">
                                 <md-card-content><strong>Prochain lancer : cliquez ou pesez la barre d'espacement</strong></md-card-content>
@@ -62,7 +62,7 @@
                     </div>
 
                     <!-- Next round message -->
-                    <div *ngIf="showNextRoundMessage === true">
+                    <div *ngIf="nextRoundMessageVisible === true">
                         <div id="nextRound">
                             <md-card class="defaultCursor lightTag" id="waitingForPlayer">
                                 <md-card-content><strong>Prochaine manche : cliquez ou pesez la barre d'espacement</strong></md-card-content>
