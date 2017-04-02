@@ -2,7 +2,7 @@
     <div class="flex-item" id="waitingRoomID" fxFlex="10%" fxFlexFill>
         <div class="flex-container" fxLayout="row" fxLayoutAlign="start center" fxFlexFill>
             <div class="flex-item" fxFlex="80%" fxFlexFill>
-                <h2>Salle d'attente {{roomID}}</h2>
+                <h2>Salle d'attente {{player.roomID}}</h2>
             </div>
 
             <div class="flex-item" fxFlex="20%" fxLayoutAlign="center center" fxFlexFill>
@@ -32,16 +32,16 @@
             <div class="flex-item" fxFlex="70%" fxFlex.xs="70%" fxFlexFill>
                 <h3 *ngIf="this.playerList.length === 1">Joueur dans la salle</h3>
                 <h3 *ngIf="this.playerList.length !== 1">Joueurs dans la salle</h3>
-                <md-list-item md-multi-line md-list-item-text *ngFor="let player of playerList;">
+                <md-list-item md-multi-line md-list-item-text *ngFor="let playerName of playerList;">
                     <md-card id="waitingPlayerCard">
                         <div class="flex-container" fxLayout="row" fxLayoutAlign="center center">
                             <div class="flex-item" fxFlex="12%" fxFlexFill>
-                                <md-icon id="waitingPlayerIcon" *ngIf="this.playerName !== player" class="mdIcon">person_outline</md-icon>
-                                <md-icon id="waitingPlayerIcon" *ngIf="this.playerName === player" class="mdIcon">person</md-icon>
+                                <md-icon id="waitingPlayerIcon" *ngIf="this.player.name !== playerName" class="mdIcon">person_outline</md-icon>
+                                <md-icon id="waitingPlayerIcon" *ngIf="this.player.name === playerName" class="mdIcon">person</md-icon>
                             </div>
                             <div class="flex-item" fxFlex="88%" fxFlexFill>
-                                <h5 id="waitingOtherPlayerName" *ngIf="this.playerName !== player">{{player}}</h5>
-                                <h5 id="waitingActualPlayerName" *ngIf="this.playerName === player"><strong>{{player}}</strong></h5>
+                                <h5 id="waitingOtherPlayerName" *ngIf="this.player.name !== playerName">{{playerName}}</h5>
+                                <h5 id="waitingActualPlayerName" *ngIf="this.player.name === playerName"><strong>{{playerName}}</strong></h5>
                             </div>
                         </div>
                     </md-card>

@@ -100,7 +100,7 @@ export class SocketManager {
         room.addPlayer(joinPlayer);
 
         socket.join(room.getRoomInfo().roomID.toString());
-        this.sio.emit('wcFindRoom', room.getRoomInfo(), player.name);
+        this.sio.emit('wcFindRoom', room.getRoomInfo());
     }
 
     private leaveRoom(socket: SocketIO.Socket, player: any): void {
