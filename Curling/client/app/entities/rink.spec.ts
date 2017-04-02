@@ -1,26 +1,29 @@
 /**
  * rink.spec.ts - Tests for the rink
  *
- * @authors Félix Boulet et Yawen Hou
- * @date 2017/01/20
+ * @authors Félix Boulet, Mikaël Ferland
+ * @date 2017/04/01
  */
 
 import { Rink } from './rink';
+import { SkyBox } from './skyBox';
 
 import { expect } from 'chai';
 
 describe('Rink', () => {
-    describe('Default constructor ', () => {
-        it('should construct a Rink object with string table passed in parameter.', done => {
-            let path = "../assets/textures/sb_iceflow/iceflow_";
-            let suffix = ".jpg";
-            let imagesTable: Array<string> = [path + "lf" + suffix, path + "rt" +
-                suffix, path + "up" + suffix, path + "dn" + suffix, path + "ft" + suffix, path + "bk" + suffix];
-            let testRink = new Rink(imagesTable, null);
-            expect(testRink).to.exist;
-            expect(testRink).to.be.an.instanceof(Rink);
-            expect(testRink).to.be.an.instanceof(THREE.Group);
-            done();
+
+    let testRink = new Rink();
+    let envMap = new SkyBox();
+
+    describe('init()', () => {
+        it('should initialize the rink and give it all its dimensions and textures.', done => {
+            testRink.init(envMap.getSkyBoxImages()).then((rink) => {
+                expect(rink).to.exist;
+                expect(rink.getReflectTexture()).to.exist;
+                expect(rink.getWhiteIceTexture()).to.exist;
+                expect(rink.getClippingPlanes()).to.exist;
+                done();
+            });
         });
     });
 });

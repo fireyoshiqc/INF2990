@@ -1,6 +1,6 @@
 
 import { Component, HostListener, Optional, AfterViewInit } from '@angular/core';
-import { GameController, AIDifficulty } from '../services/gameController.service';
+import { GameController } from '../services/gameController.service';
 import { MdDialog, MdDialogRef } from '@angular/material';
 
 @Component({
@@ -15,7 +15,7 @@ export class GlComponent implements AfterViewInit {
 
     constructor(public dialog: MdDialog, private gameController: GameController) { }
 
-    public ngAfterViewInit() {
+    public ngAfterViewInit(): void {
         // Necessary to fix prodmode exclusive error (data binding changed on init)
         setTimeout(() => {
             this.dialogRef = this.dialog.open(NameDialogComponent, {
@@ -24,60 +24,50 @@ export class GlComponent implements AfterViewInit {
 
             this.dialogRef.afterClosed().subscribe(result => {
                 this.gameController.setPlayerName(result.playerName);
-
-                if (result.difficulty === "facile") {
-                    this.gameController.setAIDifficulty(AIDifficulty.Easy);
-                    // TODO : this.gameController.startAIEasy();
-                }
-                else if (result.difficulty === "difficile") {
-                    this.gameController.setAIDifficulty(AIDifficulty.Hard);
-                    // TODO : this.gameController.startAIHard();
-                }
-
-                this.gameController.enterIdleState();
             });
         });
-    }
-
-    public getGameController(): GameController {
-        return this.gameController;
     }
 
     public getTheme(): boolean {
         return this.isDarkTheme;
     }
 
-    public toggleTheme() {
+    public toggleTheme(): void {
         this.isDarkTheme = !this.isDarkTheme;
     }
 
-    public onResize(event: any) {
+    public onResize(event: any): void {
         this.gameController.onResize(event);
     }
 
+    public getGameController(): GameController {
+        return this.gameController;
+    }
+
+    public startThrowStone(event: any): void {
+        this.gameController.startThrowStone(event);
+    }
+
     @HostListener('window:keydown', ['$event'])
-    public keyboardInput(event: KeyboardEvent) {
+    public keyboardInput(event: KeyboardEvent): void {
         // Player can switch camera view
         if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
             this.switchCamera();
         }
-
-        // Player can go to next throw or round
-        this.gameController.onKeyboardDown(event);
     }
 
     @HostListener('window:mousedown', ['$event'])
-    public onMouseDown(event: any) {
+    public onMouseDown(event: any): void {
         this.gameController.onMouseDown(event);
     }
 
     @HostListener('window:mouseup', ['$event'])
-    public onMouseUp(event: any) {
+    public onMouseUp(event: any): void {
         this.gameController.onMouseUp(event);
     }
 
     @HostListener('window:mousemove', ['$event'])
-    public onMouseMove(event: any) {
+    public onMouseMove(event: any): void {
         this.gameController.onMouseMove(event);
     }
 
@@ -87,17 +77,8 @@ export class GlComponent implements AfterViewInit {
         return;
     }
 
-    public resetGame(): void {
-        // TODO
-        alert("reset");
-    }
-
     public switchCamera(): void {
         this.gameController.switchCamera();
-    }
-
-    public startThrowStone(event: any): void {
-        this.gameController.startThrowStone(event);
     }
 }
 

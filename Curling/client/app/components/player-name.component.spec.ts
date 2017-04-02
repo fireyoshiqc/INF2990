@@ -5,7 +5,7 @@ import { By } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 
 import { expect } from 'chai';
-describe('PlayerNameComponent', function() {
+describe('PlayerNameComponent', () => {
     let comp: PlayerNameComponent;
     let fixture: ComponentFixture<PlayerNameComponent>;
     beforeEach(async(() => {

@@ -5,14 +5,14 @@
  * @date 2017/01/20
  */
 
-import { TextureCacher } from "../services/textureCacher";
+import { TextureCacher } from "../utils/textureCacher.util";
 
 export class SkyBox extends THREE.Mesh {
     // Textures
-    public imageName: string;
-    public directions: Array<string>;
-    public imageSuffix: string;
-    public skyBoxImages: Array<string>;
+    private imageName: string;
+    private directions: Array<string>;
+    private imageSuffix: string;
+    private skyBoxImages: Array<string>;
 
     // The list contains the textures.jpg for the skybox in the same order as the attribute
     constructor(imageName?: string, directions?: Array<string>, imageSuffix?: string) {
@@ -54,8 +54,24 @@ export class SkyBox extends THREE.Mesh {
 
     }
 
+    public getImageName(): string {
+        return this.imageName;
+    }
+
+    public getDirections(): Array<string> {
+        return this.directions;
+    }
+
+    public getImageSuffix(): string {
+        return this.imageSuffix;
+    }
+
+    public getSkyBoxImages(): Array<string> {
+        return this.skyBoxImages;
+    }
+
     private createMaterial(image: string): THREE.MeshBasicMaterial {
-        let texture = TextureCacher.load(image);
+        let texture: THREE.Texture = TextureCacher.load(image);
         let material = new THREE.MeshBasicMaterial({ color: 0xFFFFFF, map: texture, overdraw: 0.5 });
         return material;
     }

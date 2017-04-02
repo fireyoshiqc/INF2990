@@ -56,7 +56,8 @@
                     <span class="defaultCursor" id="title"><strong>Curling</strong></span>
                     <span id="topSpacer"></span>
 
-                    <button class="icon-button" (click)="toggleTheme(); hud.toggleTheme();">
+                    <!-- Remettre hud.toggleTheme() -->
+                    <button class="icon-button" (click)="toggleTheme();">
                          <md-icon id="lightBulbIcon">lightbulb_outline</md-icon>
                     </button>
                     
@@ -70,22 +71,23 @@
 
             <!-- hud -->
             <div class="flex-item" id="hudContainer" fxFlex="90%" fxFlexFill>
-                <my-hud #hud
+
+                <my-hud #hud 
                     (switchCameraEvent)="switchCamera()"
                     (startThrowStoneEvent)="startThrowStone($event)"
                     [playerName]="getGameController().playerName"
-                    [aiDifficulty]="getGameController().aiDifficulty"
-                    [aiScore]="getGameController().aiScore"
-                    [playerScore]="getGameController().playerScore"
-                    [playerCurlingStones]="getGameController().playerCurlingStones"
-                    [aiCurlingStones]="getGameController().aiCurlingStones"
-                    [sliderDisabled]="getGameController().sliderDisabled"
-                    [forceVisible]="getGameController().forceVisible"
-                    [forceValue]="getGameController().forceValue"
-                    [roundsCompleted]="getGameController().roundsCompleted"
-                    [showNextThrowMessage]="getGameController().showNextThrowMessage"
-                    [showNextRoundMessage]="getGameController().showNextRoundMessage"
-                    [showEndGameMessage]="getGameController().showEndGameMessage"></my-hud>
+                    [aiDifficulty]="getGameController().getHUDData().aiDifficulty"
+                    [aiScore]="getGameController().getGameData().aiScore"
+                    [playerScore]="getGameController().getGameData().playerScore"
+                    [playerCurlingStones]="getGameController().getHUDData().playerStones"
+                    [aiCurlingStones]="getGameController().getHUDData().aiStones"
+                    [sliderDisabled]="getGameController().getHUDData().sliderDisabled"
+                    [forceVisible]="getGameController().getHUDData().forceVisible"
+                    [forceValue]="getGameController().getGameData().forceValue"
+                    [roundsCompleted]="getGameController().getGameData().roundsCompleted"
+                    [nextThrowMessageVisible]="getGameController().getHUDData().nextThrowMessageVisible"
+                    [nextRoundMessageVisible]="getGameController().getHUDData().nextRoundMessageVisible"
+                    [showEndGameMessage]="getGameController().getHUDData().showEndGameMessage"></my-hud>
             </div>
 
         </div>

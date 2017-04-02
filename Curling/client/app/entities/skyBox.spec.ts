@@ -17,24 +17,24 @@ describe('SkyBox', () => {
 
             expect(testSkyBox).to.be.an.instanceof(SkyBox);
             expect(testSkyBox).to.be.an.instanceof(THREE.Mesh);
-            expect(testSkyBox.imageName).to.equal("../assets/textures/sb_iceflow/iceflow_");
-            expect(testSkyBox.directions).to.eql(["lf", "rt", "up", "dn", "ft", "bk"]);
-            expect(testSkyBox.imageSuffix).to.equal(".jpg");
+            expect(testSkyBox.getImageName()).to.equal("../assets/textures/sb_iceflow/iceflow_");
+            expect(testSkyBox.getDirections()).to.eql(["lf", "rt", "up", "dn", "ft", "bk"]);
+            expect(testSkyBox.getImageSuffix()).to.equal(".jpg");
             done();
         });
 
         it('should construct a SkyBox object with imageName passed as parameter.', done => {
             let testSkyBox: SkyBox;
             testSkyBox = new SkyBox("icyhell/icyhell_");
-            expect(testSkyBox.imageName).to.equal("../assets/textures/icyhell/icyhell_");
+            expect(testSkyBox.getImageName()).to.equal("../assets/textures/icyhell/icyhell_");
             done();
         });
 
         it('should construct a SkyBox object with imageName and directions passed as parameters.', done => {
             let testSkyBox: SkyBox;
             testSkyBox = new SkyBox("icyhell/icyhell_", ["lf", "rt", "up", "dn", "ft", "bk"]);
-            expect(testSkyBox.imageName).to.equal("../assets/textures/icyhell/icyhell_");
-            expect(testSkyBox.directions).to.eql(["lf", "rt", "up", "dn", "ft", "bk"]);
+            expect(testSkyBox.getImageName()).to.equal("../assets/textures/icyhell/icyhell_");
+            expect(testSkyBox.getDirections()).to.eql(["lf", "rt", "up", "dn", "ft", "bk"]);
             done();
         });
 
@@ -42,9 +42,9 @@ describe('SkyBox', () => {
             done => {
                 let testSkyBox: SkyBox;
                 testSkyBox = new SkyBox("dawnmountain-", ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"], ".png");
-                expect(testSkyBox.imageName).to.equal("../assets/textures/dawnmountain-");
-                expect(testSkyBox.directions).to.eql(["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"]);
-                expect(testSkyBox.imageSuffix).to.equal(".png");
+                expect(testSkyBox.getImageName()).to.equal("../assets/textures/dawnmountain-");
+                expect(testSkyBox.getDirections()).to.eql(["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"]);
+                expect(testSkyBox.getImageSuffix()).to.equal(".png");
                 done();
             });
     });

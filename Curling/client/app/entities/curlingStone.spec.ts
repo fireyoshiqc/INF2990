@@ -33,7 +33,7 @@ describe('CurlingStone', () => {
 
         it('should make a colored CurlingStone object if a valid color format is entered.', done => {
             CurlingStone.setPlayerStoneColor("#FF0000");
-            testStone = new CurlingStone(Team.Player, null, null);
+            testStone = new CurlingStone(Team.Player);
 
             expect(testStone.getColor()).to.equal("#FF0000");
             done();
@@ -41,7 +41,7 @@ describe('CurlingStone', () => {
 
         it('should make a CurlingStone object if an incorrect string is entered.', done => {
             CurlingStone.setPlayerStoneColor("DEADBEEF");
-            testStone = new CurlingStone(Team.Player, null, null);
+            testStone = new CurlingStone(Team.Player);
 
             expect(testStone.getColor()).to.not.equal("DEADBEEF");
             expect(testStone.getColor()).to.equal("#FF0000");
@@ -52,8 +52,6 @@ describe('CurlingStone', () => {
     describe('init()', () => {
         it('should add a Curling Stone base (mesh) and a cover (mesh) to the group object.', done => {
             testStone = new CurlingStone(Team.Player);
-            testStone.init();
-
             expect(testStone.children.length).to.equal(2);
             done();
         });

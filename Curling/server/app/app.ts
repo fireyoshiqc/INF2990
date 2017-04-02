@@ -60,7 +60,7 @@ export class Application {
      * @class Server
      * @method config
      */
-    private config() {
+    private config(): void {
         // Middlewares configuration
         this.app.use(logger('dev'));
         this.app.use(bodyParser.json());
@@ -76,7 +76,7 @@ export class Application {
      * @class Server
      * @method routes
      */
-    public routes() {
+    public routes(): void {
         let router: express.Router;
         router = express.Router();
 
@@ -91,11 +91,11 @@ export class Application {
         // Use router middleware
         this.app.use(router);
 
-        this.app.post('/validateName', function (req, res) {
+        this.app.post('/validateName', (req, res) => {
             res.send(nameManager.validateName(req.body.name));
         });
 
-        this.app.post('/removeName', function (req, res) {
+        this.app.post('/removeName', (req, res) => {
             res.send(nameManager.removeName(req.body.name));
         });
 

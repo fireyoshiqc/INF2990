@@ -5,7 +5,7 @@
  * @date 2017/01/20
  */
 
-import { TextureCacher } from "../services/textureCacher";
+import { TextureCacher } from "../utils/textureCacher.util";
 
 export enum Team {
     Player,
@@ -35,14 +35,15 @@ export class CurlingStone extends THREE.Group {
     private readonly HANDLE_MELD = 0.005; // By how much the handle sinks into the cover.
 
     private stoneColor: string;
-    private velocity: THREE.Vector3;
+    private velocity: THREE.Vector3 = new THREE.Vector3();
     private beingPlayed = false;
     private hasBeenShot = false;
     private spinOrientation: SpinOrientation;
     private team: Team;
+    private isFading = false;
 
     // Must be set before init()
-    public static setPlayerStoneColor(aColor: string) {
+    public static setPlayerStoneColor(aColor: string): void {
         let regex = new RegExp('#[0-9a-fA-F]{6}');
 
         if (regex.test(aColor)) {
@@ -58,13 +59,18 @@ export class CurlingStone extends THREE.Group {
         this.stoneColor = (this.team === Team.Player) ? CurlingStone.playerStoneColor : CurlingStone.aiStoneColor;
 
         if (velocity) {
-            this.velocity = velocity;
+            this.velocity.set(velocity.x, velocity.y, velocity.z);
         }
         if (position) {
             this.position.set(position.x, position.y, position.z);
         }
         this.spinOrientation = SpinOrientation.CLOCKWISE;
         this.beingPlayed = true;
+        this.init();
+    }
+
+    public update(delta: number): void {
+        this.position.add(this.velocity.clone().multiplyScalar(delta));
     }
 
     public getTeam(): Team {
@@ -80,11 +86,11 @@ export class CurlingStone extends THREE.Group {
     }
 
     public setVelocity(velocity: THREE.Vector3): void {
-        this.velocity = velocity;
+        this.velocity.set(velocity.x, velocity.y, velocity.z);
     }
 
     // This function builds the whole curling stone model.
-    public init(): void {
+    private init(): void {
         /*-------------------- CURLING BASE ------------------------------------------*/
         // Stone base
         let torusGeometry: THREE.TorusGeometry;
@@ -167,17 +173,26 @@ export class CurlingStone extends THREE.Group {
         let handleMesh: THREE.Mesh = new THREE.Mesh(handleGeometry, handleMaterial);
 
         stoneMesh.rotation.x = Math.PI / 2;
+
+        stoneMesh.castShadow = true;
+        stoneMesh.receiveShadow = true;
+        handleMesh.castShadow = true;
+        handleMesh.receiveShadow = true;
         this.add(stoneMesh);
         this.add(handleMesh);
     }
 
     public fadeOut(delta: number): boolean {
+        if (!this.isFading) {
+            this.isFading = true;
+        }
         (<THREE.Mesh>this.children[0]).material.opacity -= delta;
         (<THREE.Mesh>this.children[1]).material.opacity -= delta;
 
         // If the stone has completely faded out, return true so it can get removed from the scene.
         if ((<THREE.Mesh>this.children[0]).material.opacity < 0
             || (<THREE.Mesh>this.children[1]).material.opacity < 0) {
+            this.isFading = false;
             return true;
         }
         return false;
@@ -185,7 +200,7 @@ export class CurlingStone extends THREE.Group {
     }
 
     public highlightOn(): void {
-        let outlineMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00, side: THREE.BackSide });
+        let outlineMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00, side: THREE.BackSide });
 
         // Highlight stone
         let stoneMesh = <THREE.Mesh>this.children[0];
@@ -218,11 +233,15 @@ export class CurlingStone extends THREE.Group {
         return this.beingPlayed;
     }
 
+    public isCurrentlyFading(): boolean {
+        return this.isFading;
+    }
+
     public getHasBeenShot(): boolean {
         return this.hasBeenShot;
     }
 
-    public setHasBeenShot() {
+    public setHasBeenShot(): void {
         this.hasBeenShot = true;
     }
 

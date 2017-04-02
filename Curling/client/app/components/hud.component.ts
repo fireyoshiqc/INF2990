@@ -27,8 +27,8 @@ export class HUDComponent {
     @Input() private forceValue: number;
     @Input() private sliderDisabled = false;
     @Input() private roundsCompleted: boolean[]; // Indicates which rounds have been completed (true)
-    @Input() private showNextThrowMessage: boolean;
-    @Input() private showNextRoundMessage: boolean;
+    @Input() private nextThrowMessageVisible: boolean;
+    @Input() private nextRoundMessageVisible: boolean;
     @Input() private showEndGameMessage: boolean;
 
     @Output()
@@ -46,13 +46,13 @@ export class HUDComponent {
         this.forceVisible = false;
         this.forceValue = 0;
         this.roundsCompleted = [false, false, false];
-        this.showNextThrowMessage = false;
-        this.showNextRoundMessage = false;
+        this.nextThrowMessageVisible = false;
+        this.nextRoundMessageVisible = false;
         this.showEndGameMessage = false;
     }
 
     @HostListener('window:keydown', ['$event'])
-    public keyboardInput(event: KeyboardEvent) {
+    public keyboardInput(event: KeyboardEvent): void {
         if (!this.sliderDisabled) {
 
             if (event.key === "a") {

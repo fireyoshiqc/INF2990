@@ -1,24 +1,23 @@
 /**
- * gl.component.spec.ts
+ * gameController.service.spec.ts
  *
- * @authors Pierre To, Mikaël Ferland
- * @date 2017/02/28
+ * @authors Vincent Chassé et Erica Bugden
+ * @date 2017/03/31
  */
+
+import { expect } from 'chai';
 
 import { GlComponent } from './gl.component';
 import { GameController } from '../services/gameController.service';
 
-import { expect } from 'chai';
-
-describe('GlComponent', () => {
+describe('GlComponentr', () => {
 
     let gameController = new GameController();
     let glComponent = new GlComponent(null, gameController);
 
-    describe('Default constructor ', () => {
-        it('should construct the GlComponent.', done => {
+    describe('Constructor', () => {
+        it('should create the component', done => {
             expect(glComponent).to.exist;
-            expect(glComponent).to.be.an.instanceof(GlComponent);
             done();
         });
     });
