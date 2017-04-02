@@ -6,7 +6,10 @@
             </div>
 
             <div class="flex-item" fxFlex="20%" fxLayoutAlign="center center" fxFlexFill>
-                <button md-raised-button id="confirmationButton" color="primary" #quit (click)="leaveWaitingRoom()">Annuler</button>
+                <button md-raised-button id="confirmationButton" color="primary" #quit 
+                    (click)="leaveWaitingRoom()" [disabled] = "this.missingPlayers === 0">
+                    Annuler
+                </button>
             </div>
         </div>
     </div>
