@@ -6,6 +6,8 @@
  */
 
 import { Component } from '@angular/core';
+import { PlayerHandler } from '../modules/playerHandler.module';
+import { Player } from '../classes/player';
 
 export interface ITurnInfo {
     minutes: number;
@@ -19,7 +21,7 @@ export interface ITurnInfo {
 export interface IPlayerInfo {
     name?: string;
     score?: number;
-    nRackLetters?: number;
+    rackLettersCount?: number;
 }
 
 @Component({
@@ -34,7 +36,7 @@ export class InfoComponent {
     private seconds: number;
     private activePlayerName: string;
     private nLettersStash: number;
-    private thisPlayer: string;
+    private player: Player;
     private gameOver: boolean;
 
     constructor() {
@@ -43,7 +45,11 @@ export class InfoComponent {
         this.seconds = 0;
         this.activePlayerName = "";
         this.nLettersStash = 0;
-        this.thisPlayer = "";
+        this.player = PlayerHandler.requestPlayer();
+    }
+
+    public getPlayer(): Player {
+        return this.player;
     }
 
     public updateTurnInfo(turnInfo: ITurnInfo): void {
@@ -67,13 +73,9 @@ export class InfoComponent {
             this.players[i] = {
                 name: turnInfo.players[i].name,
                 score: turnInfo.players[i].score,
-                nRackLetters: turnInfo.players[i].nRackLetters
+                rackLettersCount: turnInfo.players[i].rackLettersCount
             };
         }
-    }
-
-    public updateName(name: string): void {
-        this.thisPlayer = name;
     }
 
     // For tests

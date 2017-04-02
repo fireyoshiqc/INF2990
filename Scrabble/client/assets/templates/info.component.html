@@ -1,6 +1,6 @@
 <div class="flex-container" fxLayout="column" fxLayout.xs="row" fxLayoutAlign="left left" fxLayoutAlign.xs="center center">
     <div class="flex-item" fxFlex="20%" fxFlex.xs="20%">
-        <p><b> Bienvenue {{this.thisPlayer}} ! </b></p>
+        <p><b> Bon jeu {{this.player.name}} ! </b></p>
     </div>
 
     <div class="flex-item" fxFlex="20%" fxFlex.xs="20%">
@@ -41,8 +41,8 @@
             <div class="flex-item" fxFlex="33%" fxFlex.xs="33%" fxLayoutAlign="center center">
                 {{player.score}}
             </div>
-            <div *ngIf="player.nRackLetters < 7" class="flex-item" fxFlex="33%" fxFlex.xs="33%" fxLayoutAlign="center center">
-                {{player.nRackLetters}}
+            <div *ngIf="player.rackLettersCount < 7" class="flex-item" fxFlex="33%" fxFlex.xs="33%" fxLayoutAlign="center center">
+                {{player.rackLettersCount}}
             </div>
 
         </div>

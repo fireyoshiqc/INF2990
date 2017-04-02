@@ -31,7 +31,8 @@ describe('updateInfo()', () => {
             minutes: 2,
             seconds: 50,
             activePlayerName: "Erica",
-            players: [{name: "Yawen", score: 29, nRackLetters: 1}, {name: "Erica", score: 24, nRackLetters: 3}]};
+            players: [{name: "Yawen", score: 29, rackLettersCount: 1},
+                      {name: "Erica", score: 24, rackLettersCount: 3}]};
 
         testInfoComp.updateTurnInfo(testTurnInfo);
 
@@ -40,7 +41,7 @@ describe('updateInfo()', () => {
         expect(testInfoComp.getTurnInfo().activePlayerName).to.be.equal("Erica");
         expect(testInfoComp.getTurnInfo().players[0].name).to.be.equal("Yawen");
         expect(testInfoComp.getTurnInfo().players[0].score).to.be.equal(29);
-        expect(testInfoComp.getTurnInfo().players[0].nRackLetters).to.be.equal(1);
+        expect(testInfoComp.getTurnInfo().players[0].rackLettersCount).to.be.equal(1);
         done();
     });
 });
