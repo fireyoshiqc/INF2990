@@ -107,25 +107,25 @@ export class GameCamera {
         // Only follow stone when using perspective camera
         if (this.usingPerspectiveCamera) {
 
-                const hog = SceneBuilder.getInstance().getRinkData().lines.hog;
-                const back = SceneBuilder.getInstance().getRinkData().lines.back;
+            const hog = SceneBuilder.getInstance().getRinkData().lines.hog;
+            const back = SceneBuilder.getInstance().getRinkData().lines.back;
 
-                if (position.z <= hog) {
-                    this.cameraPerspective.position.z = position.z + this.PERSPECTIVE_OFFSET
-                        * (1 + position.z / hog);
-                    this.cameraPerspective.position.y = this.PERSPECTIVE_Y_POS
-                        * (1 + position.z / hog);
-                }
-                else {
-                    this.cameraPerspective.position.z = position.z + this.PERSPECTIVE_OFFSET
-                        * (2 + (position.z - hog) / (0.33 * (back - hog)));
-                    this.cameraPerspective.position.y = this.PERSPECTIVE_Y_POS
-                        * (2 + (position.z - hog) / (0.25 * (back - hog)));
-                }
+            if (position.z <= hog) {
+                this.cameraPerspective.position.z = position.z + this.PERSPECTIVE_OFFSET
+                    * (1 + position.z / hog);
+                this.cameraPerspective.position.y = this.PERSPECTIVE_Y_POS
+                    * (1 + position.z / hog);
+            }
+            else {
+                this.cameraPerspective.position.z = position.z + this.PERSPECTIVE_OFFSET
+                    * (2 + (position.z - hog) / (0.33 * (back - hog)));
+                this.cameraPerspective.position.y = this.PERSPECTIVE_Y_POS
+                    * (2 + (position.z - hog) / (0.25 * (back - hog)));
+            }
 
-                // Always look at the center of the rings, in order to see all stones in play.
-                const offset = SceneBuilder.getInstance().getRinkData().rings.offset;
-                this.cameraPerspective.lookAt(new THREE.Vector3(0, 0, offset));
+            // Always look at the center of the rings, in order to see all stones in play.
+            const offset = SceneBuilder.getInstance().getRinkData().rings.offset;
+            this.cameraPerspective.lookAt(new THREE.Vector3(0, 0, offset));
         }
     }
 

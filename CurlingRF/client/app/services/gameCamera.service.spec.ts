@@ -2,7 +2,8 @@
  * cameraManager.service.spec.ts
  *
  * @authors Félix Boulet
- * @date 2017/02/18
+ * @modified Félix Boulet, Mikaël Ferland
+ * @date 2017/04/01
  */
 
 import { GameCamera } from './gameCamera.service';
@@ -56,6 +57,17 @@ describe('CameraManager', () => {
     describe('getCamera()', () => {
         it('should return a THREE.js camera.', done => {
             expect(camera.getCamera()).to.be.an.instanceof(THREE.Camera);
+            done();
+        });
+    });
+
+    describe('followStone()', () => {
+        it('should follow a given stone position.', done => {
+            const dummyVector = new THREE.Vector3(0, 0, 0);
+            camera.followStone(dummyVector);
+            expect(camera.getCamera().position.x).to.eql(0, "Camera is always centered in X.");
+            expect(camera.getCamera().position.y).to.be.above(0, "Camera is always above the stone and the ice.");
+            expect(camera.getCamera().position.z).to.be.below(0, "Camera is always behind the stone.");
             done();
         });
     });
