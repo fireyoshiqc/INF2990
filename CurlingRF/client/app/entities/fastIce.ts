@@ -26,6 +26,7 @@ export class FastIce extends THREE.Object3D {
             map: rink.getWhiteIceTexture(),
         });
         discMaterial.clippingPlanes = rink.getClippingPlanes();
+        discMaterial.name = "discMaterial";
         let disc: THREE.Mesh = new THREE.Mesh(sweptDiscGeometry, discMaterial);
         disc.position.y = 0.00005;
         disc.position.z = 50;
@@ -33,4 +34,11 @@ export class FastIce extends THREE.Object3D {
         this.add(disc);
     }
 
+    public fadeOut(delta: number): boolean {
+        let discMaterial = (<THREE.Mesh>this.children[0]).material as THREE.MeshStandardMaterial;
+        discMaterial.metalness -= 0.2 * delta;
+        discMaterial.roughness += 0.2 * delta;
+
+        return (discMaterial.metalness < 0.6 || discMaterial.roughness > 0.2);
+    }
 }

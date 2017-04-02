@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { CurlingStone } from '../entities/curlingStone';
 import { SceneBuilder } from './sceneBuilder.service';
 import { GameEngine } from './gameEngine.service';
+import { FastIce } from '../entities/fastIce';
 
 @Injectable()
 export class PhysicsManager {
@@ -15,7 +16,7 @@ export class PhysicsManager {
     private readonly CURVE_ANGLE = Math.PI / 300;
     private readonly SPIN_RATIO = 2;
     private curlingStones: CurlingStone[] = [];
-    // private sweptSpots: ISweptSpot[] = [];
+    private fastIceSpots: FastIce[] = [];
     private delta: number;
 
     public static getInstance(): PhysicsManager {
@@ -32,6 +33,7 @@ export class PhysicsManager {
 
     public init(curlingStones?: Array<CurlingStone>): void {
         this.curlingStones = curlingStones ? curlingStones : GameEngine.getInstance().getStones();
+        this.fastIceSpots = GameEngine.getInstance().getFastIceBuffer();
     }
 
     public clearStones(): void {
@@ -51,7 +53,7 @@ export class PhysicsManager {
         this.removeOutOfBoundsStones();
 
         // Fade spots
-        // this.fadeAllSweptSpots(delta);
+        this.fadeFastIceSpots(delta);
     }
 
     private updateCollidingStonesDirection(): void {
@@ -128,9 +130,7 @@ export class PhysicsManager {
         if (separationCorrection === undefined) {
 
             let multiplier: number;
-
-            // this.checkforSweptSpots(stone) ? multiplier = 0.2 : multiplier = 1.5;
-            multiplier = 1.5;
+            this.checkforFastIceSpots(stone) ? multiplier = 0.2 : multiplier = 1.5;
 
             if (stone.isBeingPlayed()) {
                 // Curve calculation only for the stone that was thrown
@@ -175,49 +175,37 @@ export class PhysicsManager {
     }
 
     // Make the swept ice spots fade
-    // private fadeAllSweptSpots(delta: number): void {
-    //     this.sweptSpots.forEach(spot => {
-    //         this.rink.fadeSpot(spot.id, delta);
-    //     });
+    private fadeFastIceSpots(delta: number): void {
+
+        let i = this.fastIceSpots.length;
+
+        while (i--) {
+            if (this.fastIceSpots[i].fadeOut(delta)) {
+                GameEngine.getInstance().removeFromScene(this.fastIceSpots[i]);
+                this.fastIceSpots.splice(i, 1);
+            }
+        }
+    }
 
     // }
 
     //  Check if active stone if over a swept ice spot, to change its friction and spin influence
-    // private checkforSweptSpots(stone: CurlingStone): boolean {
-    //     let isOverSpot = false;
-    //     let i = this.sweptSpots.length;
-    //     while (i--) {
-    //         if (stone.position.clone().sub(this.sweptSpots[i].position).length() <= CurlingStone.MAX_RADIUS) {
-    //             isOverSpot = true;
-    //         }
-    //         if (this.rink.isSpotFaded(this.sweptSpots[i].id)) {
-    //             this.sweptSpots.splice(i, 1);
-    //         }
-    //     }
-    //     return isOverSpot;
-    // }
+    private checkforFastIceSpots(stone: CurlingStone): boolean {
 
+        let isOverSpot = false;
 
+        this.fastIceSpots.forEach((spot) => {
+            if (stone.position.clone().sub(spot.position).length() <= CurlingStone.MAX_RADIUS) {
+                isOverSpot = true;
+            }
+        });
 
-    // public addSweptSpot(position: THREE.Vector3, id: number, spot?: THREE.Mesh): void {
-    //     this.sweptSpots.push({ position, id });
-    //     if (spot !== undefined) {
-    //         spot.add(this.audioManager.getSweepingSound());
-    //         const sweepSound = (<THREE.PositionalAudio>(spot.getObjectByName("sweepingSound")));
-    //         if (sweepSound.isPlaying) {
-    //             sweepSound.stop();
-    //         }
-    //         sweepSound.play();
-    //     }
-    // }
+        return isOverSpot;
+    }
 
-    // public getSweptSpots() {
-    //     return this.sweptSpots;
-    // }
-
-    // public cleanSweptSpots() {
-    //     this.sweptSpots = [];
-    // }
+    public cleanFastIceSpots(): void {
+        this.fastIceSpots.splice(0);
+    }
 
     private removeOutOfBoundsStones(): void {
 

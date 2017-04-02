@@ -12,6 +12,7 @@ import { GameAudio } from './gameAudio.service';
 import { GameController } from './gameController.service';
 import { CurlingStone } from '../entities/curlingStone';
 import { FastIce } from '../entities/fastIce';
+import { Rink } from '../entities/rink';
 
 
 export class GameEngine {
@@ -55,7 +56,6 @@ export class GameEngine {
                     self.scene = scene;
                     self.setupCamera();
                     self.setupAudio();
-                    self.setupFastIceBuffer();
                     resolve();
                 }).catch(() => {
                     reject();
@@ -92,12 +92,25 @@ export class GameEngine {
         this.scene.add(stone);
     }
 
+    public addFastIceSpot(position: THREE.Vector3): void {
+        let fastIce = new FastIce(this.scene.getObjectByName("rink") as Rink);
+        fastIce.position.set(position.x, position.y, position.z);
+        fastIce.add(this.audio.getSweepingSound());
+        this.fastIceBuffer.push(fastIce);
+        this.scene.add(fastIce);
+        (<THREE.PositionalAudio>fastIce.getObjectByName("sweepingSound")).play();
+    }
+
     public getStones(): Array<CurlingStone> {
         return this.curlingStones;
     }
 
     public getActiveStone(): CurlingStone {
         return this.activeStone;
+    }
+
+    public getFastIceBuffer(): Array<FastIce> {
+        return this.fastIceBuffer;
     }
 
     public addToScene(obj: THREE.Object3D): void {
@@ -171,14 +184,4 @@ export class GameEngine {
         this.audio = GameAudio.getInstance();
         this.audio.init(this.camera);
     }
-
-    private setupFastIceBuffer(): void {
-        this.fastIceBuffer = SceneBuilder.getInstance().buildFastIceBuffer();
-        this.fastIceBuffer.forEach((fastIce) =>
-            fastIce.add(<THREE.PositionalAudio>Object.create(this.audio.getSweepingSound())));
-    }
-
-
-
-
 }

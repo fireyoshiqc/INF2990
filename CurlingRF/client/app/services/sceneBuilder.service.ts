@@ -27,7 +27,6 @@ export class SceneBuilder {
         spinMultiplier: 2,
         maxAngle: 30
     };
-    private readonly SWEPT_BUFFER_MAX = 50; // Max amount of fast ice spots to display
 
     private rink: Rink;
 
@@ -97,14 +96,6 @@ export class SceneBuilder {
 
     public getCurveData(): ICurveData {
         return this.CURVE_DATA;
-    }
-
-    public buildFastIceBuffer(): Array<FastIce> {
-        let fastIceBuffer = new Array<FastIce>();
-        for (let i = 0; i < this.SWEPT_BUFFER_MAX; i++) {
-            fastIceBuffer.push(new FastIce(this.rink));
-        }
-        return fastIceBuffer;
     }
 
     private buildRink(): Rink {
