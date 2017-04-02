@@ -7,7 +7,6 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { expect } from 'chai';
 
-// TODO : what is this for?
 class RouterStub {
     public navigateByUrl(url: string): string { return url; }
 }
