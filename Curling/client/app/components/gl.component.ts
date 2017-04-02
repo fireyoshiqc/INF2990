@@ -53,7 +53,7 @@ export class GlComponent implements AfterViewInit {
         // Player can switch camera view
         if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
             this.switchCamera();
-        } else if (event.key === " ")  { // Space bar
+        } else if (event.key === " ") { // Space bar
             this.gameController.onKeyboardDown(event);
         }
     }
