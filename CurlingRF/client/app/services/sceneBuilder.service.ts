@@ -1,8 +1,9 @@
 /**
- * sceneBuilder.service.ts
+ * sceneBuilder.service.ts Builds the game scene in a singleton pattern.
  *
  * @authors Félix Boulet
- * @date 2017/03/26
+ * @modified Félix Boulet, Mikaël Ferland
+ * @date 2017/04/01
  */
 
 import { Rink, IRingSetup, ILineSetup, ISurfaceSetup } from '../entities/rink';
@@ -23,7 +24,6 @@ export class SceneBuilder {
         dashSize: 0.1,
         gapSize: 0.1,
         translateOffset: 0.5,
-        spinMultiplier: 2,
         maxAngle: 30
     };
 
@@ -41,10 +41,10 @@ export class SceneBuilder {
     }
 
     public async buildScene(): Promise<THREE.Scene> {
-        // TODO: Build rink, add lighting and camera, add stones
         let buildPromise = new Promise<THREE.Scene>((resolve, reject) => {
             const scene = new THREE.Scene();
             const skybox = new SkyBox();
+            skybox.name = "skybox";
             scene.add(skybox);
             let self = this;
             this.buildRink().init(skybox.getSkyBoxImages())
@@ -52,6 +52,7 @@ export class SceneBuilder {
                     self.rink = rink;
                     scene.add(this.rink);
                     const light = this.buildLighting(this.rink);
+                    light.name = "lighting";
                     scene.add(light);
                     resolve(scene);
                 });
@@ -157,6 +158,5 @@ export interface ICurveData {
     dashSize: number;
     gapSize: number;
     translateOffset: number;
-    spinMultiplier: number;
     maxAngle: number;
 }
