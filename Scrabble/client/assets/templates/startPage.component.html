@@ -17,14 +17,14 @@
         <div class="flex-item" id="userInputDiv" fxFlex="100%" fxLayoutAlign="center center" fxFlexFill>
 
             <!--Name input-->
-            <md-card *ngIf="!nameValid" id="nameImputCard" align="center">
+            <md-card *ngIf="!player.nameValid" id="nameImputCard" align="center">
                 <md-card-content>
                     <!--Name input (col)-->
                     <div class="flex-container" fxLayout="row" fxLayoutAlign="center center" fxFlexFill>
                         <div class="flex-item" fxFlex="75%" fxLayoutAlign="center center" fxFlexFill>
                             <md-input-container>
                                 <input mdInput id="nameInput" (keyup)="validateName($event)" maxlength="12" md-input placeholder="Entrez votre nom... (entre 4 à 12 caractères)"
-                                    type="text" [(ngModel)]="playerName" disabled={{nameValid}}>
+                                    type="text" [(ngModel)]="player.name">
                                 <md-hint *ngIf="error" id="nameInputError" align="start">{{errorMessage}}</md-hint>
                             </md-input-container>
                         </div>
@@ -41,11 +41,11 @@
             </md-card>
 
             <!--Game selector-->
-            <md-card *ngIf="nameValid" id="capacityInputCard" align="center">
-                <md-card-title>Bienvenue {{playerName}}!</md-card-title>
+            <md-card *ngIf="player.nameValid" id="capacityInputCard" align="center">
+                <md-card-title>Bienvenue {{player.name}}!</md-card-title>
                 <md-card-subtitle #indicationMessage>Veuillez choisir la taille de la partie.</md-card-subtitle>
                 <md-card-content>
-                    <md-radio-group [(ngModel)]="capacity" layout="row" layout-align="center center">
+                    <md-radio-group [(ngModel)]="player.roomCapacity" layout="row" layout-align="center center">
                         <md-radio-button value="2">2 joueurs</md-radio-button>
                         <md-radio-button value="3">3 joueurs</md-radio-button>
                         <md-radio-button value="4">4 joueurs</md-radio-button>

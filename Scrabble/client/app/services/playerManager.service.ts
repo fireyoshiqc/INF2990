@@ -1,25 +1,22 @@
 import { Injectable } from '@angular/core';
 import { SocketHandler } from '../modules/socketHandler.module';
-
-export interface IPlayer {
-    name: string;
-    capacity: number;
-}
+import { PlayerHandler } from '../modules/playerHandler.module';
+import { Player } from '../classes/player';
 
 @Injectable()
 export class PlayerManagerService {
-
     private readonly HOST_NAME = "http://" + window.location.hostname;
     private readonly SERVER_PORT = ":3000";
     private socket: any;
-    private nameValid = false;
-    private player = { name: "", capacity: 0 };
+    private player: Player;
+    private nameValid: boolean;
 
     constructor() {
         this.socket = this.saveSocket();
+        this.player = PlayerHandler.requestPlayer();
 
-        this.socket.on('wcNameValidated', (validity: boolean) => {
-            this.nameValid = validity;
+        this.socket.on('wcNameValidated', (nameValid: boolean) => {
+            this.nameValid = nameValid;
         });
     }
 
@@ -27,32 +24,16 @@ export class PlayerManagerService {
         this.socket.emit('cwValidateName', name);
     }
 
+    public getNameValid(): boolean {
+        return this.nameValid;
+    }
+
     public addPlayer(): void {
-        this.socket.emit('cwAddPlayer', this.player);
+        this.socket.emit('cwAddPlayer', { name: this.player.getName(), capacity: this.player.getRoomCapacity() });
     }
 
     public joinRoom(): void {
-        this.socket.emit('cwJoinRoom', this.player);
-    }
-
-    public getName(): string {
-        return this.player.name;
-    }
-
-    public setName(name: string): void {
-        this.player.name = name;
-    }
-
-    public setCapacity(capacity: number): void {
-        this.player.capacity = capacity;
-    }
-
-    public getCapacity(): number {
-        return this.player.capacity;
-    }
-
-    public isNameValid(): boolean {
-        return this.nameValid;
+        this.socket.emit('cwJoinRoom', { name: this.player.getName(), capacity: this.player.getRoomCapacity() });
     }
 
     private saveSocket(): any {

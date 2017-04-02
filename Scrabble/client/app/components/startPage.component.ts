@@ -8,6 +8,8 @@
 import { Component, Optional } from '@angular/core';
 import { PlayerManagerService } from '../services/playerManager.service';
 import { MdDialog, MdDialogRef } from '@angular/material';
+import { PlayerHandler } from '../modules/playerHandler.module';
+import { Player } from '../classes/player';
 
 @Component({
     selector: 'startpage-comp',
@@ -16,32 +18,27 @@ import { MdDialog, MdDialogRef } from '@angular/material';
 })
 
 export class StartPageComponent {
-    private capacity: number;
-    private playerName: string;
-    private nameValid: boolean;
+    private player: Player;
     private error: boolean;
     private errorMessage: string;
 
     constructor(public dialog: MdDialog, private playerManagerService: PlayerManagerService) {
         this.playerManagerService = playerManagerService;
-        this.nameValid = false;
+        this.player = PlayerHandler.requestPlayer();
         this.error = false;
         this.errorMessage = "";
-        this.playerName = "";
     }
 
     public confirmName(): void {
-        if (this.playerName !== "") {
-            this.nameValid = this.playerManagerService.isNameValid();
+        if (this.player.getName() !== "") {
+            this.player.setNameValid(this.playerManagerService.getNameValid());
 
-            if (this.nameValid) {
+            if (this.player.getNameValid()) {
                 this.error = false;
-                this.playerManagerService.setName(this.playerName);
                 this.playerManagerService.addPlayer();
             } else {
                 this.error = true;
                 this.errorMessage = "Ce nom est déjà pris ou contient des caractères invalides!";
-                this.nameValid = false;
             }
         } else {
             this.error = true;
@@ -50,8 +47,7 @@ export class StartPageComponent {
     }
 
     public confirmCapacity(indicationMessage: HTMLElement): void {
-        if (this.capacity > 1) {
-            this.playerManagerService.setCapacity(this.capacity);
+        if (this.player.getRoomCapacity() > 1) {
             this.playerManagerService.joinRoom();
 
             this.dialog.open(WaitingDialogComponent, {
@@ -67,7 +63,8 @@ export class StartPageComponent {
     }
 
     public validateName(event: KeyboardEvent): void {
-        this.playerManagerService.validateName(this.playerName);
+        this.playerManagerService.validateName(this.player.getName());
+
         if (event.key === "Enter") {
             this.confirmName();
         }
