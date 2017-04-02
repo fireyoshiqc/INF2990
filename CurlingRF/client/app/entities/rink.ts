@@ -22,10 +22,9 @@ export class Rink extends THREE.Group {
     private readonly LOCAL_LINE_SETUP: ILineSetup = {
         hog: 11.72, back: 19.2, start: -21.1
     };
+    
     // All textures and associated variables
     private reflectTexture: THREE.CubeTexture;
-    private loadingDone = false;
-
     private whiteIce: THREE.Texture;
     private blueIce: THREE.Texture;
     private redIce: THREE.Texture;
@@ -82,10 +81,6 @@ export class Rink extends THREE.Group {
 
     public getClippingPlanes(): Array<THREE.Plane> {
         return this.rinkClipPlanes;
-    }
-
-    public isLoadingDone(): boolean {
-        return this.loadingDone;
     }
 
     private loadTextures(): void {
