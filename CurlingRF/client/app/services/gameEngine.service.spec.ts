@@ -5,9 +5,9 @@
  * @date 2017/03/31
  */
 
-import { expect } from 'chai';
-
 import { GameEngine } from './gameEngine.service';
+
+import { expect } from 'chai';
 
 describe('GameEngine', () => {
 

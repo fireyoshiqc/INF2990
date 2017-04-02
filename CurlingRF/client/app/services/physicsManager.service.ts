@@ -1,3 +1,11 @@
+/**
+ * physicsManager.service.ts Handles curling stone and ice physics. Also plays sounds.
+ *
+ * @authors Mikaël Ferland, Yawen Hou
+ * @modified Félix Boulet, Mikaël Ferland
+ * @date 2017/04/01
+ */
+
 import { Injectable } from '@angular/core';
 import { CurlingStone } from '../entities/curlingStone';
 import { SceneBuilder } from './sceneBuilder.service';

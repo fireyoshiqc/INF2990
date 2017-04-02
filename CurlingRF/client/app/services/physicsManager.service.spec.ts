@@ -1,3 +1,11 @@
+/**
+ * physicsManager.service.ts Tests the physics manager.
+ *
+ * @authors Félix Boulet, Erica Bugden
+ * @modified Félix Boulet, Mikaël Ferland
+ * @date 2017/04/01
+ */
+
 import { PhysicsManager } from './physicsManager.service';
 import { CurlingStone, Team } from '../entities/curlingStone';
 

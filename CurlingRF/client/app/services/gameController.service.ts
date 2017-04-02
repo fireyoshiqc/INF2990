@@ -134,7 +134,6 @@ export class GameController {
 
     public startNextThrow(): void {
         this.hudData.nextThrowMessageVisible = false;
-
         this.gameData.state = IdleState.getInstance().nextState();
     }
 
