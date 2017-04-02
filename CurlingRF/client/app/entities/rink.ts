@@ -22,7 +22,7 @@ export class Rink extends THREE.Group {
     private readonly LOCAL_LINE_SETUP: ILineSetup = {
         hog: 11.72, back: 19.2, start: -21.1
     };
-    
+
     // All textures and associated variables
     private reflectTexture: THREE.CubeTexture;
     private whiteIce: THREE.Texture;
