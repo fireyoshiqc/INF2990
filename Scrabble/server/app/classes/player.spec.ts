@@ -49,6 +49,20 @@ describe('Player', () => {
         });
     });
 
+    describe('subtractPoints()', () => {
+        it('should subtract points from the player\'s score.', done => {
+            player.subtractPoints(10);
+            expect(player.getPoints()).to.be.equal(0);
+            done();
+        });
+
+        it('should not go below zero.', done => {
+            player.subtractPoints(10);
+            expect(player.getPoints()).to.be.equal(0);
+            done();
+        });
+    });
+
     describe('setLetters()', () => {
         it('should set the letters rack of the player.', done => {
             let playerTest = new Player("test", "1");
@@ -84,6 +98,14 @@ describe('Player', () => {
             player.addLetters(letters);
 
             expect(player.getLettersRack()).to.eql(["JOKER", "B", "C", "D", "E", "F", "G"]);
+            done();
+        });
+    });
+
+
+    describe('getTotalRackPoints()', () => {
+        it('should return the point value of all the rack letters.', done => {
+            expect(player.getTotalRackPoints()).to.be.eql(15);
             done();
         });
     });

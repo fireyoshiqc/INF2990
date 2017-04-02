@@ -43,6 +43,7 @@ export interface ITurnInfo {
     activePlayerName?: string;
     players?: IPlayerInfo[];
     nLettersStash?: number;
+    gameOver?: boolean;
 }
 
 export interface IPlayerInfo {
@@ -61,6 +62,7 @@ export class GameMaster {
     private turnInfo: ITurnInfo;
     private isFirstTurn: boolean;
     private nextTurn: boolean;
+    private gameOver: boolean;
 
     private readonly BINGO_BONUS = 50;
     private readonly RANDOMIZE_SWAP_COUNT = 4;
@@ -78,6 +80,7 @@ export class GameMaster {
         this.turnInfo.players = [{}];
         this.turnInfo.nLettersStash = 0;
         this.isFirstTurn = true;
+        this.gameOver = false;
     }
 
     public getScrabbleGame(): ScrabbleGame {
@@ -119,6 +122,7 @@ export class GameMaster {
         }
 
         this.turnInfo.nLettersStash = this.stash.getAmountLeft();
+        this.turnInfo.gameOver = this.gameOver;
     }
 
     public getIsFirstTurn(): boolean {
@@ -318,18 +322,28 @@ export class GameMaster {
 
     private checkTurnOver(): void {
         setInterval(() => {
-            if (this.stopwatch.isTurnOver()) {
-                this.nextTurn = true;
+            if (!this.gameOver) {
+                if (this.stopwatch.isTurnOver()) {
+                    this.nextTurn = true;
+                }
+
+                // Update turnInfo
+                this.turnInfo.minutes = this.stopwatch.getMinutesLeft();
+                this.turnInfo.seconds = this.stopwatch.getSecondsLeft();
             }
-
-            // Update turnInfo
-            this.turnInfo.minutes = this.stopwatch.getMinutesLeft();
-            this.turnInfo.seconds = this.stopwatch.getSecondsLeft();
-
         }, 1000);
     }
 
     private endTurn(): CommandExecutionStatus {
+        // Check if game is overlapping
+        if (this.activePlayer.getLettersRack().length < this.activePlayer.getMaxRackSize()) {
+            this.gameOver = true;
+            this.adjustFinalScores();
+            // TODO: Deduct points for letters left (different funct)
+            return null;
+        }
+
+        // Update active player
         let playerIndex = this.players.findIndex(p => p.getSocketId() === this.activePlayer.getSocketId());
         this.activePlayer = this.players[(playerIndex + 1) % this.players.length];
 
@@ -341,6 +355,23 @@ export class GameMaster {
         }
 
         return CommandExecutionStatus.SUCCESS;
+    }
+
+    public isGameOver(): boolean {
+        return this.gameOver;
+    }
+
+    private adjustFinalScores(): void {
+        let scoreBonus = 0;
+
+        this.players.forEach(player => {
+            if (player !== this.activePlayer) {
+                player.subtractPoints(player.getTotalRackPoints());
+                scoreBonus += player.getTotalRackPoints();
+            }
+        });
+
+        this.activePlayer.addPoints(scoreBonus);
     }
 
     public handleQuit(playerName: string): void {

@@ -13,6 +13,7 @@ export interface ITurnInfo {
     activePlayerName: string;
     players: IPlayerInfo[];
     nLettersStash?: number;
+    gameOver?: boolean;
 }
 
 export interface IPlayerInfo {
@@ -34,6 +35,7 @@ export class InfoComponent {
     private activePlayerName: string;
     private nLettersStash: number;
     private thisPlayer: string;
+    private gameOver: boolean;
 
     constructor() {
         this.players = [{}];
@@ -49,6 +51,11 @@ export class InfoComponent {
         this.seconds = turnInfo.seconds;
         this.activePlayerName = turnInfo.activePlayerName;
         this.nLettersStash = turnInfo.nLettersStash;
+        this.gameOver = turnInfo.gameOver;
+
+        if (this.gameOver) {
+            console.log("Game is over!");
+        }
 
         // Check if a player has left
         if (this.players.length > turnInfo.players.length) {

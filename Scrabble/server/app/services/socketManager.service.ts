@@ -145,7 +145,7 @@ export class SocketManager {
             this.sio.sockets.in(id.toString()).emit('wcRefresh', room.getRoomInfo());
 
             if (gameMaster.isGameStarted()) {
-                if (gameMaster.isNextTurn()) {
+                if (gameMaster.isNextTurn() && !gameMaster.isGameOver()) {
                     // Send !passer message automatically
                     this.commandHandler.handleCommand("!passer", gameMaster.getActivePlayer());
                     // Put nextTurn to false
