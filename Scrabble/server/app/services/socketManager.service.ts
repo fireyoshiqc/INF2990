@@ -61,7 +61,7 @@ export class SocketManager {
                 this.initGame(socket, roomID);
             });
 
-            // Updates the information in the waiting room
+            // Updates the information in the all rooms (waiting or playing)
             setInterval(() => {
                 this.updateAllRooms();
             }, 1000);
@@ -142,8 +142,8 @@ export class SocketManager {
         for (let room of this.roomManager.getExistingRooms()) {
             let id = room.getRoomInfo().roomID as number;
             let gameMaster = room.getGameMaster();
-            this.sio.sockets.in(id.toString()).emit('wcRefresh', room.getRoomInfo());
 
+            // Update informations in playing rooms
             if (gameMaster.isGameStarted()) {
                 if (gameMaster.isNextTurn() && !gameMaster.isGameOver()) {
                     // Send !passer message automatically
@@ -152,6 +152,8 @@ export class SocketManager {
                     gameMaster.resetNextTurn();
                 }
                 this.sio.sockets.in(id.toString()).emit('wcUpdateTurnInfo', gameMaster.getTurnInfo());
+            } else { // Update informations in waiting rooms
+                this.sio.sockets.in(id.toString()).emit('wcRefresh', room.getRoomInfo());
             }
         }
     }
