@@ -61,7 +61,7 @@ body {
 
 #userInputDiv {
     background: url(assets/textures/scrabble-bg.jpg);
-    background-size: 100%;
+    background-size: cover;
 }
 
 #nameImputCard {
