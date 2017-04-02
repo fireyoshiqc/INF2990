@@ -3,6 +3,7 @@ import { RackComponent } from './rack.component';
 import { BoardComponent, ICommandPlaceWord } from './board.component';
 import { InfoComponent, ITurnInfo } from './info.component';
 import { SocketHandler } from '../modules/socketHandler.module';
+import { Router } from '@angular/router';
 
 @Component({
     moduleId: module.id,
@@ -19,6 +20,8 @@ export class GameComponent implements OnInit {
     @ViewChild(RackComponent) private rackChild: RackComponent;
     @ViewChild(BoardComponent) private boardChild: BoardComponent;
     @ViewChild(InfoComponent) private infoChild: InfoComponent;
+
+    constructor(public router: Router) { }
 
     public ngOnInit(): void {
         this.socket = SocketHandler.requestSocket(this.HOST_NAME + this.SERVER_PORT);
@@ -63,7 +66,9 @@ export class GameComponent implements OnInit {
         return this.isDarkTheme;
     }
 
-    public resetGame(): void {
-        alert("reset");
+    public quitGame(): void {
+        alert("Vous allez quitter la partie définitivement.");
+
+        this.router.navigate(['/startPage']);
     }
 }
