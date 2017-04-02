@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { MaterialModule } from '@angular/material';
@@ -15,7 +16,8 @@ import { WaitingRoomComponent } from '../components/waitingRoom.component';
 import { StartPageComponent, WaitingDialogComponent } from '../components/startPage.component';
 
 @NgModule({
-    imports: [BrowserModule, FormsModule, AppRoutingModule, MaterialModule.forRoot(), FlexLayoutModule.forRoot()],
+    imports: [BrowserAnimationsModule, BrowserModule, FormsModule, AppRoutingModule,
+        MaterialModule.forRoot(), FlexLayoutModule.forRoot()],
     declarations: [AppComponent, GameComponent, ChatComponent, BoardComponent, RackComponent, InfoComponent,
         WaitingRoomComponent, StartPageComponent, WaitingDialogComponent],
     entryComponents: [WaitingDialogComponent],

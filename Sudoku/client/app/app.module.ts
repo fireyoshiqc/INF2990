@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { MaterialModule } from '@angular/material';
@@ -14,7 +15,8 @@ import { HighscoresComponent, HighscoresPopupComponent } from './components/high
 import 'hammerjs';
 
 @NgModule({
-    imports: [BrowserModule, FormsModule, HttpModule, MaterialModule.forRoot(), FlexLayoutModule.forRoot()],
+    imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule,
+        MaterialModule.forRoot(), FlexLayoutModule.forRoot()],
     declarations: [AppComponent, SudokuGridComponent, GameAreaComponent, NameSelectorComponent, NameDialogComponent,
         HighscoresComponent, HighscoresPopupComponent],
     entryComponents: [NameDialogComponent, HighscoresPopupComponent],
