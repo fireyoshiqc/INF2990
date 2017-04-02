@@ -398,12 +398,6 @@ md-input-container {
     box-shadow: none;
 }
 
-#chatCard md-card-subtitle {
-    margin: 0px 0px 2px 0px;
-    color: black;
-    font-weight: bold;
-}
-
 .commandMessage {
     color: #2E7D32;
 }

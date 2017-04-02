@@ -195,8 +195,7 @@ export class CommandHandler {
         let playerSocket = this.sio.sockets.connected[player.getSocketId()];
 
         if (playerSocket !== undefined) {
-            playerSocket.emit('command sent',
-                { username: "Scrabble Game", submessage: msg, commandResponse: Command.helpMessage });
+            playerSocket.emit('command sent', { username: "Scrabble Game", submessage: msg, commandResponse: "" });
         }
     }
 }

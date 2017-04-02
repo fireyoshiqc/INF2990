@@ -3,13 +3,42 @@
 
     <div #chatbox class="flex-item pre-scrollable" fxFlex="89.5%" fxFlex.xs="89.5%" fxFlexFill fxFlexWrap="wrap">
         <div [hidden]="attemptingToConnect">
-            <div class="flex-container" fxLayout="column" fxLayoutAlign="center" fxLayoutAlign.xs="center" fxFlexFill>
-                <md-card id="chatCard" *ngFor="let msg of msgList; let i = index" fxFlex="95%">
-                    <md-card-subtitle>{{msg.getUsername()}}</md-card-subtitle>
+            <div class="flex-container" fxLayout="column" fxLayoutAlign="center" fxLayoutAlign.xs="center">
+                <md-card id="chatCard" *ngFor="let msg of msgList; let i = index">
+                    <strong>{{msg.getUsername()}}</strong>
                     <md-card-content>
                         <p [ngClass]="{'commandMessage' : msg.getIsCommand()}">{{msg.getSubmessage()}}</p>
                         <p class="commandMessage" *ngIf="msg.getCommandResponse().length > 0">{{msg.getCommandResponse()}}</p>
                     </md-card-content>
+
+                    <md-tab-group [selectedIndex]=0 *ngIf="msg.getSubmessage() === '!aide'" fxFlexFill>
+                        <md-tab label="Placer un mot">
+                            <h4>!placer <em>ligne</em> <em>colonne</em> <em>(h|v)</em> mot</h4>
+                            <p><b>ligne</b>: Une lettre entre A et O</p>
+                            <p><b>colonne</b>: Un chiffre entre 1 et 15</p>
+                            <p><b>(h|v)</b>: L'orientation du mot est soit <b>h</b>orizontale ou <b>v</b>erticale</p>
+                            <p><b>mot</b>: Le mot doit au moins avoir 2 lettres. Chaque lettre du mot est entrée en minuscule,
+                                sauf lorsqu’il s’agit d’une lettre blanche, qui elle, doit être entrée en majuscule. Le mot
+                                doit être écrit au complet en y incluant, si nécessaire, les lettres se trouvant déjà sur
+                                le plateau de jeu.
+                            </p>
+                            <p><b>Ex: <em>!placer g15v bonjour </em></b>: joue le mot bonjour à la verticale et le b est positionné
+                                en g15.
+                            </p>
+                        </md-tab>
+                        <md-tab label="Changer des lettres">
+                            <h4>!changer <em>lettres</em></h4>
+                            <p><b>lettres</b>: Spécifiez jusqu'à 7 lettres à échanger de votre chevalet. Toutes les lettres
+                                doivent se trouver sur votre chevalet. Utilisez <b>*</b> pour indiquer une lettre blanche.
+                            </p>
+                            <p><b>Ex: <em>!changer e* </em></b>: échange une seule des lettres e et une lettre blanche avec
+                                deux lettres pigées au hasard de la réserve de lettres.</p>
+                        </md-tab>
+                        <md-tab label="Passer un tour">
+                            <h4>!passer</h4>
+                            <p>Si vous êtes le joueur actif, vous pouvez entrez <em>!passer</em> pour passer votre tour.</p>
+                        </md-tab>
+                    </md-tab-group>
                 </md-card>
             </div>
         </div>
