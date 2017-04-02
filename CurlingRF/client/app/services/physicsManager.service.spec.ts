@@ -104,7 +104,9 @@ describe('PhysicsManager', () => {
 
             testPhysicsManager.getStones().push(new CurlingStone(null, velocity, position1));
             testPhysicsManager.getStones().push(new CurlingStone(null, velocity, position2));
-            testPhysicsManager.sortStonesByDistance();
+
+            // Sort stones relative to a center that is closer to the second stone.
+            testPhysicsManager.sortStonesByDistance(new THREE.Vector3(0, 0, 1));
 
             // The closest stone (the second one) should now be the first in the array
             expect(testPhysicsManager.getStones()[0].position.z).to.eql(1);

@@ -203,6 +203,7 @@ export class PhysicsManager {
         return isOverSpot;
     }
 
+    // Can't be tested since it absolutely needs the GameEngine singleton running.
     public cleanFastIceSpots(): void {
         this.fastIceSpots.forEach((spot) => {
             GameEngine.getInstance().removeFromScene(spot);
@@ -242,10 +243,19 @@ export class PhysicsManager {
         }
     }
 
-    public sortStonesByDistance(): void {
+    public sortStonesByDistance(center?: THREE.Vector3): void {
         if (this.curlingStones.length > 1) {
-            const offset = SceneBuilder.getInstance().getRinkData().rings.offset;
-            const centerVector = new THREE.Vector3(0, 0, offset);
+            let offset: number;
+            let centerVector: THREE.Vector3;
+
+            // Normal behaviour
+            if (center === undefined) {
+                offset = SceneBuilder.getInstance().getRinkData().rings.offset;
+                centerVector = new THREE.Vector3(0, 0, offset);
+            } else {
+                // For tests
+                centerVector = center;
+            }
             this.curlingStones.sort((stone1: CurlingStone, stone2: CurlingStone) => {
                 // If stone1 is closer to the rings than stone 2, it should be placed before stone 2
                 return stone1.position.distanceTo(centerVector) - stone2.position.distanceTo(centerVector);
@@ -264,32 +274,6 @@ export class PhysicsManager {
 
         return allStonesHaveStopped;
     }
-
-    /******************** TEST HELPER *******************/
-
-    public setStonesForOutOfBoundsTests(): void {
-        this.clearStones();
-
-        let speed = new THREE.Vector3(0, 0, 0);
-        const dims = SceneBuilder.getInstance().getRinkData().dims;
-
-        // Past left boundary
-        let leftPos = new THREE.Vector3(-(dims.width / 2 - CurlingStone.MAX_RADIUS) - 0.1, 0, 0);
-        this.curlingStones.push(new CurlingStone(null, speed, leftPos));
-
-        // Past right boundary
-        let rightPos = new THREE.Vector3((dims.width / 2 - CurlingStone.MAX_RADIUS) + 0.1, 0, 0);
-        this.curlingStones.push(new CurlingStone(null, speed, rightPos));
-
-        // Past back line
-        let backPos = new THREE.Vector3(0, 0, dims.length + CurlingStone.MAX_RADIUS + 0.1);
-        this.curlingStones.push(new CurlingStone(null, speed, backPos));
-
-        // Stopped before game line
-        this.curlingStones.push(new CurlingStone(null, speed, new THREE.Vector3(0, 0, 0)));
-    }
-
-    /***************** END TEST HELPER *******************/
 }
 
 interface ISweptSpot {
