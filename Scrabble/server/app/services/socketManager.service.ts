@@ -90,13 +90,13 @@ export class SocketManager {
     }
 
     private joinRoom(socket: SocketIO.Socket, player: any): void {
-         // Find (or create) a room in room manager service
+        // Find (or create) a room in room manager service
         let room = this.roomManager.createRoom(player.capacity);
 
         let joinPlayer = this.playerManager.getPlayerFromSocketID(socket.id);
 
-         // Allows client to join a specific room
-         joinPlayer.setRoomId(room.getRoomInfo().roomID);
+        // Allows client to join a specific room
+        joinPlayer.setRoomId(room.getRoomInfo().roomID);
         room.addPlayer(joinPlayer);
 
         socket.join(room.getRoomInfo().roomID.toString());
@@ -104,6 +104,7 @@ export class SocketManager {
     }
 
     private leaveRoom(socket: SocketIO.Socket, player: any): void {
+        this.sendLeaveMessage(socket);
         this.roomManager.leaveRoom(player.name, player.roomID);
         socket.leave(player.roomID.toString());
     }
@@ -131,8 +132,6 @@ export class SocketManager {
                 if (playerSocket !== undefined) {
                     // Updates each player's rack with 7 randomized letters from stash
                     playerSocket.emit('wcUpdateRack', player.getLettersRack());
-                    // Updates the player's validated name
-                    playerSocket.emit('wcUpdateName', player.getName());
                 }
             });
         }
@@ -162,20 +161,24 @@ export class SocketManager {
         let player = this.playerManager.getPlayerFromSocketID(socket.id);
 
         if (player !== undefined) {
+            this.sendLeaveMessage(socket);
             this.roomManager.leaveRoom(player.getName(), player.getRoomId());
             this.playerManager.removePlayer(player.getName());
-
-            let room = this.roomManager.findRoom(player.getRoomId());
-
-            // Send a message to every player in the game room
-            if (room !== undefined && room.getGameMaster().isGameStarted()) {
-                let disconnectMsg = "L'utilisateur a quitté la partie. Ses lettres vont être remises dans la réserve." +
-                    " Le joueur actif est " + room.getGameMaster().getActivePlayer().getName() + ".";
-                this.sio.sockets
-                    .in(player.getRoomId().toString())
-                    .emit('user disconnect', { username: player.getName(), submessage: disconnectMsg });
-            }
         }
         console.log("User disconnected");
+    }
+
+    private sendLeaveMessage(socket: SocketIO.Socket): void {
+        let player = this.playerManager.getPlayerFromSocketID(socket.id);
+        let room = this.roomManager.findRoom(player.getRoomId());
+
+        // Send a message to every player in the game room
+        if (room !== undefined && room.getGameMaster().isGameStarted()) {
+            let disconnectMsg = "L'utilisateur a quitté la partie. Ses lettres vont être remises dans la réserve." +
+                " Le joueur actif est " + room.getGameMaster().getActivePlayer().getName() + ".";
+            this.sio.sockets
+                .in(player.getRoomId().toString())
+                .emit('user disconnect', { username: player.getName(), submessage: disconnectMsg });
+        }
     }
 }

@@ -37,10 +37,6 @@ export class GameComponent implements OnInit {
         this.socket.on("wcUpdateTurnInfo", (turnInfo: ITurnInfo) => {
             this.infoChild.updateTurnInfo(turnInfo);
         });
-
-        this.socket.on("wcUpdateName", (name: string) => {
-            this.infoChild.updateName(name);
-        });
     }
 
     @HostListener('window:keydown', ['$event'])
@@ -68,6 +64,12 @@ export class GameComponent implements OnInit {
 
     public quitGame(): void {
         alert("Vous allez quitter la partie définitivement.");
+
+        this.socket.emit('cwLeaveRoom', { roomID: this.infoChild.getPlayer().getRoomID(),
+                                          name: this.infoChild.getPlayer().getName() });
+
+        // Reset room ID
+        this.infoChild.getPlayer().setRoomID(-1);
 
         this.router.navigate(['/startPage']);
     }

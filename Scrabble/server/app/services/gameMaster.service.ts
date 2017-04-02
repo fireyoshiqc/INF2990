@@ -49,7 +49,7 @@ export interface ITurnInfo {
 export interface IPlayerInfo {
     name?: string;
     score?: number;
-    nRackLetters?: number;
+    rackLettersCount?: number;
 }
 
 export class GameMaster {
@@ -117,7 +117,7 @@ export class GameMaster {
             this.turnInfo.players[i] = {
                 name: this.players[i].getName(),
                 score: this.players[i].getPoints(),
-                nRackLetters: this.players[i].getLettersRack().length
+                rackLettersCount: this.players[i].getLettersRack().length
             };
         }
 
@@ -154,8 +154,12 @@ export class GameMaster {
             this.activePlayer = this.players[0];
             this.turnInfo.activePlayerName = this.players[0].getName();
 
+            // Reset all player information
             // Give seven letters to each player from stash
             for (let player of this.players) {
+                player.setLetters([]);
+                player.setPoints(0);
+                player.setBlocked(false);
                 player.addLetters(this.stash.pickLetters(7));
             }
 
