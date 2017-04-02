@@ -76,7 +76,7 @@ export class GameEngine {
         this.renderer.render(this.scene, this.camera.getCamera());
     }
 
-    public checkIntersect(mouse: THREE.Vector2): THREE.Intersection[] {
+    public checkIntersectIce(mouse: THREE.Vector2): THREE.Intersection[] {
         this.raycaster.setFromCamera(mouse, this.camera.getCamera());
         let intersects = this.raycaster.intersectObject(this.scene
             .getObjectByName("rink").getObjectByName("whiteice"), true);
@@ -93,12 +93,14 @@ export class GameEngine {
     }
 
     public addFastIceSpot(position: THREE.Vector3): void {
-        let fastIce = new FastIce(this.scene.getObjectByName("rink") as Rink);
-        fastIce.position.set(position.x, position.y, position.z);
-        fastIce.add(this.audio.getSweepingSound());
-        this.fastIceBuffer.push(fastIce);
-        this.scene.add(fastIce);
-        (<THREE.PositionalAudio>fastIce.getObjectByName("sweepingSound")).play();
+        new FastIce().init(this.scene.getObjectByName("rink") as Rink)
+            .then((fastIce) => {
+                fastIce.position.set(position.x, position.y, position.z);
+                fastIce.add(this.audio.getSweepingSound());
+                this.fastIceBuffer.push(fastIce);
+                this.scene.add(fastIce);
+                (<THREE.PositionalAudio>fastIce.getObjectByName("sweepingSound")).play();
+            });
     }
 
     public getStones(): Array<CurlingStone> {

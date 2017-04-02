@@ -204,6 +204,9 @@ export class PhysicsManager {
     }
 
     public cleanFastIceSpots(): void {
+        this.fastIceSpots.forEach((spot) => {
+            GameEngine.getInstance().removeFromScene(spot);
+        });
         this.fastIceSpots.splice(0);
     }
 

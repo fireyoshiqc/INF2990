@@ -18,6 +18,7 @@ export class SweepingState implements IGameState {
     private broomCursorFrame = this.MIN_BROOM_ANIM_FRAMES;
     private canSweep = false;
     private isSweeping = false;
+    private mouse: THREE.Vector2;
 
     public static getInstance(): SweepingState {
         return SweepingState.instance;
@@ -27,6 +28,7 @@ export class SweepingState implements IGameState {
         this.gameController = gameController;
         this.physicsManager = PhysicsManager.getInstance();
         this.physicsManager.init();
+        this.mouse = new THREE.Vector2();
     }
 
     private constructor() {
@@ -38,16 +40,35 @@ export class SweepingState implements IGameState {
     }
 
     public onMouseDown(event: any): void {
-        // Do nothing
-        if (this.canSweep) {
+
+        this.setMouse(event);
+
+        // Get where the click intersects with the ice (if it does).
+        let intersects = GameEngine.getInstance().checkIntersectIce(this.mouse);
+
+        // If the stone has passed the first hog line and the click intersects the ice, begin sweeping
+        if (intersects.length > 0 && this.canSweep) {
             this.isSweeping = true;
         }
     }
 
     public onMouseUp(event: any): void {
-        // Do nothing
+
+        this.setMouse(event);
+
         if (this.canSweep) {
-            this.isSweeping = false;
+            if (this.isSweeping) {
+                // Check if the click still intersects the ice when released.
+                let intersects = GameEngine.getInstance().checkIntersectIce(this.mouse);
+
+                // If it does, add a swept ice spot on the ice at that spot so the PhysicsManager can handle it.
+                if (intersects.length > 0) {
+                    let intersectionPoint = intersects[intersects.length - 1].point;
+                    GameEngine.getInstance().addFastIceSpot(intersectionPoint);
+                }
+
+                this.isSweeping = false;
+            }
         }
     }
 
@@ -96,7 +117,13 @@ export class SweepingState implements IGameState {
         this.isSweeping = false;
         this.broomCursorFrame = this.MIN_BROOM_ANIM_FRAMES;
         this.physicsManager.sortStonesByDistance();
+        this.physicsManager.cleanFastIceSpots();
         return EndThrowState.getInstance().enterState();
+    }
+
+    public setMouse(event: any): void {
+        this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+        this.mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
     }
 
     private animateBroomCursor(): void {

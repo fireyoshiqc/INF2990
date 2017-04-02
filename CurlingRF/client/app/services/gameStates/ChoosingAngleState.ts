@@ -118,7 +118,7 @@ export class ChoosingAngleState implements IGameState {
         const rinkDims = SceneBuilder.getInstance().getRinkData().dims;
         let gameData = this.gameController.getGameData();
 
-        let intersects = GameEngine.getInstance().checkIntersect(mouse);
+        let intersects = GameEngine.getInstance().checkIntersectIce(mouse);
         if (intersects.length > 0) {
             let intersectionPoint = intersects[0].point;
             let distance = intersectionPoint.x;
