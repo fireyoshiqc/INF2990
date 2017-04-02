@@ -151,7 +151,7 @@ export class PhysicsManager {
 
             if (slidingSound !== undefined) {
                 if (stone.getVelocity().length() > 0.01) {
-                    slidingSound.setVolume(stone.getVelocity().length() / 4);
+                    slidingSound.setVolume(stone.getVelocity().length() / 3);
                     if (!slidingSound.isPlaying) {
                         slidingSound.play();
                     }
