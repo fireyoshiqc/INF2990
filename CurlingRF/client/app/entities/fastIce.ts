@@ -14,18 +14,18 @@ export class FastIce extends THREE.Object3D {
         super();
     }
 
-    public init(rink: Rink): Promise<FastIce> {
+    public init(rink?: Rink): Promise<FastIce> {
         let initPromise = new Promise((resolve, reject) => {
             const sweptDiscGeometry: THREE.Geometry = new THREE.CircleGeometry(CurlingStone.MAX_RADIUS, 20);
             const discMaterial: THREE.Material = new THREE.MeshStandardMaterial({
                 side: THREE.DoubleSide,
                 metalness: 0.8,
                 roughness: 0.0,
-                envMap: rink.getReflectTexture(),
+                envMap: rink ? rink.getReflectTexture() : null,
                 envMapIntensity: 1.0,
-                map: rink.getWhiteIceTexture(),
+                map: rink ? rink.getWhiteIceTexture() : null,
             });
-            discMaterial.clippingPlanes = rink.getClippingPlanes();
+            discMaterial.clippingPlanes = rink ? rink.getClippingPlanes() : [];
             discMaterial.name = "discMaterial";
             let disc: THREE.Mesh = new THREE.Mesh(sweptDiscGeometry, discMaterial);
             disc.position.y = 0.00005;
