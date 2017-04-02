@@ -7,7 +7,6 @@
 
 import { Rink, IRingSetup, ILineSetup, ISurfaceSetup } from '../entities/rink';
 import { SkyBox } from '../entities/skyBox';
-import { FastIce } from '../entities/fastIce';
 
 export class SceneBuilder {
 

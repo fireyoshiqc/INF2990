@@ -6,17 +6,15 @@ import { expect } from 'chai';
 describe('PhysicsManager', () => {
 
     let testPhysicsManager = PhysicsManager.getInstance();
-    testPhysicsManager.init();
 
-    // TODO: Fix this
-    // describe('Default constructor ', () => {
-    //     it('should construct the PhysicsManager.', done => {
-    //         testPhysicsManager = new PhysicsManager(testCurlingStones);
-    //         expect(testPhysicsManager).to.exist;
-    //         expect(testPhysicsManager).to.be.an.instanceof(PhysicsManager);
-    //         done();
-    //     });
-    // });
+    describe('init()', () => {
+        it('should initialize the PhysicsManager singleton.', done => {
+            testPhysicsManager.init();
+            expect(testPhysicsManager).to.exist;
+            expect(testPhysicsManager).to.be.an.instanceof(PhysicsManager);
+            done();
+        });
+    });
 
     describe('update()', () => {
         it('should update the curling stone position according to its speed.', done => {
@@ -55,45 +53,6 @@ describe('PhysicsManager', () => {
             done();
         });
     });
-
-    // describe('getOutOfBoundsStones()', () => {
-    //     it('should detect when a stone has partially passed the left boundary.', done => {
-    //         testPhysicsManager.clearStones();
-    //         testPhysicsManager.setStonesForOutOfBoundsTests();
-    //         testPhysicsManager.getStones()[0].setHasBeenShot();
-
-    //         expect(testPhysicsManager.getOutOfBoundsStones().length).to.be.equal(1);
-    //         expect(testPhysicsManager.getOutOfBoundsStones()[0]).to.be.instanceOf(CurlingStone);
-    //         done();
-    //     });
-
-    //     it('should detect when a stone has partially passed the right boundary.', done => {
-    //         testPhysicsManager.getStones().splice(0, 1);
-    //         testPhysicsManager.getStones()[0].setHasBeenShot();
-
-    //         expect(testPhysicsManager.getOutOfBoundsStones().length).to.be.equal(1);
-    //         expect(testPhysicsManager.getOutOfBoundsStones()[0]).to.be.instanceOf(CurlingStone);
-    //         done();
-    //     });
-
-    //     it('should detect when a stone has completely passed the backline.', done => {
-    //         testPhysicsManager.getStones().splice(0, 1);
-    //         testPhysicsManager.getStones()[0].setHasBeenShot();
-
-    //         expect(testPhysicsManager.getOutOfBoundsStones().length).to.be.equal(1);
-    //         expect(testPhysicsManager.getOutOfBoundsStones()[0]).to.be.instanceOf(CurlingStone);
-    //         done();
-    //     });
-
-    //     it('should detect when a stone has stopped before the gameline.', done => {
-    //         testPhysicsManager.getStones().splice(0, 1);
-    //         testPhysicsManager.getStones()[0].setHasBeenShot();
-
-    //         expect(testPhysicsManager.getOutOfBoundsStones().length).to.be.equal(1);
-    //         expect(testPhysicsManager.getOutOfBoundsStones()[0]).to.be.instanceOf(CurlingStone);
-    //         done();
-    //     });
-    // });
 
     describe('allStonesHaveStopped()', () => {
         it('should return true when all stones have stopped moving.', done => {
@@ -136,30 +95,11 @@ describe('PhysicsManager', () => {
         });
     });
 
-    // describe('addSweptSpot()', () => {
-    //     it('should add a single, standard swept spot to the spot array.', done => {
-    //         testPhysicsManager.addSweptSpot(new THREE.Vector3(0, 0, 0), 0);
-    //         let sweptSpots = testPhysicsManager.getSweptSpots();
-    //         expect(sweptSpots.length).to.eql(1);
-    //         expect(sweptSpots[0].id).to.eql(0);
-    //         expect(sweptSpots[0].position).to.eql(new THREE.Vector3(0, 0, 0));
-    //         done();
-    //     });
-    // });
-
-    // describe('cleanSweptSpots()', () => {
-    //     it('should empty the array of swept spots.', done => {
-    //         testPhysicsManager.cleanSweptSpots();
-    //         expect(testPhysicsManager.getSweptSpots().length).to.eql(0);
-    //         done();
-    //     });
-    // });
-
     describe('sortStonesByDistance()', () => {
         it('should sort the array of stones by distance to the game rings.', done => {
             testPhysicsManager.clearStones();
             let position1 = new THREE.Vector3(0, 0, 0);
-            let position2 = new THREE.Vector3(0, 0, -1);
+            let position2 = new THREE.Vector3(0, 0, 1);
             let velocity = new THREE.Vector3(0, 0, 0);
 
             testPhysicsManager.getStones().push(new CurlingStone(null, velocity, position1));
@@ -167,7 +107,7 @@ describe('PhysicsManager', () => {
             testPhysicsManager.sortStonesByDistance();
 
             // The closest stone (the second one) should now be the first in the array
-            expect(testPhysicsManager.getStones()[0].position.z).to.eql(-1);
+            expect(testPhysicsManager.getStones()[0].position.z).to.eql(1);
             expect(testPhysicsManager.getStones()[1].position.z).to.eql(0);
             done();
         });
