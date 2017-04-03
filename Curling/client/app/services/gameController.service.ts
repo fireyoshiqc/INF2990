@@ -13,6 +13,7 @@ import { EndThrowState } from './gameStates/EndThrowState';
 import { IdleState } from './gameStates/IdleState';
 import { ShootingState } from './gameStates/ShootingState';
 import { SweepingState } from './gameStates/SweepingState';
+import { EndGameState } from './gameStates/EndGameState';
 
 export enum AIDifficulty {
     Easy,
@@ -154,6 +155,7 @@ export class GameController {
             IdleState.getInstance().init(this);
             ShootingState.getInstance().init(this);
             SweepingState.getInstance().init(this);
+            EndGameState.getInstance().init(this);
             resolve();
         });
         return initPromise;

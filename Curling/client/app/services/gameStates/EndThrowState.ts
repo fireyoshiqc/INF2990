@@ -7,6 +7,7 @@
 
 import { IGameState } from './GameState';
 import { IdleState } from './IdleState';
+import { EndGameState } from './EndGameState';
 import { GameController } from '../gameController.service';
 import { GameEngine } from '../gameEngine.service';
 import { SceneBuilder } from '../sceneBuilder.service';
@@ -76,27 +77,34 @@ export class EndThrowState implements IGameState {
         this.stonesThrown++;
 
         let hudData = this.gameController.getHUDData();
+        let gameData = this.gameController.getGameData();
+
         hudData.forceVisible = false;
 
         let roundEnd = false;
 
+
         if (this.stonesThrown === this.gameController.getMaxThrows()) {
-            hudData.nextRoundMessageVisible = true;
-            hudData.nextThrowMessageVisible = false;
             roundEnd = true;
+
+            if (gameData.roundsCompleted[1]) {
+                // Enter EndGameState if game is over
+                gameData.roundsCompleted[2] = true;
+                this.gameController.getGameData().state = EndGameState.getInstance().enterState();
+            } else {
+                hudData.nextRoundMessageVisible = true;
+                hudData.nextThrowMessageVisible = false;
+            }
         } else {
             hudData.nextRoundMessageVisible = false;
             hudData.nextThrowMessageVisible = true;
         }
 
-
         this.countAndHighlightPoints(roundEnd);
-
         return this;
     }
 
     public nextState(): IdleState {
-
         this.gameController.getHUDData().nextThrowMessageVisible = false;
         this.gameController.getHUDData().nextRoundMessageVisible = false;
 
@@ -136,9 +144,7 @@ export class EndThrowState implements IGameState {
         }
 
         if (!roundEnd) {
-
             gameData.isPlayerTurn = !gameData.isPlayerTurn;
-
         }
     }
 
