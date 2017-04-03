@@ -9,11 +9,15 @@ import { expect } from 'chai';
 
 import { GlComponent } from './gl.component';
 import { GameController } from '../services/gameController.service';
+import { HighscoresService } from '../services/highscores.service';
+import { Http } from '@angular/http';
 
 describe('GlComponentr', () => {
 
     let gameController = new GameController();
-    let glComponent = new GlComponent(null, gameController);
+    let http: Http;
+    let highscoresService = new HighscoresService(http);
+    let glComponent = new GlComponent(null, gameController, highscoresService);
 
     describe('Constructor', () => {
         it('should create the component', done => {

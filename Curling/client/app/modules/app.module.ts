@@ -20,7 +20,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
         MaterialModule.forRoot(), FlexLayoutModule.forRoot()],
     declarations: [AppComponent, HUDComponent, GlComponent, ModifierDirective,
         PlayerNameComponent, NameSelectorComponent, NameDialogComponent, HighscoresComponent, HighscoresPopupComponent],
-    entryComponents: [NameDialogComponent],
+    entryComponents: [NameDialogComponent, HighscoresPopupComponent],
     providers: [GameController],
     bootstrap: [AppComponent]
 })

@@ -1,19 +1,23 @@
 
 import { Component, HostListener, Optional, AfterViewInit } from '@angular/core';
 import { GameController } from '../services/gameController.service';
+import { HighscoresService } from '../services/highscores.service';
+import { HighscoresPopupComponent, HighscoresComponent } from './highscores.component';
 import { MdDialog, MdDialogRef } from '@angular/material';
 
 @Component({
     selector: 'my-gl',
     templateUrl: "/assets/templates/gl.component.html",
-    providers: [GameController]
+    providers: [GameController, HighscoresService]
 })
 
 export class GlComponent implements AfterViewInit {
     private isDarkTheme = false;
     private dialogRef: MdDialogRef<NameDialogComponent>;
+    private scoreDialogRef: MdDialogRef<HighscoresPopupComponent>;
 
-    constructor(public dialog: MdDialog, private gameController: GameController) { }
+    constructor(public dialog: MdDialog, private gameController: GameController,
+        private highscoresService: HighscoresService) { }
 
     public ngAfterViewInit(): void {
         // Necessary to fix prodmode exclusive error (data binding changed on init)
@@ -81,6 +85,27 @@ export class GlComponent implements AfterViewInit {
 
     public switchCamera(): void {
         this.gameController.switchCamera();
+    }
+
+    public showHighscores(): void {
+        this.highscoresService.getHighscores()
+            .then((scores) => {
+                if (scores !== undefined) {
+                    // Pop the popup!
+                    this.showHighscoresDialog(scores);
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
+    public showHighscoresDialog(highscores: any): void {
+        setTimeout(() => {
+            this.scoreDialogRef = this.dialog.open(HighscoresPopupComponent);
+            (this.scoreDialogRef.componentInstance.dialogRef.componentInstance as HighscoresComponent)
+                .highscores = { easy: highscores.easy, hard: highscores.hard };
+        });
     }
 }
 
