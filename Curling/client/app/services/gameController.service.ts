@@ -55,13 +55,17 @@ export class GameController {
         let self = this;
         this.gameEngine.init(container, this)
             .then(() => {
-                self.initGameStates();
-                // Choose first player randomly
-                if (Math.random() > 0.5) {
-                    self.gameData.isPlayerTurn = true;
-                }
-                self.gameData.state = IdleState.getInstance().enterState();
-                self.gameEngine.update();
+                self.initGameStates().then(() => {
+                    // Choose first player randomly
+                    if (Math.random() > 0.5) {
+                        self.gameData.isPlayerTurn = true;
+                    }
+                    self.gameData.state = IdleState.getInstance().enterState();
+                    self.gameEngine.update();
+                })
+                .catch(() => {
+                    throw new Error("Error: Could not initialize game states!");
+                });
             })
             .catch(() => {
                 throw new Error("Error: Could not initialize GameController!");
@@ -143,12 +147,16 @@ export class GameController {
         navigator.sendBeacon(this.HOST_NAME + this.SERVER_PORT + "/api/removeName", blob);
     }
 
-    private initGameStates(): void {
-        ChoosingAngleState.getInstance().init(this);
-        EndThrowState.getInstance().init(this);
-        IdleState.getInstance().init(this);
-        ShootingState.getInstance().init(this);
-        SweepingState.getInstance().init(this);
+    private async initGameStates(): Promise<any> {
+        let initPromise = new Promise((resolve, reject) => {
+            ChoosingAngleState.getInstance().init(this);
+            EndThrowState.getInstance().init(this);
+            IdleState.getInstance().init(this);
+            ShootingState.getInstance().init(this);
+            SweepingState.getInstance().init(this);
+            resolve();
+        });
+        return initPromise;
     }
 }
 
