@@ -29,6 +29,7 @@ export class SweepingState implements IGameState {
         this.physicsManager = PhysicsManager.getInstance();
         this.physicsManager.init();
         this.mouse = new THREE.Vector2();
+        this.preloadImages();
     }
 
     private constructor() {
@@ -139,5 +140,12 @@ export class SweepingState implements IGameState {
 
         document.body.style.cursor = "url(../assets/textures/balai_vert"
             + Math.floor(this.broomCursorFrame) + ".png), auto";
+    }
+
+    private preloadImages(): void {
+        new Image().src = "../assets/textures/balai_rouge.png";
+        for (let i = this.MIN_BROOM_ANIM_FRAMES; i <= this.MAX_BROOM_ANIM_FRAMES; i++) {
+            new Image().src = "../assets/textures/balai_vert" + Math.floor(i) + ".png";
+        }
     }
 }
