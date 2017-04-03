@@ -4,20 +4,30 @@
         <md-tab label="Faciles">
             <md-list>
                 <md-list-item *ngFor="let element of dialogRef.componentInstance.highscores.easy; let i = index">
-                    <md-icon md-list-icon>star</md-icon>
-                    <h3 md-line>{{element.name}}</h3>
-                    <p md-line>Points joueur : {{element.playerScore}} &nbsp;</p>
-                    <p md-line>Points ordi : {{element.aiScore}} &nbsp;</p>
+                    <md-icon *ngIf="i === 0" id="firstPlace" md-list-icon>star</md-icon>
+                    <md-icon *ngIf="i === 1" id="secondPlace" md-list-icon>star</md-icon>
+                    <md-icon *ngIf="i === 2" id="thirdPlace" md-list-icon>star</md-icon>
+                    <h3 md-line><strong>{{element.name}}</strong></h3>
+                    <p md-line>
+                        <small>(joueur)&nbsp;</small>
+                        {{element.playerScore}} VS {{element.aiScore}}
+                        <small> (ordinateur)</small>
+                    </p>
                 </md-list-item>
             </md-list>
         </md-tab>
         <md-tab label="Difficiles">
             <md-list>
                 <md-list-item *ngFor="let element of dialogRef.componentInstance.highscores.hard; let i = index">
-                    <md-icon md-list-icon>star</md-icon>
-                    <h3 md-line>{{element.name}}</h3>
-                    <p md-line>Points joueur : {{element.playerScore}} &nbsp;</p>
-                    <p md-line>Points ordi : {{element.aiScore}} &nbsp;</p>
+                    <md-icon *ngIf="i === 0" id="firstPlace" md-list-icon>star</md-icon>
+                    <md-icon *ngIf="i === 1" id="secondPlace" md-list-icon>star</md-icon>
+                    <md-icon *ngIf="i === 2" id="thirdPlace" md-list-icon>star</md-icon>
+                    <h3 md-line><strong>{{element.name}}</strong></h3>
+                    <p md-line>
+                        <small>(joueur)&nbsp;</small>
+                        {{element.playerScore}} VS {{element.aiScore}}
+                        <small> (ordinateur)</small>
+                    </p>
                 </md-list-item>
             </md-list>
         </md-tab>

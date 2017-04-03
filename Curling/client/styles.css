@@ -339,3 +339,27 @@ button.mat-raised-button {
     right: 2%;
     bottom: 2%;
 }
+
+/**************/
+
+
+/* HIGHSCORES */
+
+
+/**************/
+
+#firstPlace {
+    color: gold;
+}
+
+#secondPlace {
+    color: silver;
+}
+
+#thirdPlace {
+    color: saddlebrown;
+}
+
+small {
+    color: gray;
+}
