@@ -159,8 +159,7 @@ export class CommandHandler {
     private updateClientInvalidPlaceWord(msg: string, player: Player, command: Command): void {
         // Writes the error message in the chat of all players
         let room = this.roomManager.findRoom(player.getRoomId());
-        let commandResponse = this.commandResponseMessage[CommandExecutionStatus.ERROR_PLACE_WORD_INVALID_WORDS]
-        + " Le joueur actif est: " + room.getGameMaster().getActivePlayer().getName();
+        let commandResponse = this.commandResponseMessage[CommandExecutionStatus.ERROR_PLACE_WORD_INVALID_WORDS];
 
         this.sio.sockets.in(player.getRoomId().toString())
             .emit('command sent', { username: "Scrabble Game", submessage: msg, commandResponse });

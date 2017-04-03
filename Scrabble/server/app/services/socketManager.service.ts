@@ -11,6 +11,8 @@ import * as http from 'http';
 import { RoomManager } from './roomManager.service';
 import { PlayerManager } from './playerManager.service';
 import { CommandHandler } from './commandHandler.service';
+import { Player } from '../classes/player';
+import { Room } from '../classes/room';
 
 export class SocketManager {
     private sio: SocketIO.Server;
@@ -103,10 +105,18 @@ export class SocketManager {
         this.sio.emit('wcFindRoom', room.getRoomInfo());
     }
 
-    private leaveRoom(socket: SocketIO.Socket, player: any): void {
-        this.sendLeaveMessage(socket);
-        this.roomManager.leaveRoom(player.name, player.roomID);
-        socket.leave(player.roomID.toString());
+    private leaveRoom(socket: SocketIO.Socket, leavingPlayer: any): void {
+        let playerInGame = this.playerManager.getPlayerFromSocketID(socket.id);
+
+        if (playerInGame !== undefined) {
+            let room = this.roomManager.findRoom(playerInGame.getRoomId());
+
+            // Will skip to the next player if the leaving player was the active player
+            this.roomManager.leaveRoom(leavingPlayer.name, leavingPlayer.roomID);
+            socket.leave(leavingPlayer.roomID.toString());
+
+            this.sendLeaveMessage(playerInGame, room);
+        }
     }
 
     private initGame(socket: SocketIO.Socket, roomID: number): void {
@@ -161,17 +171,18 @@ export class SocketManager {
         let player = this.playerManager.getPlayerFromSocketID(socket.id);
 
         if (player !== undefined) {
-            this.sendLeaveMessage(socket);
+            let room = this.roomManager.findRoom(player.getRoomId());
+
+            // Will skip to the next player if the leaving player was the active player
             this.roomManager.leaveRoom(player.getName(), player.getRoomId());
             this.playerManager.removePlayer(player.getName());
+
+            this.sendLeaveMessage(player, room);
         }
         console.log("User disconnected");
     }
 
-    private sendLeaveMessage(socket: SocketIO.Socket): void {
-        let player = this.playerManager.getPlayerFromSocketID(socket.id);
-        let room = this.roomManager.findRoom(player.getRoomId());
-
+    private sendLeaveMessage(player: Player, room: Room): void {
         // Send a message to every player in the game room
         if (room !== undefined && room.getGameMaster().isGameStarted()) {
             let disconnectMsg = "L'utilisateur a quitté la partie. Ses lettres vont être remises dans la réserve." +
