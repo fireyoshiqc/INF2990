@@ -14,8 +14,11 @@ import { CurlingStone, Team, SpinOrientation } from '../../entities/curlingStone
 
 export class EndGameState implements IGameState {
 
+    private readonly ANIMATION_LENGTH = 5000;
     private static instance: EndGameState = new EndGameState();
     private gameController: GameController;
+    private winningStones: Array<CurlingStone>;
+    private timer : any;
 
     public static getInstance(): EndGameState {
         return EndGameState.instance;
@@ -49,14 +52,17 @@ export class EndGameState implements IGameState {
     }
 
     public update(delta: number): void {
-        // Do nothing
+        // TODO make the winning stones jump and call confetti
     }
 
     public enterState(): EndGameState {
-        const gameData = this.gameController.getGameData();
-        const hudData = this.gameController.getHUDData();
-        const team = gameData.isPlayerTurn ? Team.Player : Team.AI;
-        // TODO détecter joueur gagnant et get ses pierres
+        // Detect winning player and get their stones
+        this.initWinningStones();
+        // TODO initialize the confetti
+        this.timer = setTimeout(() => {
+            // End of animation
+        }, this.ANIMATION_LENGTH);
+
         console.log("Dans EndGameState.");
         return this;
     }
@@ -64,5 +70,11 @@ export class EndGameState implements IGameState {
     public nextState(): IdleState {
         // TODO: Réinitialiser la partie
         return IdleState.getInstance().enterState();
+    }
+
+    private initWinningStones(): void {
+        const gameData = this.gameController.getGameData();
+        let winningTeam = (gameData.playerScore > gameData.aiScore) ? Team.Player : Team.AI;
+        this.winningStones = GameEngine.getInstance().getStones().filter(stone => stone.getTeam() === winningTeam);
     }
 }

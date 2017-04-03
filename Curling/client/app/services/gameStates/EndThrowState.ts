@@ -83,9 +83,9 @@ export class EndThrowState implements IGameState {
 
         let roundEnd = false;
 
-
         if (this.stonesThrown === this.gameController.getMaxThrows()) {
             roundEnd = true;
+            this.countAndHighlightPoints(roundEnd);
 
             if (gameData.roundsCompleted[1]) {
                 // Enter EndGameState if game is over
@@ -98,9 +98,10 @@ export class EndThrowState implements IGameState {
         } else {
             hudData.nextRoundMessageVisible = false;
             hudData.nextThrowMessageVisible = true;
+            this.countAndHighlightPoints(roundEnd);
         }
 
-        this.countAndHighlightPoints(roundEnd);
+
         return this;
     }
 
