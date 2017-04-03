@@ -9,6 +9,7 @@ import { PlayerNameComponent } from '../components/player-name.component';
 import { HUDComponent } from '../components/hud.component';
 import { GameController } from '../services/gameController.service';
 import { NameSelectorComponent } from '../components/nameSelector.component';
+import { HighscoresComponent, HighscoresPopupComponent } from '../components/highscores.component';
 
 import { ModifierDirective } from '../directives/modifier.directive';
 import { MaterialModule } from '@angular/material';
@@ -18,7 +19,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, AppRoutingModule,
         MaterialModule.forRoot(), FlexLayoutModule.forRoot()],
     declarations: [AppComponent, HUDComponent, GlComponent, ModifierDirective,
-        PlayerNameComponent, NameSelectorComponent, NameDialogComponent],
+        PlayerNameComponent, NameSelectorComponent, NameDialogComponent, HighscoresComponent, HighscoresPopupComponent],
     entryComponents: [NameDialogComponent],
     providers: [GameController],
     bootstrap: [AppComponent]

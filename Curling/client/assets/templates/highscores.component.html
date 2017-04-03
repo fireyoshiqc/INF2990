@@ -1,0 +1,25 @@
+<h3 md-dialog-title>Tableau des records</h3>
+<md-dialog-content>
+    <md-tab-group>
+        <md-tab label="Faciles">
+            <md-list>
+                <md-list-item *ngFor="let element of dialogRef.componentInstance.highscores.easy; let i = index">
+                    <md-icon md-list-icon>star</md-icon>
+                    <h3 md-line>{{element.name}}</h3>
+                    <p md-line>Points joueur : {{element.playerScore}} &nbsp;</p>
+                    <p md-line>Points ordi : {{element.aiScore}} &nbsp;</p>
+                </md-list-item>
+            </md-list>
+        </md-tab>
+        <md-tab label="Difficiles">
+            <md-list>
+                <md-list-item *ngFor="let element of dialogRef.componentInstance.highscores.hard; let i = index">
+                    <md-icon md-list-icon>star</md-icon>
+                    <h3 md-line>{{element.name}}</h3>
+                    <p md-line>Points joueur : {{element.playerScore}} &nbsp;</p>
+                    <p md-line>Points ordi : {{element.aiScore}} &nbsp;</p>
+                </md-list-item>
+            </md-list>
+        </md-tab>
+    </md-tab-group>
+</md-dialog-content>
