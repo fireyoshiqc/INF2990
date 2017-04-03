@@ -140,7 +140,7 @@ export class GameController {
     public quitGame(): void {
         // Send beacon to server to signal name removal before page unload.
         let blob = new Blob([JSON.stringify({ "name": this.playerName })], { type: 'application/json; charset=UTF-8' });
-        navigator.sendBeacon(this.HOST_NAME + this.SERVER_PORT + "/removeName", blob);
+        navigator.sendBeacon(this.HOST_NAME + this.SERVER_PORT + "/api/removeName", blob);
     }
 
     private initGameStates(): void {

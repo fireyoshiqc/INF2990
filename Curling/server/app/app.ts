@@ -11,15 +11,11 @@ import * as logger from 'morgan';
 import * as cookieParser from 'cookie-parser';
 import * as bodyParser from 'body-parser';
 import * as cors from 'cors';
-
-import * as indexRoute from './routes';
-
-import { NameManagerService } from './services/nameManager.service';
+import * as rest from './api/rest.api';
 
 export class Application {
 
     public app: express.Application;
-    public nameManager: NameManagerService;
 
     /**
      * Bootstrap the application.
@@ -44,9 +40,6 @@ export class Application {
         // Application instantiation
         this.app = express();
 
-        // Instantiate name manager
-        this.nameManager = new NameManagerService();
-
         // Configure this.application
         this.config();
 
@@ -68,6 +61,7 @@ export class Application {
         this.app.use(cookieParser());
         this.app.use(express.static(path.join(__dirname, '../../client')));
         this.app.use(cors());
+        this.app.use('/api', rest.default);
     }
 
     /**
@@ -77,27 +71,6 @@ export class Application {
      * @method routes
      */
     public routes(): void {
-        let router: express.Router;
-        router = express.Router();
-
-        let nameManager = this.getNameManager();
-
-        // Create routes
-        const index: indexRoute.Index = new indexRoute.Index();
-
-        // Home page
-        router.get('/', index.index.bind(index.index));
-
-        // Use router middleware
-        this.app.use(router);
-
-        this.app.post('/validateName', (req, res) => {
-            res.send(nameManager.validateName(req.body.name));
-        });
-
-        this.app.post('/removeName', (req, res) => {
-            res.send(nameManager.removeName(req.body.name));
-        });
 
         // Serve the Angular 2 app
         this.app.get('*', (req, res) => {
@@ -133,9 +106,4 @@ export class Application {
             });
         });
     }
-
-    public getNameManager(): NameManagerService {
-        return this.nameManager;
-    }
-
 }

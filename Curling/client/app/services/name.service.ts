@@ -19,7 +19,7 @@ export class NameService {
     public validateName(name: string): Promise<boolean> {
         let validName = false;
         let postPromise = new Promise((resolve, reject) => {
-            this.http.post(this.HOST_NAME + this.SERVER_PORT + "/validateName", { "name": name })
+            this.http.post(this.HOST_NAME + this.SERVER_PORT + "/api/validateName", { "name": name })
                 .toPromise()
                 .then(res => {
                     if (res.text() === "true") {
