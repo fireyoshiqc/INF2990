@@ -352,3 +352,23 @@ tr:nth-child(3n) td {
     animation: invalid 1s 3;
     /* IE 10+ */
 }
+
+/**************/
+
+
+/* HIGHSCORES */
+
+
+/**************/
+
+#firstPlace {
+    color: gold;
+}
+
+#secondPlace {
+    color: silver;
+}
+
+#thirdPlace {
+    color: saddlebrown;
+}

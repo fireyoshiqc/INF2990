@@ -13,7 +13,9 @@
         <md-tab label="Difficiles">
             <md-list>
                 <md-list-item *ngFor="let element of dialogRef.componentInstance.highscores.hard; let i = index">
-                    <md-icon md-list-icon>star</md-icon>
+                    <md-icon *ngIf="i === 0" id="firstPlace" md-list-icon>star</md-icon>
+                    <md-icon *ngIf="i === 1" id="secondPlace" md-list-icon>star</md-icon>
+                    <md-icon *ngIf="i === 2" id="thirdPlace" md-list-icon>star</md-icon>
                     <h3 md-line>{{element.name}}</h3>
                     <p md-line>Temps : {{element.time}} secondes&nbsp;</p>
                 </md-list-item>
