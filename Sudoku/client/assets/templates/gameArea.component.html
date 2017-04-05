@@ -15,13 +15,25 @@
                             de votre choix.<br>
                         </md-card-content>
                     </md-card>
+                    
+                    <!-- Prevents autofocus on next button -->
+                    <!-- This buttons does nothing -->
+                    <button md-button></button>
 
                     <h3 md-subheader>Générer un sudoku</h3>
                     <md-list-item>
-                        <button md-button class="list-button" (click)="sudokuGrid.getEasySudoku(); sidenav.toggle()"><md-icon class="easySudokuIcon" id="easyIcon">child_friendly</md-icon><strong>Facile</strong></button>
+                        <button md-button class="list-button" (click)="sudokuGrid.getEasySudoku(); sidenav.toggle()"><md-icon class="easySudokuIcon" id="sidenavIcon">child_friendly</md-icon><strong>Facile</strong></button>
                     </md-list-item>
                     <md-list-item>
-                        <button md-button class="list-button" (click)="sudokuGrid.getHardSudoku(); sidenav.toggle()"><md-icon id="easyIcon" color="warn">whatshot</md-icon><strong>Difficile</strong></button>
+                        <button md-button class="list-button" (click)="sudokuGrid.getHardSudoku(); sidenav.toggle()"><md-icon id="sidenavIcon" color="warn">whatshot</md-icon><strong>Difficile</strong></button>
+                    </md-list-item>
+                    <md-divider></md-divider>
+
+                    <h3 md-subheader>Records</h3>
+                    <md-list-item>
+                        <button md-button class="list-button" (click)="showHighscores(); sidenav.toggle()">
+                            <md-icon id="sidenavIcon" color="primary">assessment</md-icon><strong>Afficher les records</strong>
+                        </button>
                     </md-list-item>
                     <md-divider></md-divider>
                 </md-list>

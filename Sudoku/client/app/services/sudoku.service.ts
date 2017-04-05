@@ -82,7 +82,7 @@ export class SudokuService {
         return postPromise;
     }
 
-    public getHighscores(): Promise<any> {
+    public getHighscores(showDirectly?: boolean): Promise<any> {
         let getPromise = new Promise((resolve, reject) => {
             this.http.get(this.HOST_NAME + this.SERVER_PORT + '/api/getHighscores').toPromise()
                 .then(res => {
@@ -104,7 +104,7 @@ export class SudokuService {
                         } else {
                             reject("Sudoku difficulty not set or wrong value. Could not get highscores.");
                         }
-                        isHighscore ? resolve(highscores) : resolve(undefined);
+                        (isHighscore || showDirectly) ? resolve(highscores) : resolve(undefined);
                     }
                 })
                 .catch(() => reject("Could not get highscores."));
