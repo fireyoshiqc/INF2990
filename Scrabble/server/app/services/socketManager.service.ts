@@ -184,8 +184,13 @@ export class SocketManager {
     private sendLeaveMessage(player: Player, room: Room): void {
         // Send a message to every player in the game room
         if (room !== undefined && room.getGameMaster().isGameStarted()) {
-            let disconnectMsg = "L'utilisateur a quitté la partie. Ses lettres vont être remises dans la réserve." +
-                " Le joueur actif est " + room.getGameMaster().getActivePlayer().getName() + ".";
+            let disconnectMsg = "L'utilisateur a quitté la partie.";
+
+            if (!room.getGameMaster().isGameOver()) {
+                disconnectMsg += " Ses lettres vont être remises dans la réserve." +
+                    " Le joueur actif est " + room.getGameMaster().getActivePlayer().getName() + ".";
+            }
+
             this.sio.sockets
                 .in(player.getRoomId().toString())
                 .emit('user disconnect', { username: player.getName(), submessage: disconnectMsg });

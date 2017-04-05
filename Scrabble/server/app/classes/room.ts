@@ -51,13 +51,20 @@ export class Room {
         if (this.players.length > 0) {
             // Remove player from room info (contains only player names string)
             let indexPlayerList = this.roomInfo.playerList.indexOf(playerName);
-            this.roomInfo.playerList.splice(indexPlayerList, 1);
 
-            this.gameMaster.handleQuit(playerName);
+            if (this.gameMaster.isGameOver()) {
+                // Cross out player
+                console.log("Cross out: " + playerName);
+            } else {
+                // Remove player from list completely
+                this.roomInfo.playerList.splice(indexPlayerList, 1);
+                
+                this.gameMaster.handleQuit(playerName);
 
-            // Remove player from room (contains Player object)
-            let indexPlayers = this.players.findIndex(p => p.getName() === playerName);
-            this.players.splice(indexPlayers, 1);
+                // Remove player from room (contains Player object)
+                let indexPlayers = this.players.findIndex(p => p.getName() === playerName);
+                this.players.splice(indexPlayers, 1);
+            }
 
             console.log(playerName + " quit the room " + this.roomInfo.roomID);
         }
