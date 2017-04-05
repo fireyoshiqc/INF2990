@@ -3,6 +3,10 @@
         <p><b> Bon jeu {{this.player.name}} ! </b></p>
     </div>
 
+    <div *ngIf="gameOver" class="flex-item" fxFlex="20%" fxFlex.xs="20%">
+        <p><b> Le jeu a été remporté par {{this.winningPlayer}} ! </b></p>
+    </div>
+
     <div class="flex-item" fxFlex="20%" fxFlex.xs="20%">
         <div class="flex-container" fxLayout="row" fxLayout.xs="row" fxLayoutAlign="center center" fxLayoutAlign.xs="center center">
 
@@ -33,7 +37,7 @@
                 <b>Nombre de lettres sur chevalet</b>
             </div>
         </div>
-        
+
         <div class="flex-container" *ngFor="let player of players; let i = index" fxLayout="row" fxLayout.xs="row" fxFlex="25%">
             <div class="flex-item" fxFlex="33%" fxFlex.xs="33%" fxLayoutAlign="center center">
                 {{player.name}}
@@ -50,5 +54,4 @@
     </div>
 
     <hr>
-
 </div>

@@ -47,6 +47,8 @@ export class InfoComponent {
         this.activePlayerName = "";
         this.nLettersStash = 0;
         this.player = PlayerHandler.requestPlayer();
+        this.gameOver = false;
+        this.winningPlayer = "";
     }
 
     public getPlayer(): Player {
