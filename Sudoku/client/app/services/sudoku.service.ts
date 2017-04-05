@@ -38,7 +38,7 @@ export class SudokuService {
 
     constructor(private http: Http) { }
 
-    public getEasySudoku() {
+    public getEasySudoku(): void {
         this.http.get(this.HOST_NAME + this.SERVER_PORT + '/api/getSudoku/easy')
             .toPromise()
             .then(reponse => {
@@ -50,7 +50,7 @@ export class SudokuService {
             .catch(() => console.log("Could not get a easy sudoku."));
     }
 
-    public getHardSudoku() {
+    public getHardSudoku(): void {
         this.http.get(this.HOST_NAME + this.SERVER_PORT + '/api/getSudoku/hard')
             .toPromise()
             .then(reponse => {
@@ -62,7 +62,7 @@ export class SudokuService {
             .catch(() => console.log("Could not get a hard sudoku."));
     }
 
-    public validateSudoku(callback: () => void) {
+    public validateSudoku(callback: () => void): void {
         this.http.post(this.HOST_NAME + this.SERVER_PORT + '/api/validateSudoku', this.inputGrid)
             .toPromise()
             .then(res => {
@@ -112,7 +112,7 @@ export class SudokuService {
         return getPromise;
     }
 
-    public resetSudoku() {
+    public resetSudoku(): void {
         // Loop required for deep copy
         for (let i = 0; i < this.inputGrid.length; i++) {
             for (let j = 0; j < this.inputGrid[i].length; j++) {
@@ -122,7 +122,7 @@ export class SudokuService {
         }
     }
 
-    public putEntry(entry: IEntryNumber) {
+    public putEntry(entry: IEntryNumber): void {
         if (entry.row >= this.minIndex && entry.column >= this.minIndex &&
             entry.row <= this.maxIndex && entry.row <= this.maxIndex) {
             this.inputGrid[entry.row][entry.column] = entry.value;

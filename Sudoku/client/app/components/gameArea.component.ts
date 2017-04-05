@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
 export class GameAreaComponent {
     private isDarkTheme = false;
 
-    public toggleTheme() {
+    public toggleTheme(): void {
         this.isDarkTheme = !this.isDarkTheme;
     }
 }

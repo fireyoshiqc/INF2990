@@ -7,7 +7,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { expect } from 'chai';
 
-describe('AppComponent', function() {
+describe('AppComponent', () => {
     let de: DebugElement;
     let comp: AppComponent;
     let fixture: ComponentFixture<AppComponent>;

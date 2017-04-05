@@ -20,7 +20,7 @@ export class SudokuGridComponent implements AfterViewInit {
         private stopwatchService: StopwatchService,
         private inputService: InputService) { }
 
-    public ngAfterViewInit() {
+    public ngAfterViewInit(): void {
 
         // Necessary to fix prodmode exclusive error (data binding changed on init)
         setTimeout(() => {
@@ -41,21 +41,21 @@ export class SudokuGridComponent implements AfterViewInit {
 
     }
 
-    public getSudokuService() {
+    public getSudokuService(): SudokuService {
         return this.sudokuService;
     }
 
-    public getEasySudoku() {
+    public getEasySudoku(): void {
         this.stopwatchService.restart();
         this.sudokuService.getEasySudoku();
     }
 
-    public getHardSudoku() {
+    public getHardSudoku(): void {
         this.stopwatchService.restart();
         this.sudokuService.getHardSudoku();
     }
 
-    public validateSudoku() {
+    public validateSudoku(): void {
         this.sudokuService.validateSudoku(() => {
             if (this.sudokuService.isValid) {
                 this.stopwatchService.stop();
@@ -79,7 +79,7 @@ export class SudokuGridComponent implements AfterViewInit {
         });
     }
 
-    public showHighscoresDialog(highscores: any) {
+    public showHighscoresDialog(highscores: any): void {
         setTimeout(() => {
             this.scoreDialogRef = this.dialog.open(HighscoresPopupComponent);
             (this.scoreDialogRef.componentInstance.dialogRef.componentInstance as HighscoresComponent)
@@ -87,7 +87,7 @@ export class SudokuGridComponent implements AfterViewInit {
         });
     }
 
-    public resetSudoku() {
+    public resetSudoku(): void {
         document.forms['gridForm'].reset();
         this.sudokuService.resetSudoku();
         this.stopwatchService.restart();
@@ -97,7 +97,7 @@ export class SudokuGridComponent implements AfterViewInit {
         return this.stopwatchService.isVisible();
     }
 
-    public toggleStopwatch() {
+    public toggleStopwatch(): void {
         this.stopwatchService.toggleVisibility();
     }
 
@@ -157,7 +157,7 @@ export class SudokuGridComponent implements AfterViewInit {
             };
     }
 
-    public putEntry(entry: IEntryEvent) {
+    public putEntry(entry: IEntryEvent): void {
 
         let entryValidation = this.convertToValidation(entry);
 
@@ -192,15 +192,15 @@ export class SudokuGridComponent implements AfterViewInit {
         }
     }
 
-    public formatSelectedTableCell(input: HTMLInputElement) {
+    public formatSelectedTableCell(input: HTMLInputElement): void {
         this.inputService.formatSelectedTableCell(input);
     }
 
-    public unformatSelectedTableCell(input: HTMLInputElement) {
+    public unformatSelectedTableCell(input: HTMLInputElement): void {
         this.inputService.unformatSelectedTableCell(input);
     }
 
-    public toggleTheme() {
+    public toggleTheme(): void {
         this.isDarkTheme = !this.isDarkTheme;
     }
 

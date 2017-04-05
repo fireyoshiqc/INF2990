@@ -20,26 +20,26 @@ export class StopwatchService {
     public getTotalTimeSeconds(): number { return 60 * this.minutes + this.seconds; }
     public isVisible(): boolean { return this.stopwatchIsVisible; }
 
-    public toggleVisibility() {
+    public toggleVisibility(): void {
         this.stopwatchIsVisible = !this.stopwatchIsVisible;
     }
 
-    private start() {
+    private start(): void {
         this.stopwatch = setInterval(() => {
             this.minutes = Math.floor(++this.totalSeconds / 60);
             this.seconds = this.totalSeconds - this.minutes * 60;
         }, 1000);
     }
 
-    public stop() {
+    public stop(): void {
         clearInterval(this.stopwatch);
     }
 
-    private reset() {
+    private reset(): void {
         this.totalSeconds = this.minutes = this.seconds = 0;
     }
 
-    public restart() {
+    public restart(): void {
         this.stop();
         this.reset();
         this.start();

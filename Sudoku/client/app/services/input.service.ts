@@ -28,11 +28,11 @@ export class InputService {
         return entry.grid[entry.row].every(element => element !== entry.value);
     }
 
-    private validateColumn(entry: IEntryValidation) {
+    private validateColumn(entry: IEntryValidation): boolean {
         return entry.grid.every(row => row[entry.column] !== entry.value);
     }
 
-    private validateSquare(entry: IEntryValidation) {
+    private validateSquare(entry: IEntryValidation): boolean {
         let x: number, y: number;
 
         // Coordinates for upper left corner of each square
@@ -53,7 +53,7 @@ export class InputService {
         return (keyEvent.key === "Backspace" || keyEvent.key === "Delete");
     }
 
-    public handleArrowKey(entry: IEntryValidation, input: HTMLInputElement) {
+    public handleArrowKey(entry: IEntryValidation, input: HTMLInputElement): void {
 
         switch (entry.value) {
             case 37: // ArrowLeft
@@ -80,7 +80,7 @@ export class InputService {
         nextInput.focus();
     }
 
-    private findNextInputField(entry: IEntryValidation, isIncrement: boolean, moveAlongRow: boolean) {
+    private findNextInputField(entry: IEntryValidation, isIncrement: boolean, moveAlongRow: boolean): void {
         let gridValue;
 
         do {
@@ -102,24 +102,24 @@ export class InputService {
         } while (gridValue !== 0);
     }
 
-    public putInvalidField(invalidField: HTMLInputElement) {
+    public putInvalidField(invalidField: HTMLInputElement): void {
         invalidField.parentElement.parentElement.classList.add("invalid");
         setTimeout(() => {
             this.removeInvalidField(invalidField);
         }, 3000);
     }
 
-    public removeInvalidField(invalidField: HTMLInputElement) {
+    public removeInvalidField(invalidField: HTMLInputElement): void {
         invalidField.parentElement.parentElement.classList.remove("invalid");
     }
 
-    public formatSelectedTableCell(input: HTMLInputElement) {
+    public formatSelectedTableCell(input: HTMLInputElement): void {
         // Add .selected class to parent <td> element
         input.parentElement.parentElement.classList.add("inputSelected");
         input.parentElement.parentElement.classList.remove("inputDeselected");
     }
 
-    public unformatSelectedTableCell(input: HTMLInputElement) {
+    public unformatSelectedTableCell(input: HTMLInputElement): void {
         // Remove .selected class to parent <td> element
         input.parentElement.parentElement.classList.remove("inputSelected");
         input.parentElement.parentElement.classList.add("inputDeselected");
