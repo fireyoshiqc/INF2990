@@ -38,6 +38,7 @@ export class InfoComponent {
     private nLettersStash: number;
     private player: Player;
     private gameOver: boolean;
+    private winningPlayer: string;
 
     constructor() {
         this.players = [{}];
@@ -60,7 +61,9 @@ export class InfoComponent {
         this.gameOver = turnInfo.gameOver;
 
         if (this.gameOver) {
+            this.winningPlayer = this.getWinner();
             console.log("Game is over!");
+            console.log("Winning player: " + this.winningPlayer);
         }
 
         // Check if a player has left
@@ -76,6 +79,13 @@ export class InfoComponent {
                 rackLettersCount: turnInfo.players[i].rackLettersCount
             };
         }
+    }
+
+    private getWinner(): string {
+        // TODO deal with case where multiple players have same score
+        let maxScore = Math.max.apply(Math, this.players.map(player => player.score));
+        let winningPlayer = this.players.find(player => player.score === maxScore).name;
+        return winningPlayer;
     }
 
     // For tests
