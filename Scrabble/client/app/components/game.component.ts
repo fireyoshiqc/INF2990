@@ -15,7 +15,6 @@ export class GameComponent implements OnInit {
     private readonly HOST_NAME = "http://" + window.location.hostname;
     private readonly SERVER_PORT = ":3000";
     private socket: any;
-    private rackActive = false;
     private isDarkTheme = false;
     @ViewChild(RackComponent) private rackChild: RackComponent;
     @ViewChild(BoardComponent) private boardChild: BoardComponent;
@@ -44,13 +43,13 @@ export class GameComponent implements OnInit {
         if (event.key === "Escape") {
             this.quitGame();
         } else if (event.key === "Tab") {
-            this.rackActive = !this.rackActive;
+            this.rackChild.toggleActiveState();
 
-            if (!this.rackActive) {
+            if (!this.rackChild.isActive()) {
                 this.rackChild.deselectLetter();
             }
         } else {
-            if (this.rackActive) {
+            if (this.rackChild.isActive()) {
                 this.rackChild.keyboardInput(event);
             }
         }

@@ -1,9 +1,5 @@
 /**********************/
-
-
 /* general formatting */
-
-
 /**********************/
 
 * {
@@ -235,11 +231,7 @@ md-radio-button {
 
 
 /****************************/
-
-
 /* game panel (board, rack) */
-
-
 /****************************/
 
 #gamePanel {
@@ -250,11 +242,7 @@ md-radio-button {
 
 
 /****************************/
-
-
 /* scrabble board component */
-
-
 /****************************/
 
 #board {
@@ -294,11 +282,7 @@ md-radio-button {
 
 
 /***************************/
-
-
 /* scrabble rack component */
-
-
 /***************************/
 
 #rack {
@@ -324,8 +308,13 @@ md-radio-button {
     height: 100%;
 }
 
-.selectedLetter{
+.selectedLetter {
     opacity: 0.5;
+}
+
+.test {
+    border: 3px solid #00E676;
+    border-radius: 10px;
 }
 
 /***************************/

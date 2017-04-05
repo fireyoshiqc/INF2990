@@ -16,9 +16,15 @@ import { RackManager } from '../services/rackManager.service';
 })
 
 export class RackComponent {
+    private active: boolean;
 
     constructor(private rackManager: RackManager) {
         this.rackManager = rackManager;
+        this.active = false;
+    }
+
+    public isActive(): boolean {
+        return this.active;
     }
 
     public keyboardInput(event: KeyboardEvent): void {
@@ -31,5 +37,9 @@ export class RackComponent {
 
     public deselectLetter(): void {
         this.rackManager.deselectLetter();
+    }
+
+    public toggleActiveState(): void {
+        this.active = !this.active;
     }
 }
