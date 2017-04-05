@@ -10,9 +10,9 @@ import easyScore from '../models/easyScore.model';
 import hardScore from '../models/hardScore.model';
 
 export class DatabaseService {
-    private readonly DUMMIES_PER_DIFFICULTY = 3; // TODO : Confirmer le nombre de scores affichés
+    private readonly DUMMIES_PER_DIFFICULTY = 7;
     private readonly MAX_RETRIES = 30;
-    private readonly MAX_SCORES_PER_DIFFICULTY = 3;
+    private readonly MAX_SCORES_PER_DIFFICULTY = 7;
     private tries = 0;
 
     constructor() {
@@ -132,8 +132,8 @@ export class DatabaseService {
     }
 
     private addDummyScores(): void {
-        const EASY_NAMES = ["Joueur 1", "Joueur 2", "Joueur 3"];
-        const HARD_NAMES = ["Joueur 4", "Joueur 5", "Joueur 6"];
+        const EASY_NAMES = ["Emilio", "Louis", "Michel", "Dylan", "Mathieu", "Nicolas", "Jean-Sebastien"];
+        const HARD_NAMES = ["Mikael", "Vincent", "Erica", "Felix", "Pierre", "Yawen", "Dijkstra"];
         const AVG_EASY_PLAYER_SCORE = 1;
         const AVG_HARD_PLAYER_SCORE = 1;
         const AVG_EASY_AI_SCORE = 0;
@@ -141,12 +141,12 @@ export class DatabaseService {
 
         for (let i = 0; i < this.DUMMIES_PER_DIFFICULTY; i++) {
             // TODO : Refactor pour avoir moins de paramètres
-            this.addScore(EASY_NAMES[i], AVG_EASY_PLAYER_SCORE + i, AVG_EASY_AI_SCORE + i, "facile");
+            this.addScore(EASY_NAMES[i], (AVG_EASY_PLAYER_SCORE + i), (AVG_EASY_AI_SCORE + i), "facile");
         }
 
         for (let j = 0; j < this.DUMMIES_PER_DIFFICULTY; j++) {
             // TODO : Refactor pour avoir moins de paramètres
-            this.addScore(HARD_NAMES[j], AVG_HARD_PLAYER_SCORE + j, AVG_HARD_AI_SCORE + j, "difficile");
+            this.addScore(HARD_NAMES[j], (AVG_HARD_PLAYER_SCORE + j), (AVG_HARD_AI_SCORE + j), "difficile");
         }
     }
 }
