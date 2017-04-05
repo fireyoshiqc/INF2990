@@ -38,6 +38,31 @@ describe('GameController', () => {
         });
     });
 
+    describe('getAIDifficulty()', () => {
+        it('should return 0 at the beginning', done => {
+            expect(gameController.getAIDifficulty()).to.equal(0);
+            done();
+        });
+    });
+
+    describe('setAIDifficulty()', () => {
+        it('should change the aiDifficulty', done => {
+            gameController.setAIDifficulty("Ordi normal");
+            expect(gameController.getAIDifficulty()).to.equal(1);
+            gameController.setAIDifficulty("Ordi difficile");
+            expect(gameController.getAIDifficulty()).to.equal(2);
+            done();
+        });
+    });
+
+    describe('resetAIDifficulty()', () => {
+        it('should reset the aiDifficulty to undefined (0)', done => {
+            gameController.resetAIDifficulty();
+            expect(gameController.getAIDifficulty()).to.equal(0);
+            done();
+        });
+    });
+
     describe('getGameData()', () => {
         it('should return the game data', done => {
             const gameData = gameController.getGameData();
@@ -59,7 +84,6 @@ describe('GameController', () => {
         it('should return the HUD data', done => {
             const hudData = gameController.getHUDData();
             expect(hudData).to.exist;
-            expect(hudData.aiDifficulty).to.eql("CPU facile", "Default AI difficulty is easy.");
             expect(hudData.aiStones.length).to.eql(8, "AI has 8 stones at beginning of the game.");
             expect(hudData.forceVisible).to.eql(false, "Force bar is not displayed before the ShootingState.");
             expect(hudData.nextRoundMessageVisible).to.eql(false,

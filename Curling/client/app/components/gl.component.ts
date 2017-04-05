@@ -28,6 +28,7 @@ export class GlComponent implements AfterViewInit {
 
             this.dialogRef.afterClosed().subscribe(result => {
                 this.gameController.setPlayerName(result.playerName);
+                this.gameController.setAIDifficulty(result.aiDifficulty);
             });
         });
     }
@@ -85,6 +86,11 @@ export class GlComponent implements AfterViewInit {
 
     public switchCamera(): void {
         this.gameController.switchCamera();
+    }
+
+    public resetGame(): void {
+        this.gameController.resetAIDifficulty();
+        alert("Reinitialisation de la partie");
     }
 
     public showHighscores(): void {

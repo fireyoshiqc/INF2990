@@ -16,7 +16,8 @@ import { SweepingState } from './gameStates/SweepingState';
 import { EndGameState } from './gameStates/EndGameState';
 
 export enum AIDifficulty {
-    Easy,
+    Undefined,
+    Normal,
     Hard
 }
 
@@ -30,7 +31,6 @@ export class GameController {
     private hudData: IHUDData = {
         playerStones: new Array<number>(this.MAX_THROWS / 2),
         aiStones: new Array<number>(this.MAX_THROWS / 2),
-        aiDifficulty: "CPU facile",
         forceVisible: false,
         sliderDisabled: false,
         nextThrowMessageVisible: false,
@@ -50,6 +50,7 @@ export class GameController {
 
     private gameEngine: GameEngine;
     private playerName = "";
+    private aiDifficulty = AIDifficulty.Undefined;
 
     public init(container?: HTMLElement): void {
         this.gameEngine = GameEngine.getInstance();
@@ -64,9 +65,9 @@ export class GameController {
                     self.gameData.state = IdleState.getInstance().enterState();
                     self.gameEngine.update();
                 })
-                .catch(() => {
-                    throw new Error("Error: Could not initialize game states!");
-                });
+                    .catch(() => {
+                        throw new Error("Error: Could not initialize game states!");
+                    });
             })
             .catch(() => {
                 throw new Error("Error: Could not initialize GameController!");
@@ -113,6 +114,18 @@ export class GameController {
 
     public setPlayerName(name: string): void {
         this.playerName = name;
+    }
+
+    public getAIDifficulty(): AIDifficulty {
+        return this.aiDifficulty;
+    }
+
+    public setAIDifficulty(aiDifficulty: string): void {
+        this.aiDifficulty = (aiDifficulty === "Ordi normal") ? AIDifficulty.Normal : AIDifficulty.Hard;
+    }
+
+    public resetAIDifficulty(): void {
+        this.aiDifficulty = AIDifficulty.Undefined;
     }
 
     public getGameData(): IGameData {
@@ -176,7 +189,6 @@ export interface IGameData {
 export interface IHUDData {
     playerStones: Array<number>;
     aiStones: Array<number>;
-    aiDifficulty: string;
     forceVisible: boolean;
     sliderDisabled: boolean;
     nextThrowMessageVisible: boolean;

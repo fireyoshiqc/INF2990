@@ -76,7 +76,7 @@
                     (switchCameraEvent)="switchCamera()"
                     (startThrowStoneEvent)="startThrowStone($event)"
                     [playerName]="getGameController().playerName"
-                    [aiDifficulty]="getGameController().getHUDData().aiDifficulty"
+                    [aiDifficulty]="getGameController().getAIDifficulty()"
                     [aiScore]="getGameController().getGameData().aiScore"
                     [playerScore]="getGameController().getGameData().playerScore"
                     [playerCurlingStones]="getGameController().getHUDData().playerStones"

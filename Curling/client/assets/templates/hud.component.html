@@ -100,7 +100,11 @@
                     <!-- Nametag du AI -->
                     <div id="aiNameTagContainer">
                         <md-card class="defaultCursor lightTag" id="aiNameTag">
-                            <md-card-title><strong>{{aiDifficulty}}</strong></md-card-title>
+                            <md-card-title>
+                                <strong *ngIf="aiDifficulty === 0"></strong>
+                                <strong *ngIf="aiDifficulty === 1">Ordi normal</strong>
+                                <strong *ngIf="aiDifficulty === 2">Ordi difficile</strong>
+                            </md-card-title>
                             <md-card-subtitle>Ordinateur</md-card-subtitle>
                         </md-card>
                     </div>

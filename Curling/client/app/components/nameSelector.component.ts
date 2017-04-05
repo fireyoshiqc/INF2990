@@ -31,7 +31,7 @@ export class NameSelectorComponent {
         if (this.aiDifficulty !== undefined && this.playerName !== undefined) {
             this.nameService.validateName(this.playerName).then((response) => {
                 if (response) {
-                    this.dialogRef.close({ difficulty: this.aiDifficulty, playerName: this.playerName });
+                    this.dialogRef.close({ aiDifficulty: this.aiDifficulty, playerName: this.playerName });
                 } else {
                     this.error = true;
                     this.errorMessage = "Ce nom est déjà pris ou contient des caractères invalides!";

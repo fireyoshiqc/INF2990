@@ -18,7 +18,7 @@ export class HUDComponent {
 
     // Data modified in gameController.service.ts
     @Input() private playerName: string;
-    @Input() private aiDifficulty: string;
+    @Input() private aiDifficulty: number;
     @Input() private playerScore: number;
     @Input() private aiScore: number;
     @Input() private playerCurlingStones: number[]; // Indicates the number of available stones for player
@@ -38,7 +38,7 @@ export class HUDComponent {
 
     constructor() {
         this.playerName = "";
-        this.aiDifficulty = "";
+        this.aiDifficulty = 0;
         this.playerScore = 0;
         this.aiScore = 0;
         this.playerCurlingStones = [];
