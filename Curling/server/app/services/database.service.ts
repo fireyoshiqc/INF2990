@@ -41,7 +41,7 @@ export class DatabaseService {
             });
     }
 
-    public addScore(name: string, playerScore: number, aiScore: number, difficulty: string): Promise<boolean> {
+    public addHighscore(name: string, playerScore: number, aiScore: number, difficulty: string): Promise<boolean> {
         let addPromise = new Promise((resolve, reject) => {
             if (difficulty === "facile") {
                 // Check if user already has a saved score for easy curling game
@@ -141,12 +141,12 @@ export class DatabaseService {
 
         for (let i = 0; i < this.DUMMIES_PER_DIFFICULTY; i++) {
             // TODO : Refactor pour avoir moins de paramètres
-            this.addScore(EASY_NAMES[i], (AVG_EASY_PLAYER_SCORE + i), (AVG_EASY_AI_SCORE + i), "facile");
+            this.addHighscore(EASY_NAMES[i], (AVG_EASY_PLAYER_SCORE + i), (AVG_EASY_AI_SCORE + i), "facile");
         }
 
         for (let j = 0; j < this.DUMMIES_PER_DIFFICULTY; j++) {
             // TODO : Refactor pour avoir moins de paramètres
-            this.addScore(HARD_NAMES[j], (AVG_HARD_PLAYER_SCORE + j), (AVG_HARD_AI_SCORE + j), "difficile");
+            this.addHighscore(HARD_NAMES[j], (AVG_HARD_PLAYER_SCORE + j), (AVG_HARD_AI_SCORE + j), "difficile");
         }
     }
 }

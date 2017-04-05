@@ -37,8 +37,8 @@ router.post('/removeName', (req, res) => {
     res.send(nameManager.removeName(req.body.name));
 });
 
-router.put('/addScore', (req, res) => {
-    database.addScore(req.body.name, req.body.playerScore, req.body.aiScore, req.body.difficulty)
+router.put('/addHighscore', (req, res) => {
+    database.addHighscore(req.body.name, req.body.playerScore, req.body.aiScore, req.body.difficulty)
         .then((added) => res.send(added))
         .catch((error) => res.send(error));
 });
