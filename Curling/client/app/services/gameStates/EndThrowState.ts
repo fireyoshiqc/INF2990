@@ -6,8 +6,9 @@
  */
 
 import { IGameState } from './GameState';
-import { IdleState } from './IdleState';
+import { PlayerIdleState } from './PlayerIdleState';
 import { EndGameState } from './EndGameState';
+import { AIPlayingState } from './AIPlayingState';
 import { GameController } from '../gameController.service';
 import { GameEngine } from '../gameEngine.service';
 import { SceneBuilder } from '../sceneBuilder.service';
@@ -105,11 +106,13 @@ export class EndThrowState implements IGameState {
         return this;
     }
 
-    public nextState(): IdleState {
+    public nextState(): IGameState {
         this.gameController.getHUDData().nextThrowMessageVisible = false;
         this.gameController.getHUDData().nextRoundMessageVisible = false;
 
-        return IdleState.getInstance().enterState();
+        return this.gameController.getGameData().isPlayerTurn ?
+            PlayerIdleState.getInstance().enterState() :
+            AIPlayingState.getInstance().enterState();
     }
 
     // Highlight stones that are currently worth points

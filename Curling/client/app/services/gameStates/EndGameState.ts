@@ -6,7 +6,7 @@
  */
 
 import { IGameState } from './GameState';
-import { IdleState } from './IdleState';
+import { PlayerIdleState } from './PlayerIdleState';
 import { GameController } from '../gameController.service';
 import { GameEngine } from '../gameEngine.service';
 import { CurlingStone, Team } from '../../entities/curlingStone';
@@ -65,9 +65,9 @@ export class EndGameState implements IGameState {
         return this;
     }
 
-    public nextState(): IdleState {
+    public nextState(): PlayerIdleState {
         // TODO: Réinitialiser la partie
-        return IdleState.getInstance().enterState();
+        return PlayerIdleState.getInstance().enterState();
     }
 
     private initWinningStones(): void {

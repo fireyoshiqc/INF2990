@@ -56,7 +56,7 @@ export class ShootingState implements IGameState {
             stone.getVelocity().add(new THREE.Vector3(this.initialSpeedCounter * Math.sin(gameData.curveAngle),
                 0, this.initialSpeedCounter * Math.cos(gameData.curveAngle)));
             this.initialSpeedCounter = 0;
-            (gameData.isPlayerTurn) ? hudData.playerStones.pop() : hudData.aiStones.pop();
+            hudData.playerStones.pop();
 
             // Enter sweeping state once the stone has been thrown
             gameData.state = this.nextState();

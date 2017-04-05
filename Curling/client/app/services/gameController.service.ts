@@ -10,10 +10,11 @@ import { GameEngine } from './gameEngine.service';
 import { IGameState } from './gameStates/GameState';
 import { ChoosingAngleState } from './gameStates/ChoosingAngleState';
 import { EndThrowState } from './gameStates/EndThrowState';
-import { IdleState } from './gameStates/IdleState';
+import { PlayerIdleState } from './gameStates/PlayerIdleState';
 import { ShootingState } from './gameStates/ShootingState';
 import { SweepingState } from './gameStates/SweepingState';
 import { EndGameState } from './gameStates/EndGameState';
+import { AIPlayingState } from './gameStates/AIPlayingState';
 
 export enum AIDifficulty {
     Undefined,
@@ -61,8 +62,12 @@ export class GameController {
                     // Choose first player randomly
                     if (Math.random() > 0.5) {
                         self.gameData.isPlayerTurn = true;
+                        self.gameData.state = PlayerIdleState.getInstance().enterState();
+                    } else {
+                        self.gameData.isPlayerTurn = false;
+                        self.gameData.state = AIPlayingState.getInstance().enterState();
                     }
-                    self.gameData.state = IdleState.getInstance().enterState();
+
                     self.gameEngine.update();
                 })
                     .catch(() => {
@@ -152,7 +157,7 @@ export class GameController {
 
     public startNextThrow(): void {
         this.hudData.nextThrowMessageVisible = false;
-        this.gameData.state = IdleState.getInstance().nextState();
+        this.gameData.state = PlayerIdleState.getInstance().nextState();
     }
 
     public quitGame(): void {
@@ -165,10 +170,11 @@ export class GameController {
         let initPromise = new Promise((resolve, reject) => {
             ChoosingAngleState.getInstance().init(this);
             EndThrowState.getInstance().init(this);
-            IdleState.getInstance().init(this);
+            PlayerIdleState.getInstance().init(this);
             ShootingState.getInstance().init(this);
             SweepingState.getInstance().init(this);
             EndGameState.getInstance().init(this);
+            AIPlayingState.getInstance().init(this);
             resolve();
         });
         return initPromise;

@@ -5,13 +5,13 @@ import { GameEngine } from '../gameEngine.service';
 import { SceneBuilder } from '../sceneBuilder.service';
 import { CurlingStone, Team, SpinOrientation } from '../../entities/curlingStone';
 
-export class IdleState implements IGameState {
+export class PlayerIdleState implements IGameState {
 
-    private static instance: IdleState = new IdleState();
+    private static instance: PlayerIdleState = new PlayerIdleState();
     private gameController: GameController;
 
-    public static getInstance(): IdleState {
-        return IdleState.instance;
+    public static getInstance(): PlayerIdleState {
+        return PlayerIdleState.instance;
     }
 
     public init(gameController: GameController): void {
@@ -19,10 +19,11 @@ export class IdleState implements IGameState {
     }
 
     private constructor() {
-        if (IdleState.instance) {
-            throw new Error("Error: IdleState is a singleton class, use IdleState.getInstance() instead of new.");
+        if (PlayerIdleState.instance) {
+            throw new Error("Error: PlayerIdleState is a singleton class, " +
+                            "use PlayerIdleState.getInstance() instead of new.");
         }
-        IdleState.instance = this;
+        PlayerIdleState.instance = this;
     }
 
     public onMouseDown(event: any): void {
@@ -45,13 +46,12 @@ export class IdleState implements IGameState {
         // Do nothing
     }
 
-    public enterState(): IdleState {
+    public enterState(): PlayerIdleState {
         document.body.style.cursor = "default";
         const gameData = this.gameController.getGameData();
         const hudData = this.gameController.getHUDData();
-        const team = gameData.isPlayerTurn ? Team.Player : Team.AI;
         const startZ = SceneBuilder.getInstance().getRinkData().lines.start;
-        const stone = new CurlingStone(team, new THREE.Vector3(0, 0, 0),
+        const stone = new CurlingStone(Team.Player, new THREE.Vector3(0, 0, 0),
             new THREE.Vector3(0, 0, startZ));
         GameEngine.getInstance().addStone(stone);
         gameData.forceValue = 0;
