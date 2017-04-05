@@ -15,6 +15,8 @@ import { ModifierDirective } from '../directives/modifier.directive';
 import { MaterialModule } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
+import 'hammerjs';
+
 @NgModule({
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, AppRoutingModule,
         MaterialModule.forRoot(), FlexLayoutModule.forRoot()],
