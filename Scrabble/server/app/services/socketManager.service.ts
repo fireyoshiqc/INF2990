@@ -74,7 +74,9 @@ export class SocketManager {
         let player = this.playerManager.getPlayerFromSocketID(socket.id);
 
         if (player !== undefined) {
-            if (this.commandHandler.isACommand(msg)) {
+            let isGameOver = this.roomManager.findRoom(player.getRoomId()).getGameMaster().isGameOver();
+
+            if (this.commandHandler.isACommand(msg) && !isGameOver) {
                 this.commandHandler.handleCommand(msg, player);
             }
             else {
