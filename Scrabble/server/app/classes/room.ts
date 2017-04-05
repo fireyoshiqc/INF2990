@@ -58,7 +58,7 @@ export class Room {
             } else {
                 // Remove player from list completely
                 this.roomInfo.playerList.splice(indexPlayerList, 1);
-                
+
                 this.gameMaster.handleQuit(playerName);
 
                 // Remove player from room (contains Player object)

@@ -1,5 +1,6 @@
 import { Component, HostListener, ViewChild, OnInit } from '@angular/core';
 import { RackComponent } from './rack.component';
+import { ChatComponent } from './chat.component';
 import { BoardComponent, ICommandPlaceWord } from './board.component';
 import { InfoComponent, ITurnInfo } from './info.component';
 import { SocketHandler } from '../modules/socketHandler.module';
@@ -19,6 +20,7 @@ export class GameComponent implements OnInit {
     @ViewChild(RackComponent) private rackChild: RackComponent;
     @ViewChild(BoardComponent) private boardChild: BoardComponent;
     @ViewChild(InfoComponent) private infoChild: InfoComponent;
+    @ViewChild(ChatComponent) private chatChild: ChatComponent;
 
     constructor(public router: Router) { }
 
@@ -43,15 +45,18 @@ export class GameComponent implements OnInit {
         if (event.key === "Escape") {
             this.quitGame();
         } else if (event.key === "Tab") {
+
             this.rackChild.toggleActiveState();
+            this.chatChild.setActive(!this.rackChild.isActive());
 
             if (!this.rackChild.isActive()) {
                 this.rackChild.deselectLetter();
             }
-        } else {
-            if (this.rackChild.isActive()) {
-                this.rackChild.keyboardInput(event);
-            }
+
+            event.preventDefault();
+            event.stopPropagation();
+        } else if (this.rackChild.isActive()) {
+            this.rackChild.keyboardInput(event);
         }
     }
 
@@ -63,11 +68,20 @@ export class GameComponent implements OnInit {
         return this.isDarkTheme;
     }
 
+    public disableRack(): void {
+        if (this.rackChild.isActive()) {
+            this.rackChild.toggleActiveState();
+            this.rackChild.deselectLetter();
+        }
+    }
+
     public quitGame(): void {
         alert("Vous allez quitter la partie définitivement.");
 
-        this.socket.emit('cwLeaveRoom', { roomID: this.infoChild.getPlayer().getRoomID(),
-                                          name: this.infoChild.getPlayer().getName() });
+        this.socket.emit('cwLeaveRoom', {
+            roomID: this.infoChild.getPlayer().getRoomID(),
+            name: this.infoChild.getPlayer().getName()
+        });
 
         // Reset room ID
         this.infoChild.getPlayer().setRoomID(-1);

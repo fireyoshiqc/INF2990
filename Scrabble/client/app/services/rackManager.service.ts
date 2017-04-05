@@ -11,7 +11,7 @@ import { Letter } from '../classes/letter';
 @Injectable()
 export class RackManager {
 
-    public static readonly RACK_LENGTH = 7;
+    private rackLength = 7;
     private rack: Letter[];
     private selectedIndex: number;
 
@@ -28,9 +28,11 @@ export class RackManager {
     }
 
     public handleInput(event: KeyboardEvent): void {
+        this.rackLength = this.rack.length;
+
         if (this.isArrowKey(event) && this.selectedIndex !== null) {
             let nextIndex = ((this.selectedIndex + ((event.key === "ArrowLeft") ? -1 : 1))
-                + RackManager.RACK_LENGTH) % RackManager.RACK_LENGTH;
+                + this.rackLength) % this.rackLength;
 
             let temp = this.rack[nextIndex];
             this.rack[nextIndex] = this.rack[this.selectedIndex];
@@ -46,10 +48,10 @@ export class RackManager {
             if (this.isLetterInRack(letter)) {
                 let nextIndex = (this.selectedIndex !== null &&
                     this.rack[this.selectedIndex].getCharacter() === letter) ?
-                    (this.selectedIndex + 1) % RackManager.RACK_LENGTH : 0;
+                    (this.selectedIndex + 1) % this.rackLength : 0;
 
                 while (this.rack[nextIndex].getCharacter() !== letter) {
-                    nextIndex = (nextIndex + 1) % RackManager.RACK_LENGTH;
+                    nextIndex = (nextIndex + 1) % this.rackLength;
                 }
 
                 this.rack[nextIndex].toggleSelect();

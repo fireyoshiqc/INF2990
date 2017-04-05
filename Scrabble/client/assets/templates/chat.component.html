@@ -62,9 +62,11 @@
                     fxFlexFill>
 
                     <div class="flex-item" fxFlex="90%" fxFlex.xs="90%" fxLayoutAlign="center center" fxFlexFill>
-                        <md-input-container>
+                        <md-input-container >
                             <input mdInput placeholder="Écrivez un message ou une commande..." type="text" autocomplete="off" class="form-control" id="message"
-                                [(ngModel)]="msgFromClient" name="message">
+                                (click)="sendDisableRackEvent(); setActive(true);"
+                                [(ngModel)]="msgFromClient" name="message"
+                                autofocus>
                         </md-input-container>
                     </div>
 

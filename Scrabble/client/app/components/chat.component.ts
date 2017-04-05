@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewChecked, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewChecked, ElementRef, ViewChild, Output, EventEmitter } from '@angular/core';
 import { SocketHandler } from '../modules/socketHandler.module';
 import { Message, IMessageFromServer } from '../classes/message';
 
@@ -11,12 +11,16 @@ import { Message, IMessageFromServer } from '../classes/message';
 export class ChatComponent implements OnInit, AfterViewChecked {
     private readonly HOST_NAME = "http://" + window.location.hostname;
     private readonly SERVER_PORT = ":3000";
+    private active: boolean;
     private socket: any;
     private msgFromClient: string;
     private msgList = new Array<Message>();
     private openWindow = window;
     private attemptingToConnect = false;
     @ViewChild('chatbox') private chatContainer: ElementRef;
+
+    @Output()
+    private disableRackEvent: EventEmitter<string> = new EventEmitter();
 
     public ngOnInit(): void {
         this.socket = SocketHandler.requestSocket(this.HOST_NAME + this.SERVER_PORT);
@@ -40,6 +44,8 @@ export class ChatComponent implements OnInit, AfterViewChecked {
         this.socket.on('user disconnect', (msg: IMessageFromServer) => {
             this.addMessage(msg);
         });
+
+        this.active = true;
     }
 
     public ngAfterViewChecked(): void {
@@ -73,7 +79,20 @@ export class ChatComponent implements OnInit, AfterViewChecked {
         }
     }
 
-    public keyboardInput(event: KeyboardEvent): void {
-        // TODO: gérer le input à partir d'ici
+    public isActive(): boolean {
+        return this.active;
+    }
+
+    public setActive(active: boolean): void {
+        this.active = active;
+        if (active) {
+            document.getElementById("message").focus();
+        } else {
+            document.getElementById("message").blur();
+        }
+    }
+
+    public sendDisableRackEvent(): void {
+        this.disableRackEvent.emit('disable rack');
     }
 }

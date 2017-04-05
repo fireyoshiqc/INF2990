@@ -28,7 +28,7 @@ describe('RackManager', () => {
 
     describe('getRack()', () => {
         it('should return a rack of size 7.', done => {
-            expect(rackManager.getRackLetters().length).to.equal(RackManager.RACK_LENGTH);
+            expect(rackManager.getRackLetters().length).to.equal(7);
             expect(rackManager.getRackLetters()[0]).to.be.instanceOf(Letter);
             done();
         });
@@ -39,7 +39,7 @@ describe('RackManager', () => {
             let letters = ["A", "B", "C", "D", "E", "F", "G"];
 
             rackManager.updateRack(letters);
-            expect(rackManager.getRackLetters().length).to.equal(RackManager.RACK_LENGTH);
+            expect(rackManager.getRackLetters().length).to.equal(7);
             expect(rackManager.getRackLetters()[0].getCharacter()).to.equal("A");
             expect(rackManager.getRackLetters()[1].getCharacter()).to.equal("B");
             expect(rackManager.getRackLetters()[2].getCharacter()).to.equal("C");
