@@ -360,6 +360,14 @@ button.mat-raised-button {
     color: saddlebrown;
 }
 
-small {
+#lastPlace {
+    color: #212121;
+}
+
+#highscoreRank {
+    color: #0D47A1;
+}
+
+#highscoreSubtitle {
     color: gray;
 }

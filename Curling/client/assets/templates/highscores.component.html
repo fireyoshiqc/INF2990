@@ -7,12 +7,15 @@
                     <md-icon *ngIf="i === 0" id="firstPlace" md-list-icon>star</md-icon>
                     <md-icon *ngIf="i === 1" id="secondPlace" md-list-icon>star</md-icon>
                     <md-icon *ngIf="i === 2" id="thirdPlace" md-list-icon>star</md-icon>
-                    <md-icon *ngIf="i > 2" md-list-icon>star_border</md-icon>
-                    <h3 md-line><strong>{{element.name}}</strong></h3>
+                    <md-icon *ngIf="i > 2" id="lastPlace" md-list-icon>star_border</md-icon>
+                    <h3 md-line>
+                        <strong id="highscoreRank">{{i+1}}.&nbsp;</strong>
+                        <strong>{{element.name}}</strong>
+                    </h3>
                     <p md-line>
-                        <small>(joueur)&nbsp;</small>
+                        <small id="highscoreSubtitle">(joueur)&nbsp;</small>
                         {{element.playerScore}} VS {{element.aiScore}}
-                        <small> (ordinateur)</small>
+                        <small id="highscoreSubtitle"> (ordinateur)</small>
                     </p>
                 </md-list-item>
             </md-list>
@@ -23,12 +26,15 @@
                     <md-icon *ngIf="i === 0" id="firstPlace" md-list-icon>star</md-icon>
                     <md-icon *ngIf="i === 1" id="secondPlace" md-list-icon>star</md-icon>
                     <md-icon *ngIf="i === 2" id="thirdPlace" md-list-icon>star</md-icon>
-                    <md-icon *ngIf="i > 2" md-list-icon>star_border</md-icon>
-                    <h3 md-line><strong>{{element.name}}</strong></h3>
+                    <md-icon *ngIf="i > 2" id="lastPlace" md-list-icon>star_border</md-icon>
+                    <h3 md-line>
+                        <strong id="highscoreRank">{{i+1}}.&nbsp;</strong>
+                        <strong>{{element.name}}</strong>
+                    </h3>
                     <p md-line>
-                        <small>(joueur)&nbsp;</small>
+                        <small id="highscoreSubtitle">(joueur)&nbsp;</small>
                         {{element.playerScore}} VS {{element.aiScore}}
-                        <small> (ordinateur)</small>
+                        <small id="highscoreSubtitle"> (ordinateur)</small>
                     </p>
                 </md-list-item>
             </md-list>
