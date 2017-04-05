@@ -51,8 +51,11 @@ export class CommandHandler {
         let command = this.commandParser.createCommand(msg);
         let commandResponse = "";
         let commandStatus = command.getCommandStatus();
+        let isGameOver = this.roomManager.findRoom(player.getRoomId()).getGameMaster().isGameOver();
 
-        if (commandStatus === CommandStatus.VALID_COMMAND) {
+        if (isGameOver) {
+            commandResponse = "ERREUR : Les commandes (sauf !aide) sont désactivées à la fin du jeu.";
+        } else if (commandStatus === CommandStatus.VALID_COMMAND) {
             this.executeCommand(msg, player, command);
         } else if (commandStatus === CommandStatus.INVALID_COMMAND_SYNTAX) {
             commandResponse = "ERREUR : Cette commande ne respecte pas la syntaxe. Voir !aide";
@@ -60,7 +63,7 @@ export class CommandHandler {
             commandResponse = "ERREUR : Cette commande n'existe pas. Voir !aide";
         }
 
-        if (commandStatus !== CommandStatus.VALID_COMMAND) {
+        if (commandStatus !== CommandStatus.VALID_COMMAND || isGameOver) {
             this.sio.sockets.in(player.getRoomId().toString())
                 .emit('command sent', { username: player.getName(), submessage: msg, commandResponse });
         }

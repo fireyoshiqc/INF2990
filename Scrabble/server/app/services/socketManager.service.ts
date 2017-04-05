@@ -74,12 +74,9 @@ export class SocketManager {
         let player = this.playerManager.getPlayerFromSocketID(socket.id);
 
         if (player !== undefined) {
-            let isGameOver = this.roomManager.findRoom(player.getRoomId()).getGameMaster().isGameOver();
-
-            if (this.commandHandler.isACommand(msg) && !isGameOver) {
+            if (this.commandHandler.isACommand(msg)) {
                 this.commandHandler.handleCommand(msg, player);
-            }
-            else {
+            } else {
                 // Regular message
                 this.sio.sockets
                     .in(player.getRoomId().toString())
