@@ -9,13 +9,11 @@ import { IGameState } from './GameState';
 import { IdleState } from './IdleState';
 import { GameController } from '../gameController.service';
 import { GameEngine } from '../gameEngine.service';
-import { SceneBuilder } from '../sceneBuilder.service';
-import { CurlingStone, Team, SpinOrientation } from '../../entities/curlingStone';
+import { CurlingStone, Team } from '../../entities/curlingStone';
 
 export class EndGameState implements IGameState {
-
-    private readonly ANIMATION_LENGTH = 5000;
     private static instance: EndGameState = new EndGameState();
+    private readonly ANIMATION_LENGTH = 5000;
     private gameController: GameController;
     private winningStones: Array<CurlingStone>;
     private timer : any;
