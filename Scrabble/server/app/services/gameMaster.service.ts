@@ -340,7 +340,7 @@ export class GameMaster {
 
     private endTurn(): CommandExecutionStatus {
         // Check if game is overlapping
-        if (this.activePlayer.getLettersRack().length < this.activePlayer.getMaxRackSize()) {
+        if (this.activePlayer.getLettersRack().length < this.activePlayer.getMaxRackSize() && this.stash.isEmpty()) {
             this.gameOver = true;
             this.adjustFinalScores();
             // TODO: Deduct points for letters left (different funct)
