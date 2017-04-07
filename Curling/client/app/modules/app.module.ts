@@ -10,6 +10,7 @@ import { HUDComponent } from '../components/hud.component';
 import { GameController } from '../services/gameController.service';
 import { NameSelectorComponent } from '../components/nameSelector.component';
 import { HighscoresComponent, HighscoresPopupComponent } from '../components/highscores.component';
+import { HighscoresService } from '../services/highscores.service';
 
 import { ModifierDirective } from '../directives/modifier.directive';
 import { MaterialModule } from '@angular/material';
@@ -23,7 +24,7 @@ import 'hammerjs';
     declarations: [AppComponent, HUDComponent, GlComponent, ModifierDirective,
         PlayerNameComponent, NameSelectorComponent, NameDialogComponent, HighscoresComponent, HighscoresPopupComponent],
     entryComponents: [NameDialogComponent, HighscoresPopupComponent],
-    providers: [GameController],
+    providers: [GameController, HighscoresService],
     bootstrap: [AppComponent]
 })
 

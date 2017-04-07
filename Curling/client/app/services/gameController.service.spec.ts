@@ -12,7 +12,7 @@ import { expect } from 'chai';
 
 describe('GameController', () => {
 
-    let gameController = new GameController();
+    let gameController = new GameController(null, null);
 
     describe('getMaxThrows()', () => {
         it('return the max amount of throws for the curling game.', done => {

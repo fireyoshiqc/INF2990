@@ -16,6 +16,9 @@ import { SweepingState } from './gameStates/SweepingState';
 import { EndGameState } from './gameStates/EndGameState';
 import { AIPlayingState } from './gameStates/AIPlayingState';
 import { StartGameState } from './gameStates/StartGameState';
+import { HighscoresService } from '../services/highscores.service';
+import { HighscoresPopupComponent, HighscoresComponent } from '../components/highscores.component';
+import { MdDialog, MdDialogRef } from '@angular/material';
 
 export enum AIDifficulty {
     Undefined,
@@ -54,6 +57,9 @@ export class GameController {
     private gameEngine: GameEngine;
     private playerName = "";
     private aiDifficulty = AIDifficulty.Undefined;
+    private scoreDialogRef: MdDialogRef<HighscoresPopupComponent>;
+
+     constructor(public dialog: MdDialog, private highscoresService: HighscoresService) { }
 
     public init(container?: HTMLElement): void {
         this.gameEngine = GameEngine.getInstance();
@@ -181,6 +187,27 @@ export class GameController {
             resolve();
         });
         return initPromise;
+    }
+
+     public showHighscores(): void {
+        this.highscoresService.getHighscores()
+            .then((scores) => {
+                if (scores !== undefined) {
+                    // Pop the popup!
+                    this.showHighscoresDialog(scores);
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
+    public showHighscoresDialog(highscores: any): void {
+        setTimeout(() => {
+            this.scoreDialogRef = this.dialog.open(HighscoresPopupComponent);
+            (this.scoreDialogRef.componentInstance.dialogRef.componentInstance as HighscoresComponent)
+                .highscores = { easy: highscores.easy, hard: highscores.hard };
+        });
     }
 }
 
