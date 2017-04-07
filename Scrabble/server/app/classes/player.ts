@@ -16,6 +16,7 @@ export class Player {
     private lettersRack: Letter[];
     private readonly LETTERS_RACK_SIZE = 7;
     private isBlocked: boolean;
+    private hasQuitAfterGameEnd: boolean;
 
     constructor(name: string, socketId: string) {
         this.name = name;
@@ -24,6 +25,7 @@ export class Player {
         this.points = 0;
         this.lettersRack = [];
         this.isBlocked = false;
+        this.hasQuitAfterGameEnd = false;
     }
 
     public getName(): string {
@@ -46,8 +48,16 @@ export class Player {
         return this.points;
     }
 
+    public getHasQuitAfterGameEnd(): boolean {
+        return this.hasQuitAfterGameEnd;
+    }
+
     public setPoints(points: number): void {
         this.points = points;
+    }
+
+    public setHasQuitAfterGameEnd(value: boolean): void {
+        this.hasQuitAfterGameEnd = value;
     }
 
     public addPoints(points: number): void {

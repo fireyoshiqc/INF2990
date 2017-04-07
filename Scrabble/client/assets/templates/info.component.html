@@ -39,7 +39,7 @@
         </div>
 
         <div class="flex-container" *ngFor="let player of players; let i = index" fxLayout="row" fxLayout.xs="row" fxFlex="25%">
-            <div class="flex-item" fxFlex="33%" fxFlex.xs="33%" fxLayoutAlign="center center">
+            <div class="flex-item" [ngClass] = "{'strikethrough' : player.hasQuitAfterGameEnd}" fxFlex="33%" fxFlex.xs="33%" fxLayoutAlign="center center">
                 {{player.name}}
             </div>
             <div class="flex-item" fxFlex="33%" fxFlex.xs="33%" fxLayoutAlign="center center">

@@ -50,6 +50,7 @@ export interface IPlayerInfo {
     name?: string;
     score?: number;
     rackLettersCount?: number;
+    hasQuitAfterGameEnd?: boolean;
 }
 
 export class GameMaster {
@@ -117,7 +118,8 @@ export class GameMaster {
             this.turnInfo.players[i] = {
                 name: this.players[i].getName(),
                 score: this.players[i].getPoints(),
-                rackLettersCount: this.players[i].getLettersRack().length
+                rackLettersCount: this.players[i].getLettersRack().length,
+                hasQuitAfterGameEnd: this.players[i].getHasQuitAfterGameEnd()
             };
         }
 

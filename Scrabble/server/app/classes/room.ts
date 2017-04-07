@@ -53,8 +53,8 @@ export class Room {
             let indexPlayerList = this.roomInfo.playerList.indexOf(playerName);
 
             if (this.gameMaster.isGameOver()) {
-                // Cross out player
-                console.log("Cross out: " + playerName);
+                let player = this.gameMaster.getPlayers().find(p => p.getName() === playerName);
+                player.setHasQuitAfterGameEnd(true);
             } else {
                 // Remove player from list completely
                 this.roomInfo.playerList.splice(indexPlayerList, 1);

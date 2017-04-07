@@ -312,17 +312,14 @@ md-radio-button {
     opacity: 0.5;
 }
 
+/* TODO : change name */
 .test {
     border: 3px solid #00E676;
     border-radius: 10px;
 }
 
 /***************************/
-
-
 /* side panel (chat, info) */
-
-
 /***************************/
 
 #sidePanel {
@@ -331,13 +328,12 @@ md-radio-button {
     border: 2px black solid;
 }
 
+.strikethrough {
+    text-decoration: line-through;
+}
 
 /***************/
-
-
 /* message box */
-
-
 /***************/
 
 #messagePanel {
@@ -375,11 +371,7 @@ md-input-container {
 
 
 /**********************/
-
-
 /* message formatting */
-
-
 /**********************/
 
 #chatCard {
@@ -392,11 +384,7 @@ md-input-container {
 }
 
 /**********************/
-
-
 /* waiting room */
-
-
 /**********************/
 
 #waitingRoomDiv {

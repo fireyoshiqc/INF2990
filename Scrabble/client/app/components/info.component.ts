@@ -22,6 +22,7 @@ export interface IPlayerInfo {
     name?: string;
     score?: number;
     rackLettersCount?: number;
+    hasQuitAfterGameEnd?: boolean;
 }
 
 @Component({
@@ -78,7 +79,8 @@ export class InfoComponent {
             this.players[i] = {
                 name: turnInfo.players[i].name,
                 score: turnInfo.players[i].score,
-                rackLettersCount: turnInfo.players[i].rackLettersCount
+                rackLettersCount: turnInfo.players[i].rackLettersCount,
+                hasQuitAfterGameEnd: turnInfo.players[i].hasQuitAfterGameEnd
             };
         }
     }
