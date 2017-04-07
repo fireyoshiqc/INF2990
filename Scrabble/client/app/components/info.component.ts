@@ -39,7 +39,7 @@ export class InfoComponent {
     private nLettersStash: number;
     private player: Player;
     private gameOver: boolean;
-    private winningPlayer: string;
+    private winningPlayers: string;
 
     constructor() {
         this.players = [{}];
@@ -49,7 +49,7 @@ export class InfoComponent {
         this.nLettersStash = 0;
         this.player = PlayerHandler.requestPlayer();
         this.gameOver = false;
-        this.winningPlayer = "";
+        this.winningPlayers = "";
     }
 
     public getPlayer(): Player {
@@ -64,9 +64,7 @@ export class InfoComponent {
         this.gameOver = turnInfo.gameOver;
 
         if (this.gameOver) {
-            this.winningPlayer = this.getWinner();
-            console.log("Game is over!");
-            console.log("Winning player: " + this.winningPlayer);
+            this.winningPlayers = this.getWinners();
         }
 
         // Check if a player has left
@@ -85,11 +83,19 @@ export class InfoComponent {
         }
     }
 
-    private getWinner(): string {
-        // TODO deal with case where multiple players have same score
+    private getWinners(): string {
+        // 1- Retrive player(s) with highest score
         let maxScore = Math.max.apply(Math, this.players.map(player => player.score));
-        let winningPlayer = this.players.find(player => player.score === maxScore).name;
-        return winningPlayer;
+        let winningPlayers = this.players.filter(player => player.score === maxScore);
+
+        // 2- Build string with player names (to be displayed)
+        let winningPlayersString = "";
+        winningPlayers.forEach(player => {
+            winningPlayersString += player.name + ", ";
+        });
+        winningPlayersString = winningPlayersString.substring(0, winningPlayersString.length - 2);
+
+        return winningPlayersString;
     }
 
     // For tests
