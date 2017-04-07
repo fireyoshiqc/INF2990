@@ -17,10 +17,10 @@ export class AIPlayingState implements IGameState {
     private static instance: AIPlayingState = new AIPlayingState();
     private readonly EASY_FAILED_FACTOR = 0.67;
     private readonly FAILED_X_MAX_VELOCITY = 0.5;
-    private readonly SUCCESS_X_MAX_VELOCITY = 0.15;
-    private readonly Z_FRONT_HOGLINE_VELOCITY = 2.15;
-    private readonly Z_BACK_HOGLINE_VELOCITY = 4.034;
-    private readonly Z_BACKLINE_VELOCITY = 4.46;
+    private readonly SUCCESS_X_MAX_VELOCITY = 0.45;
+    private readonly Z_FRONT_HOGLINE_VELOCITY = 2.15353;
+    private readonly Z_BACK_HOGLINE_VELOCITY = 4.04;
+    private readonly Z_BACKLINE_VELOCITY = 4.46377;
     private gameController: GameController;
     private physicsManager: PhysicsManager;
     private stoneThrown = false;
@@ -40,7 +40,7 @@ export class AIPlayingState implements IGameState {
     private constructor() {
         if (AIPlayingState.instance) {
             throw new Error("Error: AIPlayingState is a singleton class, " +
-                    "use AIPlayingState.getInstance() instead of new.");
+                "use AIPlayingState.getInstance() instead of new.");
         }
         AIPlayingState.instance = this;
     }
@@ -73,29 +73,32 @@ export class AIPlayingState implements IGameState {
 
     public enterState(): AIPlayingState {
         document.body.style.cursor = "default";
+
         const hudData = this.gameController.getHUDData();
         hudData.sliderDisabled = true;
         const startZ = SceneBuilder.getInstance().getRinkData().lines.start;
 
-        const stone = new CurlingStone(Team.AI, new THREE.Vector3(0, 0, 0),
+        const nextStone = new CurlingStone(Team.AI, new THREE.Vector3(0, 0, 0),
             new THREE.Vector3(0, 0, startZ));
         this.stoneThrown = false;
-        GameEngine.getInstance().addStone(stone);
+        GameEngine.getInstance().addStone(nextStone);
 
         let timer = setInterval(() => {
             if (this.gameController.getPlayerName() !== "") {
+                GameEngine.getInstance().getStones().forEach(stone => {
+                    stone.highlightOff();
+                });
                 // Set AIDifficulty
                 this.difficulty = this.gameController.getAIDifficulty();
+                (this.difficulty === AIDifficulty.Normal) ?
+                    this.throwNormalStone(nextStone) : this.throwHardStone(nextStone);
 
-                (this.difficulty === AIDifficulty.Normal) ? this.throwNormalStone(stone) : this.throwHardStone(stone);
-
-                stone.setHasBeenShot();
+                nextStone.setHasBeenShot();
                 hudData.aiStones.pop();
                 this.stoneThrown = true;
                 clearInterval(timer);
             }
         }, 2000);
-
         return this;
     }
 
@@ -111,27 +114,23 @@ export class AIPlayingState implements IGameState {
 
     private throwNormalStone(stone: CurlingStone): void {
         let velocity: THREE.Vector3;
-        let spin: SpinOrientation;
+        let xVelocity: number;
+        let zVelocity: number;
+        let spin = (Math.random() > 0.5) ? SpinOrientation.CLOCKWISE : SpinOrientation.COUNTER_CLOCKWISE;
 
         if (Math.random() > this.EASY_FAILED_FACTOR) {
             // Intentionally miss the shot
-            spin = (Math.random() > 0.5) ? SpinOrientation.CLOCKWISE : SpinOrientation.COUNTER_CLOCKWISE;
-            stone.setSpinOrientation(spin);
-
-            let xVelocity = this.getRandomFloat(-this.FAILED_X_MAX_VELOCITY, this.FAILED_X_MAX_VELOCITY);
-            let zVelocity = this.getRandomFloat(this.Z_FRONT_HOGLINE_VELOCITY, this.Z_BACK_HOGLINE_VELOCITY);
-            velocity = new THREE.Vector3(xVelocity, 0, zVelocity);
+            xVelocity = this.getRandomFloat(-this.FAILED_X_MAX_VELOCITY, this.FAILED_X_MAX_VELOCITY);
+            zVelocity = this.getRandomFloat(this.Z_FRONT_HOGLINE_VELOCITY, this.Z_BACK_HOGLINE_VELOCITY);
         } else {
-            // Calculate the shot
-            spin = (Math.random() > 0.5) ? SpinOrientation.CLOCKWISE : SpinOrientation.COUNTER_CLOCKWISE;
-
-            let xVelocity = spin * this.getRandomFloat(0, this.SUCCESS_X_MAX_VELOCITY);
-            let zVelocity = this.getRandomFloat(this.Z_BACK_HOGLINE_VELOCITY, this.Z_BACKLINE_VELOCITY);
-            velocity = new THREE.Vector3(xVelocity, 0, zVelocity);
+            // Normal shot that always stays in game if there are no other stones
+            // Shoot in opposite direction of spin
+            xVelocity = -spin * this.getRandomFloat(0, this.SUCCESS_X_MAX_VELOCITY);
+            zVelocity = this.getRandomFloat(this.Z_BACK_HOGLINE_VELOCITY, this.Z_BACKLINE_VELOCITY);
         }
-
+        velocity = new THREE.Vector3(xVelocity, 0, zVelocity);
+        stone.setSpinOrientation(spin);
         stone.setVelocity(velocity);
-        console.log("EASY THROW : ", velocity);
     }
 
     private throwHardStone(stone: CurlingStone): void {
