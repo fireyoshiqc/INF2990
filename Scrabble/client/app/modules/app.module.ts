@@ -17,7 +17,7 @@ import { StartPageComponent, WaitingDialogComponent } from '../components/startP
 
 @NgModule({
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, AppRoutingModule,
-        MaterialModule.forRoot(), FlexLayoutModule.forRoot()],
+        MaterialModule, FlexLayoutModule],
     declarations: [AppComponent, GameComponent, ChatComponent, BoardComponent, RackComponent, InfoComponent,
         WaitingRoomComponent, StartPageComponent, WaitingDialogComponent],
     entryComponents: [WaitingDialogComponent],

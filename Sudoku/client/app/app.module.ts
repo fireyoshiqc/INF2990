@@ -16,7 +16,7 @@ import 'hammerjs';
 
 @NgModule({
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule,
-        MaterialModule.forRoot(), FlexLayoutModule.forRoot()],
+        MaterialModule, FlexLayoutModule],
     declarations: [AppComponent, SudokuGridComponent, GameAreaComponent, NameSelectorComponent, NameDialogComponent,
         HighscoresComponent, HighscoresPopupComponent],
     entryComponents: [NameDialogComponent, HighscoresPopupComponent],
