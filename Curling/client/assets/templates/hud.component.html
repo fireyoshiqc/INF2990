@@ -21,7 +21,7 @@
                 </div>
                 
                 <!-- Changement de la caméra -->
-                <button md-raised-button class="animatedButton" id="cameraButton" (click)="sendSwitchCameraEvent()">
+                <button md-raised-button class="animatedButton" id="cameraButton" (click)="sendSwitchCameraEvent()" [disabled] = "cameraDisabled">
                     <md-icon class="mdIcon">switch_camera</md-icon><strong> Caméra</strong>
                 </button>
             </div>

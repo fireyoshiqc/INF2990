@@ -15,6 +15,7 @@ import { ShootingState } from './gameStates/ShootingState';
 import { SweepingState } from './gameStates/SweepingState';
 import { EndGameState } from './gameStates/EndGameState';
 import { AIPlayingState } from './gameStates/AIPlayingState';
+import { StartGameState } from './gameStates/StartGameState';
 
 export enum AIDifficulty {
     Undefined,
@@ -34,6 +35,7 @@ export class GameController {
         aiStones: new Array<number>(this.MAX_THROWS / 2),
         forceVisible: false,
         sliderDisabled: false,
+        cameraDisabled: false,
         nextThrowMessageVisible: false,
         nextRoundMessageVisible: false
     };
@@ -59,14 +61,7 @@ export class GameController {
         this.gameEngine.init(container, this)
             .then(() => {
                 self.initGameStates().then(() => {
-                    // Choose first player randomly
-                    if (Math.random() > 0.5) {
-                        self.gameData.isPlayerTurn = true;
-                        self.gameData.state = PlayerIdleState.getInstance().enterState();
-                    } else {
-                        self.gameData.isPlayerTurn = false;
-                        self.gameData.state = AIPlayingState.getInstance().enterState();
-                    }
+                    self.gameData.state = StartGameState.getInstance().enterState();
 
                     self.gameEngine.update();
                 })
@@ -146,7 +141,14 @@ export class GameController {
     }
 
     public switchCamera(): void {
-        this.gameEngine.switchCamera();
+        if (!this.getHUDData().cameraDisabled) {
+            this.gameEngine.switchCamera();
+        }
+    }
+
+    public startGame(): void {
+        // See nextState() in StartGameState.ts
+        this.gameData.state = this.gameData.state.nextState();
     }
 
     public startThrowStone(event: any): void {
@@ -175,6 +177,7 @@ export class GameController {
             SweepingState.getInstance().init(this);
             EndGameState.getInstance().init(this);
             AIPlayingState.getInstance().init(this);
+            StartGameState.getInstance().init(this);
             resolve();
         });
         return initPromise;
@@ -197,6 +200,7 @@ export interface IHUDData {
     aiStones: Array<number>;
     forceVisible: boolean;
     sliderDisabled: boolean;
+    cameraDisabled: boolean;
     nextThrowMessageVisible: boolean;
     nextRoundMessageVisible: boolean;
 }

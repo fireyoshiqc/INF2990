@@ -26,6 +26,7 @@ export class HUDComponent {
     @Input() private forceVisible: boolean;
     @Input() private forceValue: number;
     @Input() private sliderDisabled = false;
+    @Input() private cameraDisabled = false;
     @Input() private roundsCompleted: boolean[]; // Indicates which rounds have been completed (true)
     @Input() private nextThrowMessageVisible: boolean;
     @Input() private nextRoundMessageVisible: boolean;
@@ -66,7 +67,9 @@ export class HUDComponent {
     }
 
     public sendSwitchCameraEvent(): void {
-        this.switchCameraEvent.emit('camera change');
+        if (!this.cameraDisabled) {
+            this.switchCameraEvent.emit('camera change');
+        }
     }
 
     public sendThrowStoneEvent(): void {
