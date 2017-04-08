@@ -15,6 +15,8 @@ import { InfoComponent } from '../components/info.component';
 import { WaitingRoomComponent } from '../components/waitingRoom.component';
 import { StartPageComponent, WaitingDialogComponent } from '../components/startPage.component';
 
+import 'hammerjs';
+
 @NgModule({
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, AppRoutingModule,
         MaterialModule, FlexLayoutModule],
