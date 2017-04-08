@@ -100,26 +100,23 @@ export class PhysicsManager {
     }
 
     private playCollisionSound(idStone1: number, idStone2: number): void {
+        let stone: CurlingStone;
+
         if (this.curlingStones[idStone1].getVelocity().length >= this.curlingStones[idStone2].getVelocity().length) {
-            let collisionSound = <THREE.PositionalAudio>(this.curlingStones[idStone1]
-                .getObjectByName("collisionSound"));
-            if (collisionSound !== undefined) {
-                collisionSound.setVolume(2.0);
-                if (collisionSound.isPlaying) {
-                    collisionSound.stop();
-                }
-                collisionSound.play();
-            }
+            stone = this.curlingStones[idStone1];
         } else {
-            let collisionSound = <THREE.PositionalAudio>(this.curlingStones[idStone2]
-                .getObjectByName("collisionSound"));
-            if (collisionSound !== undefined) {
-                collisionSound.setVolume(2.0);
-                if (collisionSound.isPlaying) {
-                    collisionSound.stop();
-                }
-                collisionSound.play();
+            stone = this.curlingStones[idStone2];
+        }
+
+        let collisionSound = <THREE.PositionalAudio>(stone.getObjectByName("collisionSound"));
+
+        if (collisionSound !== undefined) {
+            collisionSound.setVolume(2.0);
+
+            if (collisionSound.isPlaying) {
+                collisionSound.stop();
             }
+            collisionSound.play();
         }
     }
 
@@ -195,8 +192,6 @@ export class PhysicsManager {
         }
     }
 
-    // }
-
     //  Check if active stone if over a swept ice spot, to change its friction and spin influence
     private checkforFastIceSpots(stone: CurlingStone): boolean {
 
@@ -238,10 +233,8 @@ export class PhysicsManager {
                     if (this.curlingStones[i].fadeOut(this.delta)) {
                         const slidingSound = <THREE.PositionalAudio>(this.curlingStones[i]
                             .getObjectByName("slidingSound"));
-                        if (slidingSound !== undefined) {
-                            if (slidingSound.isPlaying) {
+                        if (slidingSound !== undefined && slidingSound.isPlaying) {
                                 slidingSound.stop();
-                            }
                         }
                         GameEngine.getInstance().removeFromScene(this.curlingStones[i]);
                         this.curlingStones.splice(i, 1);
