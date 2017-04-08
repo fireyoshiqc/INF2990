@@ -15,16 +15,18 @@ import { CurlingStone, Team, SpinOrientation } from '../../entities/curlingStone
 
 export class AIPlayingState implements IGameState {
     private static instance: AIPlayingState = new AIPlayingState();
+    private readonly THROW_DELAY_MS = 1000;
     private readonly EASY_FAILED_FACTOR = 0.67;
-    private readonly FAILED_X_MAX_VELOCITY = 0.5;
-    private readonly SUCCESS_X_MAX_VELOCITY = 0.45;
+    private readonly X_FAILED_MAX_VELOCITY = 0.5;
+    private readonly X_SUCCESS_MAX_VELOCITY = 0.45;
+    private readonly X_HOUSE_CENTER_VELOCITY = 0.27;
     private readonly Z_FRONT_HOGLINE_VELOCITY = 2.15353;
     private readonly Z_BACK_HOGLINE_VELOCITY = 4.04;
     private readonly Z_BACKLINE_VELOCITY = 4.46377;
+    private readonly Z_RINGS_CENTER_VELOCITY = 4.357;
     private gameController: GameController;
     private physicsManager: PhysicsManager;
     private stoneThrown = false;
-    private difficulty: AIDifficulty;
 
     public static getInstance(): AIPlayingState {
         return AIPlayingState.instance;
@@ -34,7 +36,6 @@ export class AIPlayingState implements IGameState {
         this.gameController = gameController;
         this.physicsManager = PhysicsManager.getInstance();
         this.physicsManager.init();
-        this.difficulty = AIDifficulty.Undefined;
     }
 
     private constructor() {
@@ -83,22 +84,17 @@ export class AIPlayingState implements IGameState {
         this.stoneThrown = false;
         GameEngine.getInstance().addStone(nextStone);
 
-        let timer = setInterval(() => {
-            if (this.gameController.getPlayerName() !== "") {
-                GameEngine.getInstance().getStones().forEach(stone => {
-                    stone.highlightOff();
-                });
-                // Set AIDifficulty
-                this.difficulty = this.gameController.getAIDifficulty();
-                (this.difficulty === AIDifficulty.Normal) ?
-                    this.throwNormalStone(nextStone) : this.throwHardStone(nextStone);
+        setTimeout(() => {
+            GameEngine.getInstance().getStones().forEach(stone => { stone.highlightOff(); });
 
-                nextStone.setHasBeenShot();
-                hudData.aiStones.pop();
-                this.stoneThrown = true;
-                clearInterval(timer);
-            }
-        }, 2000);
+            (this.gameController.getAIDifficulty() === AIDifficulty.Normal) ?
+                this.throwNormalStone(nextStone) : this.throwHardStone(nextStone);
+
+            nextStone.setHasBeenShot();
+            hudData.aiStones.pop();
+            this.stoneThrown = true;
+        }, this.THROW_DELAY_MS);
+
         return this;
     }
 
@@ -120,12 +116,12 @@ export class AIPlayingState implements IGameState {
 
         if (Math.random() > this.EASY_FAILED_FACTOR) {
             // Intentionally miss the shot
-            xVelocity = this.getRandomFloat(-this.FAILED_X_MAX_VELOCITY, this.FAILED_X_MAX_VELOCITY);
+            xVelocity = this.getRandomFloat(-this.X_FAILED_MAX_VELOCITY, this.X_FAILED_MAX_VELOCITY);
             zVelocity = this.getRandomFloat(this.Z_FRONT_HOGLINE_VELOCITY, this.Z_BACK_HOGLINE_VELOCITY);
         } else {
             // Normal shot that always stays in game if there are no other stones
             // Shoot in opposite direction of spin
-            xVelocity = -spin * this.getRandomFloat(0, this.SUCCESS_X_MAX_VELOCITY);
+            xVelocity = -spin * this.getRandomFloat(0, this.X_SUCCESS_MAX_VELOCITY);
             zVelocity = this.getRandomFloat(this.Z_BACK_HOGLINE_VELOCITY, this.Z_BACKLINE_VELOCITY);
         }
         velocity = new THREE.Vector3(xVelocity, 0, zVelocity);
@@ -134,6 +130,24 @@ export class AIPlayingState implements IGameState {
     }
 
     private throwHardStone(stone: CurlingStone): void {
-        stone.setVelocity(new THREE.Vector3(Math.random(), 0, 3 * Math.random()));
+        let velocity: THREE.Vector3;
+        let xVelocity: number;
+        let zVelocity: number;
+        let spin: SpinOrientation;
+
+        if (GameEngine.getInstance().getStones().length === 0) {
+            spin = (Math.random() > 0.5) ? SpinOrientation.CLOCKWISE : SpinOrientation.COUNTER_CLOCKWISE;
+
+            // Hard shot that aims for the center of the rings if there are no other stones
+            // Shoot in opposite direction of spin
+            xVelocity = -spin * this.X_HOUSE_CENTER_VELOCITY;
+            zVelocity = this.Z_RINGS_CENTER_VELOCITY;
+            // Cas où juste les pierres du ai -> viser la maison sans frapper les autres pierres
+            // Cas où joueur a une pierre dans la maison -> viser la pierre la plus proche du centre
+        }
+
+        velocity = new THREE.Vector3(xVelocity, 0, zVelocity);
+        stone.setSpinOrientation(spin);
+        stone.setVelocity(velocity);
     }
 }
