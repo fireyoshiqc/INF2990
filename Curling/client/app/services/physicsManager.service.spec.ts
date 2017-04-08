@@ -122,4 +122,105 @@ describe('PhysicsManager', () => {
             done();
         });
     });
+
+    describe('getClosestPlayerStoneInHouse()', () => {
+        it('should return the closest player stone.', done => {
+            testPhysicsManager.clearStones();
+            let position1 = new THREE.Vector3(0, 0, 40.37);
+            let position2 = new THREE.Vector3(0, 0, 39.97);
+            let position3 = new THREE.Vector3(0, 0, 39.37);
+            let velocity = new THREE.Vector3(0, 0, 0);
+
+            testPhysicsManager.getStones().push(new CurlingStone(Team.AI, velocity, position1));
+            testPhysicsManager.getStones().push(new CurlingStone(Team.Player, velocity, position3));
+            testPhysicsManager.getStones().push(new CurlingStone(Team.Player, velocity, position2));
+
+            // Sort stones relative to a center that is closer to the second stone.
+            testPhysicsManager.sortStonesByDistance();
+
+            let closestPlayerStone = testPhysicsManager.getClosestPlayerStoneInHouse();
+
+            // The closest stone (the second one) should now be the first in the array
+            expect(closestPlayerStone.position.z).to.eql(position2.z);
+            expect(closestPlayerStone.getTeam()).to.eql(Team.Player);
+            done();
+        });
+
+        it('should return the closest player stone.', done => {
+            testPhysicsManager.clearStones();
+            let position1 = new THREE.Vector3(0, 0, 40.37);
+            let position2 = new THREE.Vector3(0, 0, 39.97);
+            let position3 = new THREE.Vector3(0, 0, 39.37);
+            let velocity = new THREE.Vector3(0, 0, 0);
+
+            testPhysicsManager.getStones().push(new CurlingStone(Team.Player, velocity, position1));
+            testPhysicsManager.getStones().push(new CurlingStone(Team.AI, velocity, position3));
+            testPhysicsManager.getStones().push(new CurlingStone(Team.AI, velocity, position2));
+
+            // Sort stones relative to a center that is closer to the second stone.
+            testPhysicsManager.sortStonesByDistance(new THREE.Vector3(0, 0, 0));
+
+            let closestPlayerStone = testPhysicsManager.getClosestPlayerStoneInHouse();
+
+            // The closest stone (the second one) should now be the first in the array
+            expect(closestPlayerStone.position.z).to.eql(position1.z);
+            expect(closestPlayerStone.getTeam()).to.eql(Team.Player);
+            done();
+        });
+
+        it('should return undefined because there are no player stone in house.', done => {
+            testPhysicsManager.clearStones();
+            let position1 = new THREE.Vector3(0, 0, 40.37);
+            let position2 = new THREE.Vector3(0, 0, 39.97);
+            let position3 = new THREE.Vector3(0, 0, 19.37);
+            let velocity = new THREE.Vector3(0, 0, 0);
+
+            testPhysicsManager.getStones().push(new CurlingStone(Team.AI, velocity, position1));
+            testPhysicsManager.getStones().push(new CurlingStone(Team.AI, velocity, position2));
+            testPhysicsManager.getStones().push(new CurlingStone(Team.Player, velocity, position3));
+
+            // Sort stones relative to a center that is closer to the second stone.
+            testPhysicsManager.sortStonesByDistance(new THREE.Vector3(0, 0, 0));
+
+            let closestPlayerStone = testPhysicsManager.getClosestPlayerStoneInHouse();
+
+            // The closest stone (the second one) should now be the first in the array
+            expect(closestPlayerStone).to.undefined;
+            done();
+        });
+
+        it('should return undefined because there are no stone in house.', done => {
+            testPhysicsManager.clearStones();
+            let position1 = new THREE.Vector3(0, 0, 21.37);
+            let position2 = new THREE.Vector3(0, 0, 9.97);
+            let position3 = new THREE.Vector3(0, 0, 19.37);
+            let velocity = new THREE.Vector3(0, 0, 0);
+
+            testPhysicsManager.getStones().push(new CurlingStone(Team.AI, velocity, position1));
+            testPhysicsManager.getStones().push(new CurlingStone(Team.AI, velocity, position2));
+            testPhysicsManager.getStones().push(new CurlingStone(Team.Player, velocity, position3));
+
+            // Sort stones relative to a center that is closer to the second stone.
+            testPhysicsManager.sortStonesByDistance(new THREE.Vector3(0, 0, 0));
+
+            let closestPlayerStone = testPhysicsManager.getClosestPlayerStoneInHouse();
+
+            // The closest stone (the second one) should now be the first in the array
+            expect(closestPlayerStone).to.undefined;
+            done();
+        });
+
+        it('should return undefined because there are no stone in game.', done => {
+            testPhysicsManager.clearStones();
+
+            // Sort stones relative to a center that is closer to the second stone.
+            testPhysicsManager.sortStonesByDistance(new THREE.Vector3(0, 0, 0));
+
+            let closestPlayerStone = testPhysicsManager.getClosestPlayerStoneInHouse();
+
+            // The closest stone (the second one) should now be the first in the array
+            expect(closestPlayerStone).to.undefined;
+            done();
+        });
+    });
 });

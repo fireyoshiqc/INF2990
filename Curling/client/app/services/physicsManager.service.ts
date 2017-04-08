@@ -7,7 +7,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import { CurlingStone } from '../entities/curlingStone';
+import { CurlingStone, Team } from '../entities/curlingStone';
 import { SceneBuilder } from './sceneBuilder.service';
 import { GameEngine } from './gameEngine.service';
 import { FastIce } from '../entities/fastIce';
@@ -262,6 +262,15 @@ export class PhysicsManager {
                 return stone1.position.distanceTo(centerVector) - stone2.position.distanceTo(centerVector);
             });
         }
+    }
+
+    public getClosestPlayerStoneInHouse(): CurlingStone {
+        let ringsRadius = SceneBuilder.getInstance().getRinkData().rings.outer;
+        let ringsCenterPosition = new THREE.Vector3(0, 0, SceneBuilder.getInstance().getRinkData().rings.offset);
+
+        // PhysicsManager contains stones in game sorted by distance to the center of the rings
+        return this.curlingStones.find(stone =>
+                 (stone.getTeam() === Team.Player && stone.position.distanceTo(ringsCenterPosition) <= ringsRadius));
     }
 
     public allStonesHaveStopped(): boolean {

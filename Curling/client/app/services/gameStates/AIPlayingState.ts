@@ -16,7 +16,7 @@ import { CurlingStone, Team, SpinOrientation } from '../../entities/curlingStone
 export class AIPlayingState implements IGameState {
     private static instance: AIPlayingState = new AIPlayingState();
     private readonly THROW_DELAY_MS = 1000;
-    private readonly EASY_FAILED_FACTOR = 0.67;
+    private readonly NORMAL_FAILED_FACTOR = 0.67;
     private readonly X_FAILED_MAX_VELOCITY = 0.5;
     private readonly X_SUCCESS_MAX_VELOCITY = 0.45;
     private readonly X_HOUSE_CENTER_VELOCITY = 0.27;
@@ -114,7 +114,7 @@ export class AIPlayingState implements IGameState {
         let zVelocity: number;
         let spin = (Math.random() > 0.5) ? SpinOrientation.CLOCKWISE : SpinOrientation.COUNTER_CLOCKWISE;
 
-        if (Math.random() > this.EASY_FAILED_FACTOR) {
+        if (Math.random() > this.NORMAL_FAILED_FACTOR) {
             // Intentionally miss the shot
             xVelocity = this.getRandomFloat(-this.X_FAILED_MAX_VELOCITY, this.X_FAILED_MAX_VELOCITY);
             zVelocity = this.getRandomFloat(this.Z_FRONT_HOGLINE_VELOCITY, this.Z_BACK_HOGLINE_VELOCITY);
@@ -135,7 +135,7 @@ export class AIPlayingState implements IGameState {
         let zVelocity: number;
         let spin: SpinOrientation;
 
-        if (GameEngine.getInstance().getStones().length === 0) {
+        if (GameEngine.getInstance().getStones().length === 1) {
             spin = (Math.random() > 0.5) ? SpinOrientation.CLOCKWISE : SpinOrientation.COUNTER_CLOCKWISE;
 
             // Hard shot that aims for the center of the rings if there are no other stones
@@ -143,7 +143,12 @@ export class AIPlayingState implements IGameState {
             xVelocity = -spin * this.X_HOUSE_CENTER_VELOCITY;
             zVelocity = this.Z_RINGS_CENTER_VELOCITY;
             // Cas où juste les pierres du ai -> viser la maison sans frapper les autres pierres
-            // Cas où joueur a une pierre dans la maison -> viser la pierre la plus proche du centre
+        } else {
+            // TODO : Aims for the player stone that is the closest to the center of the rings
+            spin = (Math.random() > 0.5) ? SpinOrientation.CLOCKWISE : SpinOrientation.COUNTER_CLOCKWISE;
+
+            xVelocity = -spin * this.getRandomFloat(0, this.X_SUCCESS_MAX_VELOCITY);
+            zVelocity = this.getRandomFloat(this.Z_BACK_HOGLINE_VELOCITY, this.Z_BACKLINE_VELOCITY);
         }
 
         velocity = new THREE.Vector3(xVelocity, 0, zVelocity);
