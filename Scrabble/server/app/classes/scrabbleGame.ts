@@ -350,18 +350,4 @@ export class ScrabbleGame {
 
         return true;
     }
-
-    public copyBoard(board: BoardTile[][]): BoardTile[][] {
-        let copyBoard: BoardTile[][] = [];
-
-        for (let i = 0; i < this.BOARD_SIZE; i++) {
-            copyBoard[i] = [];
-
-            for (let j = 0; j < this.BOARD_SIZE; j++) {
-                copyBoard[i][j] = this.board[i][j].copyBoardTile();
-            }
-        }
-
-        return copyBoard;
-    }
 }
