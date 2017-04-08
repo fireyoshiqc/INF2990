@@ -15,8 +15,9 @@ export class EndGameState implements IGameState {
     private static instance: EndGameState = new EndGameState();
     private readonly ANIMATION_LENGTH = 5000;
     private gameController: GameController;
+    private winningTeam: Team;
     private winningStones: Array<CurlingStone>;
-    private timer : any;
+    private timer: any;
 
     public static getInstance(): EndGameState {
         return EndGameState.instance;
@@ -54,8 +55,26 @@ export class EndGameState implements IGameState {
     }
 
     public enterState(): EndGameState {
-        // Detect winning player and get their stones
-        this.initWinningStones();
+
+        // Detect winning player
+        this.setWinningTeam();
+
+        // Add highscore if the player wins
+        if (this.winningTeam === Team.Player) {
+            this.gameController.addHighscore()
+            .then( () => {
+                this.gameController.showHighscores();
+            })
+            .catch((err) => {
+                throw new Error("Error: Could not add highscore!");
+            } );
+        } else {
+            // Directly show highscores
+            this.gameController.showHighscores();
+        }
+
+        // Get their stones
+        this.winningStones = GameEngine.getInstance().getStones().filter(stone => stone.getTeam() === this.winningTeam);
         // TODO initialize the confetti
         this.timer = setTimeout(() => {
             // End of animation
@@ -70,9 +89,8 @@ export class EndGameState implements IGameState {
         return PlayerIdleState.getInstance().enterState();
     }
 
-    private initWinningStones(): void {
+    private setWinningTeam(): void {
         const gameData = this.gameController.getGameData();
-        let winningTeam = (gameData.playerScore > gameData.aiScore) ? Team.Player : Team.AI;
-        this.winningStones = GameEngine.getInstance().getStones().filter(stone => stone.getTeam() === winningTeam);
+        this.winningTeam = (gameData.playerScore > gameData.aiScore) ? Team.Player : Team.AI;
     }
 }

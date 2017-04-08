@@ -189,6 +189,10 @@ export class GameController {
         return initPromise;
     }
 
+    public addHighscore(): Promise<boolean> {
+        return this.highscoresService.addHighscore(this.playerName, this.gameData, this.aiDifficulty);
+    }
+
      public showHighscores(): void {
         this.highscoresService.getHighscores()
             .then((scores) => {
@@ -202,7 +206,7 @@ export class GameController {
             });
     }
 
-    public showHighscoresDialog(highscores: any): void {
+    private showHighscoresDialog(highscores: any): void {
         setTimeout(() => {
             this.scoreDialogRef = this.dialog.open(HighscoresPopupComponent);
             (this.scoreDialogRef.componentInstance.dialogRef.componentInstance as HighscoresComponent)
