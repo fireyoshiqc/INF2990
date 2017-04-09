@@ -122,40 +122,50 @@ export class EndThrowState implements IGameState {
 
         let gameData = this.gameController.getGameData();
 
+        let teamClosestStone: Team;
+        let score = 0;
+
         if (curlingStones.length > 0) {
 
-            let teamClosestStone = curlingStones[0].getTeam();
-            let index = 0;
+            // CurlingStones are sorted by distance to the center of rings
+            // Scoring team is always the closest stone, the first stone in curlingStones
+            teamClosestStone = curlingStones[0].getTeam();
 
+            let index = 0;
             const ringsCenter = new THREE.Vector3(0, 0, rings.offset);
 
-            let score = 0;
-
+            // Count points (check if teamClosestStone has stones in house) 
             while (curlingStones.length > index &&
                 curlingStones[index].getTeam() === teamClosestStone &&
                 curlingStones[index].position.distanceTo(ringsCenter) < rings.outer) {
                 score++;
                 curlingStones[index++].highlightOn();
             }
-
-            // Don't add points yet if it's not the end of the round.
-            if (roundEnd) {
-                // Update score of closest team
-                teamClosestStone === Team.Player ? gameData.playerScore += score : gameData.aiScore += score;
-                this.chooseNextFirstPlayer(teamClosestStone, score);
-            }
         }
 
-        if (!roundEnd) {
+        // Don't add points yet if it's not the end of the round.
+        if (roundEnd) {
+            // Update score of closest team with stones in house
+            if (teamClosestStone !== undefined) {
+                teamClosestStone === Team.Player ? gameData.playerScore += score : gameData.aiScore += score;
+            }
+            this.chooseNextFirstPlayer(teamClosestStone, score);
+        } else {
             gameData.isPlayerTurn = !gameData.isPlayerTurn;
         }
     }
 
     private chooseNextFirstPlayer(teamClosestStone: Team, score: number): void {
-        // If round is null, no changes required (first player for next round is already determined)
-        if (score !== 0) {
+        let gameData = this.gameController.getGameData();
+
+        // If round is null, first player for next round is the one who started the current round
+        // Round is null if the teamClosestStone is undefined (when all stones were out of bounds during a round)
+        // Round is null if the teamClosestStone is defined, but their score is 0 because they have no stone in house
+        if (teamClosestStone === undefined || score === 0) {
+            gameData.isPlayerTurn = !gameData.isPlayerTurn;
+        } else {
             // Player with highest score in the round goes first in the next round
-            this.gameController.getGameData().isPlayerTurn = (teamClosestStone === Team.Player);
+            gameData.isPlayerTurn = (teamClosestStone === Team.Player);
         }
     }
 
