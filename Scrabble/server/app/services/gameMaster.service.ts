@@ -159,6 +159,7 @@ export class GameMaster {
             // Reset all player information
             // Give seven letters to each player from stash
             for (let player of this.players) {
+                player.setHasQuitAfterGameEnd(false);
                 player.setLetters([]);
                 player.setPoints(0);
                 player.setBlocked(false);
@@ -166,10 +167,8 @@ export class GameMaster {
             }
 
             // Start the timer
-            this.stopwatch.start();
             this.turnInfo.minutes = this.stopwatch.getMinutesLeft();
             this.turnInfo.seconds = this.stopwatch.getSecondsLeft();
-            this.checkTurnOver();
 
             this.nextTurn = false;
             this.gameStarted = true;
@@ -242,7 +241,11 @@ export class GameMaster {
                     this.updatePlayerScore();
 
                     // 6- Pick new letters from stash
-                    this.activePlayer.addLetters(this.stash.pickLetters(lettersToRemove.length));
+                    if (this.stash.isEmpty()) {
+                        this.adjustFinalScores().then((gameOver) => this.gameOver = gameOver);
+                    } else {
+                        this.activePlayer.addLetters(this.stash.pickLetters(lettersToRemove.length));
+                    }
 
                     // 7- End turn
                     this.endTurn();
@@ -326,26 +329,24 @@ export class GameMaster {
         return commandExecutionStatus;
     }
 
-    private checkTurnOver(): void {
-        setInterval(() => {
-            if (!this.gameOver) {
-                if (this.stopwatch.isTurnOver()) {
-                    this.nextTurn = true;
-                }
+    public checkTurnOver(): void {
 
-                // Update turnInfo
-                this.turnInfo.minutes = this.stopwatch.getMinutesLeft();
-                this.turnInfo.seconds = this.stopwatch.getSecondsLeft();
+        if (!this.gameOver) {
+            this.stopwatch.update();
+            if (this.stopwatch.isTurnOver()) {
+                this.nextTurn = true;
             }
-        }, 1000);
+
+            // Update turnInfo
+            this.turnInfo.minutes = this.stopwatch.getMinutesLeft();
+            this.turnInfo.seconds = this.stopwatch.getSecondsLeft();
+        }
+
     }
 
     private endTurn(): CommandExecutionStatus {
         // Check if game is overlapping
-        if (this.activePlayer.getLettersRack().length < this.activePlayer.getMaxRackSize() && this.stash.isEmpty()) {
-            this.gameOver = true;
-            this.adjustFinalScores();
-            // TODO: Deduct points for letters left (different funct)
+        if (this.gameOver) {
             return null;
         }
 
@@ -354,7 +355,7 @@ export class GameMaster {
         this.activePlayer = this.players[(playerIndex + 1) % this.players.length];
 
         // Reset the timer
-        this.stopwatch.restart();
+        this.stopwatch.reset();
 
         if (this.activePlayer !== undefined) {
             this.turnInfo.activePlayerName = this.activePlayer.getName();
@@ -367,17 +368,23 @@ export class GameMaster {
         return this.gameOver;
     }
 
-    private adjustFinalScores(): void {
-        let scoreBonus = 0;
+    private adjustFinalScores(): Promise<boolean> {
+        let self = this;
+        let scorePromise = new Promise((resolve, reject) => {
+            let scoreBonus = 0;
 
-        this.players.forEach(player => {
-            if (player !== this.activePlayer) {
-                player.subtractPoints(player.getTotalRackPoints());
-                scoreBonus += player.getTotalRackPoints();
-            }
+            self.players.forEach(player => {
+                if (player !== self.activePlayer) {
+                    player.subtractPoints(player.getTotalRackPoints());
+                    scoreBonus += player.getTotalRackPoints();
+                }
+            });
+
+            self.activePlayer.addPoints(scoreBonus);
+            resolve(true);
         });
 
-        this.activePlayer.addPoints(scoreBonus);
+        return scorePromise;
     }
 
     public handleQuit(playerName: string): void {

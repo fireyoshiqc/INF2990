@@ -21,6 +21,7 @@ export class HUDComponent {
     @Input() private aiDifficulty: number;
     @Input() private playerScore: number;
     @Input() private aiScore: number;
+    @Input() private isPlayerTurn: boolean;
     @Input() private playerCurlingStones: number[]; // Indicates the number of available stones for player
     @Input() private aiCurlingStones: number[]; // Indicates the number of available stones for ai
     @Input() private forceVisible: boolean;
@@ -42,6 +43,7 @@ export class HUDComponent {
         this.aiDifficulty = 0;
         this.playerScore = 0;
         this.aiScore = 0;
+        this.isPlayerTurn = false;
         this.playerCurlingStones = [];
         this.aiCurlingStones = [];
         this.forceVisible = false;

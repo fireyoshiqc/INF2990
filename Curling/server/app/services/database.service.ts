@@ -11,9 +11,9 @@ import hardScore from '../models/hardScore.model';
 
 export class DatabaseService {
     private readonly DUMMIES_PER_DIFFICULTY = 7;
-    private readonly MAX_RETRIES = 30;
+    private readonly MAX_CONNECTION_ATTEMPTS = 30;
     private readonly MAX_SCORES_PER_DIFFICULTY = 7;
-    private tries = 0;
+    private connectionAttempts = 0;
 
     constructor() {
         (<any>mongoose).Promise = global.Promise;
@@ -30,13 +30,14 @@ export class DatabaseService {
             err => {
                 // Could not connect to database.
                 console.log("Error connecting to database! Retrying...");
-                self.tries++;
+                self.connectionAttempts++;
                 mongoose.disconnect();
 
-                if (self.tries < self.MAX_RETRIES) {
+                if (self.connectionAttempts < self.MAX_CONNECTION_ATTEMPTS) {
                     self.connect();
                 } else {
-                    console.log(this.MAX_RETRIES + " attempts were made to connect without success! Disconnecting...");
+                    console.log(this.MAX_CONNECTION_ATTEMPTS +
+                    " attempts were made to connect without success! Disconnecting...");
                 }
             });
     }
@@ -132,17 +133,19 @@ export class DatabaseService {
     }
 
     private addDummyScores(): void {
-        const EASY_NAMES = ["Emilio", "Louis", "Michel", "Dylan", "Mathieu", "Nicolas", "Jean-Sebastien"];
+        const EASY_NAMES = ["Emilio", "Louis", "Jean-Sebastien", "Dylan", "Mathieu", "Nicolas", "Michel"];
         const HARD_NAMES = ["Mikael", "Vincent", "Erica", "Felix", "Pierre", "Yawen", "Dijkstra"];
-        const AVG_EASY_PLAYER_SCORE = 1;
         const AVG_HARD_PLAYER_SCORE = 1;
-        const AVG_EASY_AI_SCORE = 0;
         const AVG_HARD_AI_SCORE = 0;
 
-        for (let i = 0; i < this.DUMMIES_PER_DIFFICULTY; i++) {
-            // TODO : Refactor pour avoir moins de paramètres
-            this.addHighscore(EASY_NAMES[i], (AVG_EASY_PLAYER_SCORE + i), (AVG_EASY_AI_SCORE + i), "facile");
-        }
+        // Dummy scores that tests the ranking rules
+        this.addHighscore(EASY_NAMES[0], 6, 3, "facile");
+        this.addHighscore(EASY_NAMES[1], 6, 4, "facile");
+        this.addHighscore(EASY_NAMES[2], 1, 0, "facile");
+        this.addHighscore(EASY_NAMES[3], 2, 1, "facile");
+        this.addHighscore(EASY_NAMES[4], 2, 0, "facile");
+        this.addHighscore(EASY_NAMES[5], 2, 1, "facile");
+        this.addHighscore(EASY_NAMES[6], 4, 2, "facile");
 
         for (let j = 0; j < this.DUMMIES_PER_DIFFICULTY; j++) {
             // TODO : Refactor pour avoir moins de paramètres

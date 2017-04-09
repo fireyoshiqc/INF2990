@@ -5,10 +5,17 @@
             <div class="flex-item columnContainer" fxFlex="35%" fxFlexFill>
                 <div class="column">
                     <!-- Nametag du joueur -->
-                    <div id="playerNameTagContainer">
+                    <div [ngClass]="isPlayerTurn? 'activePlayerTag' : 'inactiveTag'" id="playerNameTagContainer">
                         <md-card class="defaultCursor lightTag" id="playerNameTag">
                             <md-card-title><strong>{{playerName}}</strong></md-card-title>
-                            <md-card-subtitle>Joueur</md-card-subtitle>
+                            <md-card-content *ngIf="isPlayerTurn && playerName !== ''">
+                                <strong>Lanceur</strong>
+                                <md-progress-bar mode="indeterminate"></md-progress-bar>
+                            </md-card-content>
+                            <md-card-content *ngIf="!isPlayerTurn && playerName !== ''">
+                                <strong>Observateur</strong>
+                                <md-progress-bar mode="determinate" value="100" color="accent"></md-progress-bar>
+                            </md-card-content>
                         </md-card>
                     </div>
 
@@ -19,7 +26,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Changement de la caméra -->
                 <button md-raised-button class="animatedButton" id="cameraButton" (click)="sendSwitchCameraEvent()" [disabled] = "cameraDisabled">
                     <md-icon class="mdIcon">switch_camera</md-icon><strong> Caméra</strong>
@@ -98,14 +105,21 @@
                 <div class="column">
 
                     <!-- Nametag du AI -->
-                    <div id="aiNameTagContainer">
+                    <div [ngClass]="isPlayerTurn? 'inactiveTag' : 'activeAITag'" id="aiNameTagContainer">
                         <md-card class="defaultCursor lightTag" id="aiNameTag">
                             <md-card-title>
                                 <strong *ngIf="aiDifficulty === 0"></strong>
                                 <strong *ngIf="aiDifficulty === 1">Ordi normal</strong>
                                 <strong *ngIf="aiDifficulty === 2">Ordi difficile</strong>
                             </md-card-title>
-                            <md-card-subtitle>Ordinateur</md-card-subtitle>
+                            <md-card-content *ngIf="!isPlayerTurn && playerName !== ''">
+                                <strong>Lanceur</strong>
+                                <md-progress-bar mode="indeterminate"></md-progress-bar>
+                            </md-card-content>
+                            <md-card-content *ngIf="isPlayerTurn && playerName !== ''">
+                                <strong>Observateur</strong>
+                                <md-progress-bar mode="determinate" value="100" color="accent"></md-progress-bar>
+                            </md-card-content>
                         </md-card>
                     </div>
 

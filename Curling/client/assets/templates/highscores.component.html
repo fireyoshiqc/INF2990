@@ -1,9 +1,15 @@
-<h3 md-dialog-title>Tableau des records</h3>
+<h3 md-dialog-title id="highscoreTitle">
+    <div>Tableau des records</div>
+    <div *ngIf="dialogRef.componentInstance.newScore.index !== -1">Nouveau record !</div>
+</h3>
 <md-dialog-content>
-    <md-tab-group>
-        <md-tab label="Faciles">
+    <md-tab-group [selectedIndex]="dialogRef.componentInstance.newScore.difficulty - 1">
+        <md-tab label="Normales">
             <md-list>
-                <md-list-item *ngFor="let element of dialogRef.componentInstance.highscores.easy; let i = index">
+                <!-- Add a newHighscore class if difficulty and index in highscore.easy equals --> 
+                <md-list-item *ngFor="let element of dialogRef.componentInstance.highscores.easy; let i = index"
+                    [ngClass]="(i === dialogRef.componentInstance.newScore.index &&
+                               dialogRef.componentInstance.newScore.difficulty === 1) ? 'newHighscore' : ''">
                     <md-icon *ngIf="i === 0" id="firstPlace" md-list-icon>star</md-icon>
                     <md-icon *ngIf="i === 1" id="secondPlace" md-list-icon>star</md-icon>
                     <md-icon *ngIf="i === 2" id="thirdPlace" md-list-icon>star</md-icon>
@@ -14,7 +20,7 @@
                     </h3>
                     <p md-line>
                         <small id="highscoreSubtitle">(joueur)&nbsp;</small>
-                        {{element.playerScore}} VS {{element.aiScore}}
+                        {{element.playerScore}} vs {{element.aiScore}}
                         <small id="highscoreSubtitle"> (ordinateur)</small>
                     </p>
                 </md-list-item>
@@ -22,7 +28,10 @@
         </md-tab>
         <md-tab label="Difficiles">
             <md-list>
-                <md-list-item *ngFor="let element of dialogRef.componentInstance.highscores.hard; let i = index">
+                <!-- Add a newHighscore class if difficulty and index in highscore.hard equals --> 
+                <md-list-item *ngFor="let element of dialogRef.componentInstance.highscores.hard; let i = index"
+                    [ngClass]="(i === dialogRef.componentInstance.newScore.index &&
+                               dialogRef.componentInstance.newScore.difficulty === 2) ? 'newHighscore' : ''">
                     <md-icon *ngIf="i === 0" id="firstPlace" md-list-icon>star</md-icon>
                     <md-icon *ngIf="i === 1" id="secondPlace" md-list-icon>star</md-icon>
                     <md-icon *ngIf="i === 2" id="thirdPlace" md-list-icon>star</md-icon>

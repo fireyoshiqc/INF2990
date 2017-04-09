@@ -197,8 +197,18 @@ export class GameController {
         this.highscoresService.getHighscores()
             .then((scores) => {
                 if (scores !== undefined) {
+
+                    // Find new highscore for current player
+                    let newScoreIndex: number;
+
+                    if (this.aiDifficulty === AIDifficulty.Normal) {
+                        newScoreIndex = this.getNewScoreIndex(scores.easy);
+                    } else {
+                        newScoreIndex = this.getNewScoreIndex(scores.hard);
+                    }
+
                     // Pop the popup!
-                    this.showHighscoresDialog(scores);
+                    this.showHighscoresDialog(scores, newScoreIndex);
                 }
             })
             .catch((error) => {
@@ -206,12 +216,26 @@ export class GameController {
             });
     }
 
-    private showHighscoresDialog(highscores: any): void {
+    private showHighscoresDialog(highscores: any, newScoreIndex: number): void {
         setTimeout(() => {
             this.scoreDialogRef = this.dialog.open(HighscoresPopupComponent);
             (this.scoreDialogRef.componentInstance.dialogRef.componentInstance as HighscoresComponent)
+                .newScore = { difficulty: this.aiDifficulty, index: newScoreIndex };
+            (this.scoreDialogRef.componentInstance.dialogRef.componentInstance as HighscoresComponent)
                 .highscores = { easy: highscores.easy, hard: highscores.hard };
         });
+    }
+
+    private getNewScoreIndex(score: any): number {
+        for (let index = 0; index < score.length; index++) {
+            if (score[index].name === this.playerName &&
+                score[index].playerScore === this.gameData.playerScore &&
+                score[index].aiScore === this.gameData.aiScore) {
+                return index;
+            }
+        }
+
+        return -1;
     }
 }
 
