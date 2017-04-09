@@ -217,9 +217,14 @@ button.mat-raised-button {
 /* left column */
 
 #playerNameTagContainer {
+    min-width: 35%;
     position: absolute;
     left: 2%;
     top: 2%;
+}
+
+.activePlayerTag {
+    border-left: 10px solid #0D47A1;
 }
 
 #playerNameTag.mat-card {
@@ -318,13 +323,22 @@ button.mat-raised-button {
     left: 25%;
 }
 
+.inactiveTag {
+    border-left: 10px solid gray;
+}
+
 
 /* right column */
 
 #aiNameTagContainer {
+    min-width: 35%;
     position: absolute;
     right: 2%;
     top: 2%;
+}
+
+.activeAITag {
+    border-left: 10px solid #0D47A1;
 }
 
 #aiNameTag.mat-card {
