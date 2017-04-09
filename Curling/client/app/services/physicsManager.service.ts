@@ -273,6 +273,38 @@ export class PhysicsManager {
                  (stone.getTeam() === Team.Player && stone.position.distanceTo(ringsCenterPosition) <= ringsRadius));
     }
 
+    public getVelocityToPosition(position: THREE.Vector3, finalVelocity: THREE.Vector3, spin: any): THREE.Vector3 {
+        let multiplier = 1.5;
+        let initialVelocity = new THREE.Vector3(0, 0, 0);
+
+        let zDistance = position.z - SceneBuilder.getInstance().getRinkData().lines.start;
+        // Formula : velocityI = sqrt (velocityF^2 - 2 * acceleration * (zPositionF - zPositionI))
+        initialVelocity.z =
+            Math.sqrt(Math.pow(finalVelocity.z, 2) + (2 * this.FRICTION_MAGNITUDE * multiplier * zDistance));
+
+        let estimatedTime = Math.abs((finalVelocity.z - initialVelocity.z) / (this.FRICTION_MAGNITUDE * multiplier));
+        console.log(estimatedTime);
+
+        /*
+        let xCurveDistance = Math.cos(this.CURVE_ANGLE / 60 * estimatedTime);
+        console.log(xCurveDistance);
+
+        let xDistance = position.x - xCurveDistance;
+        console.log(xDistance);
+        initialVelocity.x =
+            Math.sqrt(Math.pow(finalVelocity.x, 2) + (2 * this.FRICTION_MAGNITUDE * multiplier * xDistance));
+        */
+
+        /*
+        let curvedVelocity = finalVelocity.divideScalar(multiplier * this.FRICTION_MAGNITUDE * estimatedTime);
+        let curveFactor = multiplier / 1.5 * estimatedTime * spin * this.CURVE_ANGLE;
+        initialVelocity.x = -spin * (curvedVelocity.x - Math.sin(curveFactor) * initialVelocity.z) / Math.cos(curveFactor);
+        */
+
+        console.log(initialVelocity);
+        return initialVelocity;
+    }
+
     public allStonesHaveStopped(): boolean {
         let allStonesHaveStopped = true;
 
