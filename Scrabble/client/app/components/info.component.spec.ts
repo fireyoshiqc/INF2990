@@ -15,9 +15,6 @@ describe('InfoComponent', () => {
     it('should create component', done => {
         expect(comp).to.exist;
         expect(comp).to.be.an.instanceOf(InfoComponent);
-
-        expect(comp.getTurnInfo().minutes).to.be.equal(0);
-        expect(comp.getTurnInfo().seconds).to.be.equal(0);
         expect(comp.getTurnInfo().activePlayerName).to.be.equal("");
         expect(comp.getTurnInfo().players).to.exist;
         done();

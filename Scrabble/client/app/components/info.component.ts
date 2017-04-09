@@ -33,8 +33,7 @@ export interface IPlayerInfo {
 
 export class InfoComponent {
     private players: IPlayerInfo[];
-    private minutes: number;
-    private seconds: number;
+    private time: string;
     private activePlayerName: string;
     private nLettersStash: number;
     private player: Player;
@@ -43,8 +42,7 @@ export class InfoComponent {
 
     constructor() {
         this.players = [{}];
-        this.minutes = 0;
-        this.seconds = 0;
+        this.time = "";
         this.activePlayerName = "";
         this.nLettersStash = 0;
         this.player = PlayerHandler.requestPlayer();
@@ -57,8 +55,9 @@ export class InfoComponent {
     }
 
     public updateTurnInfo(turnInfo: ITurnInfo): void {
-        this.minutes = turnInfo.minutes;
-        this.seconds = turnInfo.seconds;
+        this.time = turnInfo.minutes.toString();
+        (turnInfo.seconds < 10) ?
+            this.time += ":0" + turnInfo.seconds.toString() : this.time += ":" + turnInfo.seconds.toString();
         this.activePlayerName = turnInfo.activePlayerName;
         this.nLettersStash = turnInfo.nLettersStash;
 
@@ -101,8 +100,8 @@ export class InfoComponent {
     // For tests
     public getTurnInfo(): ITurnInfo {
         return {
-            minutes: this.minutes,
-            seconds: this.seconds,
+            minutes: parseInt(this.time.substr(0, this.time.indexOf(":")), 10),
+            seconds: parseInt(this.time.substr(this.time.indexOf(":") + 1, this.time.length - 1), 10),
             activePlayerName: this.activePlayerName,
             players: this.players
         };
