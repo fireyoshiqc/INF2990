@@ -161,7 +161,9 @@ export class PhysicsManager {
                         slidingSound.play();
                     }
                 } else {
-                    slidingSound.stop();
+                    if (slidingSound.isPlaying) {
+                        slidingSound.stop();
+                    }
                 }
             }
         }
