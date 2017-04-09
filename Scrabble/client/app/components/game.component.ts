@@ -42,7 +42,7 @@ export class GameComponent implements OnInit {
 
     @HostListener('window:keydown', ['$event'])
     public keyboardInput(event: KeyboardEvent): void {
-        if (event.key === "Escape") {
+        if (event.key === "Escape" && this.infoChild.isGameOver()) {
             this.quitGame();
         } else if (event.key === "Tab") {
 

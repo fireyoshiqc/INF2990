@@ -61,11 +61,6 @@ export class InfoComponent {
         this.seconds = turnInfo.seconds;
         this.activePlayerName = turnInfo.activePlayerName;
         this.nLettersStash = turnInfo.nLettersStash;
-        this.gameOver = turnInfo.gameOver;
-
-        if (this.gameOver) {
-            this.winningPlayers = this.getWinners();
-        }
 
         // Check if a player has left
         if (this.players.length > turnInfo.players.length) {
@@ -80,6 +75,11 @@ export class InfoComponent {
                 rackLettersCount: turnInfo.players[i].rackLettersCount,
                 hasQuitAfterGameEnd: turnInfo.players[i].hasQuitAfterGameEnd
             };
+        }
+
+        if (turnInfo.gameOver) {
+            this.gameOver = turnInfo.gameOver;
+            this.winningPlayers = this.getWinners();
         }
     }
 
@@ -106,5 +106,9 @@ export class InfoComponent {
             activePlayerName: this.activePlayerName,
             players: this.players
         };
+    }
+
+    public isGameOver(): boolean {
+        return this.gameOver;
     }
 }

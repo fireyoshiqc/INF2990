@@ -159,6 +159,7 @@ export class GameMaster {
             // Reset all player information
             // Give seven letters to each player from stash
             for (let player of this.players) {
+                player.setHasQuitAfterGameEnd(false);
                 player.setLetters([]);
                 player.setPoints(0);
                 player.setBlocked(false);
@@ -240,7 +241,11 @@ export class GameMaster {
                     this.updatePlayerScore();
 
                     // 6- Pick new letters from stash
-                    this.activePlayer.addLetters(this.stash.pickLetters(lettersToRemove.length));
+                    if (this.stash.isEmpty()) {
+                        this.adjustFinalScores().then((gameOver) => this.gameOver = gameOver);
+                    } else {
+                        this.activePlayer.addLetters(this.stash.pickLetters(lettersToRemove.length));
+                    }
 
                     // 7- End turn
                     this.endTurn();
@@ -341,10 +346,7 @@ export class GameMaster {
 
     private endTurn(): CommandExecutionStatus {
         // Check if game is overlapping
-        if (this.activePlayer.getLettersRack().length < this.activePlayer.getMaxRackSize() && this.stash.isEmpty()) {
-            this.gameOver = true;
-            this.adjustFinalScores();
-            // TODO: Deduct points for letters left (different funct)
+        if (this.gameOver) {
             return null;
         }
 
@@ -366,17 +368,23 @@ export class GameMaster {
         return this.gameOver;
     }
 
-    private adjustFinalScores(): void {
-        let scoreBonus = 0;
+    private adjustFinalScores(): Promise<boolean> {
+        let self = this;
+        let scorePromise = new Promise((resolve, reject) => {
+            let scoreBonus = 0;
 
-        this.players.forEach(player => {
-            if (player !== this.activePlayer) {
-                player.subtractPoints(player.getTotalRackPoints());
-                scoreBonus += player.getTotalRackPoints();
-            }
+            self.players.forEach(player => {
+                if (player !== self.activePlayer) {
+                    player.subtractPoints(player.getTotalRackPoints());
+                    scoreBonus += player.getTotalRackPoints();
+                }
+            });
+
+            self.activePlayer.addPoints(scoreBonus);
+            resolve(true);
         });
 
-        this.activePlayer.addPoints(scoreBonus);
+        return scorePromise;
     }
 
     public handleQuit(playerName: string): void {
