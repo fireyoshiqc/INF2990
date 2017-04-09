@@ -348,6 +348,10 @@ button.mat-raised-button {
 
 /**************/
 
+#highscoreTitle {
+    text-align: center;
+}
+
 #firstPlace {
     color: gold;
 }
@@ -370,4 +374,9 @@ button.mat-raised-button {
 
 #highscoreSubtitle {
     color: gray;
+}
+
+.newHighscore {
+    border-left: 10px solid #0D47A1;
+    background-color: #bbdefb;
 }
