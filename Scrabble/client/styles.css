@@ -337,6 +337,10 @@ md-radio-button {
     text-decoration: line-through;
 }
 
+.info-panel-card.mat-card {
+    padding : 10px;
+}
+
 /***************/
 /* message box */
 /***************/
