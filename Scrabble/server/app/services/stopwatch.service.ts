@@ -13,7 +13,6 @@ export class StopwatchService {
     private minutes: number;
     private seconds: number;
     private totalSeconds: number;
-    private stopwatch: any;
 
     constructor() {
         this.minutes = 0;
@@ -25,25 +24,13 @@ export class StopwatchService {
     public getSecondsLeft(): number { return (this.MAX_TURN_LENGTH_SEC - this.getTotalTimeSeconds()) % 60; }
     public getTotalTimeSeconds(): number { return 60 * this.minutes + this.seconds; }
 
-    public start(): void {
-        this.stopwatch = setInterval(() => {
-            this.minutes = Math.floor(++this.totalSeconds / 60);
-            this.seconds = this.totalSeconds - this.minutes * 60;
-        }, 1000);
+    public update(): void {
+        this.minutes = Math.floor(++this.totalSeconds / 60);
+        this.seconds = this.totalSeconds - this.minutes * 60;
     }
 
-    private stop(): void {
-        clearInterval(this.stopwatch);
-    }
-
-    private reset(): void {
+    public reset(): void {
         this.totalSeconds = this.minutes = this.seconds = 0;
-    }
-
-    public restart(): void {
-        this.stop();
-        this.reset();
-        this.start();
     }
 
     public isTurnOver(): boolean {

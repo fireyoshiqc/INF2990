@@ -160,6 +160,7 @@ export class SocketManager {
                     gameMaster.resetNextTurn();
                 }
                 this.sio.sockets.in(id.toString()).emit('wcUpdateTurnInfo', gameMaster.getTurnInfo());
+                console.log("THIS SHOULD TICK EVERY SECOND.");
             } else { // Update informations in waiting rooms
                 this.sio.sockets.in(id.toString()).emit('wcRefresh', room.getRoomInfo());
             }
