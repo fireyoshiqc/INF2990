@@ -1,4 +1,4 @@
-<div [class.dark-theme]="isDarkTheme" id="wrapper" class="flex-container" md-theme="light-scrabble-theme" md-theme-watch="true"
+<div [class.dark-theme]="isDarkTheme" class="flex-container" md-theme="light-scrabble-theme" md-theme-watch="true"
     fxLayout="row" fxLayoutAlign="center center">
     <md-sidenav-container>
         <md-sidenav #sidenav mode="above" opened="false">
@@ -29,7 +29,7 @@
                 </md-list>
             </div>
         </md-sidenav>
-        <div class="flex-container" fxLayout="column" fxLayoutAlign="center center">
+        <div class="flex-container" fxLayout="column" fxLayoutAlign="center center" fxFlexFill>
             <md-toolbar id="topBar" color="primary">
 
                 <button class="icon-button" (click)="sidenav.toggle()"><md-icon id="navIcon">menu</md-icon></button>
@@ -46,7 +46,7 @@
 
             <div class="flex-item" fxLayoutAlign="center" fxFlex="auto" fxFlexFill>
                 <div id="wrapper" class="flex-container" fxLayout="column" fxLayoutAlign="center center">
-                    <div class="flex-item" fxFlex="93.2%" fxFlexFill>
+                    <div class="flex-item" fxFlex="100%" fxFlexFill>
                         <div class="flex-container" fxLayout="row" fxLayoutAlign="center center" fxFlexFill>
 
                             <div class="flex-item" fxFlex.xl="40%" fxFlex.lg="50%" fxFlex.md="60%" fxFlex.sm="70%" id="gamePanel" fxFlexFill>
