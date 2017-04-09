@@ -42,7 +42,6 @@ export class EndThrowState implements IGameState {
         }
 
         if (this.gameController.getHUDData().nextRoundMessageVisible) {
-            this.gameController.getGameData().state = this.nextState();
             this.startNextRound();
         }
     }
