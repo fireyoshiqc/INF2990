@@ -62,12 +62,11 @@ export class SocketManager {
             socket.on('cwStartGame', (roomID: number) => {
                 this.initGame(socket, roomID);
             });
-
-            // Updates the information in the all rooms (waiting or playing)
-            setInterval(() => {
-                this.updateAllRooms();
-            }, 1000);
         });
+        // Updates the information in the all rooms (waiting or playing)
+        setInterval(() => {
+            this.updateAllRooms();
+        }, 1000);
     }
 
     private sendMessage(socket: SocketIO.Socket, msg: string): void {
@@ -159,8 +158,8 @@ export class SocketManager {
                     // Put nextTurn to false
                     gameMaster.resetNextTurn();
                 }
+                gameMaster.checkTurnOver();
                 this.sio.sockets.in(id.toString()).emit('wcUpdateTurnInfo', gameMaster.getTurnInfo());
-                console.log("THIS SHOULD TICK EVERY SECOND.");
             } else { // Update informations in waiting rooms
                 this.sio.sockets.in(id.toString()).emit('wcRefresh', room.getRoomInfo());
             }

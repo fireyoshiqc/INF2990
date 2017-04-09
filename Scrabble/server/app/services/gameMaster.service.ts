@@ -168,7 +168,6 @@ export class GameMaster {
             // Start the timer
             this.turnInfo.minutes = this.stopwatch.getMinutesLeft();
             this.turnInfo.seconds = this.stopwatch.getSecondsLeft();
-            this.checkTurnOver();
 
             this.nextTurn = false;
             this.gameStarted = true;
@@ -325,19 +324,19 @@ export class GameMaster {
         return commandExecutionStatus;
     }
 
-    private checkTurnOver(): void {
-        setInterval(() => {
-            if (!this.gameOver) {
-                this.stopwatch.update();
-                if (this.stopwatch.isTurnOver()) {
-                    this.nextTurn = true;
-                }
+    public checkTurnOver(): void {
 
-                // Update turnInfo
-                this.turnInfo.minutes = this.stopwatch.getMinutesLeft();
-                this.turnInfo.seconds = this.stopwatch.getSecondsLeft();
+        if (!this.gameOver) {
+            this.stopwatch.update();
+            if (this.stopwatch.isTurnOver()) {
+                this.nextTurn = true;
             }
-        }, 1000);
+
+            // Update turnInfo
+            this.turnInfo.minutes = this.stopwatch.getMinutesLeft();
+            this.turnInfo.seconds = this.stopwatch.getSecondsLeft();
+        }
+
     }
 
     private endTurn(): CommandExecutionStatus {
