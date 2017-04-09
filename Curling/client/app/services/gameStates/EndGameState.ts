@@ -9,11 +9,13 @@ import { IGameState } from './GameState';
 import { PlayerIdleState } from './PlayerIdleState';
 import { GameController } from '../gameController.service';
 import { GameEngine } from '../gameEngine.service';
+import { SceneBuilder } from '../sceneBuilder.service';
 import { CurlingStone, Team } from '../../entities/curlingStone';
 
 export class EndGameState implements IGameState {
     private static instance: EndGameState = new EndGameState();
     private readonly ANIMATION_LENGTH = 5000;
+    private confettiSystem: THREE.Points;
     private gameController: GameController;
     private winningTeam: Team;
     private winningStones: Array<CurlingStone>;
@@ -51,41 +53,49 @@ export class EndGameState implements IGameState {
     }
 
     public update(delta: number): void {
-        // TODO make the winning stones jump and call confetti
+        // TODO make the winning stones jump and animate confetti
     }
 
     public enterState(): EndGameState {
-
+        let self = this;
         // Detect winning player
-        this.setWinningTeam();
+        self.setWinningTeam();
 
         // Add highscore if the player wins
-        if (this.winningTeam === Team.Player) {
-            this.gameController.addHighscore()
-            .then( () => {
-                this.gameController.showHighscores();
-            })
-            .catch((err) => {
-                throw new Error("Error: Could not add highscore!");
-            } );
+        if (self.winningTeam === Team.Player) {
+            self.gameController.addHighscore()
+                .then(() => {
+                    self.gameController.showHighscores();
+                })
+                .catch((err) => {
+                    throw new Error("Error: Could not add highscore!");
+                });
         } else {
             // Directly show highscores
-            this.gameController.showHighscores();
+            self.gameController.showHighscores();
         }
 
         // Get their stones
-        this.winningStones = GameEngine.getInstance().getStones().filter(stone => stone.getTeam() === this.winningTeam);
-        // TODO initialize the confetti
-        this.timer = setTimeout(() => {
+        self.winningStones = GameEngine.getInstance().getStones().filter(stone => stone.getTeam() === self.winningTeam);
+        SceneBuilder.getInstance().buildConfettiSystem()
+            .then((confettiSystem) => {
+                self.confettiSystem = confettiSystem;
+                GameEngine.getInstance().addToScene(self.confettiSystem);
+            });
+        self.timer = setTimeout(() => {
             // End of animation
-        }, this.ANIMATION_LENGTH);
+        }, self.ANIMATION_LENGTH);
 
-        console.log("Dans EndGameState.");
-        return this;
+        return self;
+    }
+
+    public hideConfetti(): void {
+        GameEngine.getInstance().removeFromScene(this.confettiSystem);
     }
 
     public nextState(): PlayerIdleState {
         // TODO: Réinitialiser la partie
+        this.hideConfetti();
         return PlayerIdleState.getInstance().enterState();
     }
 
