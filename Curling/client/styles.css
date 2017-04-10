@@ -294,7 +294,7 @@ button.mat-raised-button {
     position: absolute;
     bottom: 3%;
     color: black;
-    left: 53%;
+    right: 20%;
 }
 
 #waitingForPlayer.mat-card {
