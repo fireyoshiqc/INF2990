@@ -23,6 +23,15 @@ export class PhysicsManager {
     private readonly FRICTION_MAGNITUDE = this.GRAVITY_N_PER_KG * this.COEFFICIENT_OF_FRICTION;
     private readonly CURVE_ANGLE = Math.PI / 300;
     private readonly SPIN_RATIO = 2;
+    private readonly MULTIPLIER_NORMAL_ICE = 1.5;
+    private readonly MULTIPLIER_FAST_ICE = 0.2;
+
+    // Constants for velocity estimation used for AI throws
+    private readonly ACCELERATION_NORMAL_ICE = this.FRICTION_MAGNITUDE * this.MULTIPLIER_NORMAL_ICE;
+    private readonly ESTIMATED_TIME_DELTA = 1 / 30;
+    private readonly FINAL_POSITION_ERROR = 0.1;
+    private readonly X_VELOCITY_DELTA = 0.01;
+
     private curlingStones: CurlingStone[] = [];
     private fastIceSpots: FastIce[] = [];
     private delta: number;
@@ -135,22 +144,9 @@ export class PhysicsManager {
         if (separationCorrection === undefined) {
 
             let multiplier: number;
-            this.checkforFastIceSpots(stone) ? multiplier = 0.2 : multiplier = 1.5;
+            multiplier = this.checkforFastIceSpots(stone) ? this.MULTIPLIER_FAST_ICE : this.MULTIPLIER_NORMAL_ICE;
 
-            if (stone.isBeingPlayed()) {
-                // Curve calculation only for the stone that was thrown
-                let curvedVelocity = stone.getVelocity().clone();
-                let curveFactor = multiplier / 1.5 * this.delta * stone.getSpinOrientation() * this.CURVE_ANGLE;
-                curvedVelocity.x = Math.cos(curveFactor) * stone.getVelocity().x
-                    + Math.sin(curveFactor) * stone.getVelocity().z;
-                curvedVelocity.z = -Math.sin(curveFactor) * stone.getVelocity().x
-                    + Math.cos(curveFactor) * stone.getVelocity().z;
-                stone.setVelocity(curvedVelocity.clone());
-            }
-
-            stone.getVelocity().sub((stone.getVelocity().clone().normalize()
-                .multiplyScalar(multiplier * this.FRICTION_MAGNITUDE * this.delta)));
-            stone.update(this.delta);
+            this.calculateCurlingStonePosition(stone, multiplier, this.delta);
 
             const slidingSound = <THREE.PositionalAudio>(stone.getObjectByName("slidingSound"));
 
@@ -171,6 +167,25 @@ export class PhysicsManager {
             // For stone separation
             stone.position.add(stone.getVelocity().clone().multiplyScalar(separationCorrection * this.delta));
         }
+    }
+
+    private calculateCurlingStonePosition(stone: CurlingStone, multiplier: number, delta: number): void {
+        if (stone.isBeingPlayed()) {
+            // Curve calculation only for the stone that was thrown
+            let curvedVelocity = stone.getVelocity().clone();
+            let curveFactor = multiplier / 1.5 * delta * stone.getSpinOrientation() * this.CURVE_ANGLE;
+
+            curvedVelocity.x = Math.cos(curveFactor) * stone.getVelocity().x
+                + Math.sin(curveFactor) * stone.getVelocity().z;
+            curvedVelocity.z = -Math.sin(curveFactor) * stone.getVelocity().x
+                + Math.cos(curveFactor) * stone.getVelocity().z;
+
+            stone.setVelocity(curvedVelocity.clone());
+        }
+
+        stone.getVelocity().sub((stone.getVelocity().clone().normalize()
+            .multiplyScalar(multiplier * this.FRICTION_MAGNITUDE * delta)));
+        stone.update(delta);
     }
 
     private spinActiveStone(): void {
@@ -236,7 +251,7 @@ export class PhysicsManager {
                         const slidingSound = <THREE.PositionalAudio>(this.curlingStones[i]
                             .getObjectByName("slidingSound"));
                         if (slidingSound !== undefined && slidingSound.isPlaying) {
-                                slidingSound.stop();
+                            slidingSound.stop();
                         }
                         GameEngine.getInstance().removeFromScene(this.curlingStones[i]);
                         this.curlingStones.splice(i, 1);
@@ -272,39 +287,62 @@ export class PhysicsManager {
 
         // PhysicsManager contains stones in game sorted by distance to the center of the rings
         return this.curlingStones.find(stone =>
-                 (stone.getTeam() === Team.Player && stone.position.distanceTo(ringsCenterPosition) <= ringsRadius));
+            (stone.getTeam() === Team.Player && stone.position.distanceTo(ringsCenterPosition) <= ringsRadius));
     }
 
-    public getVelocityToPosition(position: THREE.Vector3, finalVelocity: THREE.Vector3, spin: any): THREE.Vector3 {
-        let multiplier = 1.5;
-        let initialVelocity = new THREE.Vector3(0, 0, 0);
+    // Finds the initial velocity of an AI curling stone in order to get to a specific position with a z velocity
+    public getVelocityToPosition(finalPosition: THREE.Vector3, finalVelocityZ: number, spin: any): THREE.Vector3 {
+        let tmpStone = new CurlingStone(Team.AI);
+        tmpStone.setSpinOrientation(spin);
 
-        let zDistance = position.z - SceneBuilder.getInstance().getRinkData().lines.start;
+        // Calculate the initial z velocity to get to the z position
+        let initialVelocityZ = this.getZVelocityToPosition(finalPosition, finalVelocityZ, tmpStone);
+        tmpStone.setVelocity(new THREE.Vector3(0, 0, initialVelocityZ));
+
+        // Calculate the initial x velocity to get to the position
+        let initialVelocityX = this.getXVelocityToPosition(finalPosition, finalVelocityZ, tmpStone);
+        tmpStone.setVelocity(new THREE.Vector3(initialVelocityX, 0, initialVelocityZ));
+
+        return tmpStone.getVelocity().clone();
+    }
+
+    private getZVelocityToPosition(finalPosition: THREE.Vector3, finalVelocityZ: number, stone: CurlingStone): number {
+        let initialPositionZ = SceneBuilder.getInstance().getRinkData().lines.start;
+        let zDistance = finalPosition.z - initialPositionZ;
+
         // Formula : velocityI = sqrt (velocityF^2 - 2 * acceleration * (zPositionF - zPositionI))
-        initialVelocity.z =
-            Math.sqrt(Math.pow(finalVelocity.z, 2) + (2 * this.FRICTION_MAGNITUDE * multiplier * zDistance));
+        let initialVelocityZ = Math.sqrt(Math.pow(finalVelocityZ, 2) + (2 * this.ACCELERATION_NORMAL_ICE * zDistance));
 
-        let estimatedTime = Math.abs((finalVelocity.z - initialVelocity.z) / (this.FRICTION_MAGNITUDE * multiplier));
-        console.log(estimatedTime);
+        return initialVelocityZ;
+    }
 
-        /*
-        let xCurveDistance = Math.cos(this.CURVE_ANGLE / 60 * estimatedTime);
-        console.log(xCurveDistance);
+    private getXVelocityToPosition(finalPosition: THREE.Vector3, finalVelocityZ: number, stone: CurlingStone): number {
+        // Estimate the time required for the curling stone to get to the z position
+        // Formula : time = |(velocityF - velocity I) / acceleration|
+        let estimatedInitialVelocity = stone.getVelocity().clone();
+        const estimatedTime = Math.abs((finalVelocityZ - estimatedInitialVelocity.z) / this.ACCELERATION_NORMAL_ICE);
 
-        let xDistance = position.x - xCurveDistance;
-        console.log(xDistance);
-        initialVelocity.x =
-            Math.sqrt(Math.pow(finalVelocity.x, 2) + (2 * this.FRICTION_MAGNITUDE * multiplier * xDistance));
-        */
+        // Iteration process that finds the estimatedVelocity in X
+        let velocityFound = false;
+        while (!velocityFound) {
+            // Estimate final position given an initial stone velocity
+            for (let time = 0; time < estimatedTime; time += this.ESTIMATED_TIME_DELTA) {
+                this.calculateCurlingStonePosition(stone, this.MULTIPLIER_NORMAL_ICE, this.ESTIMATED_TIME_DELTA);
+            }
 
-        /*
-        let curvedVelocity = finalVelocity.divideScalar(multiplier * this.FRICTION_MAGNITUDE * estimatedTime);
-        let curveFactor = multiplier / 1.5 * estimatedTime * spin * this.CURVE_ANGLE;
-        initialVelocity.x = -spin * (curvedVelocity.x - Math.sin(curveFactor) * initialVelocity.z) / Math.cos(curveFactor);
-        */
+            // Return estimatedVelocity if the stone satisfies the finalPosition
+            if (finalPosition.distanceTo(stone.position) < this.FINAL_POSITION_ERROR) {
+                velocityFound = true;
+                return estimatedInitialVelocity.x;
+            }
 
-        console.log(initialVelocity);
-        return initialVelocity;
+            // Reset stone position
+            stone.position.set(0, 0, SceneBuilder.getInstance().getRinkData().lines.start);
+
+            // Set estimatedVelocity for next iteration (it depends on stone spin)
+            estimatedInitialVelocity.x += -stone.getSpinOrientation() * this.X_VELOCITY_DELTA;
+            stone.setVelocity(estimatedInitialVelocity.clone());
+        }
     }
 
     public allStonesHaveStopped(): boolean {
