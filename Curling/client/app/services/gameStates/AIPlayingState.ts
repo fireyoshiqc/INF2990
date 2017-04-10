@@ -108,11 +108,15 @@ export class AIPlayingState implements IGameState {
         return (Math.random() * (max - min)) + min;
     }
 
+    private getRandomSpin(): SpinOrientation {
+        return (Math.random() > 0.5) ? SpinOrientation.CLOCKWISE : SpinOrientation.COUNTER_CLOCKWISE;
+    }
+
     private throwNormalStone(stone: CurlingStone): void {
         let velocity: THREE.Vector3;
         let xVelocity: number;
         let zVelocity: number;
-        let spin = (Math.random() > 0.5) ? SpinOrientation.CLOCKWISE : SpinOrientation.COUNTER_CLOCKWISE;
+        let spin = this.getRandomSpin();
 
         if (Math.random() > this.NORMAL_FAILED_FACTOR) {
             // Intentionally miss the shot
@@ -124,6 +128,7 @@ export class AIPlayingState implements IGameState {
             xVelocity = -spin * this.getRandomFloat(0, this.X_SUCCESS_MAX_VELOCITY);
             zVelocity = this.getRandomFloat(this.Z_BACK_HOGLINE_VELOCITY, this.Z_BACKLINE_VELOCITY);
         }
+
         velocity = new THREE.Vector3(xVelocity, 0, zVelocity);
         stone.setSpinOrientation(spin);
         stone.setVelocity(velocity);
@@ -135,31 +140,26 @@ export class AIPlayingState implements IGameState {
         let zVelocity: number;
         let spin: SpinOrientation;
         let playerStone = this.physicsManager.getClosestTeamStoneInHouse(Team.Player);
-        let aiStone = this.physicsManager.getClosestTeamStoneInHouse(Team.AI);
 
         if (playerStone !== undefined) {
+            // CASE 1 : There are player stones in house
             // Aims for the player stone that is the closest to the center of the rings
             if (playerStone.position.x > 0) {
                 spin = SpinOrientation.COUNTER_CLOCKWISE;
             } else if (playerStone.position.x < 0) {
                 spin = SpinOrientation.CLOCKWISE;
             } else {
-                spin = (Math.random() > 0.5) ? SpinOrientation.CLOCKWISE : SpinOrientation.COUNTER_CLOCKWISE;
+                spin = this.getRandomSpin();
             }
 
             let finalVelocityZ = 2;
             let initialVelocity = this.physicsManager.getVelocityToPosition(playerStone.position, finalVelocityZ, spin);
             xVelocity = initialVelocity.x;
             zVelocity = initialVelocity.z;
-        } else if (aiStone !== undefined) {
-            // TODO : Cas où juste les pierres du ai -> viser la maison sans frapper les autres pierres
-            spin = (Math.random() > 0.5) ? SpinOrientation.CLOCKWISE : SpinOrientation.COUNTER_CLOCKWISE;
-
-            xVelocity = -spin * this.getRandomFloat(0, this.X_SUCCESS_MAX_VELOCITY);
-            zVelocity = this.getRandomFloat(this.Z_BACK_HOGLINE_VELOCITY, this.Z_BACKLINE_VELOCITY);
         } else {
-            // Hard shot that aims for the center of the rings if there are no other stones
-            spin = (Math.random() > 0.5) ? SpinOrientation.CLOCKWISE : SpinOrientation.COUNTER_CLOCKWISE;
+            // CASE 2 : There is no player stone in house
+            // Perfect shot that aims for the center of the rings
+            spin = this.getRandomSpin();
 
             // Shoot in opposite direction of spin
             xVelocity = -spin * this.X_HOUSE_CENTER_VELOCITY;
