@@ -107,13 +107,11 @@ export class SweepingState implements IGameState {
         this.canSweep = false;
         this.isSweeping = false;
         ChoosingAngleState.getInstance().hideCurve();
-        GameEngine.getInstance().getStones().forEach(stone => {
-            stone.highlightOff();
-        });
+        GameEngine.getInstance().removeHighlightOnAllStones();
         return this;
     }
 
-    public nextState(): EndThrowState {
+    public nextState(): IGameState {
         this.canSweep = false;
         this.isSweeping = false;
         this.broomCursorFrame = this.MIN_BROOM_ANIM_FRAMES;

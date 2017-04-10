@@ -27,10 +27,8 @@ export class SceneBuilder {
         maxAngle: 30
     };
     private readonly CONFETTI_DATA = {
-        count: 500,
         minHeight: 3,
         maxHeight: 6,
-        color : 0xFF000000,
         size: 0.03
     };
 
@@ -93,12 +91,12 @@ export class SceneBuilder {
         return buildPromise;
     }
 
-    public buildConfettiSystem(): Promise<THREE.Points> {
+    public buildConfettiSystem(confettiColor : number, confettiCount : number): Promise<THREE.Points> {
         let confettiPromise = new Promise<THREE.Points>((resolve, reject) => {
             let confettiGeometry = new THREE.Geometry();
             let zRingsCenter = this.getRinkData().rings.offset;
             let ringsRadius = this.getRinkData().rings.outer;
-            for (let i = 0; i < this.CONFETTI_DATA.count; i++) {
+            for (let i = 0; i < confettiCount; i++) {
                 let angle = this.getRandomFloat(0, 2 * Math.PI);
                 let radius = this.getRandomFloat(0, ringsRadius);
                 let xPos = radius * Math.cos(angle);
@@ -109,7 +107,7 @@ export class SceneBuilder {
             }
 
             let confettiMaterial = new THREE.PointsMaterial({
-                color: this.CONFETTI_DATA.color,
+                color: confettiColor,
                 size: this.CONFETTI_DATA.size
             });
 
