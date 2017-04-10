@@ -14,6 +14,11 @@ import { CurlingStone, Team } from '../../entities/curlingStone';
 
 export class EndGameState implements IGameState {
     private static instance: EndGameState = new EndGameState();
+    private readonly GRAVITY_N_PER_KG = 9.81;
+    private readonly STONE_JUMP_SPEED = 4;
+    private readonly STONE_SPIN_SPEED = 2;
+    private animateStones: boolean = true;
+    private animateConfetti: boolean = true;
     private readonly ANIMATION_LENGTH = 5000;
     private readonly TOTAL_CONFETTI_COUNT = 1000;
     private readonly colorArray = [0x00FFFF, 0xFF00FF, 0xFFFF00, 0x9400D3, 0xFFA500];
@@ -55,15 +60,34 @@ export class EndGameState implements IGameState {
     }
 
     public update(delta: number): void {
-        // TODO make the winning stones jump and animate confetti
-        this.confettiSystem.forEach((system) => {
-            (<THREE.Geometry>system.geometry).vertices.forEach((confetti, index) => {
-                if (confetti.y > 0.002) {
-                    confetti.y -= delta * (1 + (index % 3 / 4));
+        if (this.animateConfetti) {
+            this.confettiSystem.forEach((system) => {
+                (<THREE.Geometry>system.geometry).vertices.forEach((confetti, index) => {
+                    if (confetti.y > 0.002) {
+                        confetti.y -= delta * (1 + (index % 3 / 4));
+                    }
+                });
+                (<THREE.Geometry>system.geometry).verticesNeedUpdate = true;
+            });
+        }
+
+        if (this.animateStones) {
+            this.winningStones.forEach((stone) => {
+                if (stone.isOnGround()) {
+                    stone.getVelocity().y = this.STONE_JUMP_SPEED;
+                } else {
+                    stone.getVelocity().y -= this.GRAVITY_N_PER_KG * delta;
+                }
+
+                stone.rotateY(this.STONE_SPIN_SPEED * delta);
+
+                stone.update(delta);
+
+                if (stone.position.y <= 0) {
+                    stone.position.y = 0;
                 }
             });
-            (<THREE.Geometry>system.geometry).verticesNeedUpdate = true;
-        });
+        }  
     }
 
     public enterState(): EndGameState {
@@ -94,12 +118,18 @@ export class EndGameState implements IGameState {
                     });
             });
 
+            if (this.winningStones === undefined) {
+                this.animateStones = false;
+            }
+
             self.timer = setTimeout(() => {
                 // End of animation
                 self.gameController.showHighscores();
             }, self.ANIMATION_LENGTH);
         } else {
             // Égalité
+            this.animateStones = false;
+            this.animateConfetti = false;
             alert("égalité");
         }
 

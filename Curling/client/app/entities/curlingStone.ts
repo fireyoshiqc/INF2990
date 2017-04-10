@@ -254,4 +254,8 @@ export class CurlingStone extends THREE.Group {
     public getSpinOrientation(): SpinOrientation {
         return this.spinOrientation;
     }
+
+    public isOnGround(): boolean {
+        return this.position.y === 0;
+    }
 }
