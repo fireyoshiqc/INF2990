@@ -149,7 +149,7 @@ md-sidenav-container {
 }
 
 #title {
-    padding-left: 77px;
+    padding-left: 12px;
     font-size: 40px;
 }
 
@@ -286,16 +286,15 @@ button.mat-raised-button {
 
 #throwButton {
     position: absolute;
-    left: 15%;
+    left: 20%;
     bottom: 2%;
 }
 
 #spinOrientationSwitch {
     position: absolute;
-    bottom: 1%;
+    bottom: 3%;
     color: black;
-    left: 55%;
-    right: 35%;
+    left: 53%;
 }
 
 #waitingForPlayer.mat-card {
