@@ -351,6 +351,9 @@ export class PhysicsManager {
         this.curlingStones.forEach(stone => {
             if (stone.getVelocity().length() > 0.01 || stone.isCurrentlyFading()) {
                 allStonesHaveStopped = false;
+            } else {
+                // Stop the stone completely
+                stone.setVelocity(new THREE.Vector3(0, 0, 0));
             }
         });
 
