@@ -20,6 +20,9 @@ export class EndThrowState implements IGameState {
     private gameController: GameController;
     private stonesThrown = 0;
 
+    // Wait for user input (spacebar or click) before changing the turn value to game data
+    private tmpIsPlayerTurn: boolean;
+
     public static getInstance(): EndThrowState {
         return EndThrowState.instance;
     }
@@ -98,6 +101,9 @@ export class EndThrowState implements IGameState {
         this.gameController.getHUDData().nextThrowMessageVisible = false;
         this.gameController.getHUDData().nextRoundMessageVisible = false;
 
+        // Change the turn value of game data
+        this.gameController.getGameData().isPlayerTurn = this.tmpIsPlayerTurn;
+
         return this.gameController.getGameData().isPlayerTurn ?
             PlayerIdleState.getInstance().enterState() :
             AIPlayingState.getInstance().enterState();
@@ -139,8 +145,8 @@ export class EndThrowState implements IGameState {
             this.addPoints(teamClosestStone, points);
             this.chooseNextFirstPlayer(teamClosestStone, points);
         } else {
-            let gameData = this.gameController.getGameData();
-            gameData.isPlayerTurn = !gameData.isPlayerTurn;
+            // Switch turn
+            this.tmpIsPlayerTurn = !this.gameController.getGameData().isPlayerTurn;
         }
     }
 
@@ -163,16 +169,16 @@ export class EndThrowState implements IGameState {
     }
 
     private chooseNextFirstPlayer(teamClosestStone: Team, points: number): void {
-        let gameData = this.gameController.getGameData();
+        this.tmpIsPlayerTurn = this.gameController.getGameData().isPlayerTurn;
 
         // If the round ended in a draw, first player for next round is the one who started the current round
         // Round ends in a draw if the teamClosestStone is undefined (when all stones were out of bounds during a round)
         // Round ends in a draw if the teamClosestStone is defined, but their score is 0 (no stone in house)
         if (teamClosestStone === undefined || points === 0) {
-            gameData.isPlayerTurn = !gameData.isPlayerTurn;
+            this.tmpIsPlayerTurn = !this.tmpIsPlayerTurn;
         } else {
             // Player with highest score in the round goes first in the next round
-            gameData.isPlayerTurn = (teamClosestStone === Team.Player);
+            this.tmpIsPlayerTurn = (teamClosestStone === Team.Player);
         }
     }
 
