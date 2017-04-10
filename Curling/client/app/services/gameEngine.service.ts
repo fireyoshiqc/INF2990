@@ -92,6 +92,10 @@ export class GameEngine {
         this.scene.add(stone);
     }
 
+    public removeHighlightOnAllStones(): void {
+        this.curlingStones.forEach(stone => { stone.highlightOff(); });
+    }
+
     public addFastIceSpot(position: THREE.Vector3): void {
         new FastIce().init(this.scene.getObjectByName("rink") as Rink)
             .then((fastIce) => {

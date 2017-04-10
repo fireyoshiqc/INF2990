@@ -26,6 +26,11 @@ export class SceneBuilder {
         translateOffset: 0.5,
         maxAngle: 30
     };
+    private readonly CONFETTI_DATA = {
+        minHeight: 3,
+        maxHeight: 6,
+        size: 0.03
+    };
 
     private rink: Rink;
 
@@ -86,6 +91,33 @@ export class SceneBuilder {
         return buildPromise;
     }
 
+    public buildConfettiSystem(confettiColor : number, confettiCount : number): Promise<THREE.Points> {
+        let confettiPromise = new Promise<THREE.Points>((resolve, reject) => {
+            let confettiGeometry = new THREE.Geometry();
+            let zRingsCenter = this.getRinkData().rings.offset;
+            let ringsRadius = this.getRinkData().rings.outer;
+            for (let i = 0; i < confettiCount; i++) {
+                let angle = this.getRandomFloat(0, 2 * Math.PI);
+                let radius = this.getRandomFloat(0, ringsRadius);
+                let xPos = radius * Math.cos(angle);
+                let zPos = radius * Math.sin(angle) + zRingsCenter;
+                let yPos = this.getRandomFloat(this.CONFETTI_DATA.minHeight, this.CONFETTI_DATA.maxHeight);
+                let confetti = new THREE.Vector3(xPos, yPos, zPos);
+                confettiGeometry.vertices.push(confetti);
+            }
+
+            let confettiMaterial = new THREE.PointsMaterial({
+                color: confettiColor,
+                size: this.CONFETTI_DATA.size
+            });
+
+            let confettiSystem = new THREE.Points(confettiGeometry, confettiMaterial);
+
+            resolve(confettiSystem);
+        });
+        return confettiPromise;
+    }
+
     public getRinkData(): IRinkData {
         return {
             dims: this.rink.getDimensions(),
@@ -144,7 +176,9 @@ export class SceneBuilder {
         return new THREE.HemisphereLight(this.SUN_COLOR, this.SHADOW_COLOR, this.SUN_INTENSITY);
     }
 
-
+    private getRandomFloat(min: number, max: number): number {
+        return (Math.random() * (max - min)) + min;
+    }
 }
 
 export interface IRinkData {

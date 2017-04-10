@@ -318,8 +318,7 @@ md-radio-button {
     opacity: 0.5;
 }
 
-/* TODO : change name */
-.test {
+.highlight {
     border: 3px solid #00E676;
     border-radius: 10px;
 }

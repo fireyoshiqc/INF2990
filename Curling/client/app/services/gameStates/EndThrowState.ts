@@ -70,7 +70,7 @@ export class EndThrowState implements IGameState {
         // Do nothing
     }
 
-    public enterState(): EndThrowState {
+    public enterState(): IGameState {
 
         document.body.style.cursor = "default";
 
@@ -90,7 +90,7 @@ export class EndThrowState implements IGameState {
             if (gameData.roundsCompleted[1]) {
                 // Enter EndGameState if game is over
                 gameData.roundsCompleted[2] = true;
-                this.gameController.getGameData().state = EndGameState.getInstance().enterState();
+                return EndGameState.getInstance().enterState();
             } else {
                 hudData.nextRoundMessageVisible = true;
                 hudData.nextThrowMessageVisible = false;
@@ -149,10 +149,10 @@ export class EndThrowState implements IGameState {
 
         // Check if teamClosestStone has stones in house (worth point)
         return (stone.getTeam() === teamClosestStone &&
-                stone.position.distanceTo(ringsCenter) < rings.outer);
+            stone.position.distanceTo(ringsCenter) < rings.outer);
     }
 
-    private addPoints(teamClosestStone: Team, points: number): void  {
+    private addPoints(teamClosestStone: Team, points: number): void {
         let gameData = this.gameController.getGameData();
 
         // Update score of closest team with stones in house

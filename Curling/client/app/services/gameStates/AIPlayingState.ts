@@ -85,7 +85,7 @@ export class AIPlayingState implements IGameState {
         GameEngine.getInstance().addStone(nextStone);
 
         setTimeout(() => {
-            GameEngine.getInstance().getStones().forEach(stone => { stone.highlightOff(); });
+            GameEngine.getInstance().removeHighlightOnAllStones();
 
             (this.gameController.getAIDifficulty() === AIDifficulty.Normal) ?
                 this.throwNormalStone(nextStone) : this.throwHardStone(nextStone);
@@ -98,7 +98,7 @@ export class AIPlayingState implements IGameState {
         return this;
     }
 
-    public nextState(): EndThrowState {
+    public nextState(): IGameState {
         this.physicsManager.sortStonesByDistance();
         this.physicsManager.cleanFastIceSpots();
         return EndThrowState.getInstance().enterState();
