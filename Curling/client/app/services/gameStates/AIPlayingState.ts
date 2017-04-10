@@ -134,6 +134,7 @@ export class AIPlayingState implements IGameState {
         let xVelocity: number;
         let zVelocity: number;
         let spin: SpinOrientation;
+        let playerStone = this.physicsManager.getClosestPlayerStoneInHouse();
 
         if (GameEngine.getInstance().getStones().length === 1) {
             spin = (Math.random() > 0.5) ? SpinOrientation.CLOCKWISE : SpinOrientation.COUNTER_CLOCKWISE;
@@ -142,9 +143,22 @@ export class AIPlayingState implements IGameState {
             // Shoot in opposite direction of spin
             xVelocity = -spin * this.X_HOUSE_CENTER_VELOCITY;
             zVelocity = this.Z_RINGS_CENTER_VELOCITY;
-            // Cas où juste les pierres du ai -> viser la maison sans frapper les autres pierres
+        } else if (playerStone !== undefined) {
+            // Aims for the player stone that is the closest to the center of the rings
+            if (playerStone.position.x > 0) {
+                spin = SpinOrientation.COUNTER_CLOCKWISE;
+            } else if (playerStone.position.x < 0) {
+                spin = SpinOrientation.CLOCKWISE;
+            } else {
+                spin = (Math.random() > 0.5) ? SpinOrientation.CLOCKWISE : SpinOrientation.COUNTER_CLOCKWISE;
+            }
+
+            let finalVelocityZ = 2;
+            let initialVelocity = this.physicsManager.getVelocityToPosition(playerStone.position, finalVelocityZ, spin);
+            xVelocity = initialVelocity.x;
+            zVelocity = initialVelocity.z;
         } else {
-            // TODO : Aims for the player stone that is the closest to the center of the rings
+            // TODO : Cas où juste les pierres du ai -> viser la maison sans frapper les autres pierres
             spin = (Math.random() > 0.5) ? SpinOrientation.CLOCKWISE : SpinOrientation.COUNTER_CLOCKWISE;
 
             xVelocity = -spin * this.getRandomFloat(0, this.X_SUCCESS_MAX_VELOCITY);
