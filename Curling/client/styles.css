@@ -300,20 +300,36 @@ button.mat-raised-button {
 #waitingForPlayer.mat-card {
     padding: 10px;
     width: 100%;
-    text-align: justify;
+    text-align: center;
     text-justify: inter-word;
+}
+
+#nextThrowContainer {
+    margin-left: auto;
+    margin-right: auto;
+    width: 250px;
+    align-content: center;
 }
 
 #nextThrow {
     position: absolute;
+    left: 15%;
+    right: 15%;
     bottom: 15%;
-    left: 10%;
+}
+
+#nextRoundContainer {
+    margin-left: auto;
+    margin-right: auto;
+    width: 250px;
+    align-content: center;
 }
 
 #nextRound {
     position: absolute;
+    left: 15%;
+    right: 15%;
     bottom: 15%;
-    left: 5%;
 }
 
 #endGame {
