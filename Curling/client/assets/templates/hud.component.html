@@ -28,7 +28,7 @@
                 </div>
 
                 <!-- Changement de la caméra -->
-                <button md-raised-button class="animatedButton" id="cameraButton" (click)="sendSwitchCameraEvent()" [disabled] = "cameraDisabled">
+                <button md-raised-button class="animatedButton" id="cameraButton" (click)="sendSwitchCameraEvent()" [disabled]="cameraDisabled">
                     <md-icon class="mdIcon">switch_camera</md-icon><strong> Caméra</strong>
                 </button>
             </div>
@@ -43,8 +43,10 @@
                             <!-- Manche en cours -->
                             <div *ngFor="let round of roundsCompleted;">
                                 <div id="rounds">
-                                    <img *ngIf="round === false" [src]="isDarkTheme ? './assets/textures/curling-manche-blanc-icon.png' : './assets/textures/curling-manche-gris-icon.png'" height=30vh>
-                                    <img *ngIf="round === true" [src]="isDarkTheme ? './assets/textures/curling-manche-jaune-icon.png' : './assets/textures/curling-manche-bleu-icon.png'" height=30vh>
+                                    <img *ngIf="round === false" [src]="isDarkTheme ? './assets/textures/curling-manche-blanc-icon.png' : './assets/textures/curling-manche-gris-icon.png'"
+                                        height=30vh>
+                                    <img *ngIf="round === true" [src]="isDarkTheme ? './assets/textures/curling-manche-jaune-icon.png' : './assets/textures/curling-manche-bleu-icon.png'"
+                                        height=30vh>
                                 </div>
                             </div>
                             <md-card-subtitle>Manche en cours</md-card-subtitle>
@@ -56,7 +58,7 @@
                         <div id="forceBarLabel">
                             <strong>Force</strong>
                         </div>
-                        <md-progress-bar id = "forceBar" color="primary" [value]="forceValue" mode="determinate"></md-progress-bar>
+                        <md-progress-bar id="forceBar" color="primary" [value]="forceValue" mode="determinate"></md-progress-bar>
                     </div>
 
                     <!-- Next throw message -->
@@ -77,6 +79,15 @@
                         </div>
                     </div>
 
+                    <!-- Congratulations message -->
+                    <div *ngIf="congratulationsMessageVisible === true">
+                        <div id="congrats">
+                            <md-card class="defaultCursor lightTag" id="waitingForPlayer">
+                                <md-card-content><strong>Félicitations!</strong></md-card-content>
+                            </md-card>
+                        </div>
+                    </div>
+
                     <!-- End game message -->
                     <div *ngIf="showEndGameMessage === true">
                         <div id="endGame">
@@ -89,13 +100,13 @@
                 </div>
 
                 <!-- Confirm spin button -->
-                <button md-raised-button class="animatedButton" id="throwButton" (click)="sendThrowStoneEvent()" [disabled] = "sliderDisabled">
+                <button md-raised-button class="animatedButton" id="throwButton" (click)="sendThrowStoneEvent()" [disabled]="sliderDisabled">
                     <strong>Confirmer Spin</strong>
                     <md-icon *ngIf="selectedSpin == true" class="mdIcon">rotate_right</md-icon>
                     <md-icon *ngIf="selectedSpin == false" class="mdIcon">rotate_left</md-icon>
                 </button>
 
-                <md-slide-toggle id="spinOrientationSwitch" [(ngModel)]="selectedSpin" [disabled] = "sliderDisabled">
+                <md-slide-toggle id="spinOrientationSwitch" [(ngModel)]="selectedSpin" [disabled]="sliderDisabled">
                     <div *ngIf="selectedSpin == true"><strong> Rotation Droite</strong></div>
                     <div *ngIf="selectedSpin == false"><strong> Rotation Gauche</strong></div>
                 </md-slide-toggle>

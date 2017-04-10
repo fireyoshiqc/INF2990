@@ -31,6 +31,7 @@ export class HUDComponent {
     @Input() private roundsCompleted: boolean[]; // Indicates which rounds have been completed (true)
     @Input() private nextThrowMessageVisible: boolean;
     @Input() private nextRoundMessageVisible: boolean;
+    @Input() private congratulationsMessageVisible: boolean;
     @Input() private showEndGameMessage: boolean;
 
     @Output()
@@ -51,6 +52,7 @@ export class HUDComponent {
         this.roundsCompleted = [false, false, false];
         this.nextThrowMessageVisible = false;
         this.nextRoundMessageVisible = false;
+        this.congratulationsMessageVisible = false;
         this.showEndGameMessage = false;
     }
 

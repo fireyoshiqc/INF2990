@@ -96,6 +96,7 @@ export class EndGameState implements IGameState {
         // Detect winning player
         self.setWinningTeam();
         if (this.winningTeam !== undefined) {
+            this.gameController.getHUDData().congratulationsMessageVisible = true;
             GameEngine.getInstance().removeHighlightOnAllStones();
             // Add highscore if the player wins
             if (self.winningTeam === Team.Player) {
@@ -124,6 +125,7 @@ export class EndGameState implements IGameState {
 
             self.timer = setTimeout(() => {
                 // End of animation
+                self.gameController.getHUDData().congratulationsMessageVisible = false;
                 self.gameController.showHighscores();
             }, self.ANIMATION_LENGTH);
         } else {

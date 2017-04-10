@@ -40,7 +40,8 @@ export class GameController {
         sliderDisabled: false,
         cameraDisabled: false,
         nextThrowMessageVisible: false,
-        nextRoundMessageVisible: false
+        nextRoundMessageVisible: false,
+        congratulationsMessageVisible: false
     };
 
     private gameData: IGameData = {
@@ -258,4 +259,5 @@ export interface IHUDData {
     cameraDisabled: boolean;
     nextThrowMessageVisible: boolean;
     nextRoundMessageVisible: boolean;
+    congratulationsMessageVisible: boolean;
 }
