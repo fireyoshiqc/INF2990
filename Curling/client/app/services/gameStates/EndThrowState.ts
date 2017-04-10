@@ -127,7 +127,8 @@ export class EndThrowState implements IGameState {
             teamClosestStone = curlingStones[closestStoneIndex].getTeam();
 
             // Count points and highlight stones worth points
-            while (curlingStones.length > closestStoneIndex && this.isStoneWorthPoint(curlingStones[closestStoneIndex], teamClosestStone)) {
+            while (curlingStones.length > closestStoneIndex &&
+                this.isStoneWorthPoint(curlingStones[closestStoneIndex], teamClosestStone)) {
                 points++;
                 curlingStones[closestStoneIndex++].highlightOn();
             }
@@ -149,7 +150,7 @@ export class EndThrowState implements IGameState {
 
         // Check if teamClosestStone has stones in house (worth point)
         return (stone.getTeam() === teamClosestStone &&
-                stone.position.distanceTo(ringsCenter) < rings.outer);
+            stone.position.distanceTo(ringsCenter) < rings.outer);
     }
 
     private addPoints(teamClosestStone: Team, points: number): void {
@@ -166,7 +167,7 @@ export class EndThrowState implements IGameState {
 
         // If the round ended in a draw, first player for next round is the one who started the current round
         // Round ends in a draw if the teamClosestStone is undefined (when all stones were out of bounds during a round)
-        // Round ends in a draw if the teamClosestStone is defined, but their score is 0 because they have no stone in house
+        // Round ends in a draw if the teamClosestStone is defined, but their score is 0 (no stone in house)
         if (teamClosestStone === undefined || points === 0) {
             gameData.isPlayerTurn = !gameData.isPlayerTurn;
         } else {
