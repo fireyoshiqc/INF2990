@@ -281,14 +281,15 @@ export class PhysicsManager {
         }
     }
 
-    public getClosestPlayerStoneInHouse(): CurlingStone {
+    public getClosestTeamStoneInHouse(team: Team): CurlingStone {
         let ringsRadius = SceneBuilder.getInstance().getRinkData().rings.outer;
         let ringsCenterPosition = new THREE.Vector3(0, 0, SceneBuilder.getInstance().getRinkData().rings.offset);
 
         // PhysicsManager contains stones in game sorted by distance to the center of the rings
         return this.curlingStones.find(stone =>
-            (stone.getTeam() === Team.Player && stone.position.distanceTo(ringsCenterPosition) <= ringsRadius));
+            (stone.getTeam() === team && stone.position.distanceTo(ringsCenterPosition) <= ringsRadius));
     }
+
 
     // Finds the initial velocity of an AI curling stone in order to get to a specific position with a z velocity
     public getVelocityToPosition(finalPosition: THREE.Vector3, finalVelocityZ: number, spin: any): THREE.Vector3 {

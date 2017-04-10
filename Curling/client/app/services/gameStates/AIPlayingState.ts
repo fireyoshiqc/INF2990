@@ -134,16 +134,10 @@ export class AIPlayingState implements IGameState {
         let xVelocity: number;
         let zVelocity: number;
         let spin: SpinOrientation;
-        let playerStone = this.physicsManager.getClosestPlayerStoneInHouse();
+        let playerStone = this.physicsManager.getClosestTeamStoneInHouse(Team.Player);
+        let aiStone = this.physicsManager.getClosestTeamStoneInHouse(Team.AI);
 
-        if (GameEngine.getInstance().getStones().length === 1) {
-            spin = (Math.random() > 0.5) ? SpinOrientation.CLOCKWISE : SpinOrientation.COUNTER_CLOCKWISE;
-
-            // Hard shot that aims for the center of the rings if there are no other stones
-            // Shoot in opposite direction of spin
-            xVelocity = -spin * this.X_HOUSE_CENTER_VELOCITY;
-            zVelocity = this.Z_RINGS_CENTER_VELOCITY;
-        } else if (playerStone !== undefined) {
+        if (playerStone !== undefined) {
             // Aims for the player stone that is the closest to the center of the rings
             if (playerStone.position.x > 0) {
                 spin = SpinOrientation.COUNTER_CLOCKWISE;
@@ -157,12 +151,19 @@ export class AIPlayingState implements IGameState {
             let initialVelocity = this.physicsManager.getVelocityToPosition(playerStone.position, finalVelocityZ, spin);
             xVelocity = initialVelocity.x;
             zVelocity = initialVelocity.z;
-        } else {
+        } else if (aiStone !== undefined) {
             // TODO : Cas où juste les pierres du ai -> viser la maison sans frapper les autres pierres
             spin = (Math.random() > 0.5) ? SpinOrientation.CLOCKWISE : SpinOrientation.COUNTER_CLOCKWISE;
 
             xVelocity = -spin * this.getRandomFloat(0, this.X_SUCCESS_MAX_VELOCITY);
             zVelocity = this.getRandomFloat(this.Z_BACK_HOGLINE_VELOCITY, this.Z_BACKLINE_VELOCITY);
+        } else {
+            // Hard shot that aims for the center of the rings if there are no other stones
+            spin = (Math.random() > 0.5) ? SpinOrientation.CLOCKWISE : SpinOrientation.COUNTER_CLOCKWISE;
+
+            // Shoot in opposite direction of spin
+            xVelocity = -spin * this.X_HOUSE_CENTER_VELOCITY;
+            zVelocity = this.Z_RINGS_CENTER_VELOCITY;
         }
 
         velocity = new THREE.Vector3(xVelocity, 0, zVelocity);
