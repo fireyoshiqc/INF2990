@@ -17,8 +17,8 @@ export class GameAreaComponent {
         this.sudokuGridComponent.getSudokuService().getHighscores(true)
             .then((scores) => {
                 if (scores !== undefined) {
-                    // Pop the popup!
-                    this.sudokuGridComponent.showHighscoresDialog(scores);
+                    // Pop the popup! It's not a new highscore
+                    this.sudokuGridComponent.showHighscoresDialog(scores, false);
                 }
             })
             .catch((error) => {

@@ -1,4 +1,7 @@
-<h3 md-dialog-title>Vous avez fait un record!</h3>
+<h3 md-dialog-title>
+    <div>Tableau des records</div>
+    <div *ngIf="dialogRef.componentInstance.newHighscore">Vous avez fait un record !</div>
+</h3>
 <md-dialog-content>
     <md-tab-group>
         <md-tab label="Faciles">

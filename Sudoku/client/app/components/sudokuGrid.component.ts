@@ -65,8 +65,8 @@ export class SudokuGridComponent implements AfterViewInit {
                             this.sudokuService.getHighscores()
                                 .then((scores) => {
                                     if (scores !== undefined) {
-                                        // Pop the popup!
-                                        this.showHighscoresDialog(scores);
+                                        // Pop the popup! It's a new highscore
+                                        this.showHighscoresDialog(scores, true);
                                     }
                                 })
                                 .catch((error) => {
@@ -79,11 +79,13 @@ export class SudokuGridComponent implements AfterViewInit {
         });
     }
 
-    public showHighscoresDialog(highscores: any): void {
+    public showHighscoresDialog(highscores: any, newHighscore: boolean): void {
         setTimeout(() => {
             this.scoreDialogRef = this.dialog.open(HighscoresPopupComponent);
             (this.scoreDialogRef.componentInstance.dialogRef.componentInstance as HighscoresComponent)
                 .highscores = { easy: highscores.easy, hard: highscores.hard };
+            (this.scoreDialogRef.componentInstance.dialogRef.componentInstance as HighscoresComponent)
+                .newHighscore = newHighscore;
         });
     }
 

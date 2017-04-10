@@ -15,6 +15,7 @@ import { MdDialogRef } from '@angular/material';
 })
 export class HighscoresComponent {
     public highscores: IHighscores = { easy: [], hard: [] };
+    public newHighscore: boolean;
     constructor(public dialogRef: MdDialogRef<HighscoresComponent>) {
     }
 }
