@@ -17,8 +17,8 @@ export class EndGameState implements IGameState {
     private readonly GRAVITY_N_PER_KG = 9.81;
     private readonly STONE_JUMP_SPEED = 4;
     private readonly STONE_SPIN_SPEED = 2;
-    private animateStones: boolean = true;
-    private animateConfetti: boolean = true;
+    private animateStones = true;
+    private animateConfetti = true;
     private readonly ANIMATION_LENGTH = 5000;
     private readonly TOTAL_CONFETTI_COUNT = 1000;
     private readonly colorArray = [0x00FFFF, 0xFF00FF, 0xFFFF00, 0x9400D3, 0xFFA500];
@@ -87,7 +87,7 @@ export class EndGameState implements IGameState {
                     stone.position.y = 0;
                 }
             });
-        }  
+        }
     }
 
     public enterState(): EndGameState {
