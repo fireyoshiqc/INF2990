@@ -1,16 +1,15 @@
 <md-card class="info-panel-card">
     <md-card-header>
         <md-card-title>
-            <h3>Bon jeu {{this.player.name}} !</h3>
+            <div *ngIf="gameOver">
+                <h4> Le jeu a été remporté par {{this.winningPlayers}} ! </h4>
+            </div>
         </md-card-title>
     </md-card-header>
     <md-card-content>
-        <div *ngIf="gameOver">
-            <p><b> Le jeu a été remporté par {{this.winningPlayers}} ! </b></p>
-        </div>
         <md-grid-list cols="3" rows="1" rowHeight="25px">
             <md-grid-tile>
-                <p><b>Joueur actif : </b> {{this.activePlayerName}}</p>
+                <p><b>Votre nom : </b> {{this.player.name}}</p>
             </md-grid-tile>
 
             <md-grid-tile>
@@ -21,6 +20,10 @@
                 <p><b>Lettres restantes : </b> {{this.nLettersStash}}</p>
             </md-grid-tile>
         </md-grid-list>
+
+        <md-progress-bar [ngClass]="{'mat-primary': this.getTimeProgress()>30, 'mat-accent':this.getTimeProgress()>10 && this.getTimeProgress()<=30 , 'mat-warn':this.getTimeProgress()<=10}"
+            id="forceBar" [value]="this.getTimeProgress()" mode="determinate"></md-progress-bar>
+
         <md-grid-list cols="3" rows="1" rowHeight="25px">
             <md-grid-tile>
                 <b>Nom</b>
@@ -36,7 +39,7 @@
         </md-grid-list>
         <md-grid-list cols="3" rows="1" rowHeight="25px" *ngFor="let player of players">
             <md-grid-tile>
-                <div [ngClass]="{'strikethrough' : player.hasQuitAfterGameEnd}">
+                <div [ngClass]="{'strikethrough' : player.hasQuitAfterGameEnd, 'bold' : player.name === this.activePlayerName}">
                     <p>{{player.name}}</p>
                 </div>
             </md-grid-tile>
