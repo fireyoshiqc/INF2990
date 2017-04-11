@@ -5,7 +5,7 @@
  * @date 2017/01/20
  */
 
-import { CurlingStone, Team } from './curlingStone';
+import { CurlingStone, Team, SpinOrientation } from './curlingStone';
 
 import { expect } from 'chai';
 
@@ -81,6 +81,20 @@ describe('CurlingStone', () => {
 
             expect(stoneMesh.children.length).to.equal(0);
             expect(handleMesh.children.length).to.equal(0);
+            done();
+        });
+    });
+
+    describe('spin getter and setter', () => {
+        it('should set a random spin orientation.', done => {
+            expect(testStone.getSpinOrientation()).to.equal(SpinOrientation.CLOCKWISE);
+
+            testStone.setSpinOrientation(SpinOrientation.COUNTER_CLOCKWISE);
+            expect(testStone.getSpinOrientation()).to.equal(SpinOrientation.COUNTER_CLOCKWISE);
+
+            testStone.setRandomSpinOrientation();
+            expect(testStone.getSpinOrientation()).to.exist;
+
             done();
         });
     });

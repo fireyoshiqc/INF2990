@@ -255,6 +255,10 @@ export class CurlingStone extends THREE.Group {
         return this.spinOrientation;
     }
 
+    public setRandomSpinOrientation(): void {
+        this.spinOrientation = (Math.random() > 0.5) ? SpinOrientation.CLOCKWISE : SpinOrientation.COUNTER_CLOCKWISE;
+    }
+
     public isOnGround(): boolean {
         return this.position.y === 0;
     }
