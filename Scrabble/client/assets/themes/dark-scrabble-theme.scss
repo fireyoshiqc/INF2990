@@ -7,7 +7,7 @@
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue.
 $primary: mat-palette($mat-green, A400, A200, A700);
-$accent: mat-palette($mat-amber, A400, A200, A700);
+$accent: mat-palette($mat-cyan, A400, A200, A700);
 // The warn palette is optional (defaults to red).
 $warn: mat-palette($mat-red);
 // Create the theme object (a Sass map containing all of the palettes).
@@ -27,13 +27,17 @@ $theme: mat-light-theme($primary, $accent, $warn);
     background-color: white;
 }
 
+.info-header {
+    background-color: #C8E6C9;
+}
+
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 @include angular-material-theme($theme);
 .dark-theme {
     $dark-p: mat-palette($mat-green, 600, 500, 700);
-    $dark-a: mat-palette($mat-amber, 600, 500, 700);
+    $dark-a: mat-palette($mat-teal, 600, 500, 700);
     $dark-w: mat-palette($mat-red);
     $dark-t: mat-dark-theme($dark-p, $dark-a, $dark-w);
     @include angular-material-theme($dark-t);
@@ -47,6 +51,9 @@ $theme: mat-light-theme($primary, $accent, $warn);
         color: white;
     }
     #sidenavback.mat-sidenav-container {
-    background-color: black;
-}
+        background-color: #111111;
+    }
+    .info-header {
+        background-color: #43a047;
+    }
 }

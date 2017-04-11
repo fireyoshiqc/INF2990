@@ -380,22 +380,13 @@ md-radio-button {
     font-weight: bold;
 }
 
-.time-okay {
-    color: "primary";
-}
-
-.time-warn {
-    color: "accent";
-}
-
-.time-danger {
-    color: "warn";
-}
-
 .info-panel-card.mat-card {
     padding: 10px;
 }
 
+#timebar {
+    margin-bottom: 5%;
+}
 
 /***************/
 
