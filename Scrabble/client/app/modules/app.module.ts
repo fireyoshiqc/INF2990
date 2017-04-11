@@ -14,6 +14,7 @@ import { RackComponent } from '../components/rack.component';
 import { InfoComponent } from '../components/info.component';
 import { WaitingRoomComponent } from '../components/waitingRoom.component';
 import { StartPageComponent, WaitingDialogComponent } from '../components/startPage.component';
+import { QuitGameComponent, QuitGamePopupComponent } from '../components/quitGame.component';
 
 import 'hammerjs';
 
@@ -21,8 +22,8 @@ import 'hammerjs';
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, AppRoutingModule,
         MaterialModule, FlexLayoutModule],
     declarations: [AppComponent, GameComponent, ChatComponent, BoardComponent, RackComponent, InfoComponent,
-        WaitingRoomComponent, StartPageComponent, WaitingDialogComponent],
-    entryComponents: [WaitingDialogComponent],
+        WaitingRoomComponent, StartPageComponent, WaitingDialogComponent, QuitGameComponent, QuitGamePopupComponent],
+    entryComponents: [WaitingDialogComponent, QuitGamePopupComponent],
     bootstrap: [AppComponent]
 })
 export class AppModule { }
