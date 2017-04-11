@@ -7,7 +7,7 @@
  */
 
 import { PhysicsManager } from './physicsManager.service';
-import { CurlingStone, Team } from '../entities/curlingStone';
+import { CurlingStone, Team, SpinOrientation } from '../entities/curlingStone';
 
 import { expect } from 'chai';
 
@@ -123,8 +123,72 @@ describe('PhysicsManager', () => {
         });
     });
 
-    describe('getClosestPlayerStoneInHouse()', () => {
-        it('should return the closest player stone.', done => {
+    describe('getVelocityToPosition()', () => {
+        it('should get the initial velocity of a stone to get to the center of the rings.', done => {
+            let finalPosition = new THREE.Vector3(0, 0, 40.37);
+            let finalVelocityZ = 0;
+
+            // Clockwise spin
+            let spin = SpinOrientation.CLOCKWISE;
+            let initialVelocity = testPhysicsManager.getVelocityToPosition(finalPosition, finalVelocityZ, spin);
+
+            let min = new THREE.Vector3(0.26, 0, 4.36);
+            let max = new THREE.Vector3(0.27, 0, 4.37);
+
+            expect(initialVelocity.x).to.be.at.least(min.x).and.at.most(max.x);
+            expect(initialVelocity.y).to.be.at.least(min.y).and.at.most(max.y);
+            expect(initialVelocity.z).to.be.at.least(min.z).and.at.most(max.z);
+
+            // Counter-clockwise spin
+            spin = SpinOrientation.COUNTER_CLOCKWISE;
+            initialVelocity = testPhysicsManager.getVelocityToPosition(finalPosition, finalVelocityZ, spin);
+
+            min = new THREE.Vector3(-0.27, 0, 4.36);
+            max = new THREE.Vector3(-0.26, 0, 4.37);
+
+            expect(initialVelocity.x).to.be.at.least(min.x).and.at.most(max.x);
+            expect(initialVelocity.y).to.be.at.least(min.y).and.at.most(max.y);
+            expect(initialVelocity.z).to.be.at.least(min.z).and.at.most(max.z);
+            done();
+        });
+
+        it('should get the initial velocity of a stone to get to a position with a certain Z velocity.', done => {
+            let finalPosition = new THREE.Vector3(-1, 0, 39.37);
+            let finalVelocityZ = 1;
+
+            // Clockwise spin when final x position is negative
+            let spin = SpinOrientation.CLOCKWISE;
+            let initialVelocity = testPhysicsManager.getVelocityToPosition(finalPosition, finalVelocityZ, spin);
+
+            let min = new THREE.Vector3(0.12, 0, 4.41);
+            let max = new THREE.Vector3(0.13, 0, 4.42);
+
+            expect(initialVelocity.x).to.be.at.least(min.x).and.at.most(max.x);
+            expect(initialVelocity.y).to.be.at.least(min.y).and.at.most(max.y);
+            expect(initialVelocity.z).to.be.at.least(min.z).and.at.most(max.z);
+            done();
+        });
+
+        it('should get the initial velocity of a stone to get to a position with a certain Z velocity.', done => {
+            let finalPosition = new THREE.Vector3(1.8, 0, 40.37);
+            let finalVelocityZ = 2;
+
+            // Counter-clockwise spin when final x position is positive
+            let spin = SpinOrientation.COUNTER_CLOCKWISE;
+            let initialVelocity = testPhysicsManager.getVelocityToPosition(finalPosition, finalVelocityZ, spin);
+
+            let min = new THREE.Vector3(-0.03, 0, 4.79);
+            let max = new THREE.Vector3(-0.02, 0, 4.80);
+
+            expect(initialVelocity.x).to.be.at.least(min.x).and.at.most(max.x);
+            expect(initialVelocity.y).to.be.at.least(min.y).and.at.most(max.y);
+            expect(initialVelocity.z).to.be.at.least(min.z).and.at.most(max.z);
+            done();
+        });
+    });
+
+    describe('getClosestTeamStoneInHouse()', () => {
+        it('should return the closest player/ai stone.', done => {
             testPhysicsManager.clearStones();
             let position1 = new THREE.Vector3(0, 0, 40.37);
             let position2 = new THREE.Vector3(0, 0, 39.97);
