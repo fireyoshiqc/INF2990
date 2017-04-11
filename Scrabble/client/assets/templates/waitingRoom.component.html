@@ -7,7 +7,7 @@
 
             <div class="flex-item" fxFlex="20%" fxLayoutAlign="center center" fxFlexFill>
                 <button md-raised-button id="confirmationButton" color="primary" #quit 
-                    (click)="leaveWaitingRoom()">
+                    (click)="leaveWaitingRoom()" [disabled]="isStarting">
                     Annuler
                 </button>
             </div>
