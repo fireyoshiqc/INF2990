@@ -24,12 +24,14 @@ export class WaitingRoomComponent {
     private playerList: string[];
     private missingPlayers: number;
     private timer: any;
+    private isStarting: boolean; // Prevents player from quitting the waiting room when full
 
     constructor(public dialogRef: MdDialogRef<WaitingRoomComponent>,
         public router: Router, private roomService: RoomService) {
         this.roomService = roomService;
         this.player = PlayerHandler.requestPlayer();
         this.playerList = [];
+        this.isStarting = false;
 
         // Updates the room info every second
         this.timer = setInterval(() => {
@@ -49,22 +51,26 @@ export class WaitingRoomComponent {
     }
 
     public leaveWaitingRoom(): void {
-        clearInterval(this.timer);
-        this.roomService.leaveRoom();
-        this.dialogRef.close();
+        if (!this.isStarting) {
+            clearInterval(this.timer);
+            this.roomService.leaveRoom();
+            this.dialogRef.close();
+        }
     }
 
     public startIfFull(): void {
         if (this.missingPlayers === 0) {
+            this.isStarting = true;
             clearInterval(this.timer);
+
             setTimeout(() => {
                 this.dialogRef.close();
                 this.router.navigate(['/game']);
-            }, 2000);
+            }, 1000);
 
             setTimeout(() => {
                 this.roomService.startGame(this.player.getRoomID());
-            }, 3000);
+            }, 2000);
         }
     }
 }
