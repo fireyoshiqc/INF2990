@@ -31,7 +31,7 @@ describe('HighscoresPopupComponent', () => {
     describe('Constructor', () => {
         it('should create the component', done => {
             expect(highscoresPopupComponent).to.exist;
-            expect(highscoresPopupComponent).to.be.an.instanceOf(HighscoresPopupComponent)
+            expect(highscoresPopupComponent).to.be.an.instanceOf(HighscoresPopupComponent);
             done();
         });
     });
