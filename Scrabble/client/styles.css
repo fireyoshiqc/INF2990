@@ -388,6 +388,11 @@ md-radio-button {
     margin-bottom: 5%;
 }
 
+.md-icon.mat-icon {
+    color: black;
+    margin-right: 2.5%;
+}
+
 /***************/
 
 

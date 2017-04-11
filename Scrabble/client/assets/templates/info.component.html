@@ -25,20 +25,21 @@
             id="forceBar" [value]="this.getTimeProgress()" mode="determinate" id="timebar"></md-progress-bar>
 
         <md-grid-list class="info-header" cols="3" rows="1" rowHeight="35px">
-            <md-grid-tile class="info-header" >
+            <md-grid-tile class="info-header">
                 <b>Nom</b>
             </md-grid-tile>
 
-            <md-grid-tile class="info-header" >
+            <md-grid-tile class="info-header">
                 <b>Score</b>
             </md-grid-tile>
 
-            <md-grid-tile class="info-header" >
+            <md-grid-tile class="info-header">
                 <b>Nombre de lettres sur chevalet</b>
             </md-grid-tile>
         </md-grid-list>
         <md-grid-list cols="3" rows="1" rowHeight="35px" *ngFor="let player of players">
             <md-grid-tile>
+                <md-icon class="md-icon" *ngIf="player.name === this.activePlayerName">arrow_forward</md-icon>
                 <div [ngClass]="{'strikethrough' : player.hasQuitAfterGameEnd, 'bold' : player.name === this.activePlayerName}">
                     {{player.name}}
                 </div>
