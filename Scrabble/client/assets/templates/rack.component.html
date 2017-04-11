@@ -1,5 +1,5 @@
-<div id="rack" class="flex-container" [ngClass]="{'highlight' : active}" fxLayout="row" fxLayout.xs="row" fxLayoutAlign="center center" fxLayoutAlign.xs="center center">
-    <div id= "rackitem" class="flex-item" fxFlex="13.2%" fxFlex.xs="13.2%" *ngFor="let letter of rackManager.getRackLetters()">
+<div id="rack" class="flex-container" [ngClass]="{'highlight' : active}" fxLayout="row" fxLayout.xs="row" fxLayoutAlign="start center" fxLayoutAlign.xs="start center">
+    <div id= "rackitem" class="flex-item" fxFlex="14.2%" fxFlex.xs="14.2%" *ngFor="let letter of rackManager.getRackLetters()">
         <img id = "rackimg" [ngClass] = "{'selectedLetter' : letter.isSelected()}" src= {{letter.getTexture()}}  >
     </div>
 </div>

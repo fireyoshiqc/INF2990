@@ -296,9 +296,7 @@ md-radio-button {
     margin-right: auto;
     display: inline-flex;
     max-width: 60%;
-    max-width: 60%;
-    padding-top: 1.3%;
-    padding-bottom: 1.5%;
+    padding: 1.3%;
     background-image: url("/assets/textures/rack/Rack.png");
     background-repeat: no-repeat;
     background-size: 100%;
