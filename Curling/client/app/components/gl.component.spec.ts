@@ -1,5 +1,5 @@
 /**
- * gameController.service.spec.ts
+ * gl.component.spec.ts
  *
  * @authors Vincent Chassé et Erica Bugden
  * @date 2017/03/31
@@ -10,7 +10,7 @@ import { expect } from 'chai';
 import { GlComponent } from './gl.component';
 import { GameController } from '../services/gameController.service';
 
-describe('GlComponentr', () => {
+describe('GlComponent', () => {
 
     let gameController = new GameController(null, null);
     let glComponent = new GlComponent(null, gameController);
