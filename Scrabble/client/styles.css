@@ -485,3 +485,15 @@ md-input-container {
 #waitingActualPlayerName {
     color: black;
 }
+
+/************/
+
+
+/* quitGame */
+
+
+/************/
+
+#cancelQuitButton {
+    color: white;
+}
