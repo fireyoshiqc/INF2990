@@ -5,7 +5,7 @@
  * @date 2017/03/11
  */
 
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { MdDialogRef } from '@angular/material';
 import { NameService } from '../services/name.service';
 
@@ -25,7 +25,7 @@ export class NameSelectorComponent {
     constructor(public dialogRef: MdDialogRef<NameSelectorComponent>, private nameService: NameService) {
     }
 
-    public onStart(): void {
+    public validate(): void {
         this.error = false;
 
         if (this.aiDifficulty !== undefined && this.playerName !== undefined) {
@@ -45,4 +45,12 @@ export class NameSelectorComponent {
             this.errorMessage = "Veuillez entrer un nom valide.";
         }
     }
+
+    @HostListener('window:keydown', ['$event'])
+    public confirm(event: KeyboardEvent): void {
+        if (event.key === "Enter") {
+            this.validate();
+        }
+    }
 }
+
