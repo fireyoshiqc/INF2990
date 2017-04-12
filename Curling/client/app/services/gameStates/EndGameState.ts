@@ -20,6 +20,7 @@ export class EndGameState implements IGameState {
     private animateStones = true;
     private animateConfetti = true;
     private readonly ANIMATION_LENGTH = 5000;
+    private stopStonesOnGround = false;
     private readonly TOTAL_CONFETTI_COUNT = 1000;
     private readonly colorArray = [0x00FFFF, 0xFF00FF, 0xFFFF00, 0x9400D3, 0xFFA500];
     private confettiSystem: Array<THREE.Points>;
@@ -74,12 +75,15 @@ export class EndGameState implements IGameState {
         if (this.animateStones) {
             this.winningStones.forEach((stone) => {
                 if (stone.isOnGround()) {
-                    stone.getVelocity().y = this.STONE_JUMP_SPEED;
+                    if (!this.stopStonesOnGround) {
+                        stone.getVelocity().y = this.STONE_JUMP_SPEED;
+                    }
                 } else {
                     stone.getVelocity().y -= this.GRAVITY_N_PER_KG * delta;
                 }
 
-                stone.rotateY(this.STONE_SPIN_SPEED * delta);
+                // TODO : Fix stopping stone rotation in animation
+                //stone.rotateY(this.STONE_SPIN_SPEED * delta);
 
                 stone.update(delta);
 
@@ -127,6 +131,8 @@ export class EndGameState implements IGameState {
                 // End of animation
                 self.gameController.getHUDData().congratulationsMessageVisible = false;
                 self.gameController.showHighscores();
+                self.animateConfetti = false;
+                self.stopStonesOnGround = true;
             }, self.ANIMATION_LENGTH);
         } else {
             // Égalité
