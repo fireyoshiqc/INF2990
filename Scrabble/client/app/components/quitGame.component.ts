@@ -5,7 +5,7 @@
  * @date 2017/04/10
  */
 
-import { HostListener, Component, Optional } from '@angular/core';
+import { Component, Optional } from '@angular/core';
 import { MdDialogRef } from '@angular/material';
 
 @Component({
@@ -16,16 +16,6 @@ import { MdDialogRef } from '@angular/material';
 
 export class QuitGameComponent {
     constructor(public dialogRef: MdDialogRef<QuitGameComponent>) { }
-
-    // Player has pressed esc to cancel quitting the game
-    @HostListener('window:keyup', ['$event'])
-    public keyboardInput(event: KeyboardEvent): void {
-        if (event.key === "Escape") {
-            if (this.dialogRef) {
-                this.dialogRef.close();
-            }
-        }
-    }
 }
 
 @Component({
