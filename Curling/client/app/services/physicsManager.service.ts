@@ -281,19 +281,45 @@ export class PhysicsManager {
         }
     }
 
-    public getClosestTeamStoneInHouse(team: Team): CurlingStone {
-        let ringsRadius = SceneBuilder.getInstance().getRinkData().rings.outer;
+    public getTeamStoneWithinDistance(team: Team, distance: Number): CurlingStone {
         let ringsCenterPosition = new THREE.Vector3(0, 0, SceneBuilder.getInstance().getRinkData().rings.offset);
-
+        this.sortStonesByDistance();
         // PhysicsManager contains stones in game sorted by distance to the center of the rings
         return this.curlingStones.find(stone =>
-            (stone.getTeam() === team && stone.position.distanceTo(ringsCenterPosition) <= ringsRadius));
+            (stone.getTeam() === team && stone.position.distanceTo(ringsCenterPosition) <= distance));
     }
 
+    public findStoneAtPosition(curlingStone: CurlingStone): CurlingStone {
+        for (let index = 0; index < this.curlingStones.length; index++) {
+            // Only checks for stones that are after the hogline
+            let stone = this.curlingStones[index];
+            if (stone.position.z > SceneBuilder.getInstance().getRinkData().lines.hog &&
+                stone.position.distanceTo(curlingStone.position) <= 2 * CurlingStone.MAX_RADIUS) {
+                return stone;
+            }
+        }
+
+        return undefined;
+    }
+
+    // Look for an obstacle stone in the predetermined trajectory
+    public findObstacleStone(dummyStone: CurlingStone, finalPosition: THREE.Vector3): CurlingStone {
+
+        while (dummyStone.position.z < finalPosition.z - 3 * CurlingStone.MAX_RADIUS) {
+            this.calculateCurlingStonePosition(dummyStone, this.MULTIPLIER_NORMAL_ICE, this.ESTIMATED_TIME_DELTA);
+            let obstacleStone = this.findStoneAtPosition(dummyStone);
+
+            if (obstacleStone !== undefined) {
+                return obstacleStone;
+            }
+        }
+        return undefined;
+    }
 
     // Finds the initial velocity of an AI curling stone in order to get to a specific position with a z velocity
     public getVelocityToPosition(finalPosition: THREE.Vector3, finalVelocityZ: number, spin: any): THREE.Vector3 {
-        let tmpStone = new CurlingStone(Team.AI);
+        let tmpStone = new CurlingStone(Team.AI, new THREE.Vector3(0, 0, 0),
+            new THREE.Vector3(0, 0, SceneBuilder.getInstance().getRinkData().lines.start));
         tmpStone.setSpinOrientation(spin);
 
         // Calculate the initial z velocity to get to the z position

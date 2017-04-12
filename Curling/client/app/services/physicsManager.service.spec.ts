@@ -201,7 +201,7 @@ describe('PhysicsManager', () => {
             // Sort stones relative to a center that is closer to the second stone.
             testPhysicsManager.sortStonesByDistance();
 
-            let closestPlayerStone = testPhysicsManager.getClosestTeamStoneInHouse(Team.Player);
+            let closestPlayerStone = testPhysicsManager.getTeamStoneWithinDistance(Team.Player, 1.8);
 
             // The closest stone (the second one) should now be the first in the array
             expect(closestPlayerStone.position.z).to.eql(position2.z);
@@ -225,7 +225,7 @@ describe('PhysicsManager', () => {
             // Sort stones relative to a center that is closer to the second stone.
             testPhysicsManager.sortStonesByDistance(new THREE.Vector3(0, 0, 0));
 
-            let closestPlayerStone = testPhysicsManager.getClosestTeamStoneInHouse(Team.Player);
+            let closestPlayerStone = testPhysicsManager.getTeamStoneWithinDistance(Team.Player, 1.8);
 
             // The closest stone (the second one) should now be the first in the array
             expect(closestPlayerStone.position.z).to.eql(position1.z);
@@ -249,7 +249,7 @@ describe('PhysicsManager', () => {
             // Sort stones relative to a center that is closer to the second stone.
             testPhysicsManager.sortStonesByDistance(new THREE.Vector3(0, 0, 0));
 
-            let closestPlayerStone = testPhysicsManager.getClosestTeamStoneInHouse(Team.Player);
+            let closestPlayerStone = testPhysicsManager.getTeamStoneWithinDistance(Team.Player, 1);
 
             // The closest stone (the second one) should now be the first in the array
             expect(closestPlayerStone).to.undefined;
@@ -272,7 +272,7 @@ describe('PhysicsManager', () => {
             // Sort stones relative to a center that is closer to the second stone.
             testPhysicsManager.sortStonesByDistance(new THREE.Vector3(0, 0, 0));
 
-            let closestPlayerStone = testPhysicsManager.getClosestTeamStoneInHouse(Team.Player);
+            let closestPlayerStone = testPhysicsManager.getTeamStoneWithinDistance(Team.Player, 1);
 
             // The closest stone (the second one) should now be the first in the array
             expect(closestPlayerStone).to.undefined;
@@ -286,7 +286,7 @@ describe('PhysicsManager', () => {
             // Sort stones relative to a center that is closer to the second stone.
             testPhysicsManager.sortStonesByDistance(new THREE.Vector3(0, 0, 0));
 
-            let closestPlayerStone = testPhysicsManager.getClosestTeamStoneInHouse(Team.Player);
+            let closestPlayerStone = testPhysicsManager.getTeamStoneWithinDistance(Team.Player, 1);
 
             // The closest stone (the second one) should now be the first in the array
             expect(closestPlayerStone).to.undefined;

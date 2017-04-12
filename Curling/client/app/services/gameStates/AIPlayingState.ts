@@ -16,7 +16,7 @@ import { CurlingStone, Team, SpinOrientation } from '../../entities/curlingStone
 // -------------------- HELPER FUNCTIONS -------------------------- //
 
 export function getRandomFloat(min: number, max: number): number {
-        return (Math.random() * (max - min)) + min;
+    return (Math.random() * (max - min)) + min;
 }
 
 // -------------------- END HELPER FUNCTIONS ----------------------- //
@@ -134,14 +134,17 @@ export class AIPlayingState implements IGameState {
     }
 
     private throwHardStone(stone: CurlingStone): void {
+        // Get the distance from the center of the white ring
+        let whiteRing = (SceneBuilder.getInstance().getRinkData().rings.inner +
+            SceneBuilder.getInstance().getRinkData().rings.middle) / 2;
         let velocity: THREE.Vector3;
         let xVelocity: number;
         let zVelocity: number;
-        let playerStone = this.physicsManager.getClosestTeamStoneInHouse(Team.Player);
+        let playerStone = this.physicsManager.getTeamStoneWithinDistance(Team.Player, whiteRing);
+        let obstacleStone: CurlingStone;
 
         if (playerStone !== undefined) {
-            // CASE 1 : There are player stones in house
-            // Aims for the player stone that is the closest to the center of the rings
+            // CASE 1 : If there is player's stone within the middle of the white ring, aims for that specific stone
             if (playerStone.position.x > 0) {
                 stone.setSpinOrientation(SpinOrientation.COUNTER_CLOCKWISE);
             } else if (playerStone.position.x < 0) {
@@ -153,9 +156,41 @@ export class AIPlayingState implements IGameState {
             let finalVelocityZ = 2;
             let initialVelocity = this.physicsManager
                 .getVelocityToPosition(playerStone.position, finalVelocityZ, stone.getSpinOrientation());
+
+            // Finds if there is a stone in the way
+            let tmpStone = new CurlingStone(Team.Player, initialVelocity.clone(),
+                new THREE.Vector3(0, 0, SceneBuilder.getInstance().getRinkData().lines.start));
+            tmpStone.setSpinOrientation(stone.getSpinOrientation());
+
+            obstacleStone = this.physicsManager.findObstacleStone(tmpStone, playerStone.position);
+
+            // If there is a stone in the way
+            if (obstacleStone !== undefined) {
+                // If there is a playerStone is in the way, aim that playerStone
+                if (obstacleStone.getTeam() === Team.Player) {
+                    let finalPosition = obstacleStone.position.clone();
+
+                    if (obstacleStone.position.x > 0) {
+                        stone.setSpinOrientation(SpinOrientation.COUNTER_CLOCKWISE);
+                        finalPosition.x = obstacleStone.position.x - 2 * CurlingStone.MAX_RADIUS;
+                    } else if (obstacleStone.position.x <= 0) {
+                        stone.setSpinOrientation(SpinOrientation.CLOCKWISE);
+                        finalPosition.x = obstacleStone.position.x + 2 * CurlingStone.MAX_RADIUS;
+                    }
+                    // Change the trajectory to aim the obstacle stone
+                    initialVelocity = this.physicsManager
+                        .getVelocityToPosition(finalPosition, 1.3, stone.getSpinOrientation());
+
+                } else {
+                    // TODO: If there is an AIStone in the way
+
+                }
+            }
+
             xVelocity = initialVelocity.x;
             zVelocity = initialVelocity.z;
         } else {
+            // TODO: Aims inside the red ring instead of the center
             // CASE 2 : There is no player stone in house
             // Perfect shot that aims for the center of the rings
             stone.setRandomSpinOrientation();
