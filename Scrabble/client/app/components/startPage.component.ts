@@ -27,6 +27,10 @@ export class StartPageComponent {
         this.player = PlayerHandler.requestPlayer();
         this.error = false;
         this.errorMessage = "";
+
+        // Value pageRefresh is set to "true" when user is refreshing the /game page
+        // Value pageRefresh must be "false" to prevent multiple redirection to /startPage
+        localStorage.setItem("pageRefresh", "false");
     }
 
     public confirmName(): void {

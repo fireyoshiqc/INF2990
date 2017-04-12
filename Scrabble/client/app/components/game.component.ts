@@ -41,6 +41,11 @@ export class GameComponent implements OnInit {
         this.socket.on("wcUpdateTurnInfo", (turnInfo: ITurnInfo) => {
             this.infoChild.updateTurnInfo(turnInfo);
         });
+
+        // Redirect user to startPage if page was refreshed (see onBeforeUnload() function)
+        if (localStorage.getItem("pageRefresh") === "true") {
+            location.replace('/startPage');
+        }
     }
 
     @HostListener('window:keydown', ['$event'])
@@ -76,6 +81,15 @@ export class GameComponent implements OnInit {
             this.rackChild.toggleActiveState();
             this.rackChild.deselectLetter();
         }
+    }
+
+    // Disconnect user when he is refreshing the page
+    @HostListener('window:beforeunload', ['$event'])
+    public onBeforeUnload(event: any): any {
+        this.socket.emit('disconnect');
+
+        // Set refresh value to "true" in order to redirect user to startPage
+        localStorage.setItem("pageRefresh", "true");
     }
 
     public quitGame(): void {
