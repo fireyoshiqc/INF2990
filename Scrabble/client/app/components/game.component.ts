@@ -5,6 +5,8 @@ import { BoardComponent, ICommandPlaceWord } from './board.component';
 import { InfoComponent, ITurnInfo } from './info.component';
 import { SocketHandler } from '../modules/socketHandler.module';
 import { Router } from '@angular/router';
+import { QuitGamePopupComponent } from './quitGame.component';
+import { MdDialog, MdDialogRef } from '@angular/material';
 
 @Component({
     moduleId: module.id,
@@ -17,12 +19,13 @@ export class GameComponent implements OnInit {
     private readonly SERVER_PORT = ":3000";
     private socket: any;
     private isDarkTheme = false;
+    private dialogRef: MdDialogRef<QuitGamePopupComponent>;
     @ViewChild(RackComponent) private rackChild: RackComponent;
     @ViewChild(BoardComponent) private boardChild: BoardComponent;
     @ViewChild(InfoComponent) private infoChild: InfoComponent;
     @ViewChild(ChatComponent) private chatChild: ChatComponent;
 
-    constructor(public router: Router) { }
+    constructor(public router: Router, public dialog: MdDialog) { }
 
     public ngOnInit(): void {
         this.socket = SocketHandler.requestSocket(this.HOST_NAME + this.SERVER_PORT);
@@ -76,16 +79,22 @@ export class GameComponent implements OnInit {
     }
 
     public quitGame(): void {
-        alert("Vous allez quitter la partie définitivement.");
+        // User confirmation popup
+        this.dialogRef = this.dialog.open(QuitGamePopupComponent);
 
-        this.socket.emit('cwLeaveRoom', {
-            roomID: this.infoChild.getPlayer().getRoomID(),
-            name: this.infoChild.getPlayer().getName()
+        // User confirmation response
+        this.dialogRef.afterClosed().subscribe(confirmQuit => {
+            if (confirmQuit) {
+                this.socket.emit('cwLeaveRoom', {
+                    roomID: this.infoChild.getPlayer().getRoomID(),
+                    name: this.infoChild.getPlayer().getName()
+                });
+
+                // Reset room ID
+                this.infoChild.getPlayer().setRoomID(-1);
+
+                this.router.navigate(['/startPage']);
+            }
         });
-
-        // Reset room ID
-        this.infoChild.getPlayer().setRoomID(-1);
-
-        this.router.navigate(['/startPage']);
     }
 }

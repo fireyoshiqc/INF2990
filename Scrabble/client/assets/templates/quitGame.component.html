@@ -1,0 +1,11 @@
+<h1 md-dialog-title>
+    Confirmation
+</h1>
+
+<div md-dialog-content>Êtes-vous sûr/sûre de vouloir quitter la partie <strong>définitivement</strong> ?</div>
+
+<div md-dialog-actions align="center">
+    <button md-raised-button color="warn" (click)="dialogRef.close(true)">Quitter</button>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;</p>
+    <button id="cancelQuitButton" md-raised-button color="primary" (click)="dialogRef.close(false)">Revenir</button>
+</div>

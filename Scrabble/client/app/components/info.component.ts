@@ -107,6 +107,13 @@ export class InfoComponent {
         };
     }
 
+    // Returns a value between 0 and 100 for the infopanel progress bar to display the remaining time.
+    public getTimeProgress() : number {
+        const info = this.getTurnInfo();
+        const maxTime = 300; // 5 minutes * 60 seconds
+        return ((info.minutes * 60 + info.seconds) / maxTime) * 100;
+    }
+
     public isGameOver(): boolean {
         return this.gameOver;
     }

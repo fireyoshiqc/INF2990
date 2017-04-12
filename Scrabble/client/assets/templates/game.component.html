@@ -1,6 +1,6 @@
 <div [class.dark-theme]="isDarkTheme" class="flex-container" md-theme="light-scrabble-theme" md-theme-watch="true"
     fxLayout="row" fxLayoutAlign="center center">
-    <md-sidenav-container>
+    <md-sidenav-container id="sidenavback">
         <md-sidenav #sidenav mode="above" opened="false">
             <div id="buttonPanel" class="flex-container" fxLayout="column" fxLayoutAlign="start">
                 <md-list>
@@ -52,15 +52,8 @@
                             <div class="flex-item" fxFlex.xl="40%" fxFlex.lg="50%" fxFlex.md="60%" fxFlex.sm="70%" id="gamePanel" fxFlexFill>
                                 <div class="flex-container" fxLayout="column" fxLayout.xs="column" fxLayoutAlign="center center" fxLayoutAlign.xs="center center"
                                     fxFlexFill>
-
-                                    <div class="flex-item" fxFlex="auto" fxFlexFill>
-                                        <board-comp></board-comp>
-                                    </div>
-
-                                    <div class="flex-item" fxFlex="auto" fxFlexFill>
-                                        <rack-comp></rack-comp>
-                                    </div>
-
+                                        <board-comp class="flex-item" fxFlex="auto" fxFlexFill></board-comp>
+                                        <rack-comp class="flex-item" fxFlex="auto" fxLayoutAlign="center center" fxFlexFill></rack-comp>
                                 </div>
                             </div>
 
