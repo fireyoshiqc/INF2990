@@ -26,7 +26,7 @@ export class StartGameState implements IGameState {
     private constructor() {
         if (StartGameState.instance) {
             throw new Error("Error: StartGameState is a singleton class, " +
-                            "use StartGameState.getInstance() instead of new.");
+                "use StartGameState.getInstance() instead of new.");
         }
         StartGameState.instance = this;
     }

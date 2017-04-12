@@ -55,16 +55,9 @@ describe('GameController', () => {
         });
     });
 
-    describe('resetAIDifficulty()', () => {
-        it('should reset the aiDifficulty to undefined (0)', done => {
-            gameController.resetAIDifficulty();
-            expect(gameController.getAIDifficulty()).to.equal(0);
-            done();
-        });
-    });
-
-    describe('getGameData()', () => {
-        it('should return the game data', done => {
+    describe('resetGameData()', () => {
+        it('should reset the game data', done => {
+            gameController.resetGameData();
             const gameData = gameController.getGameData();
             expect(gameData).to.exist;
             expect(gameData.aiScore).to.eql(0, "AI has no score at beginning of the game.");
@@ -80,8 +73,9 @@ describe('GameController', () => {
         });
     });
 
-    describe('getHUDData()', () => {
-        it('should return the HUD data', done => {
+    describe('resetHUDData()', () => {
+        it('should reset the HUD data', done => {
+            gameController.resetHUDData();
             const hudData = gameController.getHUDData();
             expect(hudData).to.exist;
             expect(hudData.aiStones.length).to.eql(8, "AI has 8 stones at beginning of the game.");
@@ -89,10 +83,11 @@ describe('GameController', () => {
             expect(hudData.nextRoundMessageVisible).to.eql(false,
                 "Next round message is not visible before the end of the round.");
             expect(hudData.nextThrowMessageVisible).to.eql(false,
-            "Next throw message is not visible before the EndThrowState.");
+                "Next throw message is not visible before the EndThrowState.");
             expect(hudData.playerStones.length).to.eql(8, "Player has 8 stones at beginning of the game.");
             expect(hudData.sliderDisabled).to.eql(false, "Spin selector (slider) is enabled at the beginning.");
             done();
         });
     });
+
 });

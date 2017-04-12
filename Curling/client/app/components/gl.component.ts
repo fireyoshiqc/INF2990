@@ -86,8 +86,7 @@ export class GlComponent implements AfterViewInit {
     }
 
     public resetGame(): void {
-        this.gameController.resetAIDifficulty();
-        alert("Reinitialisation de la partie");
+        this.gameController.resetGame();
     }
 
     public showHighscores(): void {

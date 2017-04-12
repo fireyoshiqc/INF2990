@@ -26,7 +26,8 @@ describe('PhysicsManager', () => {
 
     describe('update()', () => {
         it('should update the curling stone position according to its speed.', done => {
-            testPhysicsManager.clearStones();
+            let dummyCurlingStones: CurlingStone[] = [];
+            testPhysicsManager.init(dummyCurlingStones);
             testPhysicsManager.getStones().push(new CurlingStone(Team.AI, new THREE.Vector3(0, 0, 1),
                 new THREE.Vector3(0, 0, 0)));
 
@@ -40,7 +41,8 @@ describe('PhysicsManager', () => {
         });
 
         it('should update the direction of a curling stone after a collision.', done => {
-            testPhysicsManager.clearStones();
+            let dummyCurlingStones: CurlingStone[] = [];
+            testPhysicsManager.init(dummyCurlingStones);
 
             // Collision between 2 stones: stone1 goes down and stone2 goes up on z-axis
             let stone1 = new CurlingStone(Team.AI, new THREE.Vector3(0, 0, 1), new THREE.Vector3(0, 0, 0));
@@ -64,7 +66,8 @@ describe('PhysicsManager', () => {
 
     describe('allStonesHaveStopped()', () => {
         it('should return true when all stones have stopped moving.', done => {
-            testPhysicsManager.clearStones();
+            let dummyCurlingStones: CurlingStone[] = [];
+            testPhysicsManager.init(dummyCurlingStones);
 
             let position = new THREE.Vector3(0, 0, 0);
             let velocity = new THREE.Vector3(0, 0, 0);
@@ -95,17 +98,11 @@ describe('PhysicsManager', () => {
         });
     });
 
-    describe('clearStones()', () => {
-        it('should empty the array of curling stones.', done => {
-            testPhysicsManager.clearStones();
-            expect(testPhysicsManager.getStones().length).to.eql(0);
-            done();
-        });
-    });
-
     describe('sortStonesByDistance()', () => {
         it('should sort the array of stones by distance to the game rings.', done => {
-            testPhysicsManager.clearStones();
+            let dummyCurlingStones: CurlingStone[] = [];
+            testPhysicsManager.init(dummyCurlingStones);
+
             let position1 = new THREE.Vector3(0, 0, 0);
             let position2 = new THREE.Vector3(0, 0, 1);
             let velocity = new THREE.Vector3(0, 0, 0);
@@ -189,7 +186,9 @@ describe('PhysicsManager', () => {
 
     describe('getClosestTeamStoneInHouse()', () => {
         it('should return the closest player/ai stone.', done => {
-            testPhysicsManager.clearStones();
+            let dummyCurlingStones: CurlingStone[] = [];
+            testPhysicsManager.init(dummyCurlingStones);
+
             let position1 = new THREE.Vector3(0, 0, 40.37);
             let position2 = new THREE.Vector3(0, 0, 39.97);
             let position3 = new THREE.Vector3(0, 0, 39.37);
@@ -211,7 +210,9 @@ describe('PhysicsManager', () => {
         });
 
         it('should return the closest player stone.', done => {
-            testPhysicsManager.clearStones();
+            let dummyCurlingStones: CurlingStone[] = [];
+            testPhysicsManager.init(dummyCurlingStones);
+
             let position1 = new THREE.Vector3(0, 0, 40.37);
             let position2 = new THREE.Vector3(0, 0, 39.97);
             let position3 = new THREE.Vector3(0, 0, 39.37);
@@ -233,7 +234,9 @@ describe('PhysicsManager', () => {
         });
 
         it('should return undefined because there are no player stone in house.', done => {
-            testPhysicsManager.clearStones();
+            let dummyCurlingStones: CurlingStone[] = [];
+            testPhysicsManager.init(dummyCurlingStones);
+
             let position1 = new THREE.Vector3(0, 0, 40.37);
             let position2 = new THREE.Vector3(0, 0, 39.97);
             let position3 = new THREE.Vector3(0, 0, 19.37);
@@ -254,7 +257,9 @@ describe('PhysicsManager', () => {
         });
 
         it('should return undefined because there are no stone in house.', done => {
-            testPhysicsManager.clearStones();
+            let dummyCurlingStones: CurlingStone[] = [];
+            testPhysicsManager.init(dummyCurlingStones);
+
             let position1 = new THREE.Vector3(0, 0, 21.37);
             let position2 = new THREE.Vector3(0, 0, 9.97);
             let position3 = new THREE.Vector3(0, 0, 19.37);
@@ -275,7 +280,8 @@ describe('PhysicsManager', () => {
         });
 
         it('should return undefined because there are no stone in game.', done => {
-            testPhysicsManager.clearStones();
+            let dummyCurlingStones: CurlingStone[] = [];
+            testPhysicsManager.init(dummyCurlingStones);
 
             // Sort stones relative to a center that is closer to the second stone.
             testPhysicsManager.sortStonesByDistance(new THREE.Vector3(0, 0, 0));

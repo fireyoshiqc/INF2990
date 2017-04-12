@@ -60,7 +60,7 @@ export class GameController {
     private aiDifficulty = AIDifficulty.Undefined;
     private scoreDialogRef: MdDialogRef<HighscoresPopupComponent>;
 
-     constructor(public dialog: MdDialog, private highscoresService: HighscoresService) { }
+    constructor(public dialog: MdDialog, private highscoresService: HighscoresService) { }
 
     public init(container?: HTMLElement): void {
         this.gameEngine = GameEngine.getInstance();
@@ -131,16 +131,49 @@ export class GameController {
         this.aiDifficulty = (aiDifficulty === "Ordi normal") ? AIDifficulty.Normal : AIDifficulty.Hard;
     }
 
-    public resetAIDifficulty(): void {
-        this.aiDifficulty = AIDifficulty.Undefined;
+    public resetGame(): void {
+        if (this.gameData.state === EndGameState.getInstance()) {
+            EndGameState.getInstance().hideConfetti();
+        }
+        this.resetGameData();
+        this.resetHUDData();
+        this.gameEngine.removeAllStones();
+        this.gameData.state = StartGameState.getInstance().enterState();
+        this.startGame();
     }
 
     public getGameData(): IGameData {
         return this.gameData;
     }
 
+    public resetGameData(): void {
+        this.gameData = {
+            state: null,
+            playerScore: 0,
+            aiScore: 0,
+            isPlayerTurn: false,
+            spinClockwise: false,
+            curveAngle: 0,
+            forceValue: 0,
+            roundsCompleted: [false, false, false]
+        };
+    }
+
     public getHUDData(): IHUDData {
         return this.hudData;
+    }
+
+    public resetHUDData(): void {
+        this.hudData = {
+            playerStones: new Array<number>(this.MAX_THROWS / 2),
+            aiStones: new Array<number>(this.MAX_THROWS / 2),
+            forceVisible: false,
+            sliderDisabled: false,
+            cameraDisabled: false,
+            nextThrowMessageVisible: false,
+            nextRoundMessageVisible: false,
+            congratulationsMessageVisible: false
+        };
     }
 
     public onResize(event: any): void {
@@ -194,7 +227,7 @@ export class GameController {
         return this.highscoresService.addHighscore(this.playerName, this.gameData, this.aiDifficulty);
     }
 
-     public showHighscores(): void {
+    public showHighscores(): void {
         this.highscoresService.getHighscores()
             .then((scores) => {
                 if (scores !== undefined) {

@@ -127,6 +127,25 @@ export class GameEngine {
         this.scene.remove(obj);
     }
 
+    public removeAllStones(): void {
+        this.curlingStones.forEach((stone) => {
+            // Stop all sounds
+            const slidingSound = <THREE.PositionalAudio>(stone.getObjectByName("slidingSound"));
+            if (slidingSound !== undefined && slidingSound.isPlaying) {
+                slidingSound.stop();
+            }
+            const collisionSound = <THREE.PositionalAudio>(stone.getObjectByName("collisionSound"));
+            if (collisionSound !== undefined && collisionSound.isPlaying) {
+                collisionSound.stop();
+            }
+            // Remove stone from scene
+            this.removeFromScene(stone);
+        });
+
+        // Empty the curlingStone array
+        this.curlingStones.splice(0);
+    }
+
     // Called when the browser window gets resized
     public onResize(event: any): void {
         this.renderer.setSize(event.target.innerWidth, event.target.innerHeight);
