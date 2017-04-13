@@ -45,6 +45,7 @@ export class GameComponent implements OnInit {
         // Redirect user to startPage if page was refreshed (see onBeforeUnload() function)
         if (localStorage.getItem("pageRefresh") === "true") {
             location.replace('/startPage');
+            this.router.navigate(['/startPage']);
         }
     }
 
