@@ -104,7 +104,7 @@ export class EndGameState implements IGameState {
                     stone.position.y = 0;
                 }
             });
-            
+
             if (stonesToRemove.length !== 0) {
                 stonesToRemove.reverse();
                 // Remove the stones that landed and cant jump again

@@ -261,8 +261,7 @@ export class CurlingStone extends THREE.Group {
     }
 
     public switchSpinOrientation(): SpinOrientation {
-        this.spinOrientation = (this.spinOrientation === SpinOrientation.CLOCKWISE) ?
-                                SpinOrientation.COUNTER_CLOCKWISE : SpinOrientation.CLOCKWISE;
+        this.spinOrientation *= -1;
         return this.spinOrientation;
     }
 

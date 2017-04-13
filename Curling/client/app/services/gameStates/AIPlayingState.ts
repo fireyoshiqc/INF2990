@@ -150,7 +150,7 @@ export class AIPlayingState implements IGameState {
                 .getVelocityToPosition(finalAimingPosition.clone(), finalVelocityZ, stone.getSpinOrientation());
 
             // Finds if there is a stone in the way and change the initialVelocity accordingly
-            initialVelocity = this.checkAndHandlePlayerObstacleStone(stone, initialVelocity,
+            initialVelocity = this.checkAndHandleObstacleStone(stone, initialVelocity,
                 playerStone.position.clone());
 
             xVelocity = initialVelocity.x;
@@ -188,9 +188,9 @@ export class AIPlayingState implements IGameState {
             let tries = 0;
             let distanceToCenter = CurlingStone.MAX_DIAMETER;
             while (!velocityFound) {
-                console.log("Calculating....");
                 if (++tries >= maxTries) {
                     distanceToCenter += CurlingStone.MAX_RADIUS;
+                    tries = 0;
                 }
                 // Get a random angle between 145 and 405 degrees to shoot around in the red ring
                 let angle = THREE.Math.degToRad(getRandomFloat(0, 360));
@@ -198,20 +198,16 @@ export class AIPlayingState implements IGameState {
                     0, Math.sin(angle) * distanceToCenter + ringsCenterPosition.z);
                 if (this.physicsManager.findStoneAtPosition(finalAimingPosition) === undefined) {
                     velocityFound = true;
-                    tries = 0; // Clear the number of tries
-                    console.log("Final Aiming Position for Perfect Shot ", finalAimingPosition);
-                    // Set the spin orientation accordingly
-                    if (finalAimingPosition.x < 0) {
-                        aiStone.setSpinOrientation(SpinOrientation.CLOCKWISE);
-                    } else {
-                        aiStone.setSpinOrientation(SpinOrientation.COUNTER_CLOCKWISE);
-                    }
-
-                    initialVelocity = this.physicsManager.getVelocityToPosition(
-                                        finalAimingPosition, 0, aiStone.getSpinOrientation());
                 }
             }
+            // Set the spin orientation accordingly
+            aiStone.setSpinOrientation(Math.sign(finalAimingPosition.x));
+            initialVelocity = this.physicsManager.getVelocityToPosition(
+                finalAimingPosition, 0, aiStone.getSpinOrientation());
         }
+
+        // Check if there is any obstacle and handle it
+        initialVelocity = this.checkAndHandleObstacleStone(aiStone, initialVelocity, finalAimingPosition);
         return initialVelocity.clone();
     }
 
@@ -229,7 +225,7 @@ export class AIPlayingState implements IGameState {
         return finalAimingPosition;
     }
 
-    private checkAndHandlePlayerObstacleStone(aiStone: CurlingStone, initialVelocity: THREE.Vector3,
+    private checkAndHandleObstacleStone(aiStone: CurlingStone, initialVelocity: THREE.Vector3,
         playerStonePosition: THREE.Vector3): THREE.Vector3 {
         // Finds if there is a stone in the way
         let tmpStone = new CurlingStone(Team.Player, initialVelocity.clone(),
@@ -239,21 +235,36 @@ export class AIPlayingState implements IGameState {
         let obstacleStone = this.physicsManager.findObstacleStone(tmpStone, finalAimingPosition);
         // If there is a stone in the way
         if (obstacleStone !== undefined) {
-            // If there is a playerStone is in the way, aim that playerStone
-            if (obstacleStone.getTeam() === Team.Player) {
+            // Try to change the spin to avoid the obstacle
+            initialVelocity = this.physicsManager
+                .getVelocityToPosition(finalAimingPosition, 1.8, aiStone.switchSpinOrientation());
 
-                finalAimingPosition = this.getSpinAndFinalPosition(obstacleStone.position.clone(), aiStone);
+            // Check if there is still an obstacle
+            obstacleStone = this.physicsManager.findObstacleStone(tmpStone, finalAimingPosition);
 
-                // Change the trajectory to aim the obstacle stone
-                initialVelocity = this.physicsManager
-                    .getVelocityToPosition(finalAimingPosition, 1.3, aiStone.getSpinOrientation());
+            if (obstacleStone !== undefined) {
+                // If there is a playerStone is in the way, aim that playerStone
+                if (obstacleStone.getTeam() === Team.Player) {
+                    finalAimingPosition = this.getSpinAndFinalPosition(obstacleStone.position.clone(), aiStone);
+                    // Change the trajectory to aim the obstacle stone
+                    initialVelocity = this.physicsManager
+                        .getVelocityToPosition(finalAimingPosition, 1.3, aiStone.getSpinOrientation());
 
-            } else {
-                // There is an AIStone in the way.
-                // Switch the spinOrientation to try to avoid hitting it
-                finalAimingPosition.x += CurlingStone.MAX_DIAMETER;
-                initialVelocity = this.physicsManager
-                    .getVelocityToPosition(finalAimingPosition, 1.8, aiStone.getSpinOrientation());
+                } else {
+                    // There is an AIStone in the way.
+                    let ringsCenter = new THREE.Vector3(0, 0, SceneBuilder.getInstance().getRinkData().rings.offset);
+                    let redRingRadius = SceneBuilder.getInstance().getRinkData().rings.inner;
+                    // If the aiStone aims the center, set the finalVelocityZ to 0 to not affect the stones in the ring
+                    if (finalAimingPosition.distanceTo(ringsCenter) < redRingRadius) {
+                        initialVelocity = this.physicsManager
+                            .getVelocityToPosition(finalAimingPosition, 0, aiStone.getSpinOrientation());
+                    } else {
+                        // Set final position in z to 1.8 to hit the obstacle aiStone so it hits the aimingPlayerStone
+                        initialVelocity = this.physicsManager
+                            .getVelocityToPosition(finalAimingPosition, 1.8, aiStone.getSpinOrientation());
+                    }
+
+                }
             }
         }
         return initialVelocity;
