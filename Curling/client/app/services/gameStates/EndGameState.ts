@@ -97,11 +97,14 @@ export class EndGameState implements IGameState {
     public enterState(): EndGameState {
         let self = this;
         self.confettiSystem = [];
+
         // Detect winning player
         self.setWinningTeam();
+
         if (this.winningTeam !== undefined) {
             this.gameController.getHUDData().congratulationsMessageVisible = true;
             GameEngine.getInstance().removeHighlightOnAllStones();
+
             // Add highscore if the player wins
             if (self.winningTeam === Team.Player) {
                 self.gameController.addHighscore()

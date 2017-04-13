@@ -332,6 +332,13 @@ button.mat-raised-button {
     bottom: 15%;
 }
 
+#congrats {
+    position: absolute;
+    left: 15%;
+    right: 15%;
+    bottom: 15%;
+}
+
 #endGame {
     position: absolute;
     bottom: 15%;
