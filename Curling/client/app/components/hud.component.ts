@@ -32,6 +32,7 @@ export class HUDComponent {
     @Input() private nextThrowMessageVisible: boolean;
     @Input() private nextRoundMessageVisible: boolean;
     @Input() private congratulationsMessageVisible: boolean;
+    @Input() private tieMessageVisible: boolean;
     @Input() private showEndGameMessage: boolean;
 
     @Output()
@@ -53,6 +54,7 @@ export class HUDComponent {
         this.nextThrowMessageVisible = false;
         this.nextRoundMessageVisible = false;
         this.congratulationsMessageVisible = false;
+        this.tieMessageVisible = false;
         this.showEndGameMessage = false;
     }
 

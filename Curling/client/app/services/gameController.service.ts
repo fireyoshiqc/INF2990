@@ -26,6 +26,30 @@ export enum AIDifficulty {
     Hard
 }
 
+export interface IGameData {
+    state: IGameState;
+    playerScore: number;
+    aiScore: number;
+    isPlayerTurn: boolean;
+    spinClockwise: boolean;
+    curveAngle: number;
+    forceValue: number;
+    roundsCompleted: boolean[];
+}
+
+export interface IHUDData {
+    playerStones: Array<number>;
+    aiStones: Array<number>;
+    forceVisible: boolean;
+    sliderDisabled: boolean;
+    cameraDisabled: boolean;
+    nextThrowMessageVisible: boolean;
+    nextRoundMessageVisible: boolean;
+    congratulationsMessageVisible: boolean;
+    tieMessageVisible: boolean;
+    showEndgameMessage: boolean;
+}
+
 @Injectable()
 export class GameController {
     private readonly HOST_NAME = "http://" + window.location.hostname;
@@ -41,7 +65,9 @@ export class GameController {
         cameraDisabled: false,
         nextThrowMessageVisible: false,
         nextRoundMessageVisible: false,
-        congratulationsMessageVisible: false
+        congratulationsMessageVisible: false,
+        tieMessageVisible: false,
+        showEndgameMessage: false
     };
 
     private gameData: IGameData = {
@@ -172,7 +198,9 @@ export class GameController {
             cameraDisabled: false,
             nextThrowMessageVisible: false,
             nextRoundMessageVisible: false,
-            congratulationsMessageVisible: false
+            congratulationsMessageVisible: false,
+            tieMessageVisible: false,
+            showEndgameMessage: false
         };
     }
 
@@ -271,26 +299,4 @@ export class GameController {
 
         return -1;
     }
-}
-
-export interface IGameData {
-    state: IGameState;
-    playerScore: number;
-    aiScore: number;
-    isPlayerTurn: boolean;
-    spinClockwise: boolean;
-    curveAngle: number;
-    forceValue: number;
-    roundsCompleted: boolean[];
-}
-
-export interface IHUDData {
-    playerStones: Array<number>;
-    aiStones: Array<number>;
-    forceVisible: boolean;
-    sliderDisabled: boolean;
-    cameraDisabled: boolean;
-    nextThrowMessageVisible: boolean;
-    nextRoundMessageVisible: boolean;
-    congratulationsMessageVisible: boolean;
 }

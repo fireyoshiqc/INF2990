@@ -15,11 +15,12 @@ import { CurlingStone, Team } from '../../entities/curlingStone';
 export class EndGameState implements IGameState {
     private static instance: EndGameState = new EndGameState();
     private readonly GRAVITY_N_PER_KG = 9.81;
-    private readonly STONE_JUMP_SPEED = 4;
+    private readonly MIN_STONE_JUMP_SPEED = 3;
+    private readonly MAX_STONE_JUMP_SPEED = 4;
     private readonly STONE_SPIN_SPEED = 2;
     private animateStones = true;
     private animateConfetti = true;
-    private readonly ANIMATION_LENGTH = 5000;
+    private readonly ANIMATION_LENGTH = 5300;
     private stopStonesOnGround = false;
     private readonly TOTAL_CONFETTI_COUNT = 1000;
     private readonly colorArray = [0x00FFFF, 0xFF00FF, 0xFFFF00, 0x9400D3, 0xFFA500];
@@ -62,28 +63,40 @@ export class EndGameState implements IGameState {
 
     public update(delta: number): void {
         if (this.animateConfetti) {
+            let allConfettiOnGround = true;
             this.confettiSystem.forEach((system) => {
                 (<THREE.Geometry>system.geometry).vertices.forEach((confetti, index) => {
                     if (confetti.y > 0.002) {
-                        confetti.y -= delta * (1 + (index % 3 / 4));
+                        confetti.y -= delta * (1.1 + (index % 3 / 4));
+                        allConfettiOnGround = false;
                     }
                 });
                 (<THREE.Geometry>system.geometry).verticesNeedUpdate = true;
             });
+            // All confettis are on the ground, stop animation (update)
+            if (allConfettiOnGround) {
+                this.animateConfetti = false;
+            }
         }
 
         if (this.animateStones) {
-            this.winningStones.forEach((stone) => {
+            let stonesToRemove: Array<number> = [];
+            this.winningStones.forEach((stone, index) => {
                 if (stone.isOnGround()) {
+                    // Stones can still jump again
                     if (!this.stopStonesOnGround) {
-                        stone.getVelocity().y = this.STONE_JUMP_SPEED;
+                        // Random jump speed
+                        stone.getVelocity().y = Math.random() * (this.MAX_STONE_JUMP_SPEED - this.MIN_STONE_JUMP_SPEED)
+                            + this.MIN_STONE_JUMP_SPEED;
+                    } else {
+                        // Animation over and stone landed, remove from array so it doesnt update
+                        stonesToRemove.push(index);
                     }
                 } else {
                     stone.getVelocity().y -= this.GRAVITY_N_PER_KG * delta;
                 }
 
-                // TODO : Fix stopping stone rotation in animation
-                //stone.rotateY(this.STONE_SPIN_SPEED * delta);
+                stone.rotateY(this.STONE_SPIN_SPEED * delta);
 
                 stone.update(delta);
 
@@ -91,6 +104,19 @@ export class EndGameState implements IGameState {
                     stone.position.y = 0;
                 }
             });
+            
+            if (stonesToRemove.length !== 0) {
+                stonesToRemove.reverse();
+                // Remove the stones that landed and cant jump again
+                stonesToRemove.forEach((index) => {
+                    console.log(index);
+                    this.winningStones.splice(index, 1);
+                });
+            }
+            // If there are no more stones to update, stop the update
+            if (this.winningStones.length === 0) {
+                this.animateStones = false;
+            }
         }
     }
 
@@ -133,15 +159,16 @@ export class EndGameState implements IGameState {
             self.timer = setTimeout(() => {
                 // End of animation
                 self.gameController.getHUDData().congratulationsMessageVisible = false;
+                self.gameController.getHUDData().tieMessageVisible = false;
                 self.gameController.showHighscores();
-                self.animateConfetti = false;
+                // Make stones not jump again, but let them land
                 self.stopStonesOnGround = true;
             }, self.ANIMATION_LENGTH);
         } else {
-            // Égalité
+            // Tie
             this.animateStones = false;
             this.animateConfetti = false;
-            alert("égalité");
+            self.gameController.getHUDData().tieMessageVisible = true;
         }
 
         return this;

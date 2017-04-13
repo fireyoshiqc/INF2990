@@ -88,6 +88,22 @@
                         </div>
                     </div>
 
+                    <!-- Tie message -->
+                    <div *ngIf="tieMessageVisible === true">
+                        <!-- AI normal -->
+                        <div id="tie" *ngIf="aiDifficulty === 1">
+                            <md-card class="defaultCursor lightTag" id="waitingForPlayer">
+                                <md-card-content><strong>Partie nulle!</strong></md-card-content>
+                            </md-card>
+                        </div>
+                        <!-- AI hard -->
+                        <div id="tie" *ngIf="aiDifficulty === 2">
+                            <md-card class="defaultCursor lightTag" id="waitingForPlayer">
+                                <md-card-content><strong>Partie nulle! Si près mais si loin...</strong></md-card-content>
+                            </md-card>
+                        </div>
+                    </div>
+
                     <!-- End game message -->
                     <div *ngIf="showEndGameMessage === true">
                         <div id="endGame">

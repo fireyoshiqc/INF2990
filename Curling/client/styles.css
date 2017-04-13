@@ -332,7 +332,7 @@ button.mat-raised-button {
     bottom: 15%;
 }
 
-#congrats {
+#congrats, #tie{
     position: absolute;
     left: 15%;
     right: 15%;
