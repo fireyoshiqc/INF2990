@@ -23,6 +23,7 @@ export class CurlingStone extends THREE.Group {
     private static aiStoneColor = "#FF6060";
 
     public static readonly MAX_RADIUS = 0.145; // External radius of the stone
+    public static readonly MAX_DIAMETER = 2 * CurlingStone.MAX_RADIUS; // External diameter of the stone
     private readonly RADIUS = 0.145 / 2; // Radius of stone (torus)
     private readonly HEIGHT = 0.290 / 2; // Height of stone (base).
     private readonly SFACES = 25; // Amount of faces for stone rendering.
@@ -257,6 +258,12 @@ export class CurlingStone extends THREE.Group {
 
     public setRandomSpinOrientation(): void {
         this.spinOrientation = (Math.random() > 0.5) ? SpinOrientation.CLOCKWISE : SpinOrientation.COUNTER_CLOCKWISE;
+    }
+
+    public switchSpinOrientation(): SpinOrientation {
+        this.spinOrientation = (this.spinOrientation === SpinOrientation.CLOCKWISE) ?
+                                SpinOrientation.COUNTER_CLOCKWISE : SpinOrientation.CLOCKWISE;
+        return this.spinOrientation;
     }
 
     public isOnGround(): boolean {

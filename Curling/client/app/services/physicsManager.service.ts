@@ -7,7 +7,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import { CurlingStone, Team } from '../entities/curlingStone';
+import { CurlingStone, Team, SpinOrientation } from '../entities/curlingStone';
 import { SceneBuilder } from './sceneBuilder.service';
 import { GameEngine } from './gameEngine.service';
 import { FastIce } from '../entities/fastIce';
@@ -29,8 +29,7 @@ export class PhysicsManager {
     // Constants for velocity estimation used for AI throws
     private readonly ACCELERATION_NORMAL_ICE = this.FRICTION_MAGNITUDE * this.MULTIPLIER_NORMAL_ICE;
     private readonly ESTIMATED_TIME_DELTA = 1 / 30;
-    private readonly FINAL_POSITION_ERROR = 0.1;
-    private readonly X_VELOCITY_DELTA = 0.01;
+    private readonly X_VELOCITY_DELTA = 0.001;
 
     private curlingStones: CurlingStone[] = [];
     private fastIceSpots: FastIce[] = [];
@@ -284,21 +283,25 @@ export class PhysicsManager {
     public getTeamStoneWithinDistance(team: Team, distance: Number): CurlingStone {
         let ringsCenterPosition = new THREE.Vector3(0, 0, SceneBuilder.getInstance().getRinkData().rings.offset);
         this.sortStonesByDistance();
+        let redRingBackPositionZ = SceneBuilder.getInstance().getRinkData().rings.offset +
+            SceneBuilder.getInstance().getRinkData().rings.inner;
         // PhysicsManager contains stones in game sorted by distance to the center of the rings
-        return this.curlingStones.find(stone =>
-            (stone.getTeam() === team && stone.position.distanceTo(ringsCenterPosition) <= distance));
+        return this.curlingStones.find(stone => (
+            stone.getTeam() === team &&
+            stone.position.z < redRingBackPositionZ &&
+            stone.position.distanceTo(ringsCenterPosition) <= distance
+        ));
     }
 
-    public findStoneAtPosition(curlingStone: CurlingStone): CurlingStone {
+    public findStoneAtPosition(position: THREE.Vector3): CurlingStone {
         for (let index = 0; index < this.curlingStones.length; index++) {
             // Only checks for stones that are after the hogline
             let stone = this.curlingStones[index];
             if (stone.position.z > SceneBuilder.getInstance().getRinkData().lines.hog &&
-                stone.position.distanceTo(curlingStone.position) <= 2 * CurlingStone.MAX_RADIUS) {
+                stone.position.distanceTo(position) <= CurlingStone.MAX_DIAMETER) {
                 return stone;
             }
         }
-
         return undefined;
     }
 
@@ -307,7 +310,7 @@ export class PhysicsManager {
 
         while (dummyStone.position.z < finalPosition.z - 3 * CurlingStone.MAX_RADIUS) {
             this.calculateCurlingStonePosition(dummyStone, this.MULTIPLIER_NORMAL_ICE, this.ESTIMATED_TIME_DELTA);
-            let obstacleStone = this.findStoneAtPosition(dummyStone);
+            let obstacleStone = this.findStoneAtPosition(dummyStone.position.clone());
 
             if (obstacleStone !== undefined) {
                 return obstacleStone;
@@ -317,7 +320,8 @@ export class PhysicsManager {
     }
 
     // Finds the initial velocity of an AI curling stone in order to get to a specific position with a z velocity
-    public getVelocityToPosition(finalPosition: THREE.Vector3, finalVelocityZ: number, spin: any): THREE.Vector3 {
+    public getVelocityToPosition(finalPosition: THREE.Vector3, finalVelocityZ: number,
+                                                               spin: SpinOrientation): THREE.Vector3 {
         let tmpStone = new CurlingStone(Team.AI, new THREE.Vector3(0, 0, 0),
             new THREE.Vector3(0, 0, SceneBuilder.getInstance().getRinkData().lines.start));
         tmpStone.setSpinOrientation(spin);
@@ -346,7 +350,10 @@ export class PhysicsManager {
     private getXVelocityToPosition(finalPosition: THREE.Vector3, finalVelocityZ: number, stone: CurlingStone): number {
         // Estimate the time required for the curling stone to get to the z position
         // Formula : time = |(velocityF - velocity I) / acceleration|
+        let finalPositionError = CurlingStone.MAX_RADIUS;
         let estimatedInitialVelocity = stone.getVelocity().clone();
+        // Keep a copy of the initial velocity for reseting the stone's velocity when enters in a infinite loop
+        let estimatedInitialVelocityClone = estimatedInitialVelocity.clone();
         const estimatedTime = Math.abs((finalVelocityZ - estimatedInitialVelocity.z) / this.ACCELERATION_NORMAL_ICE);
 
         // Iteration process that finds the estimatedVelocity in X
@@ -358,7 +365,7 @@ export class PhysicsManager {
             }
 
             // Return estimatedVelocity if the stone satisfies the finalPosition
-            if (finalPosition.distanceTo(stone.position) < this.FINAL_POSITION_ERROR) {
+            if (finalPosition.distanceTo(stone.position) < finalPositionError) {
                 velocityFound = true;
                 return estimatedInitialVelocity.x;
             }
@@ -369,6 +376,13 @@ export class PhysicsManager {
             // Set estimatedVelocity for next iteration (it depends on stone spin)
             estimatedInitialVelocity.x += -stone.getSpinOrientation() * this.X_VELOCITY_DELTA;
             stone.setVelocity(estimatedInitialVelocity.clone());
+
+            // If the stone's velocity in x is absurd, grow the finalPositionError and reset the calculation parameters
+            if (Math.abs(stone.getVelocity().x) > 1 && finalPositionError < CurlingStone.MAX_DIAMETER) {
+                finalPositionError += CurlingStone.MAX_RADIUS;
+                estimatedInitialVelocity = estimatedInitialVelocityClone.clone();
+                stone.setVelocity(estimatedInitialVelocity.clone());
+            }
         }
     }
 
