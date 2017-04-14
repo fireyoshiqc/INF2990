@@ -270,7 +270,7 @@ export class GameController {
                     }
 
                     // Pop the popup!
-                    this.showHighscoresDialog(scores, newScoreIndex);
+                    this.showHighscoresDialog(scores, newScoreIndex, this.gameData.roundsCompleted[2]);
                 }
             })
             .catch((error) => {
@@ -278,13 +278,15 @@ export class GameController {
             });
     }
 
-    private showHighscoresDialog(highscores: any, newScoreIndex: number): void {
+    private showHighscoresDialog(highscores: any, newScoreIndex: number, isEndGame: boolean): void {
         setTimeout(() => {
             this.scoreDialogRef = this.dialog.open(HighscoresPopupComponent);
             (this.scoreDialogRef.componentInstance.dialogRef.componentInstance as HighscoresComponent)
                 .newScore = { difficulty: this.aiDifficulty, index: newScoreIndex };
             (this.scoreDialogRef.componentInstance.dialogRef.componentInstance as HighscoresComponent)
                 .highscores = { easy: highscores.easy, hard: highscores.hard };
+            (this.scoreDialogRef.componentInstance.dialogRef.componentInstance as HighscoresComponent)
+                .isEndGame = isEndGame;
         });
     }
 

@@ -202,18 +202,5 @@ export class EndThrowState implements IGameState {
         }
 
         this.gameController.getGameData().state = this.nextState();
-
-        /**
-         * Go to end game´
-         * const gameData = this.gameController.getGameData();
-         * if (this.stonesThrown === this.gameController.getMaxThrows() && gameData.roundsCompleted[1]) {
-         * this.endGame();
-         * } else if (this.stonesThrown === this.gameController.getMaxThrows()) { // Go to next round
-         * this.updateScore();
-         * this.showNextRoundMessage = true;
-         * } else if (this.stonesThrown > 0) { // Go to next throw
-         * this.showNextThrowMessage = true;
-         * }
-         */
     }
 }
