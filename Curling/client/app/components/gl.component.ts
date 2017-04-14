@@ -1,7 +1,8 @@
 
 import { Component, HostListener, AfterViewInit } from '@angular/core';
 import { GameController } from '../services/gameController.service';
-import { MdDialog } from '@angular/material';
+import { ResetGamePopupComponent } from './resetGame.component';
+import { MdDialog, MdDialogRef } from '@angular/material';
 
 @Component({
     selector: 'my-gl',
@@ -11,6 +12,7 @@ import { MdDialog } from '@angular/material';
 
 export class GlComponent implements AfterViewInit {
     private isDarkTheme = false;
+    private resetDialogRef: MdDialogRef<ResetGamePopupComponent>;
 
     constructor(public dialog: MdDialog, private gameController: GameController) { }
 
@@ -74,7 +76,15 @@ export class GlComponent implements AfterViewInit {
     }
 
     public resetGame(): void {
-        this.gameController.resetGame();
+        // User confirmation popup
+        this.resetDialogRef = this.dialog.open(ResetGamePopupComponent);
+
+        // User confirmation response
+        this.resetDialogRef.afterClosed().subscribe(confirmQuit => {
+            if (confirmQuit) {
+                this.gameController.resetGame();
+            }
+        });
     }
 
     public showHighscores(): void {

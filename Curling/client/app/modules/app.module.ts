@@ -11,6 +11,7 @@ import { HUDComponent } from '../components/hud.component';
 import { GameController } from '../services/gameController.service';
 import { NameSelectorComponent } from '../components/nameSelector.component';
 import { HighscoresComponent, HighscoresPopupComponent } from '../components/highscores.component';
+import { ResetGameComponent, ResetGamePopupComponent } from '../components/resetGame.component';
 import { HighscoresService } from '../services/highscores.service';
 
 import { ModifierDirective } from '../directives/modifier.directive';
@@ -23,8 +24,9 @@ import 'hammerjs';
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, AppRoutingModule,
         MaterialModule, FlexLayoutModule],
     declarations: [AppComponent, HUDComponent, GlComponent, ModifierDirective,
-        PlayerNameComponent, NameSelectorComponent, NameDialogComponent, HighscoresComponent, HighscoresPopupComponent],
-    entryComponents: [NameDialogComponent, HighscoresPopupComponent],
+        PlayerNameComponent, NameSelectorComponent, NameDialogComponent,
+        HighscoresComponent, HighscoresPopupComponent, ResetGameComponent, ResetGamePopupComponent],
+    entryComponents: [NameDialogComponent, HighscoresPopupComponent, ResetGamePopupComponent],
     providers: [GameController, HighscoresService],
     bootstrap: [AppComponent]
 })
