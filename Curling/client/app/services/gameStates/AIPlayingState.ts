@@ -209,7 +209,7 @@ export class AIPlayingState implements IGameState {
     }
 
     // Set the spin of the aiStone and the finalAimingPosition according to the aimingStonePosition
-    private getSpinAndFinalPosition(aimingStonePosition: THREE.Vector3, aiStone: CurlingStone): THREE.Vector3 {
+    public getSpinAndFinalPosition(aimingStonePosition: THREE.Vector3, aiStone: CurlingStone): THREE.Vector3 {
         let finalAimingPosition = aimingStonePosition.clone();
 
         if (aimingStonePosition.x > 0) {
