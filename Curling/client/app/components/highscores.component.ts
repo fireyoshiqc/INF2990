@@ -27,6 +27,10 @@ export class HighscoresComponent {
 
 export class HighscoresPopupComponent {
     constructor( @Optional() public dialogRef: MdDialogRef<any>) { }
+
+    public onButtonClick(id: number): void {
+        this.dialogRef.close({ buttonId: id });
+    }
 }
 
 interface IHighscores {

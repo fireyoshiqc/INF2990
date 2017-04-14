@@ -18,6 +18,7 @@ import { AIPlayingState } from './gameStates/AIPlayingState';
 import { StartGameState } from './gameStates/StartGameState';
 import { HighscoresService } from '../services/highscores.service';
 import { HighscoresPopupComponent, HighscoresComponent } from '../components/highscores.component';
+import { NameDialogComponent } from '../components/nameDialog.component';
 import { MdDialog, MdDialogRef } from '@angular/material';
 
 export enum AIDifficulty {
@@ -85,6 +86,7 @@ export class GameController {
     private playerName = "";
     private aiDifficulty = AIDifficulty.Undefined;
     private scoreDialogRef: MdDialogRef<HighscoresPopupComponent>;
+    private dialogRef: MdDialogRef<NameDialogComponent>;
 
     constructor(public dialog: MdDialog, private highscoresService: HighscoresService) { }
 
@@ -281,12 +283,49 @@ export class GameController {
     private showHighscoresDialog(highscores: any, newScoreIndex: number, isEndGame: boolean): void {
         setTimeout(() => {
             this.scoreDialogRef = this.dialog.open(HighscoresPopupComponent);
+            this.scoreDialogRef.afterClosed().subscribe(result => {
+                if (result !== undefined) {
+                    switch (result.buttonId) {
+                        case 0:
+                            // Recommencer partie
+                            this.resetGame();
+                            break;
+                        case 1:
+                            // Changer de difficulté
+                            this.showNameDialog();
+                            break;
+                        default:
+                    }
+                }
+            });
             (this.scoreDialogRef.componentInstance.dialogRef.componentInstance as HighscoresComponent)
                 .newScore = { difficulty: this.aiDifficulty, index: newScoreIndex };
             (this.scoreDialogRef.componentInstance.dialogRef.componentInstance as HighscoresComponent)
                 .highscores = { easy: highscores.easy, hard: highscores.hard };
             (this.scoreDialogRef.componentInstance.dialogRef.componentInstance as HighscoresComponent)
                 .isEndGame = isEndGame;
+        });
+    }
+
+    public showNameDialog(): void {
+        // Necessary to fix prodmode exclusive error (data binding changed on init)
+        setTimeout(() => {
+            this.dialogRef = this.dialog.open(NameDialogComponent, {
+                disableClose: true
+            });
+            this.dialogRef.componentInstance.setPlayerName(this.playerName);
+            this.dialogRef.componentInstance.setNameSelectionDisabled(this.gameData.roundsCompleted[2]);
+            this.dialogRef.afterClosed().subscribe(result => {
+                this.setPlayerName(result.playerName);
+                this.setAIDifficulty(result.aiDifficulty);
+
+                // Reset game if this is not the first one
+                if (this.getGameData().roundsCompleted[2]) {
+                    this.resetGame();
+                } else {
+                    this.startGame();
+                }
+            });
         });
     }
 

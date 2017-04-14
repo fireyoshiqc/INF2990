@@ -109,7 +109,6 @@ export class EndGameState implements IGameState {
                 stonesToRemove.reverse();
                 // Remove the stones that landed and cant jump again
                 stonesToRemove.forEach((index) => {
-                    console.log(index);
                     this.winningStones.splice(index, 1);
                 });
             }
@@ -156,20 +155,21 @@ export class EndGameState implements IGameState {
                 this.animateStones = false;
             }
 
-            self.timer = setTimeout(() => {
-                // End of animation
-                self.gameController.getHUDData().congratulationsMessageVisible = false;
-                self.gameController.getHUDData().tieMessageVisible = false;
-                self.gameController.showHighscores();
-                // Make stones not jump again, but let them land
-                self.stopStonesOnGround = true;
-            }, self.ANIMATION_LENGTH);
         } else {
             // Tie
             this.animateStones = false;
             this.animateConfetti = false;
             self.gameController.getHUDData().tieMessageVisible = true;
         }
+
+        self.timer = setTimeout(() => {
+            // End of animation
+            self.gameController.getHUDData().congratulationsMessageVisible = false;
+            self.gameController.getHUDData().tieMessageVisible = false;
+            self.gameController.showHighscores();
+            // Make stones not jump again, but let them land
+            self.stopStonesOnGround = true;
+        }, self.ANIMATION_LENGTH);
 
         return this;
     }

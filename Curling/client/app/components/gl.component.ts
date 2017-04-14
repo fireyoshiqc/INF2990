@@ -1,7 +1,7 @@
 
-import { Component, HostListener, Optional, AfterViewInit } from '@angular/core';
+import { Component, HostListener, AfterViewInit } from '@angular/core';
 import { GameController } from '../services/gameController.service';
-import { MdDialog, MdDialogRef } from '@angular/material';
+import { MdDialog } from '@angular/material';
 
 @Component({
     selector: 'my-gl',
@@ -11,29 +11,11 @@ import { MdDialog, MdDialogRef } from '@angular/material';
 
 export class GlComponent implements AfterViewInit {
     private isDarkTheme = false;
-    private dialogRef: MdDialogRef<NameDialogComponent>;
 
     constructor(public dialog: MdDialog, private gameController: GameController) { }
 
     public ngAfterViewInit(): void {
-        // Necessary to fix prodmode exclusive error (data binding changed on init)
-        setTimeout(() => {
-            this.dialogRef = this.dialog.open(NameDialogComponent, {
-                disableClose: true
-            });
-
-            this.dialogRef.afterClosed().subscribe(result => {
-                this.gameController.setPlayerName(result.playerName);
-                this.gameController.setAIDifficulty(result.aiDifficulty);
-
-                // Reset game if this is not the first one
-                if (this.gameController.getGameData().roundsCompleted[2]) {
-                    this.gameController.resetGame();
-                } else {
-                    this.gameController.startGame();
-                }
-            });
-        });
+        this.gameController.showNameDialog();
     }
 
     public getTheme(): boolean {
@@ -98,12 +80,4 @@ export class GlComponent implements AfterViewInit {
     public showHighscores(): void {
         this.gameController.showHighscores();
     }
-}
-
-@Component({
-    template: `<name-selector-comp></name-selector-comp>`
-})
-
-export class NameDialogComponent {
-    constructor( @Optional() public dialogRef: MdDialogRef<any>) { }
 }
