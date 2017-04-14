@@ -57,13 +57,17 @@ export class Room {
                 player.setHasQuitAfterGameEnd(true);
             } else {
                 // Remove player from list completely
-                this.roomInfo.playerList.splice(indexPlayerList, 1);
+                let removedPlayer = this.roomInfo.playerList.splice(indexPlayerList, 1);
 
-                this.gameMaster.handleQuit(playerName);
-
-                // Remove player from room (contains Player object)
-                let indexPlayers = this.players.findIndex(p => p.getName() === playerName);
-                this.players.splice(indexPlayers, 1);
+                let self = this;
+                this.gameMaster.handleQuit(playerName).then(() => {
+                    // Remove player from room (contains Player object)
+                    let indexPlayers = this.players.findIndex(p => p.getName() === playerName);
+                    this.players.splice(indexPlayers, 1);
+                }).catch(() => {
+                    self.roomInfo.playerList.push(removedPlayer[0]);
+                    console.log("Could not remove player from Scrabble room properly. Game might behave strangely.");
+                });
             }
 
             console.log(playerName + " quit the room " + this.roomInfo.roomID);

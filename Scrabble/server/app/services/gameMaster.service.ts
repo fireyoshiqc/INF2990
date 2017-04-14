@@ -387,17 +387,23 @@ export class GameMaster {
         return scorePromise;
     }
 
-    public handleQuit(playerName: string): void {
-        if (this.gameStarted) {
-            // Skip to the next player only if the player who is trying to quit the game is the active player
-            if (this.activePlayer.getName() === playerName) {
-                this.endTurn();
-            }
+    public handleQuit(playerName: string): Promise<any> {
+        let quitPromise = new Promise<any>((resolve, reject) => {
+            if (this.gameStarted) {
+                // Skip to the next player only if the player who is trying to quit the game is the active player
+                if (this.activePlayer.getName() === playerName) {
+                    this.endTurn();
+                }
 
-            // Return player's letters to the stash
-            let indexPlayers = this.players.findIndex(p => p.getName() === playerName);
-            let lettersToReturn = this.players[indexPlayers].getLettersRack();
-            this.stash.returnLetters(lettersToReturn);
-        }
+                // Return player's letters to the stash
+                let indexPlayers = this.players.findIndex(p => p.getName() === playerName);
+                let lettersToReturn = this.players[indexPlayers].getLettersRack();
+                this.stash.returnLetters(lettersToReturn);
+                resolve();
+            }
+        });
+
+        return quitPromise;
+
     }
 }
