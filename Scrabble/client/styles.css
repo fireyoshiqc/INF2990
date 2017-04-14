@@ -350,6 +350,10 @@ md-radio-button {
     height: 100%;
 }
 
+#rackfiller {
+    visibility: hidden;
+}
+
 .selectedLetter {
     opacity: 0.5;
 }
