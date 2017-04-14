@@ -25,7 +25,13 @@ export class GlComponent implements AfterViewInit {
             this.dialogRef.afterClosed().subscribe(result => {
                 this.gameController.setPlayerName(result.playerName);
                 this.gameController.setAIDifficulty(result.aiDifficulty);
-                this.gameController.startGame();
+
+                // Reset game if this is not the first one
+                if (this.gameController.getGameData().roundsCompleted[2]) {
+                    this.gameController.resetGame();
+                } else {
+                    this.gameController.startGame();
+                }
             });
         });
     }
