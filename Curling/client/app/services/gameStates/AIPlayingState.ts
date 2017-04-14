@@ -143,7 +143,7 @@ export class AIPlayingState implements IGameState {
         let playerStone = this.physicsManager.getTeamStoneWithinDistance(Team.Player, whiteRing);
 
         if (playerStone !== undefined) {
-            // CASE 1 : If there is player's stone within the middle of the white ring, aims for that specific stone
+            // CASE 1 : If there is player's stone within the middle of the white ring, aims that specific stone
             let finalAimingPosition = this.getSpinAndFinalPosition(playerStone.position.clone(), stone);
             let finalVelocityZ = 1;
             let initialVelocity = this.physicsManager
@@ -158,8 +158,6 @@ export class AIPlayingState implements IGameState {
         } else {
             // CASE 2 : There is no player stone in house
             // Perfect shot that aims inside the red ring as closest to center as possbile
-
-            // Shoot in opposite direction of spin
             let initialVelocity = this.getVelocityForPerfectShotNearCenter(stone);
             xVelocity = initialVelocity.x;
             zVelocity = initialVelocity.z;
@@ -176,13 +174,12 @@ export class AIPlayingState implements IGameState {
 
         // If the center is empty, aims the center
         if (this.physicsManager.findStoneAtPosition(ringsCenterPosition) === undefined) {
-            console.log("Perfect shot!");
             aiStone.setRandomSpinOrientation();
             finalAimingPosition = ringsCenterPosition;
             initialVelocity = new THREE.Vector3(-aiStone.getSpinOrientation() * this.X_HOUSE_CENTER_VELOCITY,
                 0, this.Z_RINGS_CENTER_VELOCITY);
         } else {
-            // Find a place and a velocity to shoot near the ring
+            // Find a place and a velocity to shoot near the center
             let velocityFound = false;
             const maxTries = 50;
             let tries = 0;
@@ -233,6 +230,7 @@ export class AIPlayingState implements IGameState {
         tmpStone.setSpinOrientation(aiStone.getSpinOrientation());
         let finalAimingPosition = playerStonePosition;
         let obstacleStone = this.physicsManager.findObstacleStone(tmpStone, finalAimingPosition);
+
         // If there is a stone in the way
         if (obstacleStone !== undefined) {
             // Try to change the spin to avoid the obstacle
@@ -249,11 +247,11 @@ export class AIPlayingState implements IGameState {
                     // Change the trajectory to aim the obstacle stone
                     initialVelocity = this.physicsManager
                         .getVelocityToPosition(finalAimingPosition, 1.3, aiStone.getSpinOrientation());
-
                 } else {
                     // There is an AIStone in the way.
                     let ringsCenter = new THREE.Vector3(0, 0, SceneBuilder.getInstance().getRinkData().rings.offset);
                     let redRingRadius = SceneBuilder.getInstance().getRinkData().rings.inner;
+
                     // If the aiStone aims the center, set the finalVelocityZ to 0 to not affect the stones in the ring
                     if (finalAimingPosition.distanceTo(ringsCenter) < redRingRadius) {
                         initialVelocity = this.physicsManager
@@ -263,7 +261,6 @@ export class AIPlayingState implements IGameState {
                         initialVelocity = this.physicsManager
                             .getVelocityToPosition(finalAimingPosition, 1.8, aiStone.getSpinOrientation());
                     }
-
                 }
             }
         }
