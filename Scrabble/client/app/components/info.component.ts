@@ -84,7 +84,7 @@ export class InfoComponent {
 
     private getWinners(): string {
         // 1- Retrive player(s) with highest score
-        let maxScore = Math.max.apply(Math, this.players.map(player => player.score));
+        let maxScore = this.getHighestScore();
         let winningPlayers = this.players.filter(player => player.score === maxScore);
 
         // 2- Build string with player names (to be displayed)
@@ -95,6 +95,10 @@ export class InfoComponent {
         winningPlayersString = winningPlayersString.substring(0, winningPlayersString.length - 2);
 
         return winningPlayersString;
+    }
+
+    private getHighestScore(): number {
+         return Math.max.apply(Math, this.players.map(player => player.score));
     }
 
     // For tests

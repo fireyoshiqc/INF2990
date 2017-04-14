@@ -34,7 +34,7 @@
             </md-grid-tile>
 
             <md-grid-tile class="info-header">
-                <b>Nombre de lettres sur chevalet</b>
+                <b>Lettres sur chevalet</b>
             </md-grid-tile>
         </md-grid-list>
         <md-grid-list cols="3" rows="1" rowHeight="35px" *ngFor="let player of players">
@@ -45,7 +45,7 @@
                 </div>
             </md-grid-tile>
             <md-grid-tile>
-                <img *ngIf="false" src="../../assets/textures/info-panel/crown.svg"/>
+                <img class="crown-icon" *ngIf="player.score === this.getHighestScore() && player.score !== 0" src="../../assets/textures/info-panel/crown.svg">
                 <div>
                     {{player.score}}
                 </div>
