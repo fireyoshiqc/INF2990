@@ -327,7 +327,7 @@ export class PhysicsManager {
         tmpStone.setSpinOrientation(spin);
 
         // Calculate the initial z velocity to get to the z position
-        let initialVelocityZ = this.getZVelocityToPosition(finalPosition, finalVelocityZ, tmpStone);
+        let initialVelocityZ = this.getZVelocityToPosition(finalPosition, finalVelocityZ);
         tmpStone.setVelocity(new THREE.Vector3(0, 0, initialVelocityZ));
 
         // Calculate the initial x velocity to get to the position
@@ -337,7 +337,7 @@ export class PhysicsManager {
         return tmpStone.getVelocity().clone();
     }
 
-    private getZVelocityToPosition(finalPosition: THREE.Vector3, finalVelocityZ: number, stone: CurlingStone): number {
+    private getZVelocityToPosition(finalPosition: THREE.Vector3, finalVelocityZ: number): number {
         let initialPositionZ = SceneBuilder.getInstance().getRinkData().lines.start;
         let zDistance = finalPosition.z - initialPositionZ;
 
@@ -349,16 +349,15 @@ export class PhysicsManager {
 
     private getXVelocityToPosition(finalPosition: THREE.Vector3, finalVelocityZ: number, stone: CurlingStone): number {
         // Estimate the time required for the curling stone to get to the z position
-        // Formula : time = |(velocityF - velocity I) / acceleration|
         let finalPositionError = CurlingStone.MAX_RADIUS;
         let estimatedInitialVelocity = stone.getVelocity().clone();
         // Keep a copy of the initial velocity for reseting the stone's velocity when enters in a infinite loop
-        let estimatedInitialVelocityClone = estimatedInitialVelocity.clone();
+        let savedVelocity = estimatedInitialVelocity.clone();
+        // Formula : time = |(velocityF - velocity I) / acceleration|
         const estimatedTime = Math.abs((finalVelocityZ - estimatedInitialVelocity.z) / this.ACCELERATION_NORMAL_ICE);
 
         // Iteration process that finds the estimatedVelocity in X
-        let velocityFound = false;
-        while (!velocityFound) {
+        while (true) {
             // Estimate final position given an initial stone velocity
             for (let time = 0; time < estimatedTime; time += this.ESTIMATED_TIME_DELTA) {
                 this.calculateCurlingStonePosition(stone, this.MULTIPLIER_NORMAL_ICE, this.ESTIMATED_TIME_DELTA);
@@ -366,7 +365,6 @@ export class PhysicsManager {
 
             // Return estimatedVelocity if the stone satisfies the finalPosition
             if (finalPosition.distanceTo(stone.position) < finalPositionError) {
-                velocityFound = true;
                 return estimatedInitialVelocity.x;
             }
 
@@ -374,13 +372,13 @@ export class PhysicsManager {
             stone.position.set(0, 0, SceneBuilder.getInstance().getRinkData().lines.start);
 
             // Set estimatedVelocity for next iteration (it depends on stone spin)
-            estimatedInitialVelocity.x += -stone.getSpinOrientation() * this.X_VELOCITY_DELTA;
+            estimatedInitialVelocity.x -= stone.getSpinOrientation() * this.X_VELOCITY_DELTA;
             stone.setVelocity(estimatedInitialVelocity.clone());
 
             // If the stone's velocity in x is absurd, grow the finalPositionError and reset the calculation parameters
             if (Math.abs(stone.getVelocity().x) > 1 && finalPositionError < CurlingStone.MAX_DIAMETER) {
                 finalPositionError += CurlingStone.MAX_RADIUS;
-                estimatedInitialVelocity = estimatedInitialVelocityClone.clone();
+                estimatedInitialVelocity = savedVelocity.clone();
                 stone.setVelocity(estimatedInitialVelocity.clone());
             }
         }
