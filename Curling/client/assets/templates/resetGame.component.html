@@ -1,0 +1,11 @@
+<h1 md-dialog-title>
+    Confirmation
+</h1>
+
+<div md-dialog-content>Êtes-vous sûr/sûre de vouloir recommencer la partie avec la même <strong>difficulté</strong> ?</div>
+
+<div md-dialog-actions align="center">
+    <button md-raised-button color="primary" (click)="dialogRef.close(true)">Oui</button>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;</p>
+    <button id="cancelResetButton" md-raised-button color="warn" (click)="dialogRef.close(false)">Non</button>
+</div>

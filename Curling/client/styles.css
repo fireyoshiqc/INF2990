@@ -416,3 +416,15 @@ button.mat-raised-button {
     border-left: 10px solid #0D47A1;
     background-color: #bbdefb;
 }
+
+/************/
+
+
+/* resetGame */
+
+
+/************/
+
+#cancelResetButton {
+    color: white;
+}
