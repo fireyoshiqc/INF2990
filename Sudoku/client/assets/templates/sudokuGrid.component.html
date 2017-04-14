@@ -52,6 +52,22 @@
             </md-card-content>
         </md-card>
 
+        <md-card class="info-panel" *ngIf="sudokuService.isValid">
+            <md-card-title>
+                Voulez-vous faire un autre sudoku?
+            </md-card-title>
+            <md-card-actions id="controlButtons">
+                <button md-raised-button color="accent" (click)="getEasySudoku()">
+                    <md-icon class="icons" id="sidenavIcon">child_friendly</md-icon>
+                    Facile
+                </button>
+                <button md-raised-button color="accent" (click)="getHardSudoku()">
+                    <md-icon class="icons" id="sidenavIcon">whatshot</md-icon>
+                    Difficile
+                </button>
+            </md-card-actions>
+        </md-card>
+
     </div>
 
 </div>

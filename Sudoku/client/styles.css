@@ -153,6 +153,10 @@ md-sidenav-container {
     width: 500px
 }
 
+.icons.material-icons.mat-icon {
+    color: white;
+}
+
 
 /*************************/
 /* sudoku grid component */
