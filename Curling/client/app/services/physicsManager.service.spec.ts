@@ -131,7 +131,6 @@ describe('PhysicsManager', () => {
 
             let min = new THREE.Vector3(0.24, 0, 4.35);
             let max = new THREE.Vector3(0.26, 0, 4.38);
-            console.log(initialVelocity);
 
 
             expect(initialVelocity.x).to.be.at.least(min.x).and.at.most(max.x);
@@ -263,7 +262,7 @@ describe('PhysicsManager', () => {
             done();
         });
 
-        it('should return undefined because there are no stone in house.', done => {
+        it('should return undefined because there are no stone within the white ring.', done => {
             let dummyCurlingStones: CurlingStone[] = [];
             testPhysicsManager.init(dummyCurlingStones);
 
@@ -279,7 +278,7 @@ describe('PhysicsManager', () => {
             // Sort stones relative to a center that is closer to the second stone.
             testPhysicsManager.sortStonesByDistance(new THREE.Vector3(0, 0, 0));
 
-            let closestPlayerStone = testPhysicsManager.getTeamStoneWithinDistance(Team.Player, 1);
+            let closestPlayerStone = testPhysicsManager.getTeamStoneWithinDistance(Team.Player, 1.2);
 
             // The closest stone (the second one) should now be the first in the array
             expect(closestPlayerStone).to.undefined;
@@ -297,6 +296,73 @@ describe('PhysicsManager', () => {
 
             // The closest stone (the second one) should now be the first in the array
             expect(closestPlayerStone).to.undefined;
+            done();
+        });
+    });
+
+    describe('findStoneAtPosition()', () => {
+        it('should find a stone when it is after the hogline and around a given position', done => {
+            let dummyCurlingStones: CurlingStone[] = [];
+            testPhysicsManager.init(dummyCurlingStones);
+
+            let position = new THREE.Vector3(0, 0, 40.37);
+            let positionWithinRange = new THREE.Vector3(0.1, 0, 40.2);
+            let velocity = new THREE.Vector3(0, 0, 0);
+
+            testPhysicsManager.getStones().push(new CurlingStone(Team.AI, velocity, position));
+
+            expect(testPhysicsManager.findStoneAtPosition(positionWithinRange)).to.be.instanceOf(CurlingStone);
+            expect(testPhysicsManager.findStoneAtPosition(positionWithinRange).position).to.be.eql(position);
+            done();
+        });
+
+        it('should return undefined when there is no stone around the given position', done => {
+            let positionOutofRange = new THREE.Vector3(0, 1, 19);
+            expect(testPhysicsManager.findStoneAtPosition(positionOutofRange)).to.be.undefined;
+            done();
+        });
+    });
+
+    describe('findObstacleStone()', () => {
+        it('should return the obstacle stone', done => {
+            let dummyCurlingStones: CurlingStone[] = [];
+            testPhysicsManager.init(dummyCurlingStones);
+
+            let startPosition = new THREE.Vector3(0, 0, 1.9);
+            let targetPosition = new THREE.Vector3(0, 0, 40.37);
+            // Obstacle is below the targetStone, on the right side of the stone
+            let obstaclePosition = new THREE.Vector3(0.1, 0, 39.37);
+            let rightVelocity = new THREE.Vector3(-0.26, 0, 4.37);
+            // Stone departing from right side
+            let rightStone = new CurlingStone(Team.AI, rightVelocity, startPosition);
+            rightStone.setSpinOrientation(SpinOrientation.COUNTER_CLOCKWISE);
+
+            testPhysicsManager.getStones()
+                .push(new CurlingStone(Team.Player, new THREE.Vector3(0, 0, 0), obstaclePosition));
+
+            let obstacleStone = testPhysicsManager.findObstacleStone(rightStone, targetPosition);
+            expect(obstacleStone).to.be.instanceOf(CurlingStone);
+            expect(obstacleStone.position).to.eql(obstaclePosition);
+            done();
+        });
+
+        it('should return undefined when there is no stone in the way', done => {
+            let dummyCurlingStones: CurlingStone[] = [];
+            testPhysicsManager.init(dummyCurlingStones);
+
+            let startPosition = new THREE.Vector3(0, 0, 1.9);
+            let targetPosition = new THREE.Vector3(0, 0, 40.37);
+            // Obstacle is below the targetStone, on the right side of the stone
+            let obstaclePosition = new THREE.Vector3(0.5, 0, 39.37);
+            let leftVelocity = new THREE.Vector3(0.26, 0, 4.37);
+            // Stone departing from left side
+            let leftStone = new CurlingStone(Team.AI, leftVelocity, startPosition);
+            leftStone.setSpinOrientation(SpinOrientation.COUNTER_CLOCKWISE);
+
+            testPhysicsManager.getStones()
+                .push(new CurlingStone(Team.Player, new THREE.Vector3(0, 0, 0), obstaclePosition));
+
+            expect(testPhysicsManager.findObstacleStone(leftStone, targetPosition)).to.be.undefined;
             done();
         });
     });
