@@ -312,7 +312,7 @@ export class PhysicsManager {
             this.calculateCurlingStonePosition(dummyStone, this.MULTIPLIER_NORMAL_ICE, this.ESTIMATED_TIME_DELTA);
             let obstacleStone = this.findStoneAtPosition(dummyStone.position.clone());
 
-            if (obstacleStone !== undefined) {
+            if (obstacleStone) {
                 return obstacleStone;
             }
         }
@@ -357,31 +357,34 @@ export class PhysicsManager {
         const estimatedTime = Math.abs((finalVelocityZ - estimatedInitialVelocity.z) / this.ACCELERATION_NORMAL_ICE);
 
         // Iteration process that finds the estimatedVelocity in X
-        while (true) {
+        let velocityFound = false;
+        do {
             // Estimate final position given an initial stone velocity
             for (let time = 0; time < estimatedTime; time += this.ESTIMATED_TIME_DELTA) {
                 this.calculateCurlingStonePosition(stone, this.MULTIPLIER_NORMAL_ICE, this.ESTIMATED_TIME_DELTA);
             }
 
             // Return estimatedVelocity if the stone satisfies the finalPosition
-            if (finalPosition.distanceTo(stone.position) < finalPositionError) {
-                return estimatedInitialVelocity.x;
-            }
+            velocityFound = finalPosition.distanceTo(stone.position) < finalPositionError;
+            if (!velocityFound) {
+                // Reset stone position
+                stone.position.set(0, 0, SceneBuilder.getInstance().getRinkData().lines.start);
 
-            // Reset stone position
-            stone.position.set(0, 0, SceneBuilder.getInstance().getRinkData().lines.start);
-
-            // Set estimatedVelocity for next iteration (it depends on stone spin)
-            estimatedInitialVelocity.x -= stone.getSpinOrientation() * this.X_VELOCITY_DELTA;
-            stone.setVelocity(estimatedInitialVelocity.clone());
-
-            // If the stone's velocity in x is absurd, grow the finalPositionError and reset the calculation parameters
-            if (Math.abs(stone.getVelocity().x) > 1 && finalPositionError < CurlingStone.MAX_DIAMETER) {
-                finalPositionError += CurlingStone.MAX_RADIUS;
-                estimatedInitialVelocity = savedVelocity.clone();
+                // Set estimatedVelocity for next iteration (it depends on stone spin)
+                estimatedInitialVelocity.x -= stone.getSpinOrientation() * this.X_VELOCITY_DELTA;
                 stone.setVelocity(estimatedInitialVelocity.clone());
+
+                /* If the stone's velocity in x is absurd,
+                   grow the finalPositionError and reset the calculation parameters */
+                if (Math.abs(stone.getVelocity().x) > 1 && finalPositionError < CurlingStone.MAX_DIAMETER) {
+                    finalPositionError += CurlingStone.MAX_RADIUS;
+                    estimatedInitialVelocity = savedVelocity.clone();
+                    stone.setVelocity(estimatedInitialVelocity.clone());
+                }
             }
-        }
+        } while (!velocityFound);
+
+        return estimatedInitialVelocity.x;
     }
 
     public allStonesHaveStopped(): boolean {
