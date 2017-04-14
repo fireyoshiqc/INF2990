@@ -37,7 +37,7 @@ export class DatabaseService {
                     self.connect();
                 } else {
                     console.log(this.MAX_CONNECTION_ATTEMPTS +
-                    " attempts were made to connect without success! Disconnecting...");
+                        " attempts were made to connect without success! Disconnecting...");
                 }
             });
     }
@@ -109,24 +109,24 @@ export class DatabaseService {
                 .limit(this.MAX_SCORES_PER_DIFFICULTY)
                 .lean().exec((err, scores) => {
 
-                if (err) {
-                    reject("Error, could not get easy highscores!");
-                }
-                scoreJSON.easy = JSON.parse(JSON.stringify(scores));
-            }).then(() => hardScore
-                .find({})
-                .sort( { 'playerScore': -1 } ) // Sort playerScore in descending order
-                .sort( { 'aiScore': 1 } ) // Then sort aiScore in ascending order
-                .sort('updatedAt') // Then sort by last update
-                .limit(this.MAX_SCORES_PER_DIFFICULTY)
-                .lean().exec((err, scores) => {
+                    if (err) {
+                        reject("Error, could not get easy highscores!");
+                    }
+                    scoreJSON.easy = JSON.parse(JSON.stringify(scores));
+                }).then(() => hardScore
+                    .find({})
+                    .sort( { 'playerScore': -1 } ) // Sort playerScore in descending order
+                    .sort( { 'aiScore': 1 } ) // Then sort aiScore in ascending order
+                    .sort('updatedAt') // Then sort by last update
+                    .limit(this.MAX_SCORES_PER_DIFFICULTY)
+                    .lean().exec((err, scores) => {
 
-                if (err) {
-                    reject("Error, could not get hard highscores!");
-                }
-                scoreJSON.hard = JSON.parse(JSON.stringify(scores));
-                resolve(scoreJSON);
-            }));
+                        if (err) {
+                            reject("Error, could not get hard highscores!");
+                        }
+                        scoreJSON.hard = JSON.parse(JSON.stringify(scores));
+                        resolve(scoreJSON);
+                    }));
         });
 
         return scorePromise;
@@ -151,6 +151,29 @@ export class DatabaseService {
             // TODO : Refactor pour avoir moins de paramètres
             this.addHighscore(HARD_NAMES[j], (AVG_HARD_PLAYER_SCORE + j), (AVG_HARD_AI_SCORE + j), "difficile");
         }
+    }
+
+    public clearCollections(): Promise<boolean> {
+        easyScore.remove({}).then;
+        hardScore.remove({});
+
+        let clearPromise = new Promise((resolve, reject) => {
+            easyScore.remove({}, (err) => {
+                if (err) {
+                    reject("Error, could not clear easy highscores!");
+                }
+            }).then(() => {
+                hardScore.remove({}, (err) => {
+                    if (err) {
+                        reject("Error, could not clear hard highscores!");
+                    }
+
+                    resolve(true);
+                });
+            });
+        });
+
+        return clearPromise;
     }
 }
 
