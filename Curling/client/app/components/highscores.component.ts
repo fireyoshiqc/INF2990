@@ -15,6 +15,7 @@ import { MdDialogRef } from '@angular/material';
 })
 
 export class HighscoresComponent {
+    public isEndGame = false;
     public highscores: IHighscores = { easy: [], hard: [] };
     public newScore: INewScore = { difficulty: 0, index: -1 };
     constructor(public dialogRef: MdDialogRef<HighscoresComponent>) { }
