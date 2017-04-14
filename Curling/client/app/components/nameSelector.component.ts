@@ -21,6 +21,7 @@ export class NameSelectorComponent {
     private playerName: string;
     private error = false;
     private errorMessage: string;
+    private nameSelectionDisabled = false;
 
     constructor(public dialogRef: MdDialogRef<NameSelectorComponent>, private nameService: NameService) {
     }
@@ -32,6 +33,7 @@ export class NameSelectorComponent {
             this.nameService.validateName(this.playerName).then((response) => {
                 if (response) {
                     this.dialogRef.close({ aiDifficulty: this.aiDifficulty, playerName: this.playerName });
+                    this.nameSelectionDisabled = true;
                 } else {
                     this.error = true;
                     this.errorMessage = "Ce nom est déjà pris ou contient des caractères invalides!";
