@@ -282,7 +282,9 @@ export class GameController {
 
     private showHighscoresDialog(highscores: any, newScoreIndex: number, isEndGame: boolean): void {
         setTimeout(() => {
-            this.scoreDialogRef = this.dialog.open(HighscoresPopupComponent);
+            this.scoreDialogRef = this.dialog.open(HighscoresPopupComponent, {
+                disableClose: isEndGame
+            });
             this.scoreDialogRef.afterClosed().subscribe(result => {
                 if (result !== undefined) {
                     switch (result.buttonId) {

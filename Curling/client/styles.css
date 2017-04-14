@@ -417,6 +417,11 @@ button.mat-raised-button {
     background-color: #bbdefb;
 }
 
+#restartMessage {
+    margin-top: 10px;
+    color: #0D47A1;
+}
+
 /************/
 
 

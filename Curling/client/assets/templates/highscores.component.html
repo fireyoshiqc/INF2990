@@ -47,7 +47,13 @@
     </md-tab-group>
 </md-dialog-content>
 <div *ngIf="dialogRef.componentInstance.isEndGame">
-    <p>Retouner à la page d'acceuil.</p>
-    <button md-raised-button (click)="dialogRef.componentInstance.onButtonClick(0)">Recommencer la partie</button>
-    <button md-raised-button (click)="dialogRef.componentInstance.onButtonClick(1)">Changer de difficulté</button>
+    <hr>
+    <div>
+        <h3 md-dialog-content id="restartMessage" align="center">Voulez-vous jouer une autre partie?</h3>
+        <div md-dialog-actions align="center">
+            <button md-raised-button color="primary" (click)="dialogRef.componentInstance.onButtonClick(0)">Recommencer la partie</button>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;</p>
+            <button md-raised-button color="primary" (click)="dialogRef.componentInstance.onButtonClick(1)">Changer de difficulté</button>
+        </div>
+    </div>
 </div>
