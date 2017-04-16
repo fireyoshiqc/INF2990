@@ -6,6 +6,12 @@
 
 /**************/
 
+#loadingApp {
+    margin: 50px; 
+    width: 500px; 
+    height: 30px
+}
+
 * {
     margin: 0;
     padding: 0;
