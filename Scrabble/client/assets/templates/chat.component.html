@@ -13,25 +13,27 @@
 
                     <md-tab-group [selectedIndex]=0 *ngIf="msg.getSubmessage() === '!aide'" fxFlexFill>
                         <md-tab label="Placer un mot">
-                            <h4>!placer <em>ligne</em> <em>colonne</em> <em>(h|v)</em> mot</h4>
-                            <p><b>ligne</b>: Une lettre entre A et O</p>
-                            <p><b>colonne</b>: Un chiffre entre 1 et 15</p>
-                            <p><b>(h|v)</b>: L'orientation du mot est soit <b>h</b>orizontale ou <b>v</b>erticale</p>
-                            <p><b>mot</b>: Le mot doit au moins avoir 2 lettres. Chaque lettre du mot est entrée en minuscule,
-                                sauf lorsqu’il s’agit d’une lettre blanche, qui elle, doit être entrée en majuscule. Le mot
+                            <h4>!placer &lt;ligne&gt;&lt;colonne&gt;(h|v) &lt;mot&gt;</h4>
+                            <p><b>ligne</b> : Emplacement de la première lettre, soit une lettre entre <b>a</b> et <b>o</b></p>
+                            <p><b>colonne</b> : Emplacement de la première lettre, soit un chiffre entre <b>1</b> et <b>15</b></p>
+                            <p><b>(h|v)</b> : Orientation du mot, soit <b>h</b>orizontale ou <b>v</b>erticale</p>
+                            <p><b>mot</b> : Le mot doit au moins avoir 2 lettres. Chaque lettre du mot est entrée en <b>minuscule</b>,
+                                sauf lorsqu’il s’agit d’une lettre blanche, qui elle, doit être entrée en <b>majuscule</b>. Le mot
                                 doit être écrit au complet en y incluant, si nécessaire, les lettres se trouvant déjà sur
                                 le plateau de jeu.
                             </p>
-                            <p><b>Ex: <em>!placer g15v bonjour </em></b>: joue le mot bonjour à la verticale et le b est positionné
-                                en g15.
+                            <p><b>Ex. <em>!placer g15v bonjour </em></b> : joue le mot <em>bonjour</em> à la verticale et le <em>b</em> est positionné
+                                en <em>g15</em>.
                             </p>
                         </md-tab>
                         <md-tab label="Changer des lettres">
-                            <h4>!changer <em>lettres</em></h4>
-                            <p><b>lettres</b>: Spécifiez jusqu'à 7 lettres à échanger de votre chevalet. Toutes les lettres
-                                doivent se trouver sur votre chevalet. Utilisez <b>*</b> pour indiquer une lettre blanche.
+                            <h4>!changer &lt;lettres&gt;</h4>
+                            <p><b>lettres</b> : Lettres à échanger avec la réserve de lettres. 
+                                Spécifiez jusqu'à 7 lettres en <b>minuscule</b> à échanger de votre chevalet. 
+                                Toutes les lettres doivent se trouver sur votre chevalet. 
+                                Utilisez <b>*</b> pour indiquer une lettre blanche.
                             </p>
-                            <p><b>Ex: <em>!changer e* </em></b>: échange une seule des lettres e et une lettre blanche avec
+                            <p><b>Ex. <em>!changer e* </em></b> : échange une seule des lettres <em>e</em> et une lettre blanche avec
                                 deux lettres pigées au hasard de la réserve de lettres.</p>
                         </md-tab>
                         <md-tab label="Passer un tour">
