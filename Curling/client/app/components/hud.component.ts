@@ -33,7 +33,6 @@ export class HUDComponent {
     @Input() private nextRoundMessageVisible: boolean;
     @Input() private congratulationsMessageVisible: boolean;
     @Input() private tieMessageVisible: boolean;
-    @Input() private showEndGameMessage: boolean;
 
     @Output()
     private switchCameraEvent: EventEmitter<string> = new EventEmitter();
@@ -55,7 +54,6 @@ export class HUDComponent {
         this.nextRoundMessageVisible = false;
         this.congratulationsMessageVisible = false;
         this.tieMessageVisible = false;
-        this.showEndGameMessage = false;
     }
 
     @HostListener('window:keydown', ['$event'])

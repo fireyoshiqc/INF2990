@@ -48,7 +48,6 @@ export interface IHUDData {
     nextRoundMessageVisible: boolean;
     congratulationsMessageVisible: boolean;
     tieMessageVisible: boolean;
-    showEndgameMessage: boolean;
 }
 
 @Injectable()
@@ -67,8 +66,7 @@ export class GameController {
         nextThrowMessageVisible: false,
         nextRoundMessageVisible: false,
         congratulationsMessageVisible: false,
-        tieMessageVisible: false,
-        showEndgameMessage: false
+        tieMessageVisible: false
     };
 
     private gameData: IGameData = {
@@ -201,8 +199,7 @@ export class GameController {
             nextThrowMessageVisible: false,
             nextRoundMessageVisible: false,
             congratulationsMessageVisible: false,
-            tieMessageVisible: false,
-            showEndgameMessage: false
+            tieMessageVisible: false
         };
     }
 

@@ -350,12 +350,6 @@ button.mat-raised-button {
     color: blue;
 }
 
-#endGame {
-    position: absolute;
-    bottom: 15%;
-    left: 25%;
-}
-
 .inactiveTag {
     border-left: 10px solid gray;
 }
