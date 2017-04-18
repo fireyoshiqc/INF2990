@@ -26,15 +26,15 @@ export class PlayerIdleState implements IGameState {
         PlayerIdleState.instance = this;
     }
 
-    public onMouseDown(event: any): void {
+    public onMouseDown(event: MouseEvent): void {
         // Do nothing
     }
 
-    public onMouseUp(event: any): void {
+    public onMouseUp(event: MouseEvent): void {
         // Do nothing
     }
 
-    public onMouseMove(event: any): void {
+    public onMouseMove(event: MouseEvent): void {
         // Do nothing
     }
 

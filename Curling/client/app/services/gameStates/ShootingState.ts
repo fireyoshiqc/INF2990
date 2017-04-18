@@ -32,7 +32,7 @@ export class ShootingState implements IGameState {
         ShootingState.instance = this;
     }
 
-    public onMouseDown(event: any): void {
+    public onMouseDown(event: MouseEvent): void {
         this.timer = setInterval(() => {
             if (this.initialSpeedCounter < this.MAX_INITIAL_SPEED) {
                 this.initialSpeedCounter += this.MAX_INITIAL_SPEED / (this.MAX_HOLD_TIME_MS / this.INTERVAL_DELAY_MS);
@@ -41,7 +41,7 @@ export class ShootingState implements IGameState {
         }, this.INTERVAL_DELAY_MS);
     }
 
-    public onMouseUp(event: any): void {
+    public onMouseUp(event: MouseEvent): void {
         // Stone won't be thrown if the powerbar isn't charged enough.
         let gameData = this.gameController.getGameData();
         let hudData = this.gameController.getHUDData();
@@ -68,7 +68,7 @@ export class ShootingState implements IGameState {
         }
     }
 
-    public onMouseMove(event: any): void {
+    public onMouseMove(event: MouseEvent): void {
         // Do nothing
     }
 

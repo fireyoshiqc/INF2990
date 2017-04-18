@@ -34,17 +34,17 @@ export class ChoosingAngleState implements IGameState {
         ChoosingAngleState.instance = this;
     }
 
-    public onMouseDown(event: any): void {
+    public onMouseDown(event: MouseEvent): void {
         // Do nothing
     }
 
-    public onMouseUp(event: any): void {
+    public onMouseUp(event: MouseEvent): void {
         if (this.angle !== null) {
             this.gameController.getGameData().state = this.nextState();
         }
     }
 
-    public onMouseMove(event: any): void {
+    public onMouseMove(event: MouseEvent): void {
         if (!this.waiting) {
             this.setMouse(event);
             let angle = this.calculateAngle(this.mouse);

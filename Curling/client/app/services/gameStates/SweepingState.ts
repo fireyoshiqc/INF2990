@@ -40,7 +40,7 @@ export class SweepingState implements IGameState {
         SweepingState.instance = this;
     }
 
-    public onMouseDown(event: any): void {
+    public onMouseDown(event: MouseEvent): void {
 
         this.setMouse(event);
 
@@ -53,7 +53,7 @@ export class SweepingState implements IGameState {
         }
     }
 
-    public onMouseUp(event: any): void {
+    public onMouseUp(event: MouseEvent): void {
 
         this.setMouse(event);
 
@@ -73,7 +73,7 @@ export class SweepingState implements IGameState {
         }
     }
 
-    public onMouseMove(event: any): void {
+    public onMouseMove(event: MouseEvent): void {
         // Do nothing
     }
 

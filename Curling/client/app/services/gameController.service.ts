@@ -115,19 +115,19 @@ export class GameController {
         }
     }
 
-    public onMouseDown(event: any): void {
+    public onMouseDown(event: MouseEvent): void {
         if (this.gameData.state) {
             this.gameData.state.onMouseDown(event);
         }
     }
 
-    public onMouseUp(event: any): void {
+    public onMouseUp(event: MouseEvent): void {
         if (this.gameData.state) {
             this.gameData.state.onMouseUp(event);
         }
     }
 
-    public onMouseMove(event: any): void {
+    public onMouseMove(event: MouseEvent): void {
         if (this.gameData.state) {
             this.gameData.state.onMouseMove(event);
         }
