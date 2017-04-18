@@ -7,19 +7,24 @@ LIVRABLE DU MERCREDI 19 AVRIL 2017
 1 - SUDOKU
     1.1 - Affichage des meilleurs temps par un bouton dans le menu du jeu (sidenav)
     1.2 - Modifications mineures à l'interface utilisateur
-    1.3 -
 
 2 - CURLING
     2.1 - Implémentation d'un ordinateur normal et difficile
-    	  2.1.1 - En mode normal : il rate son coup 1 fois sur 3. Il vise entre la hogline et la backline 2 fois sur 3.
-    	  2.1.2 - En mode difficile : il vise le bouton. Il vise la pierre du joueur adverse la plus proche du bouton (dans la maison).
-    2.2 -
+    	  2.1.1 - En mode normal : Il rate son coup 1 fois sur 3. Il vise entre la hogline et la backline 2 fois sur 3.
+    	  2.1.2 - En mode difficile : Il vise le bouton. Il vise la pierre du joueur adverse la plus proche du bouton (dans la maison). 
+                Il modifie sa trajectoire en considérant les pierres comme obstacles.
+    2.2 - Modifications mineures à l'interface utilisateur
+    2.3 - Sauvegarde de pointages du joueur dans une base de données lorsqu'il gagne une partie
+    2.4 - Gestion des abandons en cours de partie
+    2.5 - Gestion de fin de parties (animation, message)
 
 3 - SCRABBLE
     3.1 - Communication avec le serveur (pour les commandes de jeu)
           3.1.1 - Aide (accessible et fonctionnelle)
     3.2 - Embelissement de l'interface utilisateur (page d'accueil, salle d'attente, salle de jeu)
-    3.3 - 
+    3.3 - Gestion de l'alternance entre les panneaux actifs
+    3.4 - Gestion des abandons en cours de partie
+    3.5 - Gestion de fin de partie (message, comportement du UI)
 
 //// INSTRUCTIONS ////
 
@@ -88,5 +93,5 @@ LIVRABLE DU MERCREDI 19 AVRIL 2017
                   Il est possible de finir une partie et de l'abandonner. Bon jeu !
           5.2.3 - ASTUCES
                   À tout moment, il est possible de consulter les commandes de jeu (taper !aide dans le chat).
-                  À tout moment, il est possible de manipuler les lettres sur le chevalet. À COMPLÉTER
+                  À tout moment, il est possible de manipuler les lettres sur le chevalet. Il suffit de peser sur "TAB" et de bouger les lettres dans le chevalet.
                   En survolant votre curseur sur une lettre blanche sur le plateau de jeu, un "tooltip" indique la lettre jouée pour le "joker".
