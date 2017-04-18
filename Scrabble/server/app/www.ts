@@ -12,7 +12,7 @@ import { SocketManager } from './services/socketManager.service';
 const application: Application = Application.bootstrap();
 
 // Configuration du port d'écoute
-const appPort = normalizePort(process.env.PORT || '3000');
+const appPort = normalizePort(process.env.PORT || '3200');
 application.app.set('port', appPort);
 
 // Création du serveur HTTP.

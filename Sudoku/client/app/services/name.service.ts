@@ -6,7 +6,7 @@ import 'rxjs/add/operator/toPromise';
 @Injectable()
 export class NameService {
     private readonly HOST_NAME = "http://" + window.location.hostname;
-    private readonly SERVER_PORT = ":3002";
+    private readonly SERVER_PORT = ":3300";
     constructor(private http: Http) { }
 
     public validateName(name: string): Promise<boolean> {

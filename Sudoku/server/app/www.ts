@@ -11,7 +11,7 @@ import * as http from 'http';
 const application: Application = Application.bootstrap();
 
 // Configuration du port d'écoute
-const appPort = normalizePort(process.env.PORT || '3002');
+const appPort = normalizePort(process.env.PORT || '3300');
 application.app.set('port', appPort);
 
 // Création du serveur HTTP.

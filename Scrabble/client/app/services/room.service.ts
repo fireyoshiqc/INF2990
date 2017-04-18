@@ -20,7 +20,7 @@ export interface IRoomInfo {
 @Injectable()
 export class RoomService {
     private readonly HOST_NAME = "http://" + window.location.hostname;
-    private readonly SERVER_PORT = ":3000";
+    private readonly SERVER_PORT = ":3200";
     private socket: SocketIOClient.Socket;
     private player: Player;
     private roomInfo = { roomID: -1, capacity: 0, playerList: new Array<string>() };

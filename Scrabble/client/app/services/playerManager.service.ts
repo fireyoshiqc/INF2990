@@ -6,7 +6,7 @@ import { Player } from '../classes/player';
 @Injectable()
 export class PlayerManagerService {
     private readonly HOST_NAME = "http://" + window.location.hostname;
-    private readonly SERVER_PORT = ":3000";
+    private readonly SERVER_PORT = ":3200";
     private socket: any;
     private player: Player;
     private nameValid: boolean;

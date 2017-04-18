@@ -14,7 +14,7 @@ import 'rxjs/add/operator/toPromise';
 @Injectable()
 export class HighscoresService {
     private readonly HOST_NAME = "http://" + window.location.hostname;
-    private readonly SERVER_PORT = ":3001";
+    private readonly SERVER_PORT = ":3100";
 
     constructor(private http: Http) { }
 

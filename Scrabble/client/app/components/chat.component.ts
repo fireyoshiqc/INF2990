@@ -10,7 +10,7 @@ import { Message, IMessageFromServer } from '../classes/message';
 
 export class ChatComponent implements OnInit, AfterViewChecked {
     private readonly HOST_NAME = "http://" + window.location.hostname;
-    private readonly SERVER_PORT = ":3000";
+    private readonly SERVER_PORT = ":3200";
     private active: boolean;
     private socket: any;
     private msgFromClient: string;

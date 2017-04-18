@@ -16,7 +16,7 @@ import { MdDialog, MdDialogRef } from '@angular/material';
 
 export class GameComponent implements OnInit, AfterViewInit {
     private readonly HOST_NAME = "http://" + window.location.hostname;
-    private readonly SERVER_PORT = ":3000";
+    private readonly SERVER_PORT = ":3200";
     private socket: any;
     private isDarkTheme = false;
     private dialogRef: MdDialogRef<QuitGamePopupComponent>;

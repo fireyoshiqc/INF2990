@@ -7,7 +7,7 @@ import 'rxjs/add/operator/toPromise';
 export class SudokuService {
 
     private readonly HOST_NAME = "http://" + window.location.hostname;
-    private readonly SERVER_PORT = ":3002";
+    private readonly SERVER_PORT = ":3300";
     private readonly minIndex = 0;
     private readonly maxIndex = 8;
     public initialGrid = [
