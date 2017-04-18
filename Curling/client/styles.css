@@ -346,8 +346,8 @@ button.mat-raised-button {
 }
 
 #congratsMessage, #tieMessage {
-    font-size: 3em;
-    color: blue;
+    font-size: 2em;
+    color: #0D47A1;
 }
 
 .inactiveTag {
