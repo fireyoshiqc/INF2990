@@ -13,7 +13,6 @@ import { PlayerManager } from './playerManager.service';
 import { CommandHandler } from './commandHandler.service';
 import { Player } from '../classes/player';
 import { Room } from '../classes/room';
-import { GameMaster } from '../services/gameMaster.service';
 
 export class SocketManager {
     private sio: SocketIO.Server;
