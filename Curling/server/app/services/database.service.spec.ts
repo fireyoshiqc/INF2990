@@ -110,7 +110,9 @@ describe("DatabaseService", () => {
             });
         });
 
-        it('should be ranked in order specified in curling requirement document', () => {
+        it('should be ranked by descending order of player scores, '
+            + 'by ascending order of ai scores if player scores are equal, '
+            + 'by ascending order of added/updated time if player and ai scores are equal', () => {
             return testDatabase.getHighscores().then(highscores => {
                 // Ranking
                 for (let i = 0; i < (P_NAMES.length - 1); i++) {
