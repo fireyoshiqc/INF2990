@@ -30,6 +30,8 @@ LIVRABLE DU MERCREDI 19 AVRIL 2017
 
 0 - SCRIPT D'AUTOMATISATION NPM INSTALL
     0.1 - À partir de la racine du projet : sh npminstall.sh (ne fonctionne pas sur Windows à moins d'avoir Bash/Cygwin)
+    À noter que l'option --clean peut être utilisée pour supprimer les anciens dossiers node_modules.
+    Utilisation: sh npminstall.sh --clean
 
 1 - VÉRIFICATION DU CODE AVEC TSLINT
     1.1 - À partir des répertoires /server ou /client des trois modules : npm run lint
@@ -40,6 +42,7 @@ LIVRABLE DU MERCREDI 19 AVRIL 2017
 3 - SUDOKU *** À noter que le serveur doit être sur localhost:3300 (par défaut) ***
     3.1 - OUVERTURE
           client : npm start | serveur : npm start
+          Une fois le client lancé au moins une fois pour compiler, le jeu peut être servi directement en se rendant sur localhost:3300.
 
     3.2 - VISITE SUR LE SITE
           3.2.1 - Il est possible de demander une grille facile ou difficile. Vous pouvez faire une partie complète. Bon jeu !
@@ -62,6 +65,7 @@ LIVRABLE DU MERCREDI 19 AVRIL 2017
 4 - CURLING *** À noter que le serveur doit être sur localhost:3100 (par défaut) ***
     4.1 - OUVERTURE
           client : npm start | serveur : npm start
+          Une fois le client lancé au moins une fois pour compiler, le jeu peut être servi directement en se rendant sur localhost:3100.
 
     4.2 - VISITE SUR LE SITE
           4.2.1 - Vous jouez en tant que le joueur principal contre l'ordinateur. Il est possible de choisir deux difficultés : normale ou difficile.
@@ -85,7 +89,8 @@ LIVRABLE DU MERCREDI 19 AVRIL 2017
 5 - SCRABBLE *** À noter que le serveur doit être sur localhost:3200 (par défaut) ***
     5.1 - OUVERTURE
           serveur : npm start
-          client(s) : npm start (pour autant de clients que vous voulez) ou connectez-vous au serveur dédié avec localhost:3000
+          client(s) : npm start (pour autant de clients que vous voulez) ou connectez-vous au serveur dédié (voir ci-dessous).
+          Une fois le client lancé au moins une fois pour compiler, le jeu peut être servi directement en se rendant sur localhost:3200.
 
     5.2 - VISITE SUR LE SITE
           5.2.1 - Entrer votre nom et sélectionner la capacité de la salle de jeu. Les joueurs se joigneront automatiquement à vous.
