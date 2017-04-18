@@ -31,12 +31,26 @@ export class RackManager {
         this.rackLength = this.rack.length;
 
         if (this.isArrowKey(event) && this.selectedIndex !== null) {
+            // 1- Select new index
             let nextIndex = ((this.selectedIndex + ((event.key === "ArrowLeft") ? -1 : 1))
                 + this.rackLength) % this.rackLength;
 
-            let temp = this.rack[nextIndex];
-            this.rack[nextIndex] = this.rack[this.selectedIndex];
-            this.rack[this.selectedIndex] = temp;
+            // 2.1- If the selected letter is on the left end of the rack and is moved to the left
+            if (nextIndex === (this.rackLength - 1) && this.selectedIndex === 0) {
+                this.rack = this.rack.concat(this.rack.splice(0, 1)); // Left shift letters on rack
+            }
+            // 2.2- If the selected letter is on the right end of the rack and is moved to the right
+            else if (nextIndex === 0 && this.selectedIndex === (this.rackLength - 1)) {
+                this.rack = this.rack.concat(this.rack.splice(0, this.rackLength - 1)); // Right shift letters on rack
+            }
+            // 2.3- If the letter is moved between the boundaries of the rack
+            else {
+                let temp = this.rack[nextIndex];
+                this.rack[nextIndex] = this.rack[this.selectedIndex];
+                this.rack[this.selectedIndex] = temp;
+            }
+
+            // 3- Save the new index
             this.selectedIndex = nextIndex;
         } else {
             let letter = event.key.toUpperCase();
@@ -61,6 +75,8 @@ export class RackManager {
                 }
 
                 this.selectedIndex = nextIndex;
+            } else {
+                this.deselectLetter();
             }
         }
     }
