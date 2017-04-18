@@ -37,7 +37,7 @@ LIVRABLE DU MERCREDI 19 AVRIL 2017
 2 - TESTS
     2.1 - Des tests sont disponibles sur le client et le serveur des trois modules : num test
 
-3 - SUDOKU *** À noter que le serveur doit être sur localhost:3002 (par défaut) ***
+3 - SUDOKU *** À noter que le serveur doit être sur localhost:3300 (par défaut) ***
     3.1 - OUVERTURE
           client : npm start | serveur : npm start
 
@@ -59,7 +59,7 @@ LIVRABLE DU MERCREDI 19 AVRIL 2017
           3.4.1 - URL : localhost:3002/api/log
           3.4.2 - Le IP "1" lors d'une demande correspond à localhost     
 
-4 - CURLING *** À noter que le serveur doit être sur localhost:3001 (par défaut) ***
+4 - CURLING *** À noter que le serveur doit être sur localhost:3100 (par défaut) ***
     4.1 - OUVERTURE
           client : npm start | serveur : npm start
 
@@ -82,7 +82,7 @@ LIVRABLE DU MERCREDI 19 AVRIL 2017
           Il est possible de voir le contenu de la base de données en se connectant avec les informations qui suivent :  
           4.1.1 - URL : mlab.com, Username : factory24, Password : sudokuDB24 (À MODIFIER)
 
-5 - SCRABBLE *** À noter que le serveur doit être sur localhost:3000 (par défaut) ***
+5 - SCRABBLE *** À noter que le serveur doit être sur localhost:3200 (par défaut) ***
     5.1 - OUVERTURE
           serveur : npm start
           client(s) : npm start (pour autant de clients que vous voulez) ou connectez-vous au serveur dédié avec localhost:3000
