@@ -30,6 +30,7 @@ export enum CommandExecutionStatus {
     // Execution status related to change letter command
     SUCCESS_CHANGE_LETTER_STASH_ENOUGH,
     ERROR_CHANGE_LETTER_STASH_EMPTY,
+    ERROR_CHANGE_LETTER_STASH_INSUFFICIENT_LETTERS,
 
     // Execution status related to remove letters from player's rack
     SUCCESS_REMOVE_LETTERS,
@@ -306,11 +307,16 @@ export class GameMaster {
 
     private changeLetter(command: CommandChangeLetter): CommandExecutionStatus {
         const lettersToExchange = command.getLetters().split('');
+        let commandExecutionStatus;
 
         // Verify that there are enough letters left in the stash
-        let commandExecutionStatus = (this.stash.getAmountLeft() >= lettersToExchange.length) ?
-            CommandExecutionStatus.SUCCESS_CHANGE_LETTER_STASH_ENOUGH :
-            CommandExecutionStatus.ERROR_CHANGE_LETTER_STASH_EMPTY;
+        if (this.stash.getAmountLeft() === 0) {
+            commandExecutionStatus = CommandExecutionStatus.ERROR_CHANGE_LETTER_STASH_EMPTY;
+        } else if (this.stash.getAmountLeft() < lettersToExchange.length) {
+            commandExecutionStatus = CommandExecutionStatus.ERROR_CHANGE_LETTER_STASH_INSUFFICIENT_LETTERS;
+        } else {
+            commandExecutionStatus = CommandExecutionStatus.SUCCESS_CHANGE_LETTER_STASH_ENOUGH;
+        }
 
         if (commandExecutionStatus === CommandExecutionStatus.SUCCESS_CHANGE_LETTER_STASH_ENOUGH) {
 

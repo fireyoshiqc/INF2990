@@ -30,6 +30,8 @@ export class CommandHandler {
         "ERREUR : Des mots nouvellement formés sont invalides. Le tour est terminé.", // ERROR_PLACE_WORD_INVALID_WORDS
         "", // SUCCESS_CHANGE_LETTER_STASH_ENOUGH
         "ERREUR : La réserve de lettres est vide.", // ERROR_CHANGE_LETTER_STASH_EMPTY
+        "ERREUR : La réserve de lettres ne possède pas assez de lettres " +
+            "pour effectuer l'échange.", // ERROR_CHANGE_LETTER_STASH_INSUFFICIENT_LETTERS
         "", // SUCCESS_REMOVE_LETTERS
         "ERREUR : Vous n'avez pas les lettres requises sur votre chevalet." // ERROR_REMOVE_LETTERS
     ];
@@ -95,6 +97,7 @@ export class CommandHandler {
             case CommandExecutionStatus.ERROR_PLACE_WORD_CENTRAL_TILE:
             case CommandExecutionStatus.ERROR_PLACE_WORD_ADJACENT_TILE:
             case CommandExecutionStatus.ERROR_CHANGE_LETTER_STASH_EMPTY:
+            case CommandExecutionStatus.ERROR_CHANGE_LETTER_STASH_INSUFFICIENT_LETTERS:
             case CommandExecutionStatus.ERROR_REMOVE_LETTERS:
                 commandResponse = this.commandResponseMessage[executionStatus];
                 break;
