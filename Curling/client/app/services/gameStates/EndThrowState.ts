@@ -157,7 +157,7 @@ export class EndThrowState implements IGameState {
 
         // Check if teamClosestStone has stones in house (worth point)
         return (stone.getTeam() === teamClosestStone &&
-            stone.position.distanceTo(ringsCenter) < rings.outer);
+            stone.position.distanceTo(ringsCenter) < rings.outer + CurlingStone.MAX_RADIUS);
     }
 
     private addPoints(teamClosestStone: Team, points: number): void {
