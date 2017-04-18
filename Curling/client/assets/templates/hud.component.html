@@ -83,9 +83,10 @@
                     <div *ngIf="congratulationsMessageVisible === true">
                         <div id="congrats">
                             <md-card class="defaultCursor lightTag" id="waitingForPlayer">
-                                <md-card-content><strong>Félicitations!</strong></md-card-content>
+                                <md-card-content><strong>{{getCongratsMessage()}}</strong></md-card-content>
                             </md-card>
                         </div>
+
                     </div>
 
                     <!-- Tie message -->
