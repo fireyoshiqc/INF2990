@@ -181,7 +181,6 @@ export class EndGameState implements IGameState {
     }
 
     public nextState(): PlayerIdleState {
-        // TODO: Réinitialiser la partie
         this.hideConfetti();
         return PlayerIdleState.getInstance().enterState();
     }

@@ -51,7 +51,7 @@ export class DatabaseService {
                     // If user has beaten their previous best time update their score
                     if (score && (score.time > time)) {
                         score.time = time;
-                        score.save();  // TODO: Add error managing callback
+                        score.save();
                         resolve(true);
                     } else if (score === null) {
                         // If user never previously saved score then add entry
@@ -72,7 +72,7 @@ export class DatabaseService {
                     if (score && (score.time > time)) {
                         // If user has beaten their previous best time update their score
                         score.time = time;
-                        score.save();  // TODO: Add error managing callback
+                        score.save();
                         resolve(true);
                     } else if (score === null) {
                         // If user never previously saved score then add entry

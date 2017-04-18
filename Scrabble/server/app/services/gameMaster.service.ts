@@ -13,7 +13,6 @@ import { ScrabbleGame } from '../classes/scrabbleGame';
 import { LetterStash } from './letterStash.service';
 import { StopwatchService } from './stopwatch.service';
 
-// TODO: Rework this to be included in the appropriate commands.
 export enum CommandExecutionStatus {
     SUCCESS, // Command executed successfully
     ERROR, // Command cannot be executed

@@ -230,8 +230,6 @@ export class CurlingStone extends THREE.Group {
         handleMesh.remove(outlineHandleMesh);
     }
 
-    // TODO function for jumping (set a vertical velocity)
-
     public isBeingPlayed(): boolean {
         return this.beingPlayed;
     }

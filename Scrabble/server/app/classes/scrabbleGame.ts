@@ -179,7 +179,6 @@ export class ScrabbleGame {
         this.usedTilesPerTurn = [];
     }
 
-    // TODO : Make this the only thing called in GameMaster.
     public isWordValid(command: CommandPlaceWord, firstWord: boolean): boolean {
         return (firstWord
             ? this.isWordOverlappingCentralTile(command)

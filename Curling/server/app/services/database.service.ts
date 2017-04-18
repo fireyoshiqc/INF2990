@@ -148,7 +148,6 @@ export class DatabaseService {
         this.addHighscore(EASY_NAMES[6], 4, 2, "facile");
 
         for (let j = 0; j < this.DUMMIES_PER_DIFFICULTY; j++) {
-            // TODO : Refactor pour avoir moins de paramètres
             this.addHighscore(HARD_NAMES[j], (AVG_HARD_PLAYER_SCORE + j), (AVG_HARD_AI_SCORE + j), "difficile");
         }
     }
