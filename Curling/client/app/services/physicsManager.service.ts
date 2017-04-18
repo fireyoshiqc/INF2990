@@ -377,7 +377,7 @@ export class PhysicsManager {
                 /* If the stone's velocity in x is absurd,
                    grow the finalPositionError and reset the calculation parameters */
                 if (Math.abs(stone.getVelocity().x) > 1 && finalPositionError < CurlingStone.MAX_DIAMETER) {
-                    finalPositionError += CurlingStone.MAX_RADIUS;
+                    finalPositionError += 0.01;
                     estimatedInitialVelocity = savedVelocity.clone();
                     stone.setVelocity(estimatedInitialVelocity.clone());
                 }

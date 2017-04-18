@@ -56,15 +56,15 @@ export class AIPlayingState implements IGameState {
         AIPlayingState.instance = this;
     }
 
-    public onMouseDown(event: any): void {
+    public onMouseDown(event: MouseEvent): void {
         // Do nothing
     }
 
-    public onMouseUp(event: any): void {
+    public onMouseUp(event: MouseEvent): void {
         // Do nothing
     }
 
-    public onMouseMove(event: any): void {
+    public onMouseMove(event: MouseEvent): void {
         // Do nothing
     }
 
@@ -160,17 +160,18 @@ export class AIPlayingState implements IGameState {
 
     private getVelocityForPerfectShotNearCenter(aiStone: CurlingStone): THREE.Vector3 {
         let ringsCenterPosition = new THREE.Vector3(0, 0, SceneBuilder.getInstance().getRinkData().rings.offset);
-        let finalAimingPosition: THREE.Vector3;
-        let initialVelocity: THREE.Vector3;
+        let finalAimingPosition = ringsCenterPosition;
+        aiStone.setRandomSpinOrientation();
+        let initialVelocity = new THREE.Vector3(-aiStone.getSpinOrientation() * this.X_HOUSE_CENTER_VELOCITY,
+            0, this.Z_RINGS_CENTER_VELOCITY);
+        let tmpStone = new CurlingStone(Team.AI, initialVelocity.clone(),
+            new THREE.Vector3(0, 0, SceneBuilder.getInstance().getRinkData().lines.start));
+        tmpStone.setSpinOrientation(aiStone.getSpinOrientation());
 
-        // If the center is empty, aims the center
-        if (this.physicsManager.findStoneAtPosition(ringsCenterPosition) === undefined) {
-            aiStone.setRandomSpinOrientation();
-            finalAimingPosition = ringsCenterPosition;
-            initialVelocity = new THREE.Vector3(-aiStone.getSpinOrientation() * this.X_HOUSE_CENTER_VELOCITY,
-                0, this.Z_RINGS_CENTER_VELOCITY);
-        } else {
-            // Find a place and a velocity to shoot near the center
+        // Find a place and a velocity to shoot near the center if the center is occupied or if
+        // The stone encounters an obstacle in the trajectory
+        if (this.physicsManager.findStoneAtPosition(ringsCenterPosition) !== undefined ||
+            this.physicsManager.findObstacleStone(tmpStone, finalAimingPosition) === undefined) {
             let velocityFound = false;
             const maxTries = 50;
             let tries = 0;
@@ -209,7 +210,6 @@ export class AIPlayingState implements IGameState {
         aiStone.setSpinOrientation(aimingStonePosition.x > 0 ?
             SpinOrientation.COUNTER_CLOCKWISE : SpinOrientation.CLOCKWISE);
         finalAimingPosition.x = aimingStonePosition.x - CurlingStone.MAX_DIAMETER * Math.sign(aimingStonePosition.x);
-
         return finalAimingPosition;
     }
 
@@ -217,7 +217,7 @@ export class AIPlayingState implements IGameState {
         playerStonePosition: THREE.Vector3): THREE.Vector3 {
         // Finds if there is a stone in the way
         const rinkData = SceneBuilder.getInstance().getRinkData();
-        let tmpStone = new CurlingStone(Team.Player, initialVelocity.clone(),
+        let tmpStone = new CurlingStone(Team.AI, initialVelocity.clone(),
             new THREE.Vector3(0, 0, rinkData.lines.start));
         tmpStone.setSpinOrientation(aiStone.getSpinOrientation());
         let finalAimingPosition = playerStonePosition;
@@ -243,7 +243,7 @@ export class AIPlayingState implements IGameState {
                     // There is an AIStone in the way.
                     // If the aiStone aims the center, set the finalVelocityZ to 0 to not affect the stones in the ring
                     const ringsCenter = new THREE.Vector3(0, 0, rinkData.rings.offset);
-
+                    finalAimingPosition.x += CurlingStone.MAX_DIAMETER * Math.sign(finalAimingPosition.x);
                     if (finalAimingPosition.distanceTo(ringsCenter) < rinkData.rings.inner) {
                         initialVelocity = this.physicsManager
                             .getVelocityToPosition(finalAimingPosition, 0, aiStone.getSpinOrientation());
