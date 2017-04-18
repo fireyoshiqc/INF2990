@@ -90,15 +90,17 @@ export class HUDComponent {
         let output = "";
         if (this.playerScore > this.aiScore) {
             if (this.aiDifficulty === 1) {
-                output = "Félicitations! Vous avez battu le AI normal! Êtes-vous prêt pour le difficile?";
+                output = "Félicitations " + this.playerName +
+                         "! Vous avez battu le AI normal! Êtes-vous prêt pour le difficile?";
             } else {
-                output = "QUO!? Vous avez réussi à battre ce monstre!?";
+                output = "Félicitations " + this.playerName +
+                         "! Vous avez battu le AI difficile! Vous êtes un dieu du curling!";
             }
         } else {
             if (this.aiDifficulty === 1) {
-                output = "Le AI normal vous a battu! Quelle honte!";
+                output = "Le AI normal vous a battu. Quelle honte!";
             } else {
-                output = "Le AI difficile vous a battu. Rien de surprenant.";
+                output = "Le AI difficile vous a battu. Rien de surprenant!";
             }
         }
         return output;
