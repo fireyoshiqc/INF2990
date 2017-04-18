@@ -1,4 +1,4 @@
-import { Component, HostListener, ViewChild, OnInit } from '@angular/core';
+import { Component, HostListener, ViewChild, OnInit, AfterViewInit } from '@angular/core';
 import { RackComponent } from './rack.component';
 import { ChatComponent } from './chat.component';
 import { BoardComponent, ICommandPlaceWord } from './board.component';
@@ -14,7 +14,7 @@ import { MdDialog, MdDialogRef } from '@angular/material';
     templateUrl: '/assets/templates/game.component.html'
 })
 
-export class GameComponent implements OnInit {
+export class GameComponent implements OnInit, AfterViewInit {
     private readonly HOST_NAME = "http://" + window.location.hostname;
     private readonly SERVER_PORT = ":3000";
     private socket: any;
@@ -46,6 +46,12 @@ export class GameComponent implements OnInit {
         if (localStorage.getItem("pageRefresh") === "true") {
             location.replace('/startPage');
             this.router.navigate(['/startPage']);
+        }
+    }
+
+    public ngAfterViewInit(): void {
+        if (this.socket) {
+            this.socket.emit("cwGameCompLoaded", this.infoChild.getPlayer().getRoomID());
         }
     }
 

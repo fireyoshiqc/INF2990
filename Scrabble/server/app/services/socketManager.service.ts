@@ -13,18 +13,21 @@ import { PlayerManager } from './playerManager.service';
 import { CommandHandler } from './commandHandler.service';
 import { Player } from '../classes/player';
 import { Room } from '../classes/room';
+import { GameMaster } from '../services/gameMaster.service';
 
 export class SocketManager {
     private sio: SocketIO.Server;
     private roomManager: RoomManager;
     private playerManager: PlayerManager;
     private commandHandler: CommandHandler;
+    private readySockets: Array<string>;
 
     constructor(server: http.Server) {
         this.sio = io.listen(server);
         this.roomManager = new RoomManager();
         this.playerManager = new PlayerManager();
         this.commandHandler = new CommandHandler(this.sio, this.roomManager);
+        this.readySockets = [];
     }
 
     public handleSockets(): void {
@@ -61,6 +64,10 @@ export class SocketManager {
             // Initializes the scrabble game in a specific room
             socket.on('cwStartGame', (roomID: number) => {
                 this.initGame(socket, roomID);
+            });
+
+            socket.on('cwGameCompLoaded', (roomID: number) => {
+                this.initPlayerGame(socket, roomID);
             });
         });
         // Updates the information in the all rooms (waiting or playing)
@@ -123,25 +130,35 @@ export class SocketManager {
 
         if (!gameMaster.isGameStarted()) {
             gameMaster.startGame();
+        }
+    }
 
-            let msg = "Jeu initialisé. Ordre des joueurs :";
-            gameMaster.getPlayers().forEach(player => {
-                msg += " " + player.getName();
-            });
-            msg += ". Joueur actif : " + gameMaster.getActivePlayer().getName() + ".";
+    private initPlayerGame(socket: SocketIO.Socket, roomID: number): void {
+        let room = this.roomManager.findRoom(roomID);
+        let gameMaster = room.getGameMaster();
+        let player = gameMaster.getPlayers().find(p => p.getSocketId() === socket.id);
 
-            this.sio.sockets
-                .in(roomID.toString())
-                .emit('message sent', { username: "Scrabble Game", submessage: msg });
+        if (player) {
 
-            gameMaster.getPlayers().forEach(player => {
-                let playerSocket = this.sio.sockets.connected[player.getSocketId()];
+            let playerSocket = this.sio.sockets.connected[socket.id];
 
-                if (playerSocket !== undefined) {
-                    // Updates each player's rack with 7 randomized letters from stash
-                    playerSocket.emit('wcUpdateRack', player.getLettersRack());
-                }
-            });
+            if (playerSocket !== undefined) {
+                let msg = "Jeu initialisé. Ordre des joueurs :";
+                gameMaster.getPlayers().forEach(p => {
+                    msg += " " + p.getName();
+                });
+                msg += ". Joueur actif : " + gameMaster.getActivePlayer().getName() + ".";
+
+                playerSocket.emit('message sent', { username: "Scrabble Game", submessage: msg });
+
+                // Updates the rack of the player that's ready to play.
+                playerSocket.emit('wcUpdateRack', player.getLettersRack());
+
+            } else {
+                console.log("There is an unconnected player! Player : " + player.getName());
+            }
+        } else {
+            console.log("Could not find player with specified socket ID! Socket : " + socket.id);
         }
     }
 
@@ -177,6 +194,9 @@ export class SocketManager {
             this.playerManager.removePlayer(player.getName());
 
             this.sendLeaveMessage(player, room);
+
+            // Remove the player's socket from the ready sockets list since it's not in a game anymore.
+            this.readySockets.splice(this.readySockets.indexOf(socket.id), 1);
         }
         console.log("User disconnected");
     }

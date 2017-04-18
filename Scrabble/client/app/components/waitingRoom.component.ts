@@ -65,12 +65,9 @@ export class WaitingRoomComponent {
 
             setTimeout(() => {
                 this.dialogRef.close();
-                this.router.navigate(['/game']);
-            }, 1000);
-
-            setTimeout(() => {
                 this.roomService.startGame(this.player.getRoomID());
-            }, 2000);
+                this.router.navigate(['/game']);
+            }, 500);
         }
     }
 }
