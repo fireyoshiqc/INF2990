@@ -82,6 +82,7 @@ export class EndThrowState implements IGameState {
             if (gameData.roundsCompleted[1]) {
                 // Enter EndGameState if game is over
                 gameData.roundsCompleted[2] = true;
+                this.stonesThrown = 0;
                 return EndGameState.getInstance().enterState();
             } else {
                 hudData.nextRoundMessageVisible = true;

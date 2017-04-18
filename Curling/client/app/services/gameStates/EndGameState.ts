@@ -6,7 +6,7 @@
  */
 
 import { IGameState } from './GameState';
-import { PlayerIdleState } from './PlayerIdleState';
+import { StartGameState } from './StartGameState';
 import { GameController } from '../gameController.service';
 import { GameEngine } from '../gameEngine.service';
 import { SceneBuilder } from '../sceneBuilder.service';
@@ -122,6 +122,9 @@ export class EndGameState implements IGameState {
     public enterState(): EndGameState {
         let self = this;
         self.confettiSystem = [];
+        this.animateStones = true;
+        this.animateConfetti = true;
+        this.stopStonesOnGround = false;
 
         // Detect winning player
         self.setWinningTeam();
@@ -180,9 +183,10 @@ export class EndGameState implements IGameState {
         });
     }
 
-    public nextState(): PlayerIdleState {
+    public nextState(): StartGameState {
         this.hideConfetti();
-        return PlayerIdleState.getInstance().enterState();
+        this.winningTeam = undefined;
+        return StartGameState.getInstance().enterState();
     }
 
     private setWinningTeam(): void {
@@ -190,6 +194,6 @@ export class EndGameState implements IGameState {
         let scoreDiff = gameData.playerScore - gameData.aiScore;
         if (scoreDiff !== 0) {
             this.winningTeam = (scoreDiff > 0) ? Team.Player : Team.AI;
-        } // Pas oublier de set winningteam à undefined à la fin (pas ici)
+        }
     }
 }

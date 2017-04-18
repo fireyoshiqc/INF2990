@@ -158,13 +158,14 @@ export class GameController {
     }
 
     public resetGame(): void {
-        if (this.gameData.state === EndGameState.getInstance()) {
-            EndGameState.getInstance().hideConfetti();
-        }
         this.resetGameData();
         this.resetHUDData();
         this.gameEngine.removeAllStones();
-        this.gameData.state = StartGameState.getInstance().enterState();
+        if (this.gameData.state === EndGameState.getInstance()) {
+            this.gameData.state = EndGameState.getInstance().nextState();
+        } else {
+            this.gameData.state = StartGameState.getInstance().enterState();
+        }
         this.startGame();
     }
 
@@ -174,7 +175,7 @@ export class GameController {
 
     public resetGameData(): void {
         this.gameData = {
-            state: null,
+            state: this.gameData.state,
             playerScore: 0,
             aiScore: 0,
             isPlayerTurn: false,
