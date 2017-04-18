@@ -345,7 +345,7 @@ button.mat-raised-button {
     bottom: 15%;
 }
 
-#congratsMessage {
+#congratsMessage, #tieMessage {
     font-size: 3em;
     color: blue;
 }
