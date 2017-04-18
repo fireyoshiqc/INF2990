@@ -338,11 +338,16 @@ button.mat-raised-button {
     bottom: 15%;
 }
 
-#congrats, #tie{
+#congrats, #tie {
     position: absolute;
     left: 15%;
     right: 15%;
     bottom: 15%;
+}
+
+#congratsMessage {
+    font-size: 3em;
+    color: blue;
 }
 
 #endGame {
