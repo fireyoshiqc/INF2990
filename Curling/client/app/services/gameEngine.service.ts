@@ -191,12 +191,16 @@ export class GameEngine {
     private checkHardwareCapabilities(): void {
         const gl = this.renderer.getContext();
         const hardware = gl.getExtension('WEBGL_debug_renderer_info');
-        const vendor: string = gl.getParameter(hardware.UNMASKED_RENDERER_WEBGL);
-        if (vendor.toLowerCase().includes("intel")) {
+        if (hardware) {
+            const vendor: string = gl.getParameter(hardware.UNMASKED_RENDERER_WEBGL);
+            if (vendor.toLowerCase().includes("intel")) {
+                this.renderer.shadowMap.enabled = false;
+            } else {
+                this.renderer.shadowMap.enabled = true;
+                this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            }
+        } else { // If hardware cannot be detected, assume it's an old version of Firefox or something.
             this.renderer.shadowMap.enabled = false;
-        } else {
-            this.renderer.shadowMap.enabled = true;
-            this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         }
     }
 
