@@ -3,8 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { GlComponent } from '../components/gl.component';
 
 const routes: Routes = [
-    { path: '', redirectTo: 'glcomp', pathMatch: 'full' },
-    { path: 'glcomp', component: GlComponent }
+    { path: '', redirectTo: 'Curling', pathMatch: 'full' },
+    { path: 'Curling', component: GlComponent }
 ];
 @NgModule({
     imports: [RouterModule.forRoot(routes)],
