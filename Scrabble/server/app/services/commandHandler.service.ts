@@ -55,7 +55,7 @@ export class CommandHandler {
         let gameMaster = this.roomManager.findRoom(player.getRoomId()).getGameMaster();
         let isGameOver = gameMaster !== undefined ? gameMaster.isGameOver() : false;
 
-        if (isGameOver) {
+        if (isGameOver && command.getCommandType() !== CommandType.AIDE) {
             commandResponse = "ERREUR : Les commandes (sauf !aide) sont désactivées à la fin du jeu.";
         } else if (commandStatus === CommandStatus.VALID_COMMAND) {
             this.executeCommand(msg, player, command);
