@@ -189,7 +189,6 @@ export class AIPlayingState implements IGameState {
 
                 if (this.physicsManager.findStoneAtPosition(finalAimingPosition) === undefined) {
                     velocityFound = true;
-                    console.log(finalAimingPosition);
                 }
             }
 
@@ -241,7 +240,6 @@ export class AIPlayingState implements IGameState {
                         this.SOFT_COLLISION_SPEED, aiStone.getSpinOrientation());
                 } else {
                     // There is an AIStone in the way.
-                    console.log("Ai stone in the way");
                     // If the aiStone aims the center, set the finalVelocityZ to 0 to not affect the stones in the ring
                     const ringsCenter = new THREE.Vector3(0, 0, rinkData.rings.offset);
                     finalAimingPosition.x += CurlingStone.MAX_DIAMETER * Math.sign(finalAimingPosition.x);
