@@ -8,7 +8,7 @@
             <input mdInput class="full-input" [disabled]="nameSelectionDisabled" (change)="error = false" maxlength="30" placeholder="Entrez votre nom... (au moins 4 caractères)"
                 type="text" [(ngModel)]="playerName">
             <md-hint *ngIf="error" [ngStyle]="{'color': 'red'}" align="start">{{errorMessage}}</md-hint>
-            <md-hint *ngIf="nameSelectionDisabled" [ngStyle]="{'color': 'red'}" align="start">Vous devez garder ce nom pour toute la session.</md-hint>
+            <md-hint *ngIf="nameSelectionDisabled" [ngStyle]="{'color': 'blue'}" align="start">Vous devez garder ce nom pour toute la session.</md-hint>
         </md-input-container>
         <button md-fab (click)="validate()"><md-icon id="checkIcon">check</md-icon></button>
     </div>
