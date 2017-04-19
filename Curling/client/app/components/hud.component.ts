@@ -58,7 +58,12 @@ export class HUDComponent {
 
     @HostListener('window:keydown', ['$event'])
     public keyboardInput(event: KeyboardEvent): void {
-        if (!this.sliderDisabled) {
+        if (event.key === " ") {
+            // Prevent spacebar from triggering a switch camera event
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        else if (!this.sliderDisabled) {
 
             if (event.key === "a") {
                 this.selectedSpin = false; // Spin counter-clockwise
@@ -72,6 +77,7 @@ export class HUDComponent {
 
     public sendSwitchCameraEvent(): void {
         if (!this.cameraDisabled) {
+            console.log("bad");
             this.switchCameraEvent.emit('camera change');
         }
     }
