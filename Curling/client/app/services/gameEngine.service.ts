@@ -70,10 +70,24 @@ export class GameEngine {
         window.requestAnimationFrame(() => this.update());
         const delta = this.clock.getDelta();
         this.controller.updateState(delta);
-        if (this.activeStone) {
+        this.updateCamera(delta);
+        this.renderer.render(this.scene, this.camera.getCamera());
+    }
+
+    public updateCamera(delta: number): void {
+        if (this.camera.isUsingEndGameCamera()) {
+            this.camera.rotate(delta);
+        } else if (this.activeStone) {
             this.camera.followStone(this.activeStone.position);
         }
-        this.renderer.render(this.scene, this.camera.getCamera());
+    }
+
+    public useEndGameCamera(): void {
+        this.camera.useEndGameCamera(this.container);
+    }
+
+    public usePerspectiveCamera(): void {
+        this.camera.usePerspectiveCamera(this.container);
     }
 
     public checkIntersectIce(mouse: THREE.Vector2): THREE.Intersection[] {

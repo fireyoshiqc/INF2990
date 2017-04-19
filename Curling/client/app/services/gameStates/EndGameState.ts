@@ -125,14 +125,14 @@ export class EndGameState implements IGameState {
         this.animateStones = true;
         this.animateConfetti = true;
         this.stopStonesOnGround = false;
-
+        this.gameController.getHUDData().cameraDisabled = true;
         // Detect winning player
         self.setWinningTeam();
 
         if (this.winningTeam !== undefined) {
             this.gameController.getHUDData().congratulationsMessageVisible = true;
+            GameEngine.getInstance().useEndGameCamera();
             GameEngine.getInstance().removeHighlightOnAllStones();
-
             // Add highscore if the player wins
             if (self.winningTeam === Team.Player) {
                 self.gameController.addHighscore()
@@ -172,6 +172,7 @@ export class EndGameState implements IGameState {
             self.gameController.showHighscores();
             // Make stones not jump again, but let them land
             self.stopStonesOnGround = true;
+            GameEngine.getInstance().usePerspectiveCamera();
         }, self.ANIMATION_LENGTH);
 
         return this;

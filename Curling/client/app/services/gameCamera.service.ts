@@ -14,8 +14,11 @@ export class GameCamera {
     private static instance: GameCamera = new GameCamera();
     private cameraPerspective: THREE.PerspectiveCamera;
     private cameraOrthographic: THREE.OrthographicCamera;
+    private cameraEndGame: THREE.PerspectiveCamera;
     private currentCamera: THREE.Camera;
+    private endGameAngle: number;
     private usingPerspectiveCamera = true; // By default, use perspective camera
+    private usingEndGameCamera = false;
     private readonly ORTHO_ZOOM_FACTOR = 75 / 1920; // Determined experimentally
     private readonly PERSPECTIVE_OFFSET = -2;
     private readonly PERSPECTIVE_FOV = 70;
@@ -24,6 +27,8 @@ export class GameCamera {
     private readonly PERSPECTIVE_Z_POS = 2;
     private readonly PERSPECTIVE_Y_POS = 1;
     private readonly PERSPECTIVE_X_POS = -Math.PI / 18;
+    private readonly ENDGAME_Z_POS = 34.72;
+    private readonly ENDGAME_Y_POS = 3;
     private readonly ORTHO_NEAR = 1;
     private readonly ORTHO_FAR = 10000;
     private readonly ORTHO_Z_POS = 23;
@@ -31,6 +36,7 @@ export class GameCamera {
     private readonly ORTHO_X_POS = 0;
     private readonly ORTHO_Z_ROT = -Math.PI / 2;
     private readonly ORTHO_X_ROT = -Math.PI / 2;
+    private readonly ROTATION_SPEED = Math.PI / 8;
 
     public static getInstance(): GameCamera {
         return GameCamera.instance;
@@ -48,6 +54,7 @@ export class GameCamera {
 
         this.initPerspectiveCamera(containerRect);
         this.initOrthographicCamera(containerRect);
+        this.initEndGameCamera(containerRect);
 
         // By default, use perspective camera
         this.currentCamera = this.cameraPerspective;
@@ -83,12 +90,25 @@ export class GameCamera {
         this.cameraOrthographic.position.z = this.ORTHO_Z_POS;
     }
 
+    private initEndGameCamera(containerRect: ClientRect): void {
+        // Camera creation
+        let aspectPerspective = containerRect.width / containerRect.height;
+        this.cameraEndGame = new THREE.PerspectiveCamera(this.PERSPECTIVE_FOV,
+            aspectPerspective, this.PERSPECTIVE_NEAR, this.PERSPECTIVE_FAR);
+
+        // Camera position
+        this.cameraEndGame.position.z = this.ENDGAME_Z_POS;
+        this.cameraEndGame.position.y = this.ENDGAME_Y_POS;
+        this.cameraEndGame.rotation.x = this.PERSPECTIVE_X_POS;
+    }
+
     public isUsingPerspectiveCamera(): boolean {
         return this.usingPerspectiveCamera;
     }
 
     public usePerspectiveCamera(container: HTMLElement): void {
         this.usingPerspectiveCamera = true;
+        this.usingEndGameCamera = false;
         this.currentCamera = this.cameraPerspective;
         this.onResize(container);
     }
@@ -97,6 +117,30 @@ export class GameCamera {
         this.usingPerspectiveCamera = false;
         this.currentCamera = this.cameraOrthographic;
         this.onResize(container);
+    }
+
+    public useEndGameCamera(container: HTMLElement): void {
+        this.usingPerspectiveCamera = false;
+        this.usingEndGameCamera = true;
+        this.endGameAngle = -Math.PI / 2;
+        this.currentCamera = this.cameraEndGame;
+        this.onResize(container);
+        let zPos = SceneBuilder.getInstance().getRinkData().rings.offset;
+        this.currentCamera.lookAt(new THREE.Vector3(0, 0, zPos));
+    }
+
+    public rotate(delta: number): void {
+        let angle = delta * this.ROTATION_SPEED;
+        this.endGameAngle += angle;
+        let ringOffset = SceneBuilder.getInstance().getRinkData().rings.offset;
+        let radius = ringOffset - this.ENDGAME_Z_POS;
+        this.currentCamera.position.x = radius * Math.cos(this.endGameAngle);
+        this.currentCamera.position.z = radius * Math.sin(this.endGameAngle) + ringOffset;
+        this.currentCamera.lookAt(new THREE.Vector3(0, 0, ringOffset));
+    }
+
+    public isUsingEndGameCamera(): boolean {
+        return this.usingEndGameCamera;
     }
 
     public getCamera(): THREE.Camera {
