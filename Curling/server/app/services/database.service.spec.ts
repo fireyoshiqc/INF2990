@@ -36,9 +36,12 @@ describe("DatabaseService", () => {
         });
 
         it('collections should be empty', () => {
-            return testDatabase.getHighscores().then(highscores => {
-                expect(highscores.easy.length).to.equal(0);
-                expect(highscores.hard.length).to.equal(0);
+            return testDatabase.getHighscores().then(() => {
+                // Retrieve highscores a second time in case the first attempt fails
+                return testDatabase.getHighscores().then(highscores => {
+                    expect(highscores.easy.length).to.equal(0);
+                    expect(highscores.hard.length).to.equal(0);
+                });
             });
         });
 
@@ -57,15 +60,17 @@ describe("DatabaseService", () => {
     describe('getHighscores()', () => {
 
         it('easy collection should contain one data', () => {
-            return testDatabase.getHighscores().then(highscores => {
-                expect(highscores.easy.length).to.equal(1);
+            return testDatabase.getHighscores().then(() => {
+                // Retrieve highscores a second time in case the first attempt fails
+                return testDatabase.getHighscores().then(highscores => {
+                    expect(highscores.easy.length).to.equal(1);
 
-                let easyScore1 = JSON.parse(JSON.stringify(highscores.easy[0]));
+                    let easyScore1 = JSON.parse(JSON.stringify(highscores.easy[0]));
 
-                expect(easyScore1.name).to.be.equal("Test");
-                expect(easyScore1.playerScore).to.be.equal(1);
-                expect(easyScore1.aiScore).to.be.equal(0);
-
+                    expect(easyScore1.name).to.be.equal("Test");
+                    expect(easyScore1.playerScore).to.be.equal(1);
+                    expect(easyScore1.aiScore).to.be.equal(0);
+                });
             });
         });
 
@@ -80,9 +85,12 @@ describe("DatabaseService", () => {
         });
 
         it('collections should be empty', () => {
-            return testDatabase.getHighscores().then(highscores => {
-                expect(highscores.easy.length).to.equal(0);
-                expect(highscores.hard.length).to.equal(0);
+            return testDatabase.getHighscores().then(() => {
+                // Retrieve highscores a second time in case the first attempt fails
+                return testDatabase.getHighscores().then(highscores => {
+                    expect(highscores.easy.length).to.equal(0);
+                    expect(highscores.hard.length).to.equal(0);
+                });
             });
         });
 
@@ -99,42 +107,48 @@ describe("DatabaseService", () => {
             it('should add a scores to the database', () => {
                 // AddHighscore (playerName, playerScore, aiScore)
                 return testDatabase.addHighscore(P_NAMES[i], P_SCORE[i], A_SCORE[i], "facile")
-                                   .then(result => { expect(result).to.be.true; });
+                    .then(result => { expect(result).to.be.true; });
             });
         }
 
         it('easy collection should contain seven data', () => {
-            return testDatabase.getHighscores().then(highscores => {
-                expect(highscores.easy.length).to.equal(7);
-                expect(highscores.hard.length).to.equal(0);
+            return testDatabase.getHighscores().then(() => {
+                // Retrieve highscores a second time in case the first attempt fails
+                return testDatabase.getHighscores().then(highscores => {
+                    expect(highscores.easy.length).to.equal(7);
+                    expect(highscores.hard.length).to.equal(0);
+                });
             });
         });
 
         it('should be ranked by descending order of player scores, '
             + 'by ascending order of ai scores if player scores are equal, '
             + 'by ascending order of added/updated time if player and ai scores are equal', () => {
-            return testDatabase.getHighscores().then(highscores => {
-                // Ranking
-                for (let i = 0; i < (P_NAMES.length - 1); i++) {
-                    let currentScore = JSON.parse(JSON.stringify(highscores.easy[i]));
-                    let nextScore = JSON.parse(JSON.stringify(highscores.easy[i + 1]));
+                return testDatabase.getHighscores().then(() => {
+                    // Retrieve highscores a second time in case the first attempt fails
+                    return testDatabase.getHighscores().then(highscores => {
+                        // Ranking
+                        for (let i = 0; i < (P_NAMES.length - 1); i++) {
+                            let currentScore = JSON.parse(JSON.stringify(highscores.easy[i]));
+                            let nextScore = JSON.parse(JSON.stringify(highscores.easy[i + 1]));
 
-                    // 1- By descending order of player score
-                    expect(currentScore.playerScore).to.be.gte(nextScore.playerScore);
+                            // 1- By descending order of player score
+                            expect(currentScore.playerScore).to.be.gte(nextScore.playerScore);
 
-                    if (currentScore.playerScore === nextScore.playerScore) {
-                        // 2- By ascending order of ai score
-                        expect(currentScore.aiScore).to.be.lte(nextScore.aiScore);
+                            if (currentScore.playerScore === nextScore.playerScore) {
+                                // 2- By ascending order of ai score
+                                expect(currentScore.aiScore).to.be.lte(nextScore.aiScore);
 
-                        if (currentScore.aiScore === nextScore.aiScore) {
-                            // 3- By ascending order of added/updated time
-                            expect(currentScore.createdAt).to.be.lt(nextScore.createdAt);
-                            expect(currentScore.updatedAt).to.be.lt(nextScore.updatedAt);
+                                if (currentScore.aiScore === nextScore.aiScore) {
+                                    // 3- By ascending order of added/updated time
+                                    expect(currentScore.createdAt).to.be.lt(nextScore.createdAt);
+                                    expect(currentScore.updatedAt).to.be.lt(nextScore.updatedAt);
+                                }
+                            }
                         }
-                    }
-                }
+                    });
+                });
             });
-        });
 
     });
 
@@ -147,9 +161,12 @@ describe("DatabaseService", () => {
         });
 
         it('collections should be empty', () => {
-            return testDatabase.getHighscores().then(highscores => {
-                expect(highscores.easy.length).to.equal(0);
-                expect(highscores.hard.length).to.equal(0);
+            return testDatabase.getHighscores().then(() => {
+                // Retrieve highscores a second time in case the first attempt fails
+                return testDatabase.getHighscores().then(highscores => {
+                    expect(highscores.easy.length).to.equal(0);
+                    expect(highscores.hard.length).to.equal(0);
+                });
             });
         });
 
