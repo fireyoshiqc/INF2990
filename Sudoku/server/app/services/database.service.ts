@@ -1,6 +1,8 @@
 /**
  * database.service.ts - Handles database requests for highscores.
- *
+ * MLAB Username : factory24
+ * MLAB Password : factoryDB24
+ * 
  * @authors Félix Boulet, Erica Bugden
  * @date 2017/03/07
  */

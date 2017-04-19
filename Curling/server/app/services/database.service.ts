@@ -1,6 +1,7 @@
 /**
  * database.service.ts - Handles database requests for highscores.
- *
+ * MLAB Username : factory24
+ * MLAB Password : factoryDB24
  * @authors Yawen Hou, Pierre To
  * @date 2017/04/02
  */

@@ -61,7 +61,7 @@ LIVRABLE DU VENDREDI 24 MARS 2017
 
     2.7 - BASE DE DONNÉES
          Il est possible de voir le contenu de la base de données en se connectant avec les informations qui suivent :  
-        2.7.1 - URL : mlab.com, Username : factory24, Password : sudokuDB24
+        2.7.1 - URL : mlab.com, Username : factory24, Password : factoryDB24
     
     2.8 - LOG SERVEUR
          Le log de serveur est affiché de façon statique donc il faut refresh la page pour voir les nouvelles actions.

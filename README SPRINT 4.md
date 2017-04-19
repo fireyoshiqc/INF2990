@@ -55,7 +55,7 @@ LIVRABLE DU MERCREDI 19 AVRIL 2017
 
     3.3 - ACCÈS À LA BASE DE DONNÉES
           Il est possible de voir le contenu de la base de données en se connectant avec les informations qui suivent :  
-          3.3.1 - URL : mlab.com, Username : factory24, Password : sudokuDB24 (À MODIFIER)
+          3.3.1 - URL : mlab.com, Username : factory24, Password : factoryDB24
     
     3.4 - VOIR LE LOG SERVEUR
           Le log de serveur est affiché de façon statique donc il faut refresh la page pour voir les nouvelles actions.
@@ -84,7 +84,7 @@ LIVRABLE DU MERCREDI 19 AVRIL 2017
     
     4.4 - ACCÈS À LA BASE DE DONNÉES
           Il est possible de voir le contenu de la base de données en se connectant avec les informations qui suivent :  
-          4.1.1 - URL : mlab.com, Username : factory24, Password : sudokuDB24 (À MODIFIER)
+          4.1.1 - URL : mlab.com, Username : factory24, Password : factoryDB24
 
 5 - SCRABBLE *** À noter que le serveur doit être sur localhost:3200 (par défaut) ***
     5.1 - OUVERTURE
