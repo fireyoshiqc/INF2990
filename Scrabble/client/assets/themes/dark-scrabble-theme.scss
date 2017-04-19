@@ -28,6 +28,14 @@ $theme: mat-light-theme($primary, $accent, $warn);
 }
 
 #gamePanel {
+    background: lime; /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient(left top, lime, blue); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(bottom right, lime, blue); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(bottom right, lime, blue); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(to bottom right, lime, blue); /* Standard syntax */
+}
+
+#rack {
     background-color: white;
 }
 
@@ -59,6 +67,9 @@ $theme: mat-light-theme($primary, $accent, $warn);
     }
     #gamePanel {
         background-color: #111111;
+    }
+    #rack {
+        background-color: rgba(255, 255, 255, 0.5);
     }
     .info-header {
         background-color: #43a047;
