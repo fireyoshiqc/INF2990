@@ -157,10 +157,28 @@ describe('ScrabbleGame', () => {
             expect(l5).to.eql(['t', 'e']);
             scrabbleGame.placeWord(c5);
 
-            expect(scrabbleGame.isWordCorrectlyOverlapping(c1)).to.be.false;
-            expect(scrabbleGame.isWordCorrectlyOverlapping(c2)).to.be.false;
-            expect(scrabbleGame.isWordCorrectlyOverlapping(c3)).to.be.false;
-            expect(scrabbleGame.isWordCorrectlyOverlapping(c5)).to.be.false;
+            expect(scrabbleGame.isWordCorrectlyOverlapping(c1)).to.be.true;
+            expect(scrabbleGame.isWordCorrectlyOverlapping(c2)).to.be.true;
+            expect(scrabbleGame.isWordCorrectlyOverlapping(c3)).to.be.true;
+            expect(scrabbleGame.isWordCorrectlyOverlapping(c5)).to.be.true;
+
+            done();
+        });
+    });
+
+    describe('isNewWord and placeWord', () => {
+        it('should verify if the player is placing a new word on the board.', done => {
+            let game = new ScrabbleGame();
+
+            let c1 = new CommandPlaceWord("a", 1, "v", "boNjour");
+            expect(game.isNewWord(c1)).to.be.true;
+            game.placeWord(c1);
+
+            let c2 = new CommandPlaceWord("a", 1, "v", "bonjour");
+            expect(game.isNewWord(c2)).to.be.false;
+
+            let c3 = new CommandPlaceWord("a", 1, "v", "BOnjourS");
+            expect(game.isNewWord(c3)).to.be.true;
 
             done();
         });

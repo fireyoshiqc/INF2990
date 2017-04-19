@@ -25,6 +25,7 @@ export class CommandHandler {
         "", // SUCCESS_PLACE_WORD_CAN_PLACE_WORD
         "ERREUR : Votre mot sort du plateau de jeu.", // CommandExecutionStatus.ERROR_PLACE_WORD_OUT_OF_BOUNDS
         "ERREUR : Votre mot remplace des lettres sur le plateau de jeu.", // ERROR_PLACE_WORD_INCORRECT_OVERLAPPING,
+        "ERREUR : Votre mot se retrouve déjà sur le plateau de jeu.", // ERROR_PLACE_WORD_PREEXISTING_WORD,
         "ERREUR : Votre mot ne touche pas la case centrale (premier tour).", // ERROR_PLACE_WORD_CENTRAL_TILE,
         "ERREUR : Votre mot ne touche pas une lettre sur le plateau de jeu.", // ERROR_PLACE_WORD_ADJACENT_TILE,
         "ERREUR : Des mots nouvellement formés sont invalides. Le tour est terminé.", // ERROR_PLACE_WORD_INVALID_WORDS
@@ -94,6 +95,7 @@ export class CommandHandler {
             case CommandExecutionStatus.ERROR:
             case CommandExecutionStatus.ERROR_PLACE_WORD_OUT_OF_BOUNDS:
             case CommandExecutionStatus.ERROR_PLACE_WORD_INCORRECT_OVERLAPPING:
+            case CommandExecutionStatus.ERROR_PLACE_WORD_PREEXISTING_WORD:
             case CommandExecutionStatus.ERROR_PLACE_WORD_CENTRAL_TILE:
             case CommandExecutionStatus.ERROR_PLACE_WORD_ADJACENT_TILE:
             case CommandExecutionStatus.ERROR_CHANGE_LETTER_STASH_EMPTY:

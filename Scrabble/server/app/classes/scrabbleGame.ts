@@ -195,7 +195,24 @@ export class ScrabbleGame {
         let tile;
         let rowIndex;
         let columnIndex;
-        let isNewWord = false;
+
+        for (let i = 0; i < command.getWord().length; i++) {
+            rowIndex = (command.getOrientation() === "h") ? command.getRow() : (command.getRow() + i);
+            columnIndex = (command.getOrientation() === "h") ? (command.getColumn() + i) : command.getColumn();
+            tile = this.board[rowIndex][columnIndex];
+
+            if (!tile.isEmpty() && tile.getLetter().getCharacter() !== command.getWord().charAt(i).toUpperCase()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public isNewWord(command: CommandPlaceWord): boolean {
+        let tile;
+        let rowIndex;
+        let columnIndex;
 
         for (let i = 0; i < command.getWord().length; i++) {
             rowIndex = (command.getOrientation() === "h") ? command.getRow() : (command.getRow() + i);
@@ -203,13 +220,11 @@ export class ScrabbleGame {
             tile = this.board[rowIndex][columnIndex];
 
             if (tile.isEmpty()) {
-                isNewWord = true;
-            } else if (tile.getLetter().getCharacter() !== command.getWord().charAt(i).toUpperCase()) {
-                return false;
+                return true;
             }
         }
 
-        return isNewWord;
+        return false;
     }
 
     public isWordOverlappingCentralTile(command: CommandPlaceWord): boolean {

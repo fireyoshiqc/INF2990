@@ -23,6 +23,7 @@ export enum CommandExecutionStatus {
     SUCCESS_PLACE_WORD_CAN_PLACE_WORD,
     ERROR_PLACE_WORD_OUT_OF_BOUNDS,
     ERROR_PLACE_WORD_INCORRECT_OVERLAPPING,
+    ERROR_PLACE_WORD_PREEXISTING_WORD,
     ERROR_PLACE_WORD_CENTRAL_TILE,
     ERROR_PLACE_WORD_ADJACENT_TILE,
     ERROR_PLACE_WORD_INVALID_WORDS,
@@ -274,11 +275,16 @@ export class GameMaster {
             return CommandExecutionStatus.ERROR_PLACE_WORD_INCORRECT_OVERLAPPING;
         }
 
-        // 3a- During first turn, verify if a letter in the word is on the central tile H8
+        // 3- Verify if the player is adding a new word
+        if (!this.scrabbleGame.isNewWord(command)) {
+            return CommandExecutionStatus.ERROR_PLACE_WORD_PREEXISTING_WORD;
+        }
+
+        // 4a- During first turn, verify if a letter in the word is on the central tile H8
         if (this.isFirstTurn && !this.scrabbleGame.isWordOverlappingCentralTile(command)) {
             return CommandExecutionStatus.ERROR_PLACE_WORD_CENTRAL_TILE;
         } else if (!this.isFirstTurn && !this.scrabbleGame.isWordAdjacentToAnother(command)) {
-            // 3b- Verify if a letter in the word is adjacent to another letter on the board
+            // 4b- Verify if a letter in the word is adjacent to another letter on the board
             return CommandExecutionStatus.ERROR_PLACE_WORD_ADJACENT_TILE;
         }
 
