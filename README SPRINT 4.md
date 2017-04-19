@@ -93,7 +93,7 @@ LIVRABLE DU MERCREDI 19 AVRIL 2017
           Une fois le client lancé au moins une fois pour compiler, le jeu peut être servi directement en se rendant sur localhost:3200.
 
     5.2 - VISITE SUR LE SITE
-          5.2.1 - Entrer votre nom et sélectionner la capacité de la salle de jeu. Les joueurs se joigneront automatiquement à vous.
+          5.2.1 - Entrer votre nom et sélectionner la capacité de la salle de jeu. Les joueurs se joindront automatiquement à vous.
           5.2.2 - Dans une salle de jeu, il est possible de jouer et d'effectuer toutes les commandes du jeu.
                   Il est possible de finir une partie et de l'abandonner. Bon jeu !
           5.2.3 - ASTUCES
