@@ -32,7 +32,7 @@ export class CommandHandler {
         "", // SUCCESS_CHANGE_LETTER_STASH_ENOUGH
         "ERREUR : La réserve de lettres est vide.", // ERROR_CHANGE_LETTER_STASH_EMPTY
         "ERREUR : La réserve de lettres ne possède pas assez de lettres " +
-            "pour effectuer l'échange.", // ERROR_CHANGE_LETTER_STASH_INSUFFICIENT_LETTERS
+        "pour effectuer l'échange.", // ERROR_CHANGE_LETTER_STASH_INSUFFICIENT_LETTERS
         "", // SUCCESS_REMOVE_LETTERS
         "ERREUR : Vous n'avez pas les lettres requises sur votre chevalet." // ERROR_REMOVE_LETTERS
     ];
@@ -66,7 +66,8 @@ export class CommandHandler {
             commandResponse = "ERREUR : Cette commande n'existe pas. Voir !aide";
         }
 
-        if (commandStatus !== CommandStatus.VALID_COMMAND || isGameOver) {
+        if (commandStatus !== CommandStatus.VALID_COMMAND ||
+            (isGameOver && command.getCommandType() !== CommandType.AIDE)) {
             this.sio.sockets.in(player.getRoomId().toString())
                 .emit('command sent', { username: player.getName(), submessage: msg, commandResponse });
         }
@@ -202,7 +203,7 @@ export class CommandHandler {
         let playerSocket = this.sio.sockets.connected[player.getSocketId()];
 
         if (playerSocket !== undefined) {
-            playerSocket.emit('command sent', { username: "Scrabble Game", submessage: msg, commandResponse: "" });
+            playerSocket.emit('command sent', { username: player.getName(), submessage: msg, commandResponse: "" });
         }
     }
 }
