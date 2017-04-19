@@ -27,6 +27,10 @@ $theme: mat-light-theme($primary, $accent, $warn);
     background-color: white;
 }
 
+#gamePanel {
+    background-color: white;
+}
+
 .info-header {
     background-color: #C8E6C9;
 }
@@ -51,6 +55,9 @@ $theme: mat-light-theme($primary, $accent, $warn);
         color: white;
     }
     #sidenavback.mat-sidenav-container {
+        background-color: #111111;
+    }
+    #gamePanel {
         background-color: #111111;
     }
     .info-header {
